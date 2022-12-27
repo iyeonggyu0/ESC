@@ -1,0 +1,13 @@
+{
+  "name": "esc-key",
+  "version": "1.0.0",
+  "description": "Everything Styles' Custom Keyboard _ project",
+  "main": "index.js",
+  "scripts": {
+    "heroku-prebuild": "cd client && npm ci && npm run build && mv build ../server",
+    "start": "cd client && npm ci && npm run build && mv build ../server && cd .. && cd server && npm ci && node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
