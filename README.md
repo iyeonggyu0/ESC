@@ -45,12 +45,12 @@ Everything Styles' Custom Keyboard _ project
   - 컴퓨터 주변 기기에 관심이 많은 사람
 
 ### 수행 도구
-      | Components        | techology                                              |
-      | :---------------- | :----------------------------------------------------- |
-      | Client Build      | npm , webpack                                          |
-      | API testing       | POSTMAN                                                |
-      | Tool              | VSC                                                    |
-      | UIdesign          | figma                                                  |
+  | Components        | techology                                              |
+  | :---------------- | :----------------------------------------------------- |
+  | Client Build      | npm , webpack                                          |
+  | API testing       | POSTMAN                                                |
+  | Tool              | VSC                                                    |
+  | UIdesign          | figma                                                  |
 
 ## 설계
 ### 기능
