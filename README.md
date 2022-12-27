@@ -11,8 +11,6 @@ Everything Styles' Custom Keyboard _ project
 4.  [개발]()
 5.  [배포]()
 
-   <br><br>
-
 - 커밋 내역 [[바로가기]](#커밋-내역)
 
    <br><br>
