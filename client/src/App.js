@@ -1,5 +1,5 @@
-import React from "react";
-import { ThemeProvider } from "styled-components";
+import React, { createContext, useState } from "react";
+import GlobalStyle from "./styles/globalStyle";
 
 // library
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -7,25 +7,26 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { solid, regular, light, thin, icon } from "@fortawesome/fontawesome-svg-core/import.macro";
 
-// style
-import GlobalStyle from "./styles/globalStyle";
-import theme from "./styles/theme.js";
-
 // page
 import MainPage from "./pages/mainPage";
 
+export const ThemeContext = createContext(null);
+
 function App() {
+  const [currentTheme, setCurrentTheme] = useState("dark");
+  const toggleTheme = () => {
+    setCurrentTheme((curr) => (curr === "dark" ? "light" : "dark"));
+  };
+
   return (
-    <>
-      <ThemeProvider theme={theme}>
+    <ThemeContext.Provider value={{ currentTheme, toggleTheme }}>
+      <BrowserRouter>
         <GlobalStyle />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
-    </>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeContext.Provider>
   );
 }
 
