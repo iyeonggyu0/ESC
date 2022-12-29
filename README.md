@@ -168,3 +168,13 @@ Img
 
 - layout 구조 생성
 - useMediaQuery의 재사용성을 높여줄 useMedia CustomHook 제작
+
+<br>
+
+### Header_1
+
+###### Dec 30, 2022 (Dec 29일 코드, 자정 지나고 업로드)
+
+- colorTheme 설정
+- Theme.palette 구성
+- Header 부분제작

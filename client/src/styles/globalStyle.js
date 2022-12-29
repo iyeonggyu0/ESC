@@ -5,6 +5,7 @@ const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
 
 
   ${reset}
@@ -12,8 +13,6 @@ const GlobalStyle = createGlobalStyle`
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 100%;
-	font: inherit;
 	vertical-align: baseline;
   }
   article, aside, details, figcaption, figure, 
@@ -42,11 +41,11 @@ const GlobalStyle = createGlobalStyle`
     color: black;
     text-decoration: none;
   }
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: block; /* IE and Edge */
+  scrollbar-width: block; /* Firefox */
 
   ::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
+    display: block; /* Chrome, Safari, Opera*/
   }
 `;
 

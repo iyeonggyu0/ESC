@@ -5,7 +5,7 @@ const MainLayOut = ({ children }) => {
   return (
     <div>
       <LayOutHeader />
-      <div>{children}</div>
+      <div style={{ marginTop: "70px" }}>{children}</div>
       <LayOutFooter />
     </div>
   );
