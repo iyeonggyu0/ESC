@@ -1,4 +1,4 @@
-import React, { createContext, useRef, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import GlobalStyle from "./styles/globalStyle";
 
 // library
@@ -13,17 +13,31 @@ import MainPage from "./pages/mainPage";
 export const ThemeContext = createContext(null);
 
 function App() {
-  let colorThemeRef = useRef("game");
-  const [colorTheme, setColorTheme] = useState(colorThemeRef.current);
+  const [colorTheme, setColorTheme] = useState(localStorage.getItem("theme"));
+
   const toggleTheme = () => {
-    setColorTheme((curr) => (curr === "game" ? "basic" : "game"));
-    colorTheme.current = colorTheme;
+    if (colorTheme === "game") {
+      setColorTheme("basic");
+      localStorage.setItem("theme", "basic");
+      console.log("theme:", localStorage.getItem("theme"));
+    } else if (colorTheme === "basic") {
+      setColorTheme("game");
+      localStorage.setItem("theme", "game");
+      console.log("theme:", localStorage.getItem("theme"));
+    }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("theme") === null) {
+      localStorage.setItem("theme", "game");
+      setColorTheme("game");
+    }
+  }, []);
+
   return (
-    <ThemeContext.Provider value={{ colorTheme, toggleTheme }}>
+    <ThemeContext.Provider value={{ toggleTheme }}>
       <BrowserRouter>
-        <GlobalStyle />
+        <GlobalStyle colorTheme={colorTheme} />
         <Routes>
           <Route path="/" element={<MainPage />} />
         </Routes>

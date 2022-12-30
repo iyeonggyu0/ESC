@@ -3,6 +3,7 @@ const palette = {
   gameStroke: "#222222",
   gameLightStroke: "#5F5F5F",
   gameFont: "#FFFFFF",
+  gameLightFont: "#CDCDCD",
   gameSubFont: "#000000",
 
   basicBg: "#F0EDE9",
@@ -23,6 +24,7 @@ const fontSize = {
   xLarge: "20px",
   xxLarge: "24px",
   xxxLarge: "32px",
+  xxxxLarge: "40px",
 };
 
 const fontWeight = {

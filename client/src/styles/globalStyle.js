@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 
   ${reset}
@@ -44,8 +45,18 @@ const GlobalStyle = createGlobalStyle`
   -ms-overflow-style: block; /* IE and Edge */
   scrollbar-width: block; /* Firefox */
 
-  ::-webkit-scrollbar {
-    display: block; /* Chrome, Safari, Opera*/
+  body::-webkit-scrollbar {
+    display: block; /* Chrome, Safari, Opera */
+    width: 8px;
+  }
+  body::-webkit-scrollbar-track{
+    display: block;
+    background: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameBg : ({ theme }) => theme.palette.basicBg)};
+  }
+  body::-webkit-scrollbar-thumb{
+    display: block;
+    border-radius:10px;
+    background: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicLightStroke)};
   }
 `;
 
