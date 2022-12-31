@@ -11,7 +11,7 @@ export const Footer = styled.footer`
 `;
 
 export const Title = styled.div`
-  width: 85vw;
+  width: 75vw;
   height: 80px;
   margin: 0 auto;
   position: relative;
@@ -27,12 +27,13 @@ export const Title = styled.div`
 `;
 
 export const FooterDiv = styled.div`
-  width: 85vw;
+  width: 75vw;
   margin: 0 auto;
   margin-top: 20px;
   font-family: Gothic A1;
   position: relative;
   display: flex;
+  flex-wrap: wrap;
 
   div:first-child > p:first-child {
     font-size: ${({ theme }) => theme.fontSize.xLarge};
@@ -72,5 +73,29 @@ export const IconDiv = styled.div`
 
   .instagram {
     padding-left: 1px;
+  }
+`;
+
+export const MobileFooter = styled.footer`
+  z-index: 0;
+  width: 100vw;
+  height: 350px;
+  background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameStroke : ({ theme }) => theme.palette.basicBg)};
+
+  /* Font */
+  /* font-size: ${({ theme }) => theme.fontSize.mediumLarge}; */
+  color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicStroke)};
+  ${Title} {
+    padding-bottom: 0px;
+  }
+
+  ${IconDiv} {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding-top: 15px;
+    span {
+      padding-right: 30px;
+    }
   }
 `;

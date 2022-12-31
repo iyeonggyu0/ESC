@@ -17,6 +17,16 @@ const MainPage = () => {
       <div>내용</div>
       <div>내용</div>
       <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
+      <div>내용</div>
     </MainLayOut>
   );
 };

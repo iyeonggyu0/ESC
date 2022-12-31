@@ -187,3 +187,12 @@ Img
 
 - Pc_HeaderLayOut
 - Pc_FooterLayOut
+
+<br>
+
+### mainLayOut_3
+
+###### Dec 31, 2022
+
+- Mobile,Tablet_HeaderLayOut
+- Mobile,Tablet_FooterLayOut

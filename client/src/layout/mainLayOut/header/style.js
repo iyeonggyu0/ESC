@@ -5,7 +5,9 @@ export const Header = styled.header`
   height: 70px;
   background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameBg : ({ theme }) => theme.palette.basicBg)};
   position: fixed;
-  z-index: 1;
+  z-index: 2;
+
+  border-bottom: 1px solid ${(props) => (props.media.isMobile === true ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicStroke)};
 
   /* Font */
   font-size: ${({ theme }) => theme.fontSize.mediumLarge};
@@ -14,7 +16,7 @@ export const Header = styled.header`
 `;
 
 export const HeaderSection = styled.section`
-  width: 85vw;
+  width: 75vw;
   height: 70px;
   margin: 0 auto;
   position: relative;
@@ -31,7 +33,7 @@ export const HeaderSection = styled.section`
 `;
 
 export const Logo = styled.div`
-  width: 100px;
+  width: 80px;
   height: 25px;
   background-repeat: no-repeat;
   background-position: center center;
@@ -103,7 +105,7 @@ export const MenuUl = styled.ul`
 `;
 
 export const MenuDiv = styled.div`
-  width: 85vw;
+  width: 75vw;
   margin: 0 auto;
   border-top: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameStroke : ({ theme }) => theme.palette.basicStroke)};
   padding-top: 25px;
@@ -112,7 +114,7 @@ export const MenuDiv = styled.div`
 
   div:first-child {
     width: 450px;
-    margin-left: 155px;
+    margin-left: 130px;
     display: flex;
     justify-content: start;
   }
@@ -136,8 +138,7 @@ export const MenuDiv = styled.div`
   }
 
   div:nth-child(2) > ${MenuUl}:last-child {
-    margin-right: 55px;
-    margin-left: 22px;
+    margin-right: 63px;
   }
 
   li {
@@ -149,5 +150,72 @@ export const MenuDiv = styled.div`
 
   li:hover {
     color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicFont)};
+  }
+`;
+
+// MobileMenu ----------------------------------
+
+export const MobileHeader = styled.div`
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+
+  .bars {
+    cursor: pointer;
+    font-size: ${({ theme }) => theme.fontSize.xxLarge};
+    margin-left: 15px;
+  }
+
+  .xmark {
+    cursor: pointer;
+    font-size: ${({ theme }) => theme.fontSize.xxxLarge};
+    margin-left: 16px;
+  }
+`;
+export const MobileMenuDiv = styled.div`
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-wrap: wrap;
+
+  padding: 15px 0px;
+
+  & > div {
+    width: 100%;
+  }
+`;
+
+export const MobileMenu = styled.div`
+  z-index: 1;
+  width: 35vw;
+  height: 100vh;
+  margin-left: 65vw;
+  position: fixed;
+  padding-top: 71px;
+
+  border-left: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicStroke)};
+  background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameStroke : ({ theme }) => theme.palette.basicBg)};
+
+  font-family: "Gothic A1", sans-serif;
+  color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicFont)};
+
+  ${MobileMenuDiv} {
+    border-bottom: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicStroke)};
+  }
+
+  & > ${MobileMenuDiv} > div {
+    border-top: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightFont : ({ theme }) => theme.palette.basicLightStroke)};
+    margin-top: 15px;
+    padding-top: 15px;
+    color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightFont : ({ theme }) => theme.palette.basicSubFont)};
+    line-height: 160%;
+  }
+
+  .icon {
+    margin-left: 5px;
   }
 `;
