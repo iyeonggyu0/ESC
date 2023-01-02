@@ -196,3 +196,11 @@ Img
 
 - Mobile,Tablet_HeaderLayOut
 - Mobile,Tablet_FooterLayOut
+
+<br>
+
+### mainPage
+
+###### Jan 2, 2023
+
+- MainPage

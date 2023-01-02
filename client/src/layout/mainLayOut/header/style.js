@@ -5,9 +5,9 @@ export const Header = styled.header`
   height: 70px;
   background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameBg : ({ theme }) => theme.palette.basicBg)};
   position: fixed;
-  z-index: 2;
+  z-index: 100;
 
-  border-bottom: 1px solid ${(props) => (props.media.isMobile === true ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicStroke)};
+  /* border-bottom: 1px solid ${(props) => (props.media.isPc === false && props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : props.media.isPc === false && props.colorTheme === "basic" ? ({ theme }) => theme.palette.basicStroke : false)}; */
 
   /* Font */
   font-size: ${({ theme }) => theme.fontSize.mediumLarge};
@@ -92,6 +92,7 @@ export const HeaderMenu = styled.div`
   height: 230px;
   padding-top: 70px;
   background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameBg : ({ theme }) => theme.palette.basicBg)};
+  z-index: 99;
 
   /* Font */
   color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicFont)};
@@ -114,7 +115,7 @@ export const MenuDiv = styled.div`
 
   div:first-child {
     width: 450px;
-    margin-left: 130px;
+    margin-left: 135px;
     display: flex;
     justify-content: start;
   }
@@ -160,6 +161,7 @@ export const MobileHeader = styled.div`
   right: 0;
   display: flex;
   align-items: center;
+  z-index: 100;
 
   .bars {
     cursor: pointer;
@@ -190,7 +192,7 @@ export const MobileMenuDiv = styled.div`
 `;
 
 export const MobileMenu = styled.div`
-  z-index: 1;
+  z-index: 99;
   width: 35vw;
   height: 100vh;
   margin-left: 65vw;

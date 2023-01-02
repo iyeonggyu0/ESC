@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 export const Footer = styled.footer`
-  width: 100vw;
+  width: 100%;
   height: 290px;
   background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameStroke : ({ theme }) => theme.palette.basicBg)};
+
+  border-top: ${(props) => (props.colorTheme === "basic" ? "1px" : "0px")} solid ${({ theme }) => theme.palette.basicStroke};
 
   /* Font */
   /* font-size: ${({ theme }) => theme.fontSize.mediumLarge}; */
