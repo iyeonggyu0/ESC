@@ -13,6 +13,7 @@ Everything Styles' Custom Keyboard _ project
 5.  [배포]()
 
 - 커밋 내역 [[바로가기]](#커밋-내역)
+- server관련 [[바로가기]]()
 
   <br><br>
 
