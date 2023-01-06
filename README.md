@@ -1,6 +1,6 @@
 # ESC
 
-Everything Styles' Custom Keyboard _ project
+Everything Styles' Custom Keyboard \_ project
 
 <br>
 
@@ -205,3 +205,19 @@ Img
 ###### Jan 2, 2023
 
 - MainPage
+
+<br>
+
+### singupDB_CRUD
+
+###### Jan 6, 2023
+
+- server 회원가입 로직 작성
+
+<br>
+
+### frontEnd_SingupLogic
+
+###### Jan 7, 2023
+
+- font 회원가입 로직 작성

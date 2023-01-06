@@ -6,7 +6,7 @@ import { Div, TextDiv, ButtonDiv } from "./style";
 
 const BannerText = () => {
   const media = useMedia();
-  const colorTheme = localStorage.getItem("theme");
+  const colorTheme = useContext(ThemeContext).colorTheme;
   const toggleTheme = useContext(ThemeContext);
 
   const navigate = useNavigate();

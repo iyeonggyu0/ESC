@@ -1,4 +1,6 @@
 import { useMedia } from "../../../hooks/useMedia";
+import { ThemeContext } from "../../../App";
+import { useContext } from "react";
 
 // library
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +11,7 @@ import { Footer, Title, FooterDiv, IconDiv, MobileFooter } from "./style";
 
 const LayOutFooter = () => {
   const media = useMedia();
-  const colorTheme = localStorage.getItem("theme");
+  const colorTheme = useContext(ThemeContext).colorTheme;
 
   return (
     <>

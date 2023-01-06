@@ -1,8 +1,10 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../../../App";
 import { ProductDiv } from "./style";
 
 const MainPageProduct = () => {
-  const colorTheme = localStorage.getItem("theme");
+  const colorTheme = useContext(ThemeContext).colorTheme;
   const navigate = useNavigate();
   return (
     <ProductDiv colorTheme={colorTheme}>

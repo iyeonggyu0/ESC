@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const LayOutHeader = () => {
   const media = useMedia();
-  const colorTheme = localStorage.getItem("theme");
+  const colorTheme = useContext(ThemeContext).colorTheme;
   const toggleTheme = useContext(ThemeContext);
 
   const [menu, setMenu] = useState("none");
