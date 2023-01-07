@@ -221,3 +221,11 @@ Img
 ###### Jan 7, 2023
 
 - font 회원가입 로직 작성
+
+<br>
+
+### frontEnd_SingupLogic2
+
+###### Jan 8, 2023
+
+- font 회원가입 페이지 디자인 및 css작성

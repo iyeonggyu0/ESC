@@ -7,12 +7,20 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      name: {
+      userName: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+      },
+      nickName: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
       password: {
         type: DataTypes.STRING(100),
+        allowNull: false,
+      },
+      hpNumber: {
+        type: DataTypes.INT(13),
         allowNull: false,
       },
       profileImg: {
@@ -24,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(6),
         allowNull: true,
         defaultValue: "user",
+      },
+      snsFlag: {
+        type: DataTypes.STRING(3),
+        allowNull: true,
+        defaultValue: "0",
       },
     },
     {

@@ -141,6 +141,8 @@ router.post("/", async (req, res, next) => {
       name: req.body.name,
       password: hashedPassword,
       profileImg: req.body.profileImg,
+      hpNumber: req.body.hpNumber,
+      snsFlag: req.body.snsFlag,
     });
     res.status(201).send("회원가입 완료\n" + singupUser);
   } catch (err) {
