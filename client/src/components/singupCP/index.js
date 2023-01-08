@@ -29,7 +29,7 @@ const SignMain = () => {
   const [error, setError] = useState(null);
 
   // check state
-  const [snsFlag, setSNS] = useState(0);
+  const [snsFlag, setSNS] = useState(false);
   // const [acceptFlag, setAccept] = useState(0);
   // const [promtFlag, setPromt] = useState(0);
 
@@ -90,89 +90,104 @@ const SignMain = () => {
       };
       dispatch(signUser({ data: data, navigate: navigate }));
     },
-    [pw, email, userName, nick, pw, hp, snsFlag, dispatch],
+    // eslint-disable-next-line
+    [pw, email, userName, nick, hp, snsFlag, dispatch],
   );
 
   //html
 
   return (
-    <SignMainStyle colorTheme={colorTheme} media={media}>
+    <SignMainStyle colorTheme={colorTheme} media={media} errorz={error}>
       <div>
-        <p>SING UP</p>
-        <input
-          type="text"
-          placeholder="EMAIL"
-          autoComplete="off"
-          vale={email}
-          onChange={onChangeEmail}
-        />
-
-        <input
-          type="text"
-          placeholder="NAME"
-          maxLength={4}
-          autoComplete="off"
-          value={userName}
-          onChange={onChangeUserName}
-        />
-
-        <input
-          type="text"
-          placeholder="NICKNAME"
-          maxLength={6}
-          autoComplete="off"
-          value={nick}
-          onChange={onChangeNick}
-        />
-
-        <input
-          type="password"
-          placeholder="PW"
-          // 대문자, 소문자, 특수문자 포함 8자리 이상
-          maxLength={16}
-          autoComplete="off"
-          value={pw}
-          onChange={onChnagePw}
-        />
-
-        <input
-          type="password"
-          placeholder="PW 확인"
-          maxLength={16}
-          autoComplete="off"
-          value={confirm}
-          onChange={onChnageConfirm}
-        />
-        {error && <span>비밀번호 확인이 일치하지 않습니다</span>}
-
-        <input
-          type="text"
-          placeholder="번호"
-          maxLength={13}
-          autoComplete="off"
-          value={hp
-            .replace(/[^0-9]/g, '')
-            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
-            .replace(/\-{1,2}$/g, '')}
-          onChange={onChnageHp}
-        />
-
-        <div type="reverse" size="full" height="2rem" margin="0.5rem 0" fontSize="0.825rem">
-          <button disabled>인증하기</button>
+        <p>SIGN UP</p>
+        <div>
+          <input
+            type="text"
+            placeholder="EMAIL"
+            autoComplete="off"
+            vale={email}
+            onChange={onChangeEmail}
+          />
         </div>
         <div>
-          <span>SNS 수신</span>
-          <input type={'checkbox'} />
+          <input
+            type="text"
+            placeholder="NAME"
+            maxLength={4}
+            autoComplete="off"
+            value={userName}
+            onChange={onChangeUserName}
+          />
         </div>
-        <div
-          type="normal"
-          size="full"
-          height="2rem"
-          margin="0.5rem 0"
-          fontSize="0.825rem"
-          onClick={onSignHandler}
-          disabled={error}
-        >
+        <div>
+          <input
+            type="text"
+            placeholder="NICKNAME"
+            maxLength={6}
+            autoComplete="off"
+            value={nick}
+            onChange={onChangeNick}
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            placeholder="PW"
+            // 대문자, 소문자, 특수문자 포함 8자리 이상
+            maxLength={16}
+            autoComplete="off"
+            value={pw}
+            onChange={onChnagePw}
+            style={{ marginBottom: '-30px' }}
+          />
+        </div>
+        <div style={{ marginBottom: 'calc(50px - 0.8rem)' }}>
+          <input
+            type="password"
+            placeholder="PW 확인"
+            maxLength={16}
+            autoComplete="off"
+            value={confirm}
+            onChange={onChnageConfirm}
+          />
+          <p
+            style={{
+              textAlign: 'end',
+              fontFamily: 'Gothic A1',
+              paddingTop: '0.5rem',
+              fontSize: '0.8rem',
+            }}
+          >
+            일치하지 않습니다
+          </p>
+        </div>
+        {/* 번호인증 */}
+        <div>
+          <input
+            className="hpnum"
+            type="text"
+            placeholder="PHONE NUMBER"
+            maxLength={13}
+            autoComplete="off"
+            value={hp
+              .replace(/[^0-9]/g, '')
+              .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+              .replace(/\-{1,2}$/g, '')}
+            onChange={onChnageHp}
+          />
+        </div>
+        <div>
+          <input
+            id="checkbox1"
+            type={'checkbox'}
+            name={'snsFlag'}
+            onClick={() => (snsFlag === false ? setSNS(true) : setSNS(false))}
+          />
+          <label for="checkbox1" className="label">
+            SNS 수신
+          </label>
+        </div>
+        <div onClick={onSignHandler} disabled={error}>
           회원가입
         </div>
       </div>

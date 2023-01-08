@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       hpNumber: {
-        type: DataTypes.INT(13),
+        type: DataTypes.STRING(14),
         allowNull: false,
       },
       profileImg: {
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       snsFlag: {
         type: DataTypes.STRING(3),
         allowNull: true,
-        defaultValue: "0",
+        defaultValue: false,
       },
     },
     {

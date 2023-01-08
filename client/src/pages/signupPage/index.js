@@ -3,10 +3,10 @@ import SignMain from '../../components/singupCP';
 import Layout from '../../layout/mainLayOut';
 
 const SignupPage = () => {
-    return (
-        <Layout>
-            <SignMain />
-        </Layout>
-    );
+  return (
+    <Layout>
+      <SignMain />
+    </Layout>
+  );
 };
 export default SignupPage;

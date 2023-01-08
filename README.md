@@ -229,3 +229,11 @@ Img
 ###### Jan 8, 2023
 
 - font 회원가입 페이지 디자인 및 css작성
+
+<br>
+
+### frontEnd_SingupLogic3
+
+###### Jan 8, 2023
+
+- font - back 연결
