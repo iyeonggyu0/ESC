@@ -2,9 +2,11 @@ const express = require("express");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const router = express.Router();
+const { decryptFun } = require("../util/crypto");
 
 const { User, Post } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
+const { request } = require("express");
 
 router.get("/", isLoggedIn, async (req, res, next) => {
   try {
@@ -153,7 +155,8 @@ router.post("/", async (req, res, next) => {
     if (emailCheck) {
       return res.status(403).send("이미 사용 중인 이메일 입니다.");
     }
-    const hashedPassword = await bcrypt.hash(req.body.password, 11);
+    const decryptFunPassword = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);
+    const hashedPassword = await bcrypt.hash(decryptFunPassword, 11);
     const singupUser = await User.create({
       email: req.body.email,
       userName: req.body.name,
@@ -163,6 +166,7 @@ router.post("/", async (req, res, next) => {
       snsFlag: req.body.snsFlag,
       authority: req.body.authority,
     });
+    res.json({ message: `decryptFunPassword: ${decryptFunPassword}, hashedPassword: ${hashedPassword}` });
     res.status(201).send("회원가입 완료\n" + singupUser);
   } catch (err) {
     console.error(err);

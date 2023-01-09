@@ -2,6 +2,7 @@ const passport = require("passport");
 const { Strategy: LocalStrategy } = require("passport-local");
 const bcrypt = require("bcrypt");
 const { User } = require("../models");
+const { decryptFun } = require("../util/crypto");
 
 module.exports = () => {
   passport.use(
@@ -18,8 +19,10 @@ module.exports = () => {
           if (!user) {
             return done(null, false, { reason: "존재하지 않는 사용자입니다." });
           }
-
-          const result = await bcrypt.compare(password, user.password);
+          const decryptFunPassword = await decryptFun(password, process.env.REACT_APP_USER_KEY);
+          const hashingPassword = await bcrypt.hash(decryptFunPassword, 11);
+          console.log("decryptFunPassword:", decryptFunPassword, "hashingPassword:", hashingPassword);
+          const result = await bcrypt.compare(decryptFunPassword, user.password);
           if (result) {
             return done(null, user);
           }

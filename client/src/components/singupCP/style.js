@@ -12,7 +12,7 @@ export const SignMainStyle = styled.div`
   & > div > p {
     font-family: Ubuntu;
     font-size: 2rem;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
   }
 

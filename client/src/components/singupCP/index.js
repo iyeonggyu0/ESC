@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useRef, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signUser } from '@reducer/userReducer';
+
 // import AgreeCheckBox from '../agreeCheckBox';
 import { useInput } from '@hooks/useInput';
 import { encrypt } from '@util/crypto';

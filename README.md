@@ -216,7 +216,7 @@ Img
 
 <br>
 
-### frontEnd_SingupLogic
+### SingupLogic
 
 ###### Jan 7, 2023
 
@@ -224,7 +224,7 @@ Img
 
 <br>
 
-### frontEnd_SingupLogic2
+### SingupLogic2
 
 ###### Jan 8, 2023
 
@@ -232,8 +232,18 @@ Img
 
 <br>
 
-### frontEnd_SingupLogic3
+### SingupLogic3
 
 ###### Jan 8, 2023
 
-- font - back 연결
+- 회원가입 font - back 연결
+
+<br>
+
+### LoginLogic
+
+###### Jan 9, 2023
+
+- 로그인 front 작성
+- 로그인 로직 작성
+- 로그인 기능의 보안 강화

@@ -22,13 +22,24 @@ import UserService from '@services/userService';
 
 function* login(action) {
   try {
-    const userInfo = yield call(UserService.prototype.login, action.payload);
-    yield delay(500);
+    const userInfo = yield call(UserService.prototype.login, action.payload.data);
     yield TokenService.prototype.set(userInfo.token);
     yield put(loginUserSuccess(userInfo.info));
     yield action.payload.navigate('/');
   } catch (err) {
     yield put(loginUserFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
+function* userSign(action) {
+  try {
+    yield call(UserService.prototype.sign, action.payload.data);
+    yield put(signUserSuccess());
+    if (!alert('회원가입이 완료 되었습니다')) {
+      yield action.payload.navigate('/login');
+    }
+  } catch (err) {
+    yield put(signUserFailure(new Error('UNKNODW ERROR')));
   }
 }
 
@@ -68,18 +79,6 @@ function* logOut(action) {
 //     yield put(signUserFailure(new Error('UNKNODW ERROR')));
 //   }
 // }
-
-function* userSign(action) {
-  try {
-    yield call(UserService.prototype.sign, action.payload.data);
-    yield put(signUserSuccess());
-    if (!alert('회원가입이 완료 되었습니다')) {
-      yield action.payload.navigate('/login');
-    }
-  } catch (err) {
-    yield put(signUserFailure(new Error('UNKNODW ERROR')));
-  }
-}
 
 function* infUpdate(action) {
   try {

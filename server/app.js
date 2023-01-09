@@ -8,7 +8,6 @@ const dotenv = require("dotenv");
 const PORT = 5000;
 
 // const postRouter = require("./routes/post");
-const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
 const db = require("./models");
 const passportConfig = require("./passport");
@@ -18,7 +17,7 @@ const app = express();
 db.sequelize
   .sync()
   .then(() => {
-    console.log("DB 연결 성공!");
+    console.log("#################\n## DB 연결성공 ##\n#################");
   })
   .catch(console.error);
 passportConfig();
