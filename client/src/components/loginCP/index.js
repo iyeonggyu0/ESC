@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '@reducer/userReducer';
 import { useNavigate } from 'react-router-dom';
@@ -62,9 +62,9 @@ const LoginMain = () => {
 
         <div onClick={onLoginHandler}>로그인</div>
         <div>
-          <span>아이디 찾기</span>
+          <span onClick={() => navigate('/find-password')}>비밀번호 찾기</span>
           <div></div>
-          <span>비밀번호 찾기</span>
+          <span onClick={() => navigate('/signup')}>회원가입</span>
         </div>
       </div>
     </LoginMainStyle>

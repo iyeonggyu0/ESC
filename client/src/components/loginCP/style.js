@@ -93,6 +93,10 @@ export const LoginMainStyle = styled.div`
 
   & > div > div:last-child span {
     cursor: pointer;
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.black
+        : ({ theme }) => theme.palette.basicFont};
   }
 
   & > div > div:last-child > div {

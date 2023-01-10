@@ -44,7 +44,7 @@ const LayOutHeader = () => {
           <Header colorTheme={colorTheme} media={media}>
             {/* 메뉴 */}
             <HeaderSection>
-              <Logo className={`${colorTheme}`}></Logo>
+              <Logo className={`${colorTheme}`} onClick={() => Navigate('/')}></Logo>
               <Ul>
                 <li onClick={() => Navigate('/estimate')}>견적내기</li>
                 <li onClick={() => Navigate('/product')}>전체상품</li>
@@ -118,9 +118,9 @@ const LayOutHeader = () => {
         <div>
           <Header colorTheme={colorTheme} media={media}>
             <HeaderSection colorTheme={colorTheme}>
-              <Logo className={`${colorTheme}`}></Logo>
+              <Logo className={`${colorTheme}`} onClick={() => Navigate('/')}></Logo>
               <MobileHeader>
-                <span>LOGIN</span>
+                <span onClick={() => Navigate('/login')}>LOGIN</span>
                 {/* <span>MYPAGE</span> */}
                 <div>
                   {menu === 'none' && (

@@ -14,11 +14,27 @@ import {
   infoUpdate,
   infoUpdateFailure,
   infoUpdateSuccess,
+  passwordUpdate,
+  passwordUpdateSuccess,
+  passwordUpdateFailure,
+  sendEmail,
+  sendEmailSuccess,
+  sendEmailFailure,
 } from '@reducer/userReducer';
 import TokenService from '@services/toeknService';
 import UserService from '@services/userService';
 
 // functtion
+
+function* sendEmailSaga(action) {
+  try {
+    yield call(UserService.prototype.sendEmail, action.payload.data);
+    yield put(sendEmailSuccess());
+    alert('이메일로 코드가 발송되었습니다.');
+  } catch (err) {
+    yield put(sendEmailFailure(new Error('UNKNODW ERROR')));
+  }
+}
 
 function* login(action) {
   try {
@@ -91,6 +107,18 @@ function* infUpdate(action) {
   }
 }
 
+function* passwordUpdateSaga(action) {
+  try {
+    yield call(UserService.prototype.pwUpdate, action.payload);
+    yield put(passwordUpdateSuccess());
+    if (!alert('비밀번호 변경이 완료 되었습니다')) {
+      yield action.payload.navigate('/login');
+    }
+  } catch (err) {
+    yield put(passwordUpdateFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
 // listner
 
 function* watchLogIn() {
@@ -113,6 +141,16 @@ function* watchInfoUpdate() {
   yield takeLatest(infoUpdate.type, infUpdate);
 }
 
+function* watchSendEmail() {
+  yield takeLatest(sendEmail.type, sendEmailSaga);
+}
+
+function* watchPasswordUpdate() {
+  yield takeLatest(passwordUpdate.type, passwordUpdateSaga);
+}
+
+// sendEmail
+
 // root
 
 export default function* userSaga() {
@@ -122,5 +160,7 @@ export default function* userSaga() {
     fork(watchUserSign),
     fork(watchLeLogin),
     fork(watchInfoUpdate),
+    fork(watchSendEmail),
+    fork(watchPasswordUpdate),
   ]);
 }

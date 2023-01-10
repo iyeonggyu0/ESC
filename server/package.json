@@ -21,6 +21,7 @@
     "g": "^2.0.1",
     "mongoose": "^6.8.2",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",

@@ -1,18 +1,29 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Header = styled.header`
   width: 100vw;
   height: 70px;
-  background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameBg : ({ theme }) => theme.palette.basicBg)};
+  background-color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameBg
+      : ({ theme }) => theme.palette.basicBg};
   position: fixed;
   z-index: 100;
 
-  /* border-bottom: 1px solid ${(props) => (props.media.isPc === false && props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : props.media.isPc === false && props.colorTheme === "basic" ? ({ theme }) => theme.palette.basicStroke : false)}; */
+  /* border-bottom: 1px solid ${(props) =>
+    props.media.isPc === false && props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameLightStroke
+      : props.media.isPc === false && props.colorTheme === 'basic'
+      ? ({ theme }) => theme.palette.basicStroke
+      : false}; */
 
   /* Font */
   font-size: ${({ theme }) => theme.fontSize.mediumLarge};
-  font-family: "Ubuntu", sans-serif;
-  color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicFont)};
+  font-family: 'Ubuntu', sans-serif;
+  color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameFont
+      : ({ theme }) => theme.palette.basicFont};
 `;
 
 export const HeaderSection = styled.section`
@@ -33,6 +44,7 @@ export const HeaderSection = styled.section`
 `;
 
 export const Logo = styled.div`
+  cursor: pointer;
   width: 80px;
   height: 25px;
   background-repeat: no-repeat;
@@ -42,7 +54,7 @@ export const Logo = styled.div`
 
 export const Ul = styled.ul`
   margin-left: 50px;
-  font-family: "Gothic A1", sans-serif;
+  font-family: 'Gothic A1', sans-serif;
   font-weight: 500;
   li {
     float: left;
@@ -91,13 +103,19 @@ export const HeaderMenu = styled.div`
   width: 100%;
   height: 230px;
   padding-top: 70px;
-  background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameBg : ({ theme }) => theme.palette.basicBg)};
+  background-color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameBg
+      : ({ theme }) => theme.palette.basicBg};
   z-index: 99;
 
   /* Font */
-  color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicFont)};
+  color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameFont
+      : ({ theme }) => theme.palette.basicFont};
   font-size: ${({ theme }) => theme.fontSize.mediumLarge};
-  font-family: "Gothic A1", sans-serif;
+  font-family: 'Gothic A1', sans-serif;
   font-weight: 300;
 `;
 
@@ -108,7 +126,11 @@ export const MenuUl = styled.ul`
 export const MenuDiv = styled.div`
   width: 75vw;
   margin: 0 auto;
-  border-top: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameStroke : ({ theme }) => theme.palette.basicStroke)};
+  border-top: 1px solid
+    ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameStroke
+        : ({ theme }) => theme.palette.basicStroke};
   padding-top: 25px;
   position: relative;
   display: flex;
@@ -145,12 +167,18 @@ export const MenuDiv = styled.div`
   li {
     margin-bottom: 25px;
     cursor: pointer;
-    color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightFont : ({ theme }) => theme.palette.basicSubFont)};
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameLightFont
+        : ({ theme }) => theme.palette.basicSubFont};
     transition: all 0.3s;
   }
 
   li:hover {
-    color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicFont)};
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameFont
+        : ({ theme }) => theme.palette.basicFont};
   }
 `;
 
@@ -199,21 +227,42 @@ export const MobileMenu = styled.div`
   position: fixed;
   padding-top: 71px;
 
-  border-left: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicStroke)};
-  background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameStroke : ({ theme }) => theme.palette.basicBg)};
+  border-left: 1px solid
+    ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameLightStroke
+        : ({ theme }) => theme.palette.basicStroke};
+  background-color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameStroke
+      : ({ theme }) => theme.palette.basicBg};
 
-  font-family: "Gothic A1", sans-serif;
-  color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicFont)};
+  font-family: 'Gothic A1', sans-serif;
+  color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameFont
+      : ({ theme }) => theme.palette.basicFont};
 
   ${MobileMenuDiv} {
-    border-bottom: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicStroke)};
+    border-bottom: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.gameLightStroke
+          : ({ theme }) => theme.palette.basicStroke};
   }
 
   & > ${MobileMenuDiv} > div {
-    border-top: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightFont : ({ theme }) => theme.palette.basicLightStroke)};
+    border-top: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.gameLightFont
+          : ({ theme }) => theme.palette.basicLightStroke};
     margin-top: 15px;
     padding-top: 15px;
-    color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightFont : ({ theme }) => theme.palette.basicSubFont)};
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameLightFont
+        : ({ theme }) => theme.palette.basicSubFont};
     line-height: 160%;
   }
 

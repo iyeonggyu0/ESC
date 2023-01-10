@@ -14,6 +14,7 @@ import LoginPage from './pages/loginPage';
 import SignupPage from './pages/signupPage';
 // import { useSelector } from 'react-redux';
 import NotFountPage from '@common/error/404';
+import FindPasswordPage from './pages/findPasswordPage/certifiedPage.js';
 
 export const ThemeContext = createContext(null);
 
@@ -61,6 +62,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/find-password" element={<FindPasswordPage />} />
+
           {/* <Route element={<PrivateRoute auth={userInfo} />}> */}
           <Route path="/" element={<MainPage />} />
           {/* </Route> */}

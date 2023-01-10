@@ -5,7 +5,6 @@ import { useInput } from '@hooks/useInput';
 
 export default class UserService {
   login(data) {
-    console.log(data.password);
     const userData = {
       email: data.email,
       password: data.password,
@@ -21,6 +20,7 @@ export default class UserService {
       .catch((err) => {
         console.log(err);
         err.response.status === 403 ? alert('이미 로그인되어있습니다.') : '';
+        err.response.status === 402 ? alert('이미 사용 중인 이메일 입니다.') : '';
       });
   }
 
@@ -44,12 +44,12 @@ export default class UserService {
         hpNumber: data.hpNumber,
         snsFlag: data.snsFlag,
       })
-      .then((res) => {
+      .then(() => {
         console.log('회원가입 성공');
-        console.log(res.bo);
       })
       .catch((err) => {
         console.log(err);
+        alert(err.response.data);
       });
   }
 
@@ -57,5 +57,33 @@ export default class UserService {
     console.log(req);
     const response = userUpdateInfo;
     return response;
+  }
+
+  pwUpdate(data) {
+    axios
+      .put(`${axiosInstance}user/put`, {
+        email: data.email,
+        password: data.password,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  sendEmail(data) {
+    axios
+      .post(`${axiosInstance}user/sendEmail`, {
+        email: data.email,
+        auth: data.auth,
+      })
+      .then(() => {
+        console.log('인증코드 발송');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
