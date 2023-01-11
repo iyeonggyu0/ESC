@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 export const userReducer = createSlice({
   name: 'user',
   initialState: {
-    userInfo: null,
+    userInfo: {
+      login: false,
+      userInfo: null,
+    },
     isLoading: false,
     isDone: false,
     error: null,
@@ -23,24 +26,29 @@ export const userReducer = createSlice({
     loginUserFailure: (state, action) => {
       state.isLoading = false;
       state.isDone = true;
-      state.error = action.error;
+      state.error = {
+        login: false,
+        userInfo: action.error,
+      };
     },
 
-    // reLogin
-    reLoginUser: (state) => {
+    getUserData: (state) => {
       state.isLoading = true;
       state.isDone = false;
       state.error = null;
     },
-    reLoginUserSuccess: (state, action) => {
+    getUserDataSuccess: (state, action) => {
       state.isLoading = false;
       state.isDone = true;
       state.userInfo = action.payload;
     },
-    reLoginUserFailure: (state, action) => {
+    getUserDataFailure: (state, action) => {
       state.isLoading = false;
       state.isDone = true;
-      state.error = action.error;
+      state.error = {
+        login: false,
+        userInfo: action.error,
+      };
     },
 
     // logout
@@ -125,9 +133,9 @@ export const {
   loginUser,
   loginUserSuccess,
   loginUserFailure,
-  reLoginUser,
-  reLoginUserSuccess,
-  reLoginUserFailure,
+  getUserData,
+  getUserDataSuccess,
+  getUserDataFailure,
   logOutUser,
   logOutUserSuccess,
   logOutUserFailure,

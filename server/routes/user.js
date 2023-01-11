@@ -2,14 +2,13 @@ const express = require("express");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const router = express.Router();
-const { decryptFun } = require("../util/crypto");
+const { decryptFun, encryptFun } = require("../util/crypto");
 const { sendEmail } = require("../mailer/mail");
 
 const { User, Post } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
-const { request } = require("express");
 
-router.get("/", isLoggedIn, async (req, res, next) => {
+router.get("/loginCheck", isLoggedIn, async (req, res, next) => {
   try {
     if (req.user) {
       const user = await User.findOne({
@@ -23,6 +22,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
         //   },
         // ],
       });
+      // const userData = encryptFun(user, process.env.REACT_APP_USER_KEY);
       res.status(200).json(user);
     } else {
       res.status(200).json(null);
@@ -112,38 +112,36 @@ router.delete("/delete/:email", isLoggedIn, async (req, res) => {
   }
 });
 
-router.put("/put", isLoggedIn, async (req, res, next) => {
-  // const { dataName } = req.params; /:dataName
+router.put("/put/pw", async (req, res, next) => {
+  try {
+    const decryptFunPassword = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);
+    const hashedPassword = await bcrypt.hash(decryptFunPassword, 11);
+    const putData = await User.update(
+      {
+        password: hashedPassword,
+      },
+      { where: { email: req.body.email } }
+    );
+    res.status(201).send("pw 수정 완료 / 수정된 프로필:" + putData);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
-  if (req.body.password) {
-    try {
-      const decryptFunPassword = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);
-      const hashedPassword = await bcrypt.hash(decryptFunPassword, 11);
-      const putData = await User.update(
-        {
-          password: hashedPassword,
-        },
-        { where: { email: req.body.email } }
-      );
-      res.status(201).send("pw 수정 완료 / 수정된 프로필:" + putData);
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  } else if (!req.body.password) {
-    try {
-      const putData = await User.update(
-        {
-          name: req.body.name,
-          profileImg: req.body.profileImg,
-        },
-        { where: { email: req.body.email } }
-      );
-      res.status(201).send("수정 완료 / 수정된 프로필:" + putData);
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
+router.put("/put", isLoggedIn, async (req, res, next) => {
+  try {
+    const putData = await User.update(
+      {
+        name: req.body.name,
+        profileImg: req.body.profileImg,
+      },
+      { where: { email: req.body.email } }
+    );
+    res.status(201).send("수정 완료 / 수정된 프로필:" + putData);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 });
 
@@ -174,12 +172,40 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.post("/sendEmail", isNotLoggedIn, async (req, res) => {
-  const bcryptAuthCode = await decryptFun(req.body.auth, process.env.REACT_APP_USER_KEY);
-  sendEmail(req.body.email, bcryptAuthCode);
-  return res.status(200).json({
-    success: true,
-  });
+router.post("/sendEmail", isNotLoggedIn, async (req, res, next) => {
+  try {
+    const emailCheck = await User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+    const bcryptAuthCode = await decryptFun(req.body.auth, process.env.REACT_APP_USER_KEY);
+
+    if (emailCheck) {
+      if (req.body.check) {
+        return res.status(402).send("이미 사용 중인 이메일 입니다.");
+      }
+      if (!req.body.check) {
+        sendEmail(req.body.email, bcryptAuthCode);
+        return res.status(200).json({
+          success: true,
+        });
+      }
+    } else {
+      if (!req.body.check) {
+        return res.status(403).send("가입되지 않은 이메일입니다.");
+      }
+      if (req.body.check) {
+        sendEmail(req.body.email, bcryptAuthCode);
+        return res.status(200).json({
+          success: true,
+        });
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 module.exports = router;

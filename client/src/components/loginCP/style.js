@@ -58,8 +58,12 @@ export const LoginMainStyle = styled.div`
         ? ({ theme }) => theme.palette.white
         : ({ theme }) => theme.palette.basicBg};
     background-color: ${(props) =>
-      props.colorTheme === 'game'
-        ? ({ theme }) => theme.palette.gameBg
+      props.colorTheme === 'game' && props.errorz === true
+        ? ({ theme }) => theme.palette.gameLightStroke
+        : props.colorTheme === 'basic' && props.errorz === true
+        ? ({ theme }) => theme.palette.basicLightStroke
+        : props.colorTheme === 'game' && props.errorz === false
+        ? ({ theme }) => theme.palette.black
         : ({ theme }) => theme.palette.basicStroke};
     border: 1px solid
       ${(props) =>

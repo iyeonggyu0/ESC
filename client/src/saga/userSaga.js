@@ -8,9 +8,9 @@ import {
   signUser,
   signUserFailure,
   signUserSuccess,
-  reLoginUser,
-  reLoginUserFailure,
-  reLoginUserSuccess,
+  getUserData,
+  getUserDataSuccess,
+  getUserDataFailure,
   infoUpdate,
   infoUpdateFailure,
   infoUpdateSuccess,
@@ -28,9 +28,8 @@ import UserService from '@services/userService';
 
 function* sendEmailSaga(action) {
   try {
-    yield call(UserService.prototype.sendEmail, action.payload.data);
+    yield call(UserService.prototype.sendEmail, action.payload);
     yield put(sendEmailSuccess());
-    alert('이메일로 코드가 발송되었습니다.');
   } catch (err) {
     yield put(sendEmailFailure(new Error('UNKNODW ERROR')));
   }
@@ -38,10 +37,8 @@ function* sendEmailSaga(action) {
 
 function* login(action) {
   try {
-    const userInfo = yield call(UserService.prototype.login, action.payload.data);
-    yield TokenService.prototype.set(userInfo.token);
-    yield put(loginUserSuccess(userInfo.info));
-    yield action.payload.navigate('/');
+    const userInfo = yield call(UserService.prototype.login, action.payload);
+    yield put(loginUserSuccess(userInfo));
   } catch (err) {
     yield put(loginUserFailure(new Error('UNKNODW ERROR')));
   }
@@ -49,23 +46,11 @@ function* login(action) {
 
 function* userSign(action) {
   try {
-    yield call(UserService.prototype.sign, action.payload.data);
+    yield call(UserService.prototype.sign, action.payload);
     yield put(signUserSuccess());
-    if (!alert('회원가입이 완료 되었습니다')) {
-      yield action.payload.navigate('/login');
-    }
+    yield action.payload.navigate('/login');
   } catch (err) {
     yield put(signUserFailure(new Error('UNKNODW ERROR')));
-  }
-}
-
-function* reLogin(action) {
-  try {
-    const userInfo = yield call(UserService.prototype.relogin, action.payload);
-    yield delay(500);
-    yield put(reLoginUserSuccess(userInfo.info));
-  } catch (err) {
-    yield put(reLoginUserFailure(new Error('UNKNODW ERROR')));
   }
 }
 
@@ -79,6 +64,15 @@ function* logOut(action) {
     console.log(err);
   } finally {
     TokenService.prototype.delete();
+  }
+}
+
+function* getUser(action) {
+  try {
+    const userInfo = yield call(UserService.prototype.getUser, action.payload);
+    yield put(getUserDataSuccess(userInfo));
+  } catch (err) {
+    yield put(getUserDataFailure(new Error('UNKNODW ERROR')));
   }
 }
 
@@ -112,7 +106,7 @@ function* passwordUpdateSaga(action) {
     yield call(UserService.prototype.pwUpdate, action.payload);
     yield put(passwordUpdateSuccess());
     if (!alert('비밀번호 변경이 완료 되었습니다')) {
-      yield action.payload.navigate('/login');
+      yield;
     }
   } catch (err) {
     yield put(passwordUpdateFailure(new Error('UNKNODW ERROR')));
@@ -125,8 +119,8 @@ function* watchLogIn() {
   yield takeLatest(loginUser.type, login);
 }
 
-function* watchLeLogin() {
-  yield takeLatest(reLoginUser.type, reLogin);
+function* watchGetUserData() {
+  yield takeLatest(getUserData.type, getUser);
 }
 
 function* watchLogOut() {
@@ -158,7 +152,7 @@ export default function* userSaga() {
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchUserSign),
-    fork(watchLeLogin),
+    fork(watchGetUserData),
     fork(watchInfoUpdate),
     fork(watchSendEmail),
     fork(watchPasswordUpdate),

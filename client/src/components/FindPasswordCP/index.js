@@ -6,6 +6,7 @@ import { ThemeContext } from '../../App';
 import { useMedia } from '../../hooks/useMedia';
 import { passwordUpdate } from '@reducer/userReducer';
 import { encrypt } from '@util/crypto';
+import { sendEmail } from '@reducer/userReducer';
 
 import { FindPasswordMainStyle } from './style';
 
@@ -22,7 +23,9 @@ const FindPasswordMain = () => {
   const [pw, setPw] = useState('');
   const [confirm, setConfirm] = useState('');
 
-  //사용자 코드입력값 비교 결과 ( 0: 기본 / 1: 불일치 / 2: 일치 )
+  //사용자 코드입력값 비교 결과 ( 0: 발송 전 / 1: 후  )
+  const [mailSend, setMailSend] = useState(0);
+
   const [error, setError] = useState(null);
   const authCode = useRef(null);
 
@@ -30,15 +33,12 @@ const FindPasswordMain = () => {
     if (pw.length > 0 && confirm.length > 0 && userAuthCode.length > 0) {
       if (confirm === pw && userAuthCode === authCode.current) {
         setError(false);
-        console.log(1);
         return;
       } else {
         setError(true);
-        console.log(2);
       }
     } else {
       setError(true);
-      console.log(3);
     }
   }, [confirm, pw, userAuthCode]);
 
@@ -61,12 +61,12 @@ const FindPasswordMain = () => {
       }
 
       authCode.current = Math.random().toString(36).substr(2, 6);
-      console.log('작동');
       const data = {
         email: email,
         auth: encrypt(authCode.current, process.env.REACT_APP_USER_KEY),
+        check: false,
       };
-      dispatch(sendEmail({ data: data }));
+      dispatch(sendEmail({ data: data, setMailSend }));
     },
     // eslint-disable-next-line
     [email, dispatch],
@@ -110,7 +110,7 @@ const FindPasswordMain = () => {
             autoComplete="off"
             vale={email}
             onChange={onChangeEmail}
-            style={{ width: '60%' }}
+            style={{ width: '60%', pointerEvents: mailSend === 0 ? 'all' : 'none' }}
           />
           <div onClick={onSendEmailHandler}>발송</div>
         </div>

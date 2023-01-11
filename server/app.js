@@ -4,6 +4,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const dotenv = require("dotenv");
+const mySqlStore = require("express-mysql-session")(session);
 // const PORT = process.env.PORT || 3000;
 const PORT = 5000;
 
@@ -31,7 +32,14 @@ app.use(
     credentials: true,
   })
 );
-
+// const session_DB_options = {
+//   host: "localhost",
+//   user: "root",
+//   port: 5000,
+//   password: process.env.DB_PASSWORD,
+//   database: "esckey",
+// };
+// const sessionStore = new mySqlStore(session_DB_options);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -40,6 +48,10 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    // store: sessionStore,
+    cookie: {
+      maxAge: 500000,
+    },
   })
 );
 app.use(passport.initialize());

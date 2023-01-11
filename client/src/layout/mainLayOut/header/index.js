@@ -25,6 +25,7 @@ const LayOutHeader = () => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const toggleTheme = useContext(ThemeContext);
+  const userLoginData = useContext(ThemeContext).userInfo;
 
   const [menu, setMenu] = useState('none');
   const [mobileMenu1, setMobileMenu1] = useState('none');
@@ -56,7 +57,8 @@ const LayOutHeader = () => {
                   {colorTheme === 'game' && <span>BASIC</span>}
                   {colorTheme === 'basic' && <span>GAME</span>}
                 </div>
-                <span onClick={() => Navigate('/login')}>LOGIN</span>
+                {!userLoginData.login && <span onClick={() => Navigate('/login')}>LOGIN</span>}
+                {userLoginData.login && <span onClick={() => Navigate('/')}>MYPAGE</span>}
                 <div>
                   {menu === 'none' && (
                     <FontAwesomeIcon
@@ -102,10 +104,13 @@ const LayOutHeader = () => {
                 </div>
                 <div>
                   <MenuUl>
-                    <li onClick={() => Navigate('/signup')}>회원가입</li>
-                    <li onClick={() => Navigate('/')}>로그아웃</li>
-                    <li onClick={() => Navigate('/')}>장바구니</li>
-                    <li onClick={() => Navigate('/')}>결제내역</li>
+                    {!userLoginData.login && <li onClick={() => Navigate('/signup')}>회원가입</li>}
+                    {userLoginData.login && <li onClick={() => Navigate('/')}>로그아웃</li>}
+                    {userLoginData.login && <li onClick={() => Navigate('/')}>장바구니</li>}
+                    {userLoginData.login && <li onClick={() => Navigate('/')}>결제내역</li>}
+                    {userLoginData.login && userLoginData.userInfo.authority === 'admin' && (
+                      <li onClick={() => Navigate('/')}>ADMIN</li>
+                    )}
                   </MenuUl>
                 </div>
               </MenuDiv>
@@ -120,8 +125,8 @@ const LayOutHeader = () => {
             <HeaderSection colorTheme={colorTheme}>
               <Logo className={`${colorTheme}`} onClick={() => Navigate('/')}></Logo>
               <MobileHeader>
-                <span onClick={() => Navigate('/login')}>LOGIN</span>
-                {/* <span>MYPAGE</span> */}
+                {!userLoginData.login && <span onClick={() => Navigate('/login')}>LOGIN</span>}
+                {userLoginData.login && <span onClick={() => Navigate('/login')}>MYPAGE</span>}
                 <div>
                   {menu === 'none' && (
                     <FontAwesomeIcon
@@ -222,6 +227,9 @@ const LayOutHeader = () => {
                     <p>커스텀 과정</p>
                     <p>FAQ</p>
                     <p>채팅 상담</p>
+                    {userLoginData.login && userLoginData.userInfo.authority === 'admin' && (
+                      <p>ADMIN</p>
+                    )}
                   </div>
                 )}
               </MobileMenuDiv>
