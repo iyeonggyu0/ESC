@@ -21,7 +21,6 @@ import {
   sendEmailSuccess,
   sendEmailFailure,
 } from '@reducer/userReducer';
-import TokenService from '@services/toeknService';
 import UserService from '@services/userService';
 
 // functtion
@@ -56,14 +55,11 @@ function* userSign(action) {
 
 function* logOut(action) {
   try {
-    yield call(UserService.prototype.logout, 'test');
+    yield call(UserService.prototype.logout, action.payload);
     yield delay(500);
-    yield put(logOutUserSuccess(action.payload.token));
-    yield action.payload.navigate('/login');
+    yield put(logOutUserSuccess());
   } catch (err) {
     console.log(err);
-  } finally {
-    TokenService.prototype.delete();
   }
 }
 

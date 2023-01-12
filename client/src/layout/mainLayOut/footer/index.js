@@ -1,13 +1,13 @@
-import { useMedia } from "../../../hooks/useMedia";
-import { ThemeContext } from "../../../App";
-import { useContext } from "react";
+import { useMedia } from '../../../hooks/useMedia';
+import { ThemeContext } from '../../../App';
+import { useContext } from 'react';
 
 // library
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { brands } from "@fortawesome/fontawesome-svg-core/import.macro";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { brands } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 //style
-import { Footer, Title, FooterDiv, IconDiv, MobileFooter } from "./style";
+import { Footer, Title, FooterDiv, IconDiv, MobileFooter } from './style';
 
 const LayOutFooter = () => {
   const media = useMedia();
@@ -33,13 +33,17 @@ const LayOutFooter = () => {
             <IconDiv colorTheme={colorTheme}>
               <div>
                 <a href="https://github.com/iyeonggyu0" target="_blank" rel="noopener noreferrer">
-                  <FontAwesomeIcon icon={brands("github")} className={"icon"} />
+                  <FontAwesomeIcon icon={brands('github')} className={'icon'} />
                   <span>GitHub</span>
                 </a>
               </div>
               <div>
-                <a href="https://www.instagram.com/iyeonggyu1008/" target="_blank" rel="noopener noreferrer">
-                  <FontAwesomeIcon icon={brands("instagram")} className={"icon instagram"} />
+                <a
+                  href="https://www.instagram.com/iyeonggyu1008/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FontAwesomeIcon icon={brands('instagram')} className={'icon instagram'} />
                   <span>Instagram</span>
                 </a>
               </div>
@@ -65,13 +69,17 @@ const LayOutFooter = () => {
             <IconDiv colorTheme={colorTheme}>
               <div>
                 <a href="https://github.com/iyeonggyu0" target="_blank" rel="noopener noreferrer">
-                  <FontAwesomeIcon icon={brands("github")} className={"icon"} />
+                  <FontAwesomeIcon icon={brands('github')} className={'icon'} />
                   <span>GitHub</span>
                 </a>
               </div>
               <div>
-                <a href="https://www.instagram.com/iyeonggyu1008/" target="_blank" rel="noopener noreferrer">
-                  <FontAwesomeIcon icon={brands("instagram")} className={"icon instagram"} />
+                <a
+                  href="https://www.instagram.com/iyeonggyu1008/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FontAwesomeIcon icon={brands('instagram')} className={'icon instagram'} />
                   <span>Instagram</span>
                 </a>
               </div>

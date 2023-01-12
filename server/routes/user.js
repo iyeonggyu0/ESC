@@ -71,7 +71,6 @@ router.post("/logout", isLoggedIn, function (req, res, next) {
     }
     res.clearCookie("connect.sid");
     req.session.destroy();
-    res.redirect("/");
   });
 });
 

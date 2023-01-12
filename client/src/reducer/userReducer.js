@@ -60,14 +60,19 @@ export const userReducer = createSlice({
     logOutUserSuccess: (state) => {
       state.isLoading = false;
       state.isDone = true;
-      state.userInfo = null;
+      state.userInfo = {
+        login: false,
+        userInfo: null,
+      };
     },
 
     // sign
     signUser: (state) => {
       state.isLoading = true;
       state.isDone = false;
-      state.error = null;
+      state.error = {
+        userInfo: null,
+      };
     },
     signUserSuccess: (state) => {
       state.isLoading = false;

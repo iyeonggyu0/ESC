@@ -4,45 +4,47 @@ import { axiosInstance } from '../util/axios';
 axios.defaults.withCredentials = true;
 
 export default class UserService {
-  login(data) {
-    console.log(data);
+  login(req) {
     const userData = {
-      email: data.data.email,
-      password: data.data.password,
+      email: req.data.email,
+      password: req.data.password,
     };
+
     const promise = axios
       .post(`${axiosInstance}user/login`, userData, {
         withCredentials: true,
       })
       .then((res) => {
-        return res.status;
+        console.log('로그인 성공');
+        req.navigate('/');
+        return { userInfo: res.data, login: true };
       })
       .catch((err) => {
         console.log(err);
         if (err.response.status === 403) {
           if (!alert('이미 로그인되어있습니다.')) {
-            data.navigate('/login');
-            return { userInfo: err.response.data, login: true };
+            req.navigate('/');
+            return { login: true };
           }
         } else if (err.response.status === 401) {
           alert('잘못된 비밀번호');
-          return { userInfo: err.response.data, login: false };
+          return { userInfo: null, login: false };
         }
         err.response.status === 401 ? alert('잘못된 비밀번호') : '';
       });
 
-    // { userInfo: res.data, login: true }
-    // 여기서부터 계속
-    if (promise.status === 200) {
-      console.log('로그인 성공');
-    }
-
     return promise;
   }
 
-  logout(token) {
-    console.log(token);
-    console.log('로그아웃 성공');
+  logout() {
+    axios
+      .post(`${axiosInstance}user/logout`)
+      .then(() => {
+        console.log('로그아웃');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   getUser() {

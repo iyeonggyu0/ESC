@@ -2,14 +2,14 @@ require("dotenv").config();
 
 const mailer = require("nodemailer");
 
-const { Hello } = require("./hello_template");
+const { mailTemplate } = require("./mail_template");
 
 const getEmailData = (to, authCode) => {
   data = {
-    from: "BabyAngel",
+    from: "ESC KEY",
     to,
-    subject: "Hello",
-    html: Hello(authCode),
+    subject: "ESC_KEY",
+    html: mailTemplate(authCode, to),
   };
 
   return data;

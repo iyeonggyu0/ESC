@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useCallback } from 'react';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
+import { logOutUser } from '@reducer/userReducer';
 
 // library
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,9 +21,12 @@ import {
   MobileMenuDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const LayOutHeader = () => {
   const media = useMedia();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const toggleTheme = useContext(ThemeContext);
   const userLoginData = useContext(ThemeContext).userInfo;
@@ -32,11 +36,13 @@ const LayOutHeader = () => {
   const [mobileMenu2, setMobileMenu2] = useState('none');
   const [mobileMenu3, setMobileMenu3] = useState('none');
 
-  const navigate = useNavigate();
-
-  const Navigate = (link) => {
-    navigate(link);
-  };
+  const onLogoutHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(logOutUser({ navigate: navigate }));
+    },
+    [dispatch, navigate],
+  );
 
   return (
     <>
@@ -45,20 +51,20 @@ const LayOutHeader = () => {
           <Header colorTheme={colorTheme} media={media}>
             {/* 메뉴 */}
             <HeaderSection>
-              <Logo className={`${colorTheme}`} onClick={() => Navigate('/')}></Logo>
+              <Logo className={`${colorTheme}`} onClick={() => navigate('/')}></Logo>
               <Ul>
-                <li onClick={() => Navigate('/estimate')}>견적내기</li>
-                <li onClick={() => Navigate('/product')}>전체상품</li>
-                <li onClick={() => Navigate('/community')}>커뮤니티</li>
-                <li onClick={() => Navigate('/service')}>고객센터</li>
+                <li onClick={() => navigate('/estimate')}>견적내기</li>
+                <li onClick={() => navigate('/product')}>전체상품</li>
+                <li onClick={() => navigate('/community')}>커뮤니티</li>
+                <li onClick={() => navigate('/service')}>고객센터</li>
               </Ul>
               <SectionUl>
                 <div onClick={() => toggleTheme.toggleTheme()}>
                   {colorTheme === 'game' && <span>BASIC</span>}
                   {colorTheme === 'basic' && <span>GAME</span>}
                 </div>
-                {!userLoginData.login && <span onClick={() => Navigate('/login')}>LOGIN</span>}
-                {userLoginData.login && <span onClick={() => Navigate('/')}>MYPAGE</span>}
+                {!userLoginData.login && <span onClick={() => navigate('/login')}>LOGIN</span>}
+                {userLoginData.login && <span onClick={() => navigate('/')}>MYPAGE</span>}
                 <div>
                   {menu === 'none' && (
                     <FontAwesomeIcon
@@ -84,32 +90,32 @@ const LayOutHeader = () => {
               <MenuDiv colorTheme={colorTheme}>
                 <div>
                   <MenuUl>
-                    <li onClick={() => Navigate('/')}>취향찾기</li>
+                    <li onClick={() => navigate('/')}>취향찾기</li>
                   </MenuUl>
                   <MenuUl>
-                    <li onClick={() => Navigate('/')}>글쓰기</li>
+                    <li onClick={() => navigate('/')}>글쓰기</li>
                   </MenuUl>
                   <MenuUl>
-                    <li onClick={() => Navigate('/')}>CASE</li>
-                    <li onClick={() => Navigate('/')}>PCB</li>
-                    <li onClick={() => Navigate('/')}>PLATE</li>
-                    <li onClick={() => Navigate('/')}>SWITCHES</li>
-                    <li onClick={() => Navigate('/')}>KEYCAPS</li>
+                    <li onClick={() => navigate('/')}>CASE</li>
+                    <li onClick={() => navigate('/')}>PCB</li>
+                    <li onClick={() => navigate('/')}>PLATE</li>
+                    <li onClick={() => navigate('/')}>SWITCHES</li>
+                    <li onClick={() => navigate('/')}>KEYCAPS</li>
                   </MenuUl>
                   <MenuUl>
-                    <li onClick={() => Navigate('/')}>커스텀 과정</li>
-                    <li onClick={() => Navigate('/')}>FAQ</li>
-                    <li onClick={() => Navigate('/')}>채팅 상담</li>
+                    <li onClick={() => navigate('/')}>커스텀 과정</li>
+                    <li onClick={() => navigate('/')}>FAQ</li>
+                    <li onClick={() => navigate('/')}>채팅 상담</li>
                   </MenuUl>
                 </div>
                 <div>
                   <MenuUl>
-                    {!userLoginData.login && <li onClick={() => Navigate('/signup')}>회원가입</li>}
-                    {userLoginData.login && <li onClick={() => Navigate('/')}>로그아웃</li>}
-                    {userLoginData.login && <li onClick={() => Navigate('/')}>장바구니</li>}
-                    {userLoginData.login && <li onClick={() => Navigate('/')}>결제내역</li>}
+                    {!userLoginData.login && <li onClick={() => navigate('/signup')}>회원가입</li>}
+                    {userLoginData.login && <li onClick={onLogoutHandler}>로그아웃</li>}
+                    {userLoginData.login && <li onClick={() => navigate('/')}>장바구니</li>}
+                    {userLoginData.login && <li onClick={() => navigate('/')}>결제내역</li>}
                     {userLoginData.login && userLoginData.userInfo.authority === 'admin' && (
-                      <li onClick={() => Navigate('/')}>ADMIN</li>
+                      <li onClick={() => navigate('/')}>ADMIN</li>
                     )}
                   </MenuUl>
                 </div>
@@ -123,10 +129,10 @@ const LayOutHeader = () => {
         <div>
           <Header colorTheme={colorTheme} media={media}>
             <HeaderSection colorTheme={colorTheme}>
-              <Logo className={`${colorTheme}`} onClick={() => Navigate('/')}></Logo>
+              <Logo className={`${colorTheme}`} onClick={() => navigate('/')}></Logo>
               <MobileHeader>
-                {!userLoginData.login && <span onClick={() => Navigate('/login')}>LOGIN</span>}
-                {userLoginData.login && <span onClick={() => Navigate('/login')}>MYPAGE</span>}
+                {!userLoginData.login && <span onClick={() => navigate('/login')}>LOGIN</span>}
+                {userLoginData.login && <span onClick={() => navigate('/login')}>MYPAGE</span>}
                 <div>
                   {menu === 'none' && (
                     <FontAwesomeIcon

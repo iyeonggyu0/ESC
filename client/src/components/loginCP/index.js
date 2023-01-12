@@ -34,10 +34,6 @@ const LoginMain = () => {
     /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/,
   );
 
-  const navigateFun = (link) => {
-    navigate(link);
-  };
-
   // login dispatch
   const onLoginHandler = useCallback(
     (e) => {
@@ -53,7 +49,7 @@ const LoginMain = () => {
         email: email,
         password: encrypt(password, process.env.REACT_APP_USER_KEY),
       };
-      dispatch(loginUser({ data: data, navigateFun }));
+      dispatch(loginUser({ data: data, navigate: navigate }));
     },
     // eslint-disable-next-line
     [email, password, dispatch, navigate],
