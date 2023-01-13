@@ -64,7 +64,9 @@ const LayOutHeader = () => {
                   {colorTheme === 'basic' && <span>GAME</span>}
                 </div>
                 {!userLoginData.login && <span onClick={() => navigate('/login')}>LOGIN</span>}
-                {userLoginData.login && <span onClick={() => navigate('/')}>MYPAGE</span>}
+                {userLoginData.login && (
+                  <span onClick={() => navigate('/mypage/main')}>MYPAGE</span>
+                )}
                 <div>
                   {menu === 'none' && (
                     <FontAwesomeIcon
@@ -132,7 +134,9 @@ const LayOutHeader = () => {
               <Logo className={`${colorTheme}`} onClick={() => navigate('/')}></Logo>
               <MobileHeader>
                 {!userLoginData.login && <span onClick={() => navigate('/login')}>LOGIN</span>}
-                {userLoginData.login && <span onClick={() => navigate('/login')}>MYPAGE</span>}
+                {userLoginData.login && (
+                  <span onClick={() => navigate('/mypage/main')}>MYPAGE</span>
+                )}
                 <div>
                   {menu === 'none' && (
                     <FontAwesomeIcon

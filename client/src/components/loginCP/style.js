@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const LoginMainStyle = styled.div`
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 71px);
 
   color: ${(props) =>
     props.colorTheme === 'game'

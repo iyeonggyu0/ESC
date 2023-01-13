@@ -5,7 +5,7 @@ export const userReducer = createSlice({
   initialState: {
     userInfo: {
       login: false,
-      userInfo: null,
+      userData: null,
     },
     isLoading: false,
     isDone: false,

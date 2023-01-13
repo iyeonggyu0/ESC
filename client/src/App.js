@@ -13,10 +13,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // page
 import MainPage from './pages/mainPage';
-import LoginPage from './pages/loginPage';
-import SignupPage from './pages/signupPage';
+import LoginPage from './pages/loginPage.js';
+import SignupPage from './pages/signupPage.js';
 import NotFountPage from '@common/error/404';
-import FindPasswordPage from './pages/findPasswordPage/certifiedPage.js';
+import FindPasswordPage from './pages/findPasswordPage.js';
+import MyPage from './pages/myPage';
 
 export const ThemeContext = createContext(null);
 
@@ -60,7 +61,7 @@ function App() {
           <Route path="/find-password" element={<FindPasswordPage />} />
           <Route path="/" element={<MainPage />} />
           <Route element={<PrivateRoute auth={userInfo} />}>
-            <Route path="/" element={<MainPage />} />
+            <Route path="/mypage/:page" element={<MyPage />} />
           </Route>
           <Route path={'/*'} element={<NotFountPage />} />
         </Routes>

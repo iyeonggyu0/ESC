@@ -17,7 +17,7 @@ export default class UserService {
       .then((res) => {
         console.log('로그인 성공');
         req.navigate('/');
-        return { userInfo: res.data, login: true };
+        return { userData: res.data, login: true };
       })
       .catch((err) => {
         console.log(err);
@@ -28,7 +28,7 @@ export default class UserService {
           }
         } else if (err.response.status === 401) {
           alert('잘못된 비밀번호');
-          return { userInfo: null, login: false };
+          return { userData: null, login: false };
         }
         err.response.status === 401 ? alert('잘못된 비밀번호') : '';
       });
@@ -51,11 +51,11 @@ export default class UserService {
     const promise = axios.get(`${axiosInstance}user/loginCheck`);
     const userData = promise
       .then((res) => {
-        return { userInfo: res.data, login: true };
+        return { userData: res.data, login: true };
       })
       .catch((err) => {
         console.log(err);
-        return { userInfo: null, login: false };
+        return { userData: null, login: false };
       });
     return userData;
   }
