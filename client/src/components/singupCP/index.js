@@ -135,6 +135,7 @@ const SignMain = () => {
             autoComplete="off"
             vale={email}
             onChange={onChangeEmail}
+            autoFocus
             style={{ width: '60%', pointerEvents: mailSend === 0 ? 'all' : 'none' }}
           />
           <div onClick={onSendEmailHandler}>발송</div>

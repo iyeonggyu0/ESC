@@ -36,11 +36,12 @@ export default class UserService {
     return promise;
   }
 
-  logout() {
+  logout(req) {
     axios
       .post(`${axiosInstance}user/logout`)
       .then(() => {
         console.log('로그아웃');
+        req.navigate('/');
       })
       .catch((err) => {
         console.log(err);

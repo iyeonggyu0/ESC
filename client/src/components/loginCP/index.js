@@ -22,7 +22,7 @@ const LoginMain = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (email.length > 0 && password.length) {
+    if (email.length > 0 && password.length > 0) {
       setError(false);
     } else {
       setError(true);
@@ -36,8 +36,7 @@ const LoginMain = () => {
 
   // login dispatch
   const onLoginHandler = useCallback(
-    (e) => {
-      e.preventDefault();
+    () => {
       if (!emailExp.current.test(email)) {
         if (!alert('이메일 형식이 일치하지 않습니다')) {
           setEmail('');
@@ -54,6 +53,15 @@ const LoginMain = () => {
     // eslint-disable-next-line
     [email, password, dispatch, navigate],
   );
+
+  const onClickHandelr = (e) => {
+    if (e.key === 'Enter') {
+      if (error == false) {
+        onLoginHandler();
+      }
+    }
+  };
+
   // html
 
   return (
@@ -67,6 +75,7 @@ const LoginMain = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="off"
+            autoFocus
           />
         </div>
 
@@ -77,6 +86,7 @@ const LoginMain = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="off"
+            onKeyPress={onClickHandelr}
           />
         </div>
 

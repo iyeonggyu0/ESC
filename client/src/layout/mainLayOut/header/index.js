@@ -116,7 +116,7 @@ const LayOutHeader = () => {
                     {userLoginData.login && <li onClick={onLogoutHandler}>로그아웃</li>}
                     {userLoginData.login && <li onClick={() => navigate('/')}>장바구니</li>}
                     {userLoginData.login && <li onClick={() => navigate('/')}>결제내역</li>}
-                    {userLoginData.login && userLoginData.userInfo.authority === 'admin' && (
+                    {userLoginData.login && userLoginData.userData.authority === 'admin' && (
                       <li onClick={() => navigate('/')}>ADMIN</li>
                     )}
                   </MenuUl>

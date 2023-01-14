@@ -56,7 +56,6 @@ function* userSign(action) {
 function* logOut(action) {
   try {
     yield call(UserService.prototype.logout, action.payload);
-    yield delay(500);
     yield put(logOutUserSuccess());
   } catch (err) {
     console.log(err);

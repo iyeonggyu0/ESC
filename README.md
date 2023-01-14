@@ -274,3 +274,12 @@ Img
 - 이메일인증 내용 제작
 - loginUser Service최종 정리
 - 로그아웃 기능
+
+<br>
+
+### MyPage1
+
+###### Jan 14, 2023
+
+- Mypage_profile Page
+- 로그인 엔터 적용

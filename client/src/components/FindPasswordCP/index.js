@@ -73,9 +73,7 @@ const FindPasswordMain = () => {
   );
 
   const onFindHandler = useCallback(
-    (e) => {
-      e.preventDefault();
-
+    () => {
       if (!pwExp.current.test(pw)) {
         if (!alert('비밀번호 형식이 일치하지 않습니다 (대문자, 소문자, 특수문자 포함)')) {
           setPw('');
@@ -99,6 +97,14 @@ const FindPasswordMain = () => {
     [pw, email, dispatch],
   );
 
+  const onClickHandelr = (e) => {
+    if (e.key === 'Enter') {
+      if (error === false) {
+        onFindHandler();
+      }
+    }
+  };
+
   return (
     <FindPasswordMainStyle colorTheme={colorTheme} media={media} errorz={error}>
       <div>
@@ -110,6 +116,7 @@ const FindPasswordMain = () => {
             autoComplete="off"
             vale={email}
             onChange={onChangeEmail}
+            autoFocus
             style={{ width: '60%', pointerEvents: mailSend === 0 ? 'all' : 'none' }}
           />
           <div onClick={onSendEmailHandler}>발송</div>
@@ -147,6 +154,7 @@ const FindPasswordMain = () => {
             autoComplete="off"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
+            onKeyPress={onClickHandelr}
           />
         </div>
         <div

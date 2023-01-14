@@ -51,6 +51,8 @@ function App() {
   }, [dispatch]);
   const { userInfo } = useSelector((state) => state.user);
 
+  console.log(userInfo);
+
   return (
     <ThemeContext.Provider value={{ colorTheme, toggleTheme, userInfo }}>
       <BrowserRouter>
