@@ -133,7 +133,7 @@ const SignMain = () => {
             type="text"
             placeholder="EMAIL"
             autoComplete="off"
-            vale={email}
+            value={email}
             onChange={onChangeEmail}
             autoFocus
             style={{ width: '60%', pointerEvents: mailSend === 0 ? 'all' : 'none' }}
@@ -145,7 +145,7 @@ const SignMain = () => {
             type="text"
             placeholder="인증코드"
             autoComplete="off"
-            vale={userAuthCode}
+            value={userAuthCode}
             onChange={(e) => setUserAuthCode(e.target.value)}
           />
         </div>

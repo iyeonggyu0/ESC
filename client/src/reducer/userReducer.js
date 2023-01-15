@@ -131,6 +131,23 @@ export const userReducer = createSlice({
       state.isDone = true;
       state.error = action.error;
     },
+
+    //put Data
+    putData: (state, action) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    putDataSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.userInfo = action.payload;
+    },
+    putDataFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
   },
 });
 
@@ -156,4 +173,7 @@ export const {
   sendEmail,
   sendEmailSuccess,
   sendEmailFailure,
+  putData,
+  putDataSuccess,
+  putDataFailure,
 } = userReducer.actions;

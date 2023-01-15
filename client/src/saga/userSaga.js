@@ -20,6 +20,9 @@ import {
   sendEmail,
   sendEmailSuccess,
   sendEmailFailure,
+  putData,
+  putDataSuccess,
+  putDataFailure,
 } from '@reducer/userReducer';
 import UserService from '@services/userService';
 
@@ -31,6 +34,15 @@ function* sendEmailSaga(action) {
     yield put(sendEmailSuccess());
   } catch (err) {
     yield put(sendEmailFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
+function* putDataSaga(action) {
+  try {
+    yield call(UserService.prototype.putData, action.payload);
+    yield put(putDataSuccess());
+  } catch (err) {
+    yield put(putDataFailure(new Error('UNKNODW ERROR')));
   }
 }
 
@@ -138,6 +150,9 @@ function* watchPasswordUpdate() {
   yield takeLatest(passwordUpdate.type, passwordUpdateSaga);
 }
 
+function* watchputData() {
+  yield takeLatest(putData.type, putDataSaga);
+}
 // sendEmail
 
 // root
@@ -151,5 +166,6 @@ export default function* userSaga() {
     fork(watchInfoUpdate),
     fork(watchSendEmail),
     fork(watchPasswordUpdate),
+    fork(watchputData),
   ]);
 }

@@ -19,7 +19,7 @@ export const MyPageMainPageStyle = styled.div`
 
   & > div:first-child {
     position: relative;
-    width: 70vw;
+    width: 60vw;
     margin: 0 auto;
 
     margin-top: 15vh;
@@ -29,6 +29,12 @@ export const MyPageMainPageStyle = styled.div`
 
     background-color: ${({ theme }) => theme.palette.white};
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  & > div > div:nth-child(2) {
+    width: 100%;
+    padding: 0 5%;
+    margin: 3% 0;
   }
 
   // 메뉴

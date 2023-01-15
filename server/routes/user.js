@@ -33,6 +33,39 @@ router.get("/loginCheck", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.put("/put/mypage", isLoggedIn, async (req, res, next, done) => {
+  try {
+    const newPw = await decryptFun(req.body.newPassword, process.env.REACT_APP_USER_KEY);
+    const basicPw = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);
+    const hashedPassword = await bcrypt.hash(newPw, 11);
+    const user = await User.findOne({
+      where: { email: req.body.email },
+    });
+    const result = await bcrypt.compare(basicPw, user.password);
+    if (result) {
+      return done(null, user);
+    }
+    if (!result) {
+      return done(null, false, { reason: "비밀번호가 일치하지 않습니다." });
+    }
+
+    const putData = await User.update(
+      {
+        email: req.body.newEmail,
+        nickName: req.body.nick,
+        password: hashedPassword,
+        snsFlag: req.body.snsFlag,
+      },
+      { where: result }
+    );
+
+    res.status(201).send("수정 완료" + putData);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 router.post("/login", isNotLoggedIn, (req, res, next) => {
   passport.authenticate("local", (err, user, desc) => {
     if (err) {
@@ -128,11 +161,10 @@ router.put("/put/pw", async (req, res, next) => {
   }
 });
 
-router.put("/put", isLoggedIn, async (req, res, next) => {
+router.put("/put/profile", isLoggedIn, async (req, res, next) => {
   try {
     const putData = await User.update(
       {
-        name: req.body.name,
         profileImg: req.body.profileImg,
       },
       { where: { email: req.body.email } }
@@ -171,7 +203,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.post("/sendEmail", isNotLoggedIn, async (req, res, next) => {
+router.post("/sendEmail", async (req, res, next) => {
   try {
     const emailCheck = await User.findOne({
       where: {

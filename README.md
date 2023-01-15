@@ -283,3 +283,9 @@ Img
 
 - Mypage_profile Page
 - 로그인 엔터 적용
+
+### MyPage2
+
+###### Jan 15, 2023
+
+- 내 정보 수정

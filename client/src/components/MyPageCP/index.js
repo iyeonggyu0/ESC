@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../App';
 import { useMedia } from '../../hooks/useMedia';
@@ -25,12 +25,6 @@ const MyPageMainPage = () => {
   const profileImg = useProfile();
   console.log(userData);
   console.log(page);
-
-  useEffect(() => {
-    if (!userData) {
-      navigate('/login');
-    }
-  });
 
   const onLogoutHandler = useCallback(
     (e) => {
@@ -110,9 +104,11 @@ const MyPageMainPage = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            cursor: 'pointer',
           }}
+          onClick={() => navigate('/login')}
         >
-          로그인이 필요합니다
+          로그인이 필요합니다. ( 클릭시 이동 )
         </div>
       )}
     </>

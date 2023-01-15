@@ -36,6 +36,31 @@ export default class UserService {
     return promise;
   }
 
+  putData(req) {
+    console.log('실행');
+    axios
+      .put(
+        `${axiosInstance}user/put/mypage`,
+        {
+          email: req.data.email,
+          newEmail: req.data.newEmail,
+          newPassword: req.data.newPw,
+          password: req.data.password,
+          nickName: req.data.nick,
+          snsFlag: req.data.snsFlag,
+        },
+        {
+          withCredentials: true,
+        },
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   logout(req) {
     axios
       .post(`${axiosInstance}user/logout`)
