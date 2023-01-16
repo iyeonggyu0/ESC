@@ -13,6 +13,8 @@ export const useProfile = () => {
     } else {
       profileImg = userData.profileImg;
     }
+  } else if (userData === null) {
+    profileImg = '/img/profileImg/gameProfileImg.png';
   }
   console.log(profileImg);
   return profileImg;

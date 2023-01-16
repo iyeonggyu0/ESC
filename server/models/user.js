@@ -38,6 +38,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: false,
       },
+      address: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      detailedAddress: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
     },
     {
       sequelize,

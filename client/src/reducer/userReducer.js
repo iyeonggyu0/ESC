@@ -133,7 +133,7 @@ export const userReducer = createSlice({
     },
 
     //put Data
-    putData: (state, action) => {
+    putData: (state) => {
       state.isLoading = true;
       state.isDone = false;
       state.error = null;

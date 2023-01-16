@@ -1,6 +1,7 @@
 import { userUpdateInfo } from '@util/data';
 import axios from 'axios';
 import { axiosInstance } from '../util/axios';
+import { decrypt } from '@util/crypto';
 axios.defaults.withCredentials = true;
 
 export default class UserService {
@@ -17,7 +18,8 @@ export default class UserService {
       .then((res) => {
         console.log('로그인 성공');
         req.navigate('/');
-        return { userData: res.data, login: true };
+        const decryptData = decrypt(res.data, process.env.REACT_APP_USER_KEY);
+        return { userData: decryptData, login: true };
       })
       .catch((err) => {
         console.log(err);
@@ -37,22 +39,9 @@ export default class UserService {
   }
 
   putData(req) {
-    console.log('실행');
+    console.log(req.data);
     axios
-      .put(
-        `${axiosInstance}user/put/mypage`,
-        {
-          email: req.data.email,
-          newEmail: req.data.newEmail,
-          newPassword: req.data.newPw,
-          password: req.data.password,
-          nickName: req.data.nick,
-          snsFlag: req.data.snsFlag,
-        },
-        {
-          withCredentials: true,
-        },
-      )
+      .put(`${axiosInstance}user/put/profile`, req.data)
       .then((res) => {
         console.log(res);
       })
@@ -77,7 +66,8 @@ export default class UserService {
     const promise = axios.get(`${axiosInstance}user/loginCheck`);
     const userData = promise
       .then((res) => {
-        return { userData: res.data, login: true };
+        const decryptData = decrypt(res.data, process.env.REACT_APP_USER_KEY);
+        return { userData: decryptData, login: true };
       })
       .catch((err) => {
         console.log(err);

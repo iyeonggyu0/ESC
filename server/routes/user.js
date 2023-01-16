@@ -22,44 +22,11 @@ router.get("/loginCheck", isLoggedIn, async (req, res, next) => {
         //   },
         // ],
       });
-      // const userData = encryptFun(user, process.env.REACT_APP_USER_KEY);
-      res.status(200).json(user);
+      const userData = encryptFun(user, process.env.REACT_APP_USER_KEY);
+      res.status(200).json(userData);
     } else {
       res.status(200).json(null);
     }
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-router.put("/put/mypage", isLoggedIn, async (req, res, next, done) => {
-  try {
-    const newPw = await decryptFun(req.body.newPassword, process.env.REACT_APP_USER_KEY);
-    const basicPw = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);
-    const hashedPassword = await bcrypt.hash(newPw, 11);
-    const user = await User.findOne({
-      where: { email: req.body.email },
-    });
-    const result = await bcrypt.compare(basicPw, user.password);
-    if (result) {
-      return done(null, user);
-    }
-    if (!result) {
-      return done(null, false, { reason: "비밀번호가 일치하지 않습니다." });
-    }
-
-    const putData = await User.update(
-      {
-        email: req.body.newEmail,
-        nickName: req.body.nick,
-        password: hashedPassword,
-        snsFlag: req.body.snsFlag,
-      },
-      { where: result }
-    );
-
-    res.status(201).send("수정 완료" + putData);
   } catch (err) {
     console.error(err);
     next(err);
@@ -91,7 +58,8 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
         //   },
         // ],
       });
-      return res.status(200).json(fullUserWithoutPassword);
+      const encryptData = await encryptFun(fullUserWithoutPassword, process.env.REACT_APP_USER_KEY);
+      return res.status(200).json(encryptData);
     });
   })(req, res, next);
 });
@@ -161,15 +129,76 @@ router.put("/put/pw", async (req, res, next) => {
   }
 });
 
-router.put("/put/profile", isLoggedIn, async (req, res, next) => {
+router.put("/put/profile", isLoggedIn, async (req, res, next, done) => {
   try {
-    const putData = await User.update(
-      {
-        profileImg: req.body.profileImg,
-      },
-      { where: { email: req.body.email } }
-    );
-    res.status(201).send("수정 완료 / 수정된 프로필:" + putData);
+    const newPw = await decryptFun(req.body.newPassword, process.env.REACT_APP_USER_KEY);
+    const basicPw = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);
+    const hashedPassword = await bcrypt.hash(newPw, 11);
+
+    const detailedAddress = await decryptFun(req.body.detailedAddress, process.env.REACT_APP_USER_KEY);
+    const address = await decryptFun(req.body.address, process.env.REACT_APP_USER_KEY);
+    const newAddress = await decryptFun(req.body.newAddress, process.env.REACT_APP_USER_KEY);
+    const newDetailedAddress = await decryptFun(req.body.newDetailedAddress, process.env.REACT_APP_USER_KEY);
+
+    if (newPw) {
+      const user = await User.findOne({
+        where: { email: req.body.email },
+      });
+      const result = await bcrypt.compare(basicPw, user.password);
+      if (result) {
+        return done(null, user);
+      }
+      if (!result) {
+        return done(null, false, { reason: "기존 비밀번호가 일치하지 않습니다." });
+      }
+      const putData = await User.update(
+        {
+          password: hashedPassword,
+        },
+        { where: result }
+      );
+      res.status(201).send("PW 수정 완료" + putData);
+    }
+    if (req.body.nickName !== req.body.newNickname) {
+      const putData = await User.update(
+        {
+          nickName: req.body.newNickname,
+        },
+        { where: { email: req.body.email } }
+      );
+      res.status(201).send("닉네임 수정 완료:" + putData);
+    }
+
+    if (req.body.email !== req.body.newEmail) {
+      const putData = await User.update(
+        {
+          email: req.body.newEmail,
+        },
+        { where: { email: req.body.email } }
+      );
+      res.status(201).send("이메일 수정 완료:" + putData);
+    }
+
+    if (req.body.snsFlag !== req.body.newSnsFlag) {
+      const putData = await User.update(
+        {
+          snsFlag: req.body.newSnsFlag,
+        },
+        { where: { email: req.body.email } }
+      );
+      res.status(201).send("SNS수신동의 수정 완료:" + putData);
+    }
+
+    if (newAddress !== address || newDetailedAddress !== detailedAddress) {
+      const putData = await User.update(
+        {
+          address: newAddress,
+          detailedAddress: newDetailedAddress,
+        },
+        { where: { email: req.body.email } }
+      );
+      res.status(201).send("SNS수신동의 수정 완료:" + putData);
+    }
   } catch (err) {
     console.error(err);
     next(err);

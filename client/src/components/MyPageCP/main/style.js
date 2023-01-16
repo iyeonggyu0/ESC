@@ -98,7 +98,7 @@ export const Checkbox = styled.div`
 `;
 
 export const EmailSendDiv = styled.div`
-  width: ${(props) => (props.media.isPc ? '450px' : '90vw')};
+  width: ${(props) => (props.media.isPc ? '550px' : '90vw')};
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -120,7 +120,7 @@ export const EmailSendDiv = styled.div`
   }
 
   & > input {
-    width: 61%;
+    width: 62%;
     padding-left: 5%;
     pointer-events: ${(props) => (props.emailCheck === true ? 'all' : 'none')};
   }
@@ -149,8 +149,25 @@ export const MyPageMainStyle = styled.div`
     color: ${({ theme }) => theme.palette.gameLightStroke};
   }
 
+  .rjator {
+    width: 22%;
+    height: 87px;
+    color: ${({ theme }) => theme.palette.black};
+    border: 1px solid ${({ theme }) => theme.palette.gameLightStroke};
+    background-color: ${({ theme }) => theme.palette.white};
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+  }
+  .inputwnth {
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+
   & ${InputDivfixed}, & ${InputDiv} {
-    width: ${(props) => (props.media.isPc ? '450px' : '90vw')};
+    width: ${(props) => (props.media.isPc ? '550px' : '90vw')};
     position: relative;
 
     & > p {
@@ -194,7 +211,7 @@ export const MyPageMainStyle = styled.div`
   }
 
   ${EmailSendDiv} + div,.text {
-    width: ${(props) => (props.media.isPc ? '450px' : '90vw')};
+    width: ${(props) => (props.media.isPc ? '550px' : '90vw')};
   }
 
   ${EmailSendDiv} + div > p,.text > p {

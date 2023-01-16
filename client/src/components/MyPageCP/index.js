@@ -12,6 +12,8 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import MyPageMain from './main';
 
 import { MyPageMainPageStyle, BG } from './style';
+import { ModalIsOpen } from '../../pages/myPage';
+import PostCode from '..//_common/postCode';
 
 const MyPageMainPage = () => {
   //hook
@@ -23,6 +25,7 @@ const MyPageMainPage = () => {
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
   const profileImg = useProfile();
+  const modalIsOpen = useContext(ModalIsOpen).modalIsOpen;
   console.log(userData);
   console.log(page);
 
@@ -36,6 +39,7 @@ const MyPageMainPage = () => {
 
   return (
     <>
+      {modalIsOpen && <PostCode />}
       {userData !== null && (
         <MyPageMainPageStyle colorTheme={colorTheme} media={media} profileImg={profileImg}>
           <div>

@@ -7,6 +7,8 @@ import { sendEmail } from '@reducer/userReducer';
 import { putData } from '@reducer/userReducer';
 import { encrypt } from '@util/crypto';
 
+import { ModalIsOpen } from '../../../pages/myPage';
+
 import { MyPageMainStyle, InputDivfixed, InputDiv, EmailSendDiv, Checkbox, Button } from './style';
 
 const MyPageMain = () => {
@@ -16,6 +18,8 @@ const MyPageMain = () => {
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
+  const onToggleModal = useContext(ModalIsOpen).setModalIsOpen;
+  const address = useContext(ModalIsOpen).address;
 
   // data
   const [email, setEmail] = useState(userData.email);
@@ -23,6 +27,7 @@ const MyPageMain = () => {
   const [pw, setPw] = useState('');
   const [newPw, setNewPw] = useState('');
   const [confirm, setConfirm] = useState('');
+  const [detailedAddress, setDetailedAddress] = useState(userData.detailedAddress);
 
   // check state
   const [snsFlag, setSNS] = useState(userData.snsFlag);
@@ -88,11 +93,11 @@ const MyPageMain = () => {
       onSendEmailHandler();
     }
   };
-
   useEffect(() => {
     if (
       userAuthCode === authCode.current ||
       (nick.length > 0 && nick !== userData.nickName) ||
+      (address !== userData.address && detailedAddress !== userData.detailedAddress) ||
       (confirm === newPw && pw.length > 0 && newPw.length > 0 && confirm.length > 0)
     ) {
       setError(false);
@@ -100,7 +105,8 @@ const MyPageMain = () => {
     } else {
       setError(true);
     }
-  }, [confirm, pw, userAuthCode, authCode, newPw, nick]);
+    // eslint-disable-next-line
+  }, [confirm, pw, userAuthCode, authCode, newPw, nick, address, detailedAddress]);
 
   const onCrystalHandler = useCallback(
     () => {
@@ -127,19 +133,25 @@ const MyPageMain = () => {
       const data = {
         email: userData.email,
         newEmail: email,
-        nickname: nick,
+        nickName: userData.nickName,
+        newNickname: nick,
         password: encrypt(pw, process.env.REACT_APP_USER_KEY),
         newPassword: encrypt(newPw, process.env.REACT_APP_USER_KEY),
-        snsFlag: snsFlag,
+        snsFlag: userData.snsFlag,
+        newSnsFlag: snsFlag,
+        newAddress: encrypt(userData.address, process.env.REACT_APP_USER_KEY),
+        address: encrypt(address, process.env.REACT_APP_USER_KEY),
+        newDetailedAddress: encrypt(userData.detailedAddress, process.env.REACT_APP_USER_KEY),
+        detailedAddress: encrypt(detailedAddress, process.env.REACT_APP_USER_KEY),
       };
       dispatch(putData({ data: data }));
     },
     // eslint-disable-next-line
-    [pw, email, nick, snsFlag, newPw, dispatch],
+    [pw, email, nick, snsFlag, newPw, detailedAddress, address, dispatch],
   );
 
   return (
-    <MyPageMainStyle colorTheme={colorTheme} media={media} snsFlagg={snsFlag}>
+    <MyPageMainStyle colorTheme={colorTheme} media={media} snsFlagg={snsFlag} address={address}>
       <div>
         <p>My Profile</p>
         <InputDivfixed style={{ marginTop: '3%' }}>
@@ -193,7 +205,9 @@ const MyPageMain = () => {
           {userAuthCode !== authCode.current && userAuthCode.length !== 0 && <p>잘못된 인증코드</p>}
           {userAuthCode === authCode.current && userAuthCode.length !== 0 && <p>인증코드 일치</p>}
         </div>
-        <InputDivfixed style={{ marginTop: userAuthCode.length !== 0 ? 'calc(5% - 1rem)' : '5%' }}>
+        <InputDivfixed
+          style={{ marginTop: userAuthCode.length !== 0 ? 'calc(5% - 1rem - 5px)' : '5%' }}
+        >
           <p>전화번호</p>
           <input
             type="text"
@@ -235,6 +249,47 @@ const MyPageMain = () => {
         </InputDiv>
         <div className="text">
           {confirm !== newPw && newPw.length !== 0 && <p>일치하지 않습니다</p>}
+        </div>
+        <InputDivfixed
+          style={{
+            marginTop: confirm !== newPw && newPw.length !== 0 ? 'calc(5% - 1rem - 5px)' : '5%',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <p>주소</p>
+          <input
+            type="text"
+            placeholder=""
+            autoComplete="off"
+            defaultValue={address || ''}
+            // onChange={}
+            className={'inputwnth'}
+            style={{
+              width: '70%',
+              fontSize: address === null ? '0.8rem' : address.length > 30 ? '0.7rem' : '0.8rem',
+              wordWrap: 'break-word',
+              wordBreak: 'break-all',
+            }}
+          />
+          <div className="rjator" style={{ cursor: 'pointer' }} onClick={() => onToggleModal(true)}>
+            검색
+          </div>
+        </InputDivfixed>
+        <InputDiv style={{ marginTop: '15px' }}>
+          <p>세부 주소</p>
+          <input
+            type="text"
+            value={detailedAddress || ''}
+            onChange={(e) => setDetailedAddress(e.target.value)}
+            autoComplete="off"
+            style={{ marginBottm: '5px' }}
+          />
+        </InputDiv>
+        <div className="text">
+          {address !== userData.address && detailedAddress === '' && (
+            <p>세부 정보를 입력해 주세요</p>
+          )}
         </div>
         <Checkbox colorTheme={colorTheme}>
           <input
