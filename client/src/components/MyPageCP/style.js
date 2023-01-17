@@ -83,25 +83,7 @@ export const MyPageMainPageStyle = styled.div`
   & > div > div:first-child > div:first-child > div:first-child {
     width: 100%;
     height: 10vw;
-    border-radius: 50%;
-    background-image: url(${(props) => props.profileImg});
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
     margin-bottom: 20px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgba(255, 255, 255, 0);
-    background-blend-mode: multiply;
-    font-size: 20px;
-    transition: all 0.3s;
-  }
-
-  & > div > div:first-child > div:first-child > div:first-child:hover {
-    color: rgba(255, 255, 255, 1);
-    background-color: rgb(121, 121, 121);
   }
 
   & > div > div:first-child > div:nth-child(2) {

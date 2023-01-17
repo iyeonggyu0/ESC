@@ -5,15 +5,13 @@ import { useMedia } from '../../hooks/useMedia';
 import { useProfile } from '../../hooks/useProfile';
 import { logOutUser } from '@reducer/userReducer';
 import { useDispatch } from 'react-redux';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import FileUpload from '../_common/multer';
 
 import MyPageMain from './main';
 
 import { MyPageMainPageStyle, BG } from './style';
 import { ModalIsOpen } from '../../pages/myPage';
-import PostCode from '..//_common/postCode';
+import PostCode from '../_common/postCode';
 
 const MyPageMainPage = () => {
   //hook
@@ -47,9 +45,9 @@ const MyPageMainPage = () => {
               {/* 사이드 바 */}
               <div>
                 {/* 프로필 */}
-                <div>
+                <div style={{ cursor: 'pointer' }}>
                   {/* 프로필 이미지 */}
-                  <FontAwesomeIcon icon={solid('pen')} />
+                  <FileUpload profileImg={profileImg} />
                 </div>
                 <p>
                   {/* 닉네임 */}
@@ -99,21 +97,6 @@ const MyPageMainPage = () => {
           </div>
           <BG></BG>
         </MyPageMainPageStyle>
-      )}
-      {userData === null && (
-        <div
-          style={{
-            width: '100%',
-            height: 'calc(100vh - 70px)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
-          onClick={() => navigate('/login')}
-        >
-          로그인이 필요합니다. ( 클릭시 이동 )
-        </div>
       )}
     </>
   );

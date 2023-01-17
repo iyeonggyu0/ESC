@@ -29,7 +29,7 @@ export default class UserService {
             return { login: true };
           }
         } else if (err.response.status === 401) {
-          alert('잘못된 비밀번호');
+          alert('이메일 또는 비밀번호가 틀렸습니다.');
           return { userData: null, login: false };
         }
         err.response.status === 401 ? alert('잘못된 비밀번호') : '';
@@ -39,11 +39,26 @@ export default class UserService {
   }
 
   putData(req) {
-    console.log(req.data);
     axios
-      .put(`${axiosInstance}user/put/profile`, req.data)
+      .put(`${axiosInstance}user/put/profile`, {
+        email: req.data.email,
+        newEmail: req.data.newEmail,
+        nickName: req.data.nickName,
+        newNickname: req.data.newNickname,
+        password: req.data.password,
+        newPassword: req.data.newPassword,
+        snsFlag: req.data.snsFlag,
+        newSnsFlag: req.data.newSnsFlag,
+        newAddress: req.data.newAddress,
+        address: req.data.address,
+        newDetailedAddress: req.data.newDetailedAddress,
+        detailedAddress: req.data.detailedAddress,
+      })
       .then((res) => {
         console.log(res);
+        if (!alert('회원 정보가 수정 되었습니다')) {
+          window.location.replace('/mypage/main');
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -59,6 +74,7 @@ export default class UserService {
       })
       .catch((err) => {
         console.log(err);
+        req.navigate('/');
       });
   }
 

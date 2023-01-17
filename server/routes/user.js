@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const { decryptFun, encryptFun } = require("../util/crypto");
 const { sendEmail } = require("../mailer/mail");
+const multer = require("multer");
+const fs = require("fs");
 
 const { User, Post } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
@@ -129,36 +131,39 @@ router.put("/put/pw", async (req, res, next) => {
   }
 });
 
-router.put("/put/profile", isLoggedIn, async (req, res, next, done) => {
+router.put("/text", (res) => {
+  res.status(200).send("확인");
+});
+
+router.put("/put/profile", async (req, res) => {
+  const newPw = await decryptFun(req.body.newPassword, process.env.REACT_APP_USER_KEY);
+  const basicPw = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);
+  const hashedPassword = await bcrypt.hash(newPw, 11);
+
+  const detailedAddress = await decryptFun(req.body.detailedAddress, process.env.REACT_APP_USER_KEY);
+  const address = await decryptFun(req.body.address, process.env.REACT_APP_USER_KEY);
+  const newAddress = await decryptFun(req.body.newAddress, process.env.REACT_APP_USER_KEY);
+  const newDetailedAddress = await decryptFun(req.body.newDetailedAddress, process.env.REACT_APP_USER_KEY);
   try {
-    const newPw = await decryptFun(req.body.newPassword, process.env.REACT_APP_USER_KEY);
-    const basicPw = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);
-    const hashedPassword = await bcrypt.hash(newPw, 11);
-
-    const detailedAddress = await decryptFun(req.body.detailedAddress, process.env.REACT_APP_USER_KEY);
-    const address = await decryptFun(req.body.address, process.env.REACT_APP_USER_KEY);
-    const newAddress = await decryptFun(req.body.newAddress, process.env.REACT_APP_USER_KEY);
-    const newDetailedAddress = await decryptFun(req.body.newDetailedAddress, process.env.REACT_APP_USER_KEY);
-
     if (newPw) {
       const user = await User.findOne({
         where: { email: req.body.email },
       });
       const result = await bcrypt.compare(basicPw, user.password);
       if (result) {
-        return done(null, user);
+        const putData = await User.update(
+          {
+            password: hashedPassword,
+          },
+          { where: { email: req.body.email } }
+        );
+        res.status(201).send("PW 수정 완료" + putData);
       }
       if (!result) {
-        return done(null, false, { reason: "기존 비밀번호가 일치하지 않습니다." });
+        res.status(500).send("비밀번호가 일치하지 않습니다");
       }
-      const putData = await User.update(
-        {
-          password: hashedPassword,
-        },
-        { where: result }
-      );
-      res.status(201).send("PW 수정 완료" + putData);
     }
+
     if (req.body.nickName !== req.body.newNickname) {
       const putData = await User.update(
         {
@@ -197,11 +202,78 @@ router.put("/put/profile", isLoggedIn, async (req, res, next, done) => {
         },
         { where: { email: req.body.email } }
       );
-      res.status(201).send("SNS수신동의 수정 완료:" + putData);
+      res.status(201).send("주소 수정 완료:" + putData);
     }
   } catch (err) {
     console.error(err);
-    next(err);
+  }
+});
+
+try {
+  fs.readdirSync("../client/public/img/profileImg/uploads"); // 폴더 확인
+} catch (err) {
+  console.error("uploads 폴더가 없습니다. 폴더를 생성합니다.");
+  fs.mkdirSync("../client/public/img/profileImg/uploads"); // 폴더 생성
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "../client/public/img/profileImg/uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+  limits: { fileSize: 1 * 1024 * 1024 },
+});
+const upload = multer({ storage: storage }).single("profile_img");
+
+router.post("/upload/profile/img", isLoggedIn, (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      return res.json({ success: false, err });
+    }
+    return res.json({
+      success: true,
+      image: res.req.file.path,
+      fileName: res.req.file.filename,
+    });
+  });
+});
+
+router.put("/put/profile/img", async (req, res) => {
+  if (req.body.fileName === "/img/profileImg/basicProfileImg.png") {
+    const putData = await User.update(
+      {
+        profileImg: req.body.newFileName,
+      },
+      { where: { email: req.body.email } }
+    );
+    res.status(201).send("프로필이미지 경로 수정완료" + putData);
+  } else if (req.body.fileName !== "/img/profileImg/basicProfileImg.png") {
+    if (fs.existsSync("../client/public/img/profileImg/uploads/" + req.body.fileName)) {
+      // 파일이 존재한다면 true 그렇지 않은 경우 false 반환
+      try {
+        fs.unlinkSync("../client/public/img/profileImg/uploads/" + req.body.fileName);
+        console.log("image delete");
+        const putData = await User.update(
+          {
+            profileImg: req.body.newFileName,
+          },
+          { where: { email: req.body.email } }
+        );
+        res.status(201).send("프로필이미지 경로 수정완료" + putData);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      const putData = await User.update(
+        {
+          profileImg: req.body.newFileName,
+        },
+        { where: { email: req.body.email } }
+      );
+      res.status(201).send("프로필이미지 경로 수정완료" + putData);
+    }
   }
 });
 

@@ -11,7 +11,7 @@ export const useProfile = () => {
     if (userData.profileImg === '/img/profileImg/basicProfileImg.png' && colorTheme === 'game') {
       profileImg = '/img/profileImg/gameProfileImg.png';
     } else {
-      profileImg = userData.profileImg;
+      profileImg = `/img/profileImg/uploads/${userData.profileImg}`;
     }
   } else if (userData === null) {
     profileImg = '/img/profileImg/gameProfileImg.png';

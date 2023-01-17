@@ -137,7 +137,6 @@ export const EmailSendDiv = styled.div`
 `;
 
 export const MyPageMainStyle = styled.div`
-  border: 1px solid black;
   width: 100%;
   line-height: 4rem;
 

@@ -139,12 +139,13 @@ const MyPageMain = () => {
         newPassword: encrypt(newPw, process.env.REACT_APP_USER_KEY),
         snsFlag: userData.snsFlag,
         newSnsFlag: snsFlag,
-        newAddress: encrypt(userData.address, process.env.REACT_APP_USER_KEY),
-        address: encrypt(address, process.env.REACT_APP_USER_KEY),
-        newDetailedAddress: encrypt(userData.detailedAddress, process.env.REACT_APP_USER_KEY),
-        detailedAddress: encrypt(detailedAddress, process.env.REACT_APP_USER_KEY),
+        newAddress: encrypt(address, process.env.REACT_APP_USER_KEY),
+        address: encrypt(userData.address, process.env.REACT_APP_USER_KEY),
+        newDetailedAddress: encrypt(detailedAddress, process.env.REACT_APP_USER_KEY),
+        detailedAddress: encrypt(userData.detailedAddress, process.env.REACT_APP_USER_KEY),
       };
       dispatch(putData({ data: data }));
+      console.log(address, detailedAddress);
     },
     // eslint-disable-next-line
     [pw, email, nick, snsFlag, newPw, detailedAddress, address, dispatch],
@@ -303,7 +304,7 @@ const MyPageMain = () => {
           <label for="chk">SNS 수신</label>
         </Checkbox>
       </div>
-      <Button onClick={onCrystalHandler} colorTheme={colorTheme} err={error}>
+      <Button onClick={() => onCrystalHandler()} colorTheme={colorTheme} err={error}>
         프로필 저장
       </Button>
     </MyPageMainStyle>

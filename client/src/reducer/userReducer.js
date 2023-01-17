@@ -141,12 +141,10 @@ export const userReducer = createSlice({
     putDataSuccess: (state) => {
       state.isLoading = false;
       state.isDone = true;
-      state.userInfo = action.payload;
     },
-    putDataFailure: (state, action) => {
+    putDataFailure: (state) => {
       state.isLoading = false;
       state.isDone = true;
-      state.error = action.error;
     },
   },
 });
