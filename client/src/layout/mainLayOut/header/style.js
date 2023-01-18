@@ -243,6 +243,10 @@ export const MobileMenu = styled.div`
       ? ({ theme }) => theme.palette.gameFont
       : ({ theme }) => theme.palette.basicFont};
 
+  & > div:nth-child(6) p {
+    padding: 5px;
+  }
+
   ${MobileMenuDiv} {
     border-bottom: 1px solid
       ${(props) =>

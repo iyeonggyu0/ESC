@@ -84,20 +84,26 @@ export const userReducer = createSlice({
       state.error = action.error;
     },
 
-    // info Update
-    infoUpdate: (state) => {
+    // quitup
+    quitup: (state) => {
       state.isLoading = false;
       state.isDone = true;
     },
-    infoUpdateSuccess: (state, action) => {
+    quitupSuccess: (state) => {
       state.isLoading = false;
       state.isDone = true;
-      state.userInfo = action.payload;
+      state.userInfo = {
+        login: false,
+        userInfo: null,
+      };
     },
-    infoUpdateFailure: (state, action) => {
+    quitupFailure: (state) => {
       state.isLoading = false;
       state.isDone = true;
-      state.error = action.error;
+      state.error = {
+        login: false,
+        userInfo: null,
+      };
     },
 
     // PW Update
@@ -111,22 +117,6 @@ export const userReducer = createSlice({
       state.userInfo = action.payload;
     },
     passwordUpdateFailure: (state, action) => {
-      state.isLoading = false;
-      state.isDone = true;
-      state.error = action.error;
-    },
-
-    //sendEmail
-    sendEmail: (state) => {
-      state.isLoading = true;
-      state.isDone = false;
-      state.error = null;
-    },
-    sendEmailSuccess: (state) => {
-      state.isLoading = false;
-      state.isDone = true;
-    },
-    sendEmailFailure: (state, action) => {
       state.isLoading = false;
       state.isDone = true;
       state.error = action.error;
@@ -146,6 +136,22 @@ export const userReducer = createSlice({
       state.isLoading = false;
       state.isDone = true;
     },
+
+    //sendEmail
+    sendEmail: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    sendEmailSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+    },
+    sendEmailFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
   },
 });
 
@@ -162,9 +168,9 @@ export const {
   signUser,
   signUserSuccess,
   signUserFailure,
-  infoUpdate,
-  infoUpdateSuccess,
-  infoUpdateFailure,
+  quitup,
+  quitupSuccess,
+  quitupFailure,
   passwordUpdate,
   passwordUpdateSuccess,
   passwordUpdateFailure,

@@ -5,7 +5,6 @@ export const useProfile = () => {
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
   let profileImg = '';
-  console.log(profileImg);
 
   if (userData !== null) {
     if (userData.profileImg === '/img/profileImg/basicProfileImg.png' && colorTheme === 'game') {
@@ -16,6 +15,5 @@ export const useProfile = () => {
   } else if (userData === null) {
     profileImg = '/img/profileImg/gameProfileImg.png';
   }
-  console.log(profileImg);
   return profileImg;
 };

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Div = styled.div`
   // 프로필이미지
   width: 100%;
-  height: 10vw;
+  height: 100%;
   border-radius: 50%;
   background-image: url(${(props) => props.profileImg});
   background-position: center center;

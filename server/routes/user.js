@@ -77,24 +77,6 @@ router.post("/logout", isLoggedIn, function (req, res, next) {
   });
 });
 
-router.delete("/delete", isLoggedIn, async (req, res) => {
-  const { email } = req.session.email;
-  const deletedCount = await User.destroy({ where: { email: `${email}` } });
-  if (deletedCount) {
-    // 삭제될 row가 있을 경우
-    req.logout(function (err) {
-      if (err) {
-        return next(err);
-      }
-      res.clearCookie("connect.sid");
-      req.session.destroy();
-      res.redirect("/");
-    });
-  } else {
-    // 삭제될 row가 없을 경우
-    res.status(404).send({ message: "There is no member with the id!" });
-  }
-});
 router.delete("/delete/:email", isLoggedIn, async (req, res) => {
   const { email } = req.params;
   const deletedCount = await User.destroy({ where: { email: `${email}` } });
@@ -296,6 +278,7 @@ router.post("/", async (req, res, next) => {
       password: hashedPassword,
       hpNumber: req.body.hpNumber,
       snsFlag: req.body.snsFlag,
+      // authority: "admin",
     });
     res.status(201).send("회원가입 완료\n" + singupUser);
   } catch (err) {

@@ -37,9 +37,9 @@ const FileUpload = (props) => {
       });
   };
 
-  const inputTag = document.getElementById('profileInput');
+  // const inputTag = document.getElementById('profileInput');
   const inputTagHandler = () => {
-    inputTag.click();
+    document.getElementById('profileInput').click();
   };
 
   return (

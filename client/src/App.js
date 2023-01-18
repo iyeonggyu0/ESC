@@ -18,6 +18,8 @@ import SignupPage from './pages/signupPage.js';
 import NotFountPage from '@common/error/404';
 import FindPasswordPage from './pages/findPasswordPage.js';
 import MyPage from './pages/myPage';
+import ProductPage from './pages/productMain.js';
+import ProductEnrollmentPage from './pages/productEnrollment.js';
 
 export const ThemeContext = createContext(null);
 
@@ -50,7 +52,7 @@ function App() {
     // eslint-disable-next-line
   }, [dispatch]);
   const { userInfo } = useSelector((state) => state.user);
-  console.log(userInfo);
+  // console.log(userInfo);
 
   return (
     <ThemeContext.Provider value={{ colorTheme, toggleTheme, userInfo }}>
@@ -60,7 +62,16 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/find-password" element={<FindPasswordPage />} />
+
+          {/* 상품 */}
+          <Route path="/product" element={<ProductPage />}>
+            <Route path="/product/enrollment" element={<ProductEnrollmentPage />} />
+            {/* 상품 상세 페이지 등등 */}
+          </Route>
+
           <Route path="/" element={<MainPage />} />
+
+          {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>
             <Route path="/mypage/:page" element={<MyPage />} />
           </Route>

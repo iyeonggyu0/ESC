@@ -98,7 +98,7 @@ export const Checkbox = styled.div`
 `;
 
 export const EmailSendDiv = styled.div`
-  width: ${(props) => (props.media.isPc ? '550px' : '90vw')};
+  width: ${(props) => (props.media.isPc ? '550px' : '')};
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -141,7 +141,7 @@ export const MyPageMainStyle = styled.div`
   line-height: 4rem;
 
   ${Button} {
-    width: ${(props) => (props.media.isPc ? '120px' : '90vw')};
+    width: ${(props) => (props.media.isPc ? '120px' : '')};
   }
 
   & ${Checkbox} > input:checked {
@@ -166,7 +166,7 @@ export const MyPageMainStyle = styled.div`
   }
 
   & ${InputDivfixed}, & ${InputDiv} {
-    width: ${(props) => (props.media.isPc ? '550px' : '90vw')};
+    width: ${(props) => (props.media.isPc ? '550px' : '')};
     position: relative;
 
     & > p {
@@ -210,7 +210,7 @@ export const MyPageMainStyle = styled.div`
   }
 
   ${EmailSendDiv} + div,.text {
-    width: ${(props) => (props.media.isPc ? '550px' : '90vw')};
+    width: ${(props) => (props.media.isPc ? '550px' : '')};
   }
 
   ${EmailSendDiv} + div > p,.text > p {

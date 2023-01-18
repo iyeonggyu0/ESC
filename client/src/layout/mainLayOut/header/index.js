@@ -1,7 +1,7 @@
 import { useContext, useState, useCallback } from 'react';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
-import { logOutUser } from '@reducer/userReducer';
+import { logOutUser, quitup } from '@reducer/userReducer';
 
 // library
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -30,17 +30,31 @@ const LayOutHeader = () => {
   const colorTheme = useContext(ThemeContext).colorTheme;
   const toggleTheme = useContext(ThemeContext);
   const userLoginData = useContext(ThemeContext).userInfo;
+  const userData = useContext(ThemeContext).userInfo.userData;
 
   const [menu, setMenu] = useState('none');
   const [mobileMenu1, setMobileMenu1] = useState('none');
   const [mobileMenu2, setMobileMenu2] = useState('none');
   const [mobileMenu3, setMobileMenu3] = useState('none');
+  const [mobileMenu4, setMobileMenu4] = useState('none');
 
   const onLogoutHandler = useCallback(
     (e) => {
       e.preventDefault();
       dispatch(logOutUser({ navigate: navigate }));
     },
+    [dispatch, navigate],
+  );
+
+  const onQuitupHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      const data = {
+        email: userData.email,
+      };
+      dispatch(quitup({ data, navigate: navigate }));
+    },
+    // eslint-disable-next-line
     [dispatch, navigate],
   );
 
@@ -240,6 +254,39 @@ const LayOutHeader = () => {
                     {userLoginData.login && userLoginData.userInfo.authority === 'admin' && (
                       <p>ADMIN</p>
                     )}
+                  </div>
+                )}
+              </MobileMenuDiv>
+              <MobileMenuDiv>
+                <span>MYPAGE</span>
+                {mobileMenu4 === 'none' && (
+                  <FontAwesomeIcon
+                    icon={solid('caret-down')}
+                    className={'icon'}
+                    onClick={() => setMobileMenu4('block')}
+                  />
+                )}
+                {mobileMenu4 === 'block' && (
+                  <FontAwesomeIcon
+                    icon={solid('caret-up')}
+                    className={'icon'}
+                    onClick={() => setMobileMenu4('none')}
+                  />
+                )}
+                {mobileMenu4 === 'block' && (
+                  <div style={{ fontSize: '0.8rem' }}>
+                    <p>주문목록 / 배송조회</p>
+                    <p>취소 / 반품 / 교환 내역</p>
+                    <p>장바구니</p>
+                    <p>찜</p>
+                    <p>문의내역</p>
+                    <p>리뷰</p>
+                    <p>상품QnA내역</p>
+                    <p>작성한 글</p>
+                    <p>작성한 제품추천</p>
+                    <p>작성한 조합추천</p>
+                    <p onClick={onLogoutHandler}>로그아웃</p>
+                    <p onClick={onQuitupHandler}>회원탈퇴</p>
                   </div>
                 )}
               </MobileMenuDiv>

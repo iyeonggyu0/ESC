@@ -65,16 +65,16 @@ export default class UserService {
       });
   }
 
-  logout(req) {
+  logout() {
     axios
       .post(`${axiosInstance}user/logout`)
       .then(() => {
         console.log('로그아웃');
-        req.navigate('/');
+        window.location.replace('/');
       })
       .catch((err) => {
         console.log(err);
-        req.navigate('/');
+        window.location.replace('/');
       });
   }
 
@@ -110,6 +110,21 @@ export default class UserService {
       .catch((err) => {
         console.log(err);
         alert(err.response.data);
+      });
+  }
+
+  quitup(req) {
+    axios
+      .delete(`${axiosInstance}user/delete/${req.data.email}`)
+      .then(() => {
+        if (!alert('회원탈퇴 완료')) {
+          window.location.replace('/');
+        }
+      })
+      .catch(() => {
+        if (!alert('회원탈퇴 완료')) {
+          window.location.replace('/');
+        }
       });
   }
 

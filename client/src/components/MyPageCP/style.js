@@ -132,3 +132,27 @@ export const MyPageMainPageStyle = styled.div`
       ${({ theme }) => theme.palette.basicFont};
   }
 `;
+
+export const MobileStyle = styled.div`
+  width: 100vw;
+
+  & > div:first-child {
+    width: 80vw;
+    height: 80vw;
+    margin: 5vh auto 0 auto;
+  }
+
+  & > div:nth-child(2) {
+    margin: 0 auto;
+    width: 90vw;
+  }
+
+  & > div:nth-child(2) > div {
+    padding: 5vh 0;
+    border-bottom: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.gameLightFont
+          : ({ theme }) => theme.palette.basicLightStroke};
+  }
+`;

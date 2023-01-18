@@ -11,9 +11,8 @@ import {
   getUserData,
   getUserDataSuccess,
   getUserDataFailure,
-  infoUpdate,
-  infoUpdateFailure,
-  infoUpdateSuccess,
+  quitup,
+  quitupSuccess,
   passwordUpdate,
   passwordUpdateSuccess,
   passwordUpdateFailure,
@@ -74,37 +73,22 @@ function* logOut(action) {
   }
 }
 
+function* quitupSaga(action) {
+  try {
+    yield call(UserService.prototype.quitup, action.payload);
+    delay(500);
+    yield put(quitupSuccess());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 function* getUser(action) {
   try {
     const userInfo = yield call(UserService.prototype.getUser, action.payload);
     yield put(getUserDataSuccess(userInfo));
   } catch (err) {
     yield put(getUserDataFailure(new Error('UNKNODW ERROR')));
-  }
-}
-
-// function* userSign(action) {
-//   console.log(action);
-//   try {
-//     yield call(UserService.prototype.sign, action.payload);
-//     yield delay(500);
-//     yield put(signUserSuccess());
-//     if (!alert('회원가입이 완료 되었습니다')) {
-//       yield action.payload.navigate('/login');
-//     }
-//   } catch (err) {
-//     yield put(signUserFailure(new Error('UNKNODW ERROR')));
-//   }
-// }
-
-function* infUpdate(action) {
-  try {
-    const response = yield call(UserService.prototype.update, action.payload);
-    console.log(response);
-    yield delay(500);
-    yield put(infoUpdateSuccess(response));
-  } catch (err) {
-    yield put(infoUpdateFailure(new Error('UNKNODW ERROR')));
   }
 }
 
@@ -138,10 +122,6 @@ function* watchUserSign() {
   yield takeLatest(signUser.type, userSign);
 }
 
-function* watchInfoUpdate() {
-  yield takeLatest(infoUpdate.type, infUpdate);
-}
-
 function* watchSendEmail() {
   yield takeLatest(sendEmail.type, sendEmailSaga);
 }
@@ -153,6 +133,10 @@ function* watchPasswordUpdate() {
 function* watchputData() {
   yield takeLatest(putData.type, putDataSaga);
 }
+
+function* watchpQuitup() {
+  yield takeLatest(quitup.type, quitupSaga);
+}
 // sendEmail
 
 // root
@@ -163,7 +147,7 @@ export default function* userSaga() {
     fork(watchLogOut),
     fork(watchUserSign),
     fork(watchGetUserData),
-    fork(watchInfoUpdate),
+    fork(watchpQuitup),
     fork(watchSendEmail),
     fork(watchPasswordUpdate),
     fork(watchputData),

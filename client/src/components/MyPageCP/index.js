@@ -3,13 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../App';
 import { useMedia } from '../../hooks/useMedia';
 import { useProfile } from '../../hooks/useProfile';
-import { logOutUser } from '@reducer/userReducer';
+import { logOutUser, quitup } from '@reducer/userReducer';
 import { useDispatch } from 'react-redux';
 import FileUpload from '../_common/multer';
 
 import MyPageMain from './main';
 
-import { MyPageMainPageStyle, BG } from './style';
+import { MyPageMainPageStyle, BG, MobileStyle } from './style';
 import { ModalIsOpen } from '../../pages/myPage';
 import PostCode from '../_common/postCode';
 
@@ -24,8 +24,6 @@ const MyPageMainPage = () => {
   const userData = useContext(ThemeContext).userInfo.userData;
   const profileImg = useProfile();
   const modalIsOpen = useContext(ModalIsOpen).modalIsOpen;
-  console.log(userData);
-  console.log(page);
 
   const onLogoutHandler = useCallback(
     (e) => {
@@ -35,10 +33,22 @@ const MyPageMainPage = () => {
     [dispatch, navigate],
   );
 
+  const onQuitupHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      const data = {
+        email: userData.email,
+      };
+      dispatch(quitup({ data, navigate: navigate }));
+    },
+    // eslint-disable-next-line
+    [dispatch, navigate],
+  );
+
   return (
     <>
       {modalIsOpen && <PostCode />}
-      {userData !== null && (
+      {userData !== null && media.isPc && (
         <MyPageMainPageStyle colorTheme={colorTheme} media={media} profileImg={profileImg}>
           <div>
             <div>
@@ -85,7 +95,7 @@ const MyPageMainPage = () => {
                 <p>계정</p>
                 <ul>
                   <li onClick={onLogoutHandler}>로그아웃</li>
-                  <li>회원탈퇴</li>
+                  <li onClick={onQuitupHandler}>회원탈퇴</li>
                 </ul>
               </div>
             </div>
@@ -97,6 +107,19 @@ const MyPageMainPage = () => {
           </div>
           <BG></BG>
         </MyPageMainPageStyle>
+      )}
+
+      {userData !== null && media.isMobile && (
+        <MobileStyle colorTheme={colorTheme}>
+          <div>
+            <FileUpload profileImg={profileImg} />
+          </div>
+          <div>
+            {/* 메인 세션 */}
+            {page === 'main' && <MyPageMain />}
+            {/* {page === 'main' && <MyPageMain />} */}
+          </div>
+        </MobileStyle>
       )}
     </>
   );
