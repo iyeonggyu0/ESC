@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductEnrollmentMain from '../components/ProductCP/main';
+import ProductEnrollmentMain from '../components/ProductCP/enrollment';
 import Layout from '../layout/mainLayOut';
 
 const ProductEnrollmentPage = () => {

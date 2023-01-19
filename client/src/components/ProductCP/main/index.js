@@ -1,6 +1,4 @@
-import TextEditor from '../../_common/textEditor';
-
-const ProductEnrollmentMain = () => {
-  return <TextEditor />;
+const ProductMain = () => {
+  return;
 };
-export default ProductEnrollmentMain;
+export default ProductMain;

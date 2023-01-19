@@ -59,22 +59,24 @@ function App() {
       <BrowserRouter>
         <GlobalStyle colorTheme={colorTheme} />
         <Routes>
+          {/* 메인 페이지 */}
+          <Route path="/" element={<MainPage />} />
+
+          {/* 로그인 페이지 */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/find-password" element={<FindPasswordPage />} />
 
           {/* 상품 */}
-          <Route path="/product" element={<ProductPage />}>
-            <Route path="/product/enrollment" element={<ProductEnrollmentPage />} />
-            {/* 상품 상세 페이지 등등 */}
-          </Route>
-
-          <Route path="/" element={<MainPage />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/product/enrollment" element={<ProductEnrollmentPage />} />
 
           {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>
             <Route path="/mypage/:page" element={<MyPage />} />
           </Route>
+
+          {/* 404 */}
           <Route path={'/*'} element={<NotFountPage />} />
         </Routes>
       </BrowserRouter>

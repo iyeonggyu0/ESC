@@ -65,6 +65,7 @@ const MyPage = () => {
             justifyContent: 'center',
             alignItems: 'center',
             cursor: 'pointer',
+            textAlign: 'center',
           }}
           onClick={() => navigate('/')}
         >
