@@ -310,3 +310,13 @@ Img
 
 - MyPage 모바일
 - 상품 등록 페이지
+
+<br>
+
+### ProductPage2
+
+###### Jan 21, 2023
+
+- TextEditor 라이브러리 적용
+- TextEditor + multer 적용
+- Product Models(상품 데이터 테이블) 제작

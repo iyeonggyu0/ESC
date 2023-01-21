@@ -10,6 +10,7 @@ const PORT = 5000;
 
 // const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
+const procudtRouter = require("./routes/product");
 const db = require("./models");
 const passportConfig = require("./passport");
 
@@ -53,6 +54,7 @@ app.use(passport.session());
 // app.use("/post", postRouter);
 // app.use("/admin", userRouter);
 app.use("/user", userRouter);
+app.use("/product", procudtRouter);
 
 // app.get("*", function (req, res) {
 //  res.sendFile(__dirname + "/build/index.html");
