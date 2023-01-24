@@ -191,37 +191,6 @@ router.put("/put/profile", async (req, res) => {
   }
 });
 
-try {
-  fs.readdirSync("../client/public/img/profileImg/uploads"); // 폴더 확인
-} catch (err) {
-  console.error("uploads 폴더가 없습니다. 폴더를 생성합니다.");
-  fs.mkdirSync("../client/public/img/profileImg/uploads"); // 폴더 생성
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "../client/public/img/profileImg/uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-  limits: { fileSize: 1 * 1024 * 1024 },
-});
-const upload = multer({ storage: storage }).single("profile_img");
-
-router.post("/upload/profile/img", isLoggedIn, (req, res) => {
-  upload(req, res, (err) => {
-    if (err) {
-      return res.json({ success: false, err });
-    }
-    return res.json({
-      success: true,
-      image: res.req.file.path,
-      fileName: res.req.file.filename,
-    });
-  });
-});
-
 router.put("/put/profile/img", async (req, res) => {
   if (req.body.fileName === "/img/profileImg/basicProfileImg.png") {
     const putData = await User.update(
