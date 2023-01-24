@@ -159,7 +159,7 @@ const ProductEnrollmentMain = () => {
               </div>
               <TextEditorDiv>
                 <p>Product Detailed Description</p>
-                <TextEditor textDataFun={textDataFun} />
+                <TextEditor textDataFun={textDataFun} textData={textData} />
               </TextEditorDiv>
               <div>저장</div>
             </EnrollmentStyle>

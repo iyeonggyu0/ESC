@@ -13,9 +13,10 @@ import axios from 'axios';
 // 형식으로 사용하기
 
 // eslint-disable-next-line
-const TextEditor = ({ textDataFun }) => {
+const TextEditor = ({ textData, textDataFun }) => {
   const parma = window.location.href;
   const [flag, setFlag] = useState(false);
+  console.log(parma);
 
   const customUploadAdapter = (loader) => {
     return {
@@ -25,26 +26,31 @@ const TextEditor = ({ textDataFun }) => {
           loader.file.then((file) => {
             data.append('name', file.name);
             data.append('file', file);
-            if (parma === process.env.LINK + '/product/enrollment') {
-              axios
-                .post(`${axiosInstance}/product/upload`, data)
-                .then((res) => {
-                  if (!flag) {
-                    setFlag(true);
-                  }
-                  resolve({
-                    default: `${axiosInstance}/${res.data.filename}`,
-                  });
-                })
-                .catch((err) => reject(err));
-            }
           });
+          if (parma === process.env.LINK + '/product/enrollment') {
+            console.log('실행');
+            data.append('file', loader.target.files[0]);
+            axios
+              .post(`${axiosInstance}/multer/upload/productEnrollment`, data, {
+                header: { 'content-type': 'multipart/form-data' },
+              })
+              .then((res) => {
+                if (!flag) {
+                  setFlag(true);
+                }
+                resolve({
+                  default: `${axiosInstance}/${res.data.filename}`,
+                });
+              })
+              .catch((err) => reject(err));
+          }
         });
       },
     };
   };
 
   function uploadPlugin(editor) {
+    console.log('실행');
     editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
       return customUploadAdapter(loader);
     };
@@ -57,10 +63,9 @@ const TextEditor = ({ textDataFun }) => {
       config={{
         extraPlugins: [uploadPlugin],
       }}
-      onReady={(editor) => {
-        // You can store the "editor" and use when it is needed.
-        console.log('Editor is ready to use!', editor);
-      }}
+      // onReady={(editor) => {
+      //   console.log('Editor is ready to use!', editor);
+      // }}
       onChange={(event, editor) => {
         const data = editor.getData();
         textDataFun(data);

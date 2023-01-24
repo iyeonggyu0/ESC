@@ -11,6 +11,7 @@ const PORT = 5000;
 // const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
 const procudtRouter = require("./routes/product");
+const multerRouter = require("./routes/multer");
 const db = require("./models");
 const passportConfig = require("./passport");
 
@@ -55,6 +56,7 @@ app.use(passport.session());
 // app.use("/admin", userRouter);
 app.use("/user", userRouter);
 app.use("/product", procudtRouter);
+app.use("/multer", multerRouter);
 
 // app.get("*", function (req, res) {
 //  res.sendFile(__dirname + "/build/index.html");

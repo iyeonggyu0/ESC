@@ -16,7 +16,7 @@ const FileUpload = (props) => {
     const formData = new FormData();
     formData.append('profile_img', event.target.files[0]);
     axios
-      .post(`${axiosInstance}user/upload/profile/img`, formData, {
+      .post(`${axiosInstance}multer/upload/profile`, formData, {
         header: { 'content-type': 'multipart/form-data' },
       })
       .then((res) => {
