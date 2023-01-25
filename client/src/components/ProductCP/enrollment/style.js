@@ -4,11 +4,17 @@ export const TextInputDiv = styled.div``;
 export const TextEditorDiv = styled.div``;
 
 export const EnrollmentStyle = styled.div`
-  width: ${(props) => (props.media.isPc ? '75vw' : '90vw')};
+  height: calc(100vh - 71px);
   position: relative;
-  margin: 10vh auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  & > p:first-child {
+  & > div:first-child {
+    width: ${(props) => (props.media.isPc ? '75vw' : '90vw')};
+  }
+
+  & > div > p:first-child {
     font-size: 3rem;
     font-family: Ubuntu;
     font-weight: 900;
@@ -36,12 +42,20 @@ export const EnrollmentStyle = styled.div`
     margin-bottom: ${(props) => (props.media.isPc ? '' : '1vh')};
   }
 
-  ${TextInputDiv} input {
+  ${TextInputDiv} input, ${TextInputDiv} > form {
     width: 95%;
     height: ${(props) => (props.media.isPc ? '' : '35px')};
     padding: 1% 0% 1% 2%;
     border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
     border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+  }
+
+  ${TextInputDiv} #profileInput {
+    border: 0px;
+  }
+
+  #profileInput {
+    color: ${(props) => (props.errorz ? 'gray' : ({ theme }) => theme.palette.black)};
   }
 
   ${TextInputDiv}:nth-child(2) div {
@@ -59,7 +73,7 @@ export const EnrollmentStyle = styled.div`
     font-size: 1rem;
   }
 
-  & > div:nth-child(2) {
+  & > div > div:nth-child(2) {
     color: ${(props) =>
       props.colorTheme === 'game'
         ? ({ theme }) => theme.palette.black
@@ -82,7 +96,15 @@ export const EnrollmentStyle = styled.div`
   }
 
   /* 저장 */
-  & > div:last-child {
+  & > div > div:last-child {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+  }
+
+  & > div > div:last-child div {
+    margin: 0 30px;
     width: 6vw;
     height: 5vh;
     color: ${(props) =>
@@ -109,10 +131,6 @@ export const EnrollmentStyle = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-
-    margin: 0 auto;
-    margin-top: 10vh;
     cursor: pointer;
-    pointer-events: ${(props) => (props.errorz ? 'none' : 'all')};
   }
 `;

@@ -97,7 +97,6 @@ const SignMain = () => {
       }
       if (!emailExp.current.test(email)) {
         if (!alert('이메일 형식이 일치하지 않습니다')) {
-          setEmail('');
           return;
         }
       }

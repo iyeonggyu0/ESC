@@ -320,3 +320,13 @@ Img
 - TextEditor 라이브러리 적용
 - TextEditor + multer 적용
 - Product Models(상품 데이터 테이블) 제작
+
+<br>
+
+### ProductPage3
+
+###### Jan 25, 2023
+
+- 상품등록 TextEditor를 이미지형식으로 변경
+- 새로고침, 뒤로가기 방지
+- 상품등록 취소 시 이미지 삭제

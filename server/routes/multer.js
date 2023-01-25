@@ -63,55 +63,29 @@ router.post("/upload/profile", isLoggedIn, (req, res) => {
   });
 });
 
-// product enrollment
-// try {
-//   fs.readdirSync("../client/public/img/product/uploads"); // 폴더 확인
-// } catch (err) {
-//   console.error("uploads 폴더가 없습니다. 폴더를 생성합니다.");
-//   fs.mkdirSync("../client/public/img/product/uploads"); // 폴더 생성
-// }
+router.post("/upload/:tpye/:name", (req, res) => {
+  const type = req.params.tpye;
+  const name = req.params.name;
 
-// const productEnrollmentStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "../client/public/img/product/uploads/");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, `${uuid()}.${mime.extension(file.mimetype)}`);
-//   },
-// });
-
-// const productEnrollmentUpload = multer({
-//   // (6)
-//   productEnrollmentStorage,
-//   fileFilter: (req, file, cb) => {
-//     if (["image/jpeg", "image/jpg", "image/png"].includes(file.mimetype)) cb(null, true);
-//     else cb(new Error("해당 파일의 형식을 지원하지 않습니다."), false);
-//   },
-//   limits: {
-//     fileSize: 1024 * 1024 * 5,
-//   },
-// });
-//
-router.post("/upload/productEnrollment", (req, res) => {
   try {
-    fs.readdirSync("../client/public/img/product/uploads"); // 폴더 확인
+    fs.readdirSync(`../client/public/img/${type}/${name}`); // 폴더 확인
   } catch (err) {
-    console.error("uploads 폴더가 없습니다. 폴더를 생성합니다.");
-    fs.mkdirSync("../client/public/img/product/uploads"); // 폴더 생성
+    console.error(`img/${type}/${name} 폴더가 없습니다. 폴더를 생성합니다.`);
+    fs.mkdirSync(`../client/public/img/${type}/${name}`); // 폴더 생성
   }
 
-  const productEnrollmentStorage = multer.diskStorage({
+  const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, "../client/public/img/product/uploads/");
+      cb(null, `../client/public/img/${type}/${name}/`);
     },
     filename: (req, file, cb) => {
       cb(null, `${uuid()}.${mime.extension(file.mimetype)}`);
     },
   });
 
-  const productEnrollmentUpload = multer({
+  const upload = multer({
     // (6)
-    productEnrollmentStorage,
+    storage,
     fileFilter: (req, file, cb) => {
       if (["image/jpeg", "image/jpg", "image/png"].includes(file.mimetype)) cb(null, true);
       else cb(new Error("해당 파일의 형식을 지원하지 않습니다."), false);
@@ -119,19 +93,35 @@ router.post("/upload/productEnrollment", (req, res) => {
     limits: {
       fileSize: 1024 * 1024 * 5,
     },
-  }).single("file");
+  }).single(`${type}`);
 
-  productEnrollmentUpload(req, res, (err) => {
+  upload(req, res, (err) => {
     if (err) {
       return res.json({ success: false, err });
     }
     return res.json({
       success: true,
       image: res.req.file.path,
+      imagePath: `img/${type}/${name}`,
       fileName: res.req.file.filename,
     });
   });
-  router.use("../client/public/img/product/uploads", express.static(path.join(__dirname, "../client/public/img/product/uploads")));
+  router.use(`../client/public/img/${type}/${name}`, express.static(path.join(__dirname, `../client/public/img/${type}/${name}`)));
+});
+
+router.post("/delete", async (req, res) => {
+  const route = req.body.route;
+  if (route === null) {
+    res.status(403).send(`null`);
+  } else {
+    try {
+      fs.unlinkSync(`../client/public/img/${route}`);
+      console.log("image delete");
+      res.status(201).send(`../client/public/img/${route} 이미지 삭제완료`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 });
 
 module.exports = router;

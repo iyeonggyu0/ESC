@@ -28,7 +28,6 @@ const TextEditor = ({ textData, textDataFun }) => {
             data.append('file', file);
           });
           if (parma === process.env.LINK + '/product/enrollment') {
-            console.log('실행');
             data.append('file', loader.target.files[0]);
             axios
               .post(`${axiosInstance}/multer/upload/productEnrollment`, data, {
