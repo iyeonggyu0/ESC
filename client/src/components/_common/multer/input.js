@@ -5,7 +5,7 @@ import { axiosInstance } from '../../../util/axios';
 //  <FileUploadInput type={1} name={2} fun={set함수명} />
 //                   저장경로: ..1/2  / 함수 = 저장성공시 경로/파일명
 
-const FileUploadInput = ({ type, name, fun }) => {
+const FileUploadInput = ({ type, name, fun, textFun }) => {
   const handleFileOnChange = (event) => {
     // 서버 api에 Post 요청
     const formData = new FormData();
@@ -16,8 +16,8 @@ const FileUploadInput = ({ type, name, fun }) => {
       })
       .then((res) => {
         console.log(res);
-        console.log(`${res.data.imagePath}/${res.data.fileName}`);
-        fun(`${res.data.imagePath}/${res.data.fileName}`);
+        localStorage.setItem('img', `${res.data.imagePath}`);
+        textFun(`${res.data.imagePath}/${res.data.fileName}`, fun);
       })
       .catch((err) => {
         console.error(err);

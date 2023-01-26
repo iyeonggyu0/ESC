@@ -39,3 +39,9 @@ build
 /server/.env
 /servercopy
 /server/.craco.config.js
+
+# 이미지
+/client/public/img/product/
+/client/public/img/profileImg/
+/client/public/img/product
+/client/public/img/profileImg

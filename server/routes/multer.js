@@ -114,12 +114,15 @@ router.post("/delete", async (req, res) => {
   if (route === null) {
     res.status(403).send(`null`);
   } else {
-    try {
-      fs.unlinkSync(`../client/public/img/${route}`);
-      console.log("image delete");
-      res.status(201).send(`../client/public/img/${route} 이미지 삭제완료`);
-    } catch (error) {
-      console.log(error);
+    const directory = fs.existsSync(`../client/public/${route}`);
+    if (directory) {
+      try {
+        fs.rmdirSync(`../client/public/${route}`, { recursive: true });
+        console.log("image delete");
+        res.status(201).send(`../client/public/${route} 이미지 삭제완료`);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 });
