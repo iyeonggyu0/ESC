@@ -42,6 +42,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: "/img/product/notImg.png",
       },
+      sale: {
+        // 판매 수
+        type: DataTypes.INTEGER(20),
+        allowNull: true,
+        defaultValue: 0,
+      },
     },
     {
       sequelize,

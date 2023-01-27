@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { axiosInstance } from '../util/axios';
-import { decrypt } from '@util/crypto';
+// import { decrypt } from '@util/crypto';
 axios.defaults.withCredentials = true;
 
 export default class ProductService {
@@ -25,5 +25,17 @@ export default class ProductService {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  get(req) {
+    const promise = axios.get(`${axiosInstance}product/get/${req.type}`);
+    const productData = promise
+      .then((res) => {
+        return res.data;
+      })
+      .catch(() => {
+        return null;
+      });
+    return productData;
   }
 }

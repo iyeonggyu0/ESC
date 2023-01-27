@@ -339,3 +339,12 @@ Img
 
 - 상품 리덕스 제작
 - back-end multer모듈화
+
+<br>
+
+### ProductPage5
+
+###### Jan 27, 2023
+
+- product get
+- productPage

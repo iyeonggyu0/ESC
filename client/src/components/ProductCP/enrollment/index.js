@@ -231,12 +231,7 @@ const ProductEnrollmentMain = () => {
                   </TextInputDiv>
                   <TextInputDiv>
                     <p>PRICE</p>
-                    <input
-                      type="text"
-                      autoComplete="off"
-                      value={price.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      onChange={onChangePrice}
-                    />
+                    <input type="text" autoComplete="off" value={price} onChange={onChangePrice} />
                   </TextInputDiv>
                   <TextInputDiv style={{ pointerEvents: error ? 'none' : 'all' }}>
                     <p>IMG</p>

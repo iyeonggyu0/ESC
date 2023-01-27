@@ -1,18 +1,14 @@
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive';
 
 export const useMedia = () => {
   const isPc = useMediaQuery({
-    query: "(min-width:1024px)",
+    query: '(min-width:768px)',
   });
-  const isTablet = useMediaQuery({
-    query: "(min-width:768px) and (max-width:1023px)",
-  });
-
   const isMobile = useMediaQuery({
-    query: "(max-width:767px)",
+    query: '(max-width:767px)',
   });
 
-  return { isPc, isTablet, isMobile };
+  return { isPc, isMobile };
 };
 
 //  const media = useMedia();

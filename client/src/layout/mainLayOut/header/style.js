@@ -143,13 +143,13 @@ export const MenuDiv = styled.div`
   }
 
   div:first-child > ${MenuUl}:nth-child(1) {
-    margin-right: 58px;
+    margin-right: 45px;
   }
   div:first-child > ${MenuUl}:nth-child(2) {
     margin-right: 52px;
   }
   div:first-child > ${MenuUl}:nth-child(3) {
-    margin-right: 35px;
+    margin-right: 47px;
   }
 
   div:nth-child(2) {

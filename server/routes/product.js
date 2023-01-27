@@ -17,13 +17,22 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       name: req.body.name,
       type: req.body.type,
       price: req.body.price,
-      img: req.body.img,
-      detailedImg: req.body.detailedImg,
+      img: "/" + req.body.img,
+      detailedImg: "/" + req.body.detailedImg,
     });
     res.status(201).send("상품 생성:" + data);
   } catch (err) {
     console.error(err);
     next(err);
+  }
+});
+
+router.get("/get/all", async (req, res) => {
+  try {
+    const data = await Product.findAll();
+    res.status(201).send(data);
+  } catch (err) {
+    console.error(err);
   }
 });
 

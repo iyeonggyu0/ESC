@@ -58,6 +58,11 @@ const LayOutHeader = () => {
     [dispatch, navigate],
   );
 
+  // document.getElementsByTagName('li').onclick = function () {
+  //   console.log('클릭');
+  //   setMenu('none');
+  // };
+
   return (
     <>
       {media.isPc && (
@@ -68,7 +73,7 @@ const LayOutHeader = () => {
               <Logo className={`${colorTheme}`} onClick={() => navigate('/')}></Logo>
               <Ul>
                 <li onClick={() => navigate('/estimate')}>견적내기</li>
-                <li onClick={() => navigate('/product')}>전체상품</li>
+                <li onClick={() => navigate('/product/list/ALL')}>전체상품</li>
                 <li onClick={() => navigate('/community')}>커뮤니티</li>
                 <li onClick={() => navigate('/service')}>고객센터</li>
               </Ul>
@@ -109,14 +114,14 @@ const LayOutHeader = () => {
                     <li onClick={() => navigate('/')}>취향찾기</li>
                   </MenuUl>
                   <MenuUl>
-                    <li onClick={() => navigate('/')}>글쓰기</li>
+                    <li onClick={() => navigate('/product/list/CASE')}>CASE</li>
+                    <li onClick={() => navigate('/product/list/PCB')}>PCB</li>
+                    <li onClick={() => navigate('/product/list/PLATE')}>PLATE</li>
+                    <li onClick={() => navigate('/product/list/SWITCHES')}>SWITCHES</li>
+                    <li onClick={() => navigate('/product/list/KEYCAPS')}>KEYCAPS</li>
                   </MenuUl>
                   <MenuUl>
-                    <li onClick={() => navigate('/')}>CASE</li>
-                    <li onClick={() => navigate('/')}>PCB</li>
-                    <li onClick={() => navigate('/')}>PLATE</li>
-                    <li onClick={() => navigate('/')}>SWITCHES</li>
-                    <li onClick={() => navigate('/')}>KEYCAPS</li>
+                    <li onClick={() => navigate('/')}>글쓰기</li>
                   </MenuUl>
                   <MenuUl>
                     <li onClick={() => navigate('/')}>커스텀 과정</li>
@@ -141,7 +146,7 @@ const LayOutHeader = () => {
         </div>
       )}
 
-      {(media.isMobile || media.isTablet) && (
+      {media.isMobile && (
         <div>
           <Header colorTheme={colorTheme} media={media}>
             <HeaderSection colorTheme={colorTheme}>
@@ -219,11 +224,12 @@ const LayOutHeader = () => {
                 )}
                 {mobileMenu2 === 'block' && (
                   <div>
-                    <p>CASE</p>
-                    <p>PCB</p>
-                    <p>PLATE</p>
-                    <p>SWITCHES</p>
-                    <p>KEYCAPS</p>
+                    <p onClick={() => navigate('/product/list/ALL')}>전체상품</p>
+                    <p onClick={() => navigate('/product/list/CASE')}>CASE</p>
+                    <p onClick={() => navigate('/product/list/PCB')}>PCB</p>
+                    <p onClick={() => navigate('/product/list/PLATE')}>PLATE</p>
+                    <p onClick={() => navigate('/product/list/SWITCHES')}>SWITCHES</p>
+                    <p onClick={() => navigate('/product/list/KEYCAPS')}>KEYCAPS</p>
                   </div>
                 )}
               </MobileMenuDiv>

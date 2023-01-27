@@ -68,7 +68,8 @@ function App() {
           <Route path="/find-password" element={<FindPasswordPage />} />
 
           {/* 상품 */}
-          <Route path="/product" element={<ProductPage />} />
+          <Route path="/product/list/:filter" element={<ProductPage />} />
+          {/* <Route path="/product/:productId" element={<ProductPage />} /> */}
           <Route path="/product/enrollment" element={<ProductEnrollmentPage />} />
 
           {/* 로그인 필수 페이지 */}
