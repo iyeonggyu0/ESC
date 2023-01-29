@@ -150,12 +150,12 @@ const ProductEnrollmentMain = () => {
                     <p>TYPE</p>
                     <div>
                       <span
-                        onClick={() => setType('case')}
+                        onClick={() => setType('CASE')}
                         style={{
                           color:
-                            colorTheme === 'game' && type === 'case'
+                            colorTheme === 'game' && type === 'CASE'
                               ? 'black'
-                              : colorTheme !== 'game' && type === 'case'
+                              : colorTheme !== 'game' && type === 'CASE'
                               ? '#796763'
                               : '#AEAEAE',
                         }}
@@ -163,12 +163,12 @@ const ProductEnrollmentMain = () => {
                         CASE
                       </span>
                       <span
-                        onClick={() => setType('pcb')}
+                        onClick={() => setType('PCB')}
                         style={{
                           color:
-                            colorTheme === 'game' && type === 'pcb'
+                            colorTheme === 'game' && type === 'PCB'
                               ? 'black'
-                              : colorTheme !== 'game' && type === 'pcb'
+                              : colorTheme !== 'game' && type === 'PCB'
                               ? '#796763'
                               : '#AEAEAE',
                         }}
@@ -176,12 +176,12 @@ const ProductEnrollmentMain = () => {
                         PCB
                       </span>
                       <span
-                        onClick={() => setType('plate')}
+                        onClick={() => setType('PLATE')}
                         style={{
                           color:
-                            colorTheme === 'game' && type === 'plate'
+                            colorTheme === 'game' && type === 'PLATE'
                               ? 'black'
-                              : colorTheme !== 'game' && type === 'plate'
+                              : colorTheme !== 'game' && type === 'PLATE'
                               ? '#796763'
                               : '#AEAEAE',
                         }}
@@ -189,12 +189,12 @@ const ProductEnrollmentMain = () => {
                         PLATE
                       </span>
                       <span
-                        onClick={() => setType('switches')}
+                        onClick={() => setType('SWITCHES')}
                         style={{
                           color:
-                            colorTheme === 'game' && type === 'switches'
+                            colorTheme === 'game' && type === 'SWITCHES'
                               ? 'black'
-                              : colorTheme !== 'game' && type === 'switches'
+                              : colorTheme !== 'game' && type === 'SWITCHES'
                               ? '#796763'
                               : '#AEAEAE',
                         }}
@@ -202,12 +202,12 @@ const ProductEnrollmentMain = () => {
                         SWITCHES
                       </span>
                       <span
-                        onClick={() => setType('keycaps')}
+                        onClick={() => setType('KEYCAPS')}
                         style={{
                           color:
-                            colorTheme === 'game' && type === 'keycaps'
+                            colorTheme === 'game' && type === 'KEYCAPS'
                               ? 'black'
-                              : colorTheme !== 'game' && type === 'keycaps'
+                              : colorTheme !== 'game' && type === 'KEYCAPS'
                               ? '#796763'
                               : '#AEAEAE',
                         }}
@@ -215,12 +215,12 @@ const ProductEnrollmentMain = () => {
                         KEYCAPS
                       </span>
                       <span
-                        onClick={() => setType('etc')}
+                        onClick={() => setType('ETC')}
                         style={{
                           color:
-                            colorTheme === 'game' && type === 'etc'
+                            colorTheme === 'game' && type === 'ETC'
                               ? 'black'
-                              : colorTheme !== 'game' && type === 'etc'
+                              : colorTheme !== 'game' && type === 'ETC'
                               ? '#796763'
                               : '#AEAEAE',
                         }}

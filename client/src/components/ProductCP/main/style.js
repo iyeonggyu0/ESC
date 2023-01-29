@@ -36,6 +36,8 @@ export const ProductMainDivStyle = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    z-index: 3;
+    border-collapse: separate;
   }
 
   & > div:nth-child(2) > div:first-child {
@@ -43,6 +45,10 @@ export const ProductMainDivStyle = styled.div`
   }
   & > div:nth-child(2) > div:nth-child(2) {
     left: ${(props) => (props.media.isPc ? '150px' : '80px')};
+  }
+
+  & > div:nth-child(2) > div:nth-child(3) {
+    right: 0;
   }
 
   & > div:nth-child(2) > div > div:first-child {
@@ -57,7 +63,6 @@ export const ProductMainDivStyle = styled.div`
     width: ${(props) => (props.media.isPc ? '130px' : '70px')};
     height: ${(props) => (props.media.isPc ? '50px' : '25px')};
     background-color: white;
-    z-index: 30;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,17 +75,18 @@ export const ProductMainDivStyle = styled.div`
   & > div:nth-child(2) > div > div:hover {
     background-color: #e6e6e6;
   }
-
-  .icon {
+  & > div:nth-child(2) > div .icon {
     font-size: ${(props) => (props.media.isPc ? '1rem' : '0.7rem')};
     padding-left: 10px;
   }
 
   ${ProductFormDiv} {
+    z-index: 1;
     width: 100%;
     display: flex;
-    justify-content: ${(props) => (props.media.isPc ? 'space-between' : 'space-evenly')};
+    justify-content: start;
     flex-wrap: wrap;
+    overflow: initial;
   }
 
   /* color: ${(props) =>
