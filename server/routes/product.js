@@ -27,7 +27,7 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/get/:filter/:sort", async (req, res) => {
+router.get("/get/all/:filter/:sort", async (req, res) => {
   const { filter } = req.params;
   const { sort } = req.params;
 
@@ -80,6 +80,26 @@ router.get("/get/:filter/:sort", async (req, res) => {
   //     console.error(err);
   //   }
   // }
+});
+
+router.get("/get/one/:productId", async (req, res) => {
+  const { productId } = req.params;
+  try {
+    const oneData = await Product.findOne({
+      where: { id: productId },
+    });
+    res.status(201).send(oneData);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.delete("/delete/:productId", async (req, res) => {
+  const { productId } = req.params;
+  const deletedCount = await Product.destroy({ where: { id: productId } });
+  if (!deletedCount) {
+    res.status(404).send({ message: "There is no member with the id!" });
+  }
 });
 
 module.exports = router;

@@ -348,7 +348,8 @@ Img
 
 - product get
 - productPage
-- <br>
+
+<br>
 
 ### ProductPage6
 
@@ -357,3 +358,12 @@ Img
 - product get logic filter / sort 적용
 - productFrom 제작 완료
 - productPage Admin mod제작
+
+<br>
+
+### ProductPage7
+
+###### Jan 30, 2023
+
+- product delete
+- 수정 페이지

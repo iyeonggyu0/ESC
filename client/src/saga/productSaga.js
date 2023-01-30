@@ -8,6 +8,10 @@ import {
   productGetData,
   productGetDataSuccess,
   productGetDataFailure,
+  productGetOneData,
+  productGetOneDataSuccess,
+  productDelete,
+  productDeleteSuccess,
 } from '@reducer/productReducer';
 import ProductService from '../services/productService';
 
@@ -29,6 +33,25 @@ function* productGetDataSaga(action) {
   }
 }
 
+function* productGetOneDataSaga(action) {
+  try {
+    const productData = yield call(ProductService.prototype.getOne, action.payload);
+    yield action.payload.setProductData(productData);
+    yield put(productGetOneDataSuccess());
+  } catch (err) {
+    yield console.error(err);
+  }
+}
+
+function* productDeleteSaga(action) {
+  try {
+    yield call(ProductService.prototype.delete, action.payload);
+    yield put(productDeleteSuccess());
+  } catch (err) {
+    yield console.error(err);
+  }
+}
+
 // listner
 function* watchCreate() {
   yield takeLatest(productCreate.type, createSaga);
@@ -38,12 +61,20 @@ function* watchProductGetData() {
   yield takeLatest(productGetData.type, productGetDataSaga);
 }
 
+function* watchProductGetOneData() {
+  yield takeLatest(productGetOneData.type, productGetOneDataSaga);
+}
+
+function* watchProductDelete() {
+  yield takeLatest(productDelete.type, productDeleteSaga);
+}
+
 export default function* productSaga() {
   yield all([
     fork(watchCreate),
     fork(watchProductGetData),
-    // fork(watchUserSign),
-    // fork(watchGetUserData),
+    fork(watchProductGetOneData),
+    fork(watchProductDelete),
     // fork(watchpQuitup),
     // fork(watchSendEmail),
     // fork(watchPasswordUpdate),

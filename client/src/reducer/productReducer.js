@@ -26,6 +26,7 @@ export const productReducer = createSlice({
       state.error = action.error;
     },
 
+    // getAll
     productGetData: (state) => {
       state.isLoading = true;
       state.isDone = false;
@@ -41,6 +42,30 @@ export const productReducer = createSlice({
       state.isDone = true;
       state.error = action.error;
     },
+
+    // getOne
+    productGetOneData: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productGetOneDataSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+
+    // delete
+    productDelete: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productDeleteSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
   },
 });
 
@@ -51,4 +76,8 @@ export const {
   productGetData,
   productGetDataSuccess,
   productGetDataFailure,
+  productGetOneData,
+  productGetOneDataSuccess,
+  productDelete,
+  productDeleteSuccess,
 } = productReducer.actions;

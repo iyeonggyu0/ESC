@@ -20,6 +20,7 @@ import FindPasswordPage from './pages/findPasswordPage.js';
 import MyPage from './pages/myPage';
 import ProductPage from './pages/productMain.js';
 import ProductEnrollmentPage from './pages/productEnrollment.js';
+import ProductModifyPage from './pages/productModify';
 
 export const ThemeContext = createContext(null);
 
@@ -71,6 +72,7 @@ function App() {
           <Route path="/product/list/:filter" element={<ProductPage />} />
           {/* <Route path="/product/:productId" element={<ProductPage />} /> */}
           <Route path="/product/enrollment" element={<ProductEnrollmentPage />} />
+          <Route path="/product/modify/:productId" element={<ProductModifyPage />} />
 
           {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>

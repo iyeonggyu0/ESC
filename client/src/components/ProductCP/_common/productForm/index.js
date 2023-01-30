@@ -20,7 +20,7 @@ const ProductForm = ({ productData, productModifyMod }) => {
 
   const nav = () => {
     if (productModifyMod) {
-      window.open(process.env.LINK + `/product/modify/${data.id}`);
+      window.open(`/product/modify/${data.id}`);
     }
     if (!productModifyMod) {
       navigate(`/product/${data.id}`);

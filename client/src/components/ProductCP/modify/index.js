@@ -1,33 +1,19 @@
-import { useContext, useState, useEffect, useCallback } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
 import NotAdmin from '../../_common/notAdmin';
 import NotLogin from '../../_common/notLogin';
 import { useInput } from '@hooks/useInput';
-import { axiosInstance } from '@util/axios';
-import { productCreate } from '@reducer/productReducer';
+
+import { productGetOneData, productDelete } from '@reducer/productReducer';
 
 import { EnrollmentStyle, TextInputDiv, TextEditorDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { useCallback } from 'react';
 
-const ProductEnrollmentMain = () => {
-  const media = useMedia();
-  const dispatch = useDispatch();
-  const colorTheme = useContext(ThemeContext).colorTheme;
-  const userData = useContext(ThemeContext).userInfo.userData;
-  const login = useContext(ThemeContext).userInfo.login;
-
-  const [name, onChangeName, setName] = useInput('');
-  const [type, setType] = useState('');
-  const [price, onChangePrice, setPrice] = useInput('');
-
-  const [productMainImg, setProductMainImg] = useState(null);
-  const [productImg, setProductImg] = useState(null);
-
-  const [error, setError] = useState(null);
-
+const ProductModifyMain = () => {
   // 새로고침 / 뒤로가기방지
   const preventClose = (e) => {
     e.preventDefault();
@@ -54,26 +40,76 @@ const ProductEnrollmentMain = () => {
     // eslint-disable-next-line
   }, []);
 
+  // /////////////////////////////////////////////////////////////////
+
+  const media = useMedia();
+  const dispatch = useDispatch();
+  const colorTheme = useContext(ThemeContext).colorTheme;
+  const userData = useContext(ThemeContext).userInfo.userData;
+  const login = useContext(ThemeContext).userInfo.login;
+
+  const [name, onChangeName, setName] = useInput('');
+  const [type, setType] = useState('');
+  const [price, onChangePrice, setPrice] = useInput('');
+
+  const [productMainImg, setProductMainImg] = useState(null);
+  const [productImg, setProductImg] = useState(null);
+
+  const [productData, setProductData] = useState(null);
+
+  const [error, setError] = useState(null);
+
+  //  product Data
+  const productId = useParams().productId;
+
+  // dataGet
+  useEffect(() => {
+    dispatch(productGetOneData({ productId: productId, setProductData: setProductData }));
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (productData !== null) {
+      setName(productData.name);
+      setType(productData.type);
+      setPrice(productData.price);
+    }
+    // eslint-disable-next-line
+  }, [productData]);
+
+  // const data = {
+  //   id: productData === null ? 'null' : productData.id,
+  //   name: productData === null ? 'null' : productData.name,
+  //   price: productData === null ? 'null' : `${productData.price}`,
+  //   grade: productData === null ? 'null' : productData.grade,
+  //   img:
+  //     productData === null
+  //       ? 'null'
+  //       : productData.img === '/null'
+  //       ? '/img/product/notImg.png'
+  //       : `"${productData.img}"`,
+  //   detailedImg:
+  //     productData === null
+  //       ? 'null'
+  //       : productData.detailedImg === '/null'
+  //       ? '/img/product/notImg.png'
+  //       : `"${productData.detailedImg}"`,
+  // };
+
+  // axios
+  //   .post(`${axiosInstance}multer/delete`, {
+  //     route: img,
+  //   })
+  //   .then((res) => {
+  //     console.log(res);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   });
+
   const textFun = (text, f) => {
     f(text);
   };
-
-  useEffect(() => {
-    const img = localStorage.getItem('img');
-    if (img !== null) {
-      axios
-        .post(`${axiosInstance}multer/delete`, {
-          route: img,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     if (name.length > 0 && type.length > 0 && price.length > 0) {
@@ -84,44 +120,16 @@ const ProductEnrollmentMain = () => {
     }
   }, [name, type, price]);
 
-  const cancelHandler = useCallback((e) => {
-    e.preventDefault();
-    setProductMainImg(null);
-    setProductImg(null);
-    const img = localStorage.getItem('img');
-    if (img !== null) {
-      axios
-        .post(`${axiosInstance}multer/delete`, {
-          route: img,
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-    localStorage.removeItem('img');
-    window.location.replace('');
-  }, []);
-
-  const onProductCreateHandler = useCallback(
+  const productDeleteHandler = useCallback(
     (e) => {
       e.preventDefault();
-
-      const data = {
-        name: name,
-        type: type,
-        price: price,
-        img: productMainImg,
-        detailedImg: productImg,
-      };
-      dispatch(productCreate({ data: data, fun: { setName, setType, setPrice } }));
+      if (window.confirm('삭제하시겠습니까?')) {
+        dispatch(productDelete({ produceId: productData.id }));
+      }
     },
     // eslint-disable-next-line
-    [name, type, price, productMainImg, productImg, dispatch],
+    [dispatch],
   );
-
   return (
     <>
       {login && (
@@ -129,7 +137,7 @@ const ProductEnrollmentMain = () => {
           {userData.authority === 'admin' && (
             <EnrollmentStyle colorTheme={colorTheme} media={media} errorz={error}>
               <div>
-                <p>Add Product</p>
+                <p>Modify Product</p>
                 <div>
                   <TextInputDiv>
                     <p>NAME</p>
@@ -233,7 +241,7 @@ const ProductEnrollmentMain = () => {
                     <FileUploadInput
                       type={'product'}
                       name={name}
-                      fun={setProductMainImg}
+                      // fun={setProductMainImg}
                       textFun={textFun}
                     />
                   </TextInputDiv>
@@ -250,13 +258,19 @@ const ProductEnrollmentMain = () => {
                 <div>
                   <div
                     style={{ backgroundColor: '#ff6d6d', border: '0px' }}
-                    onClick={cancelHandler}
+                    onClick={productDeleteHandler}
+                  >
+                    삭제
+                  </div>
+                  <div
+                    style={{ backgroundColor: '#ff6d6d', border: '0px' }}
+                    // onClick={cancelHandler}
                   >
                     취소
                   </div>
                   <div
                     style={{ pointerEvents: error ? 'none' : 'all' }}
-                    onClick={onProductCreateHandler}
+                    // onClick={onProductCreateHandler}
                   >
                     저장
                   </div>
@@ -271,4 +285,4 @@ const ProductEnrollmentMain = () => {
     </>
   );
 };
-export default ProductEnrollmentMain;
+export default ProductModifyMain;

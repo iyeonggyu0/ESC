@@ -20,7 +20,6 @@ const ProductMain = () => {
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
-  console.log(userData);
 
   const [filterFocus, setFilterFocus] = useState(false);
   const [sortFocus, setSortFocus] = useState(false);
