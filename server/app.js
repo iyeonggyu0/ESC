@@ -54,9 +54,9 @@ app.use(passport.session());
 
 // app.use("/post", postRouter);
 // app.use("/admin", userRouter);
-app.use("/user", userRouter);
-app.use("/product", procudtRouter);
-app.use("/multer", multerRouter);
+app.use("/api/user", userRouter);
+app.use("/api/product", procudtRouter);
+app.use("/api/multer", multerRouter);
 
 // app.get("*", function (req, res) {
 //  res.sendFile(__dirname + "/build/index.html");

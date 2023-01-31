@@ -367,3 +367,11 @@ Img
 
 - product delete
 - 수정 페이지
+
+<br>
+
+### ProductPage8
+
+###### Jan 31, 2023
+
+- 수정 페이지 완성

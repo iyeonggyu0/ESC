@@ -12,7 +12,7 @@ export default class UserService {
     };
 
     const promise = axios
-      .post(`${axiosInstance}user/login`, userData, {
+      .post(`${axiosInstance}api/user/login`, userData, {
         withCredentials: true,
       })
       .then((res) => {
@@ -40,7 +40,7 @@ export default class UserService {
 
   putData(req) {
     axios
-      .put(`${axiosInstance}user/put/profile`, {
+      .put(`${axiosInstance}api/user/put/profile`, {
         email: req.data.email,
         newEmail: req.data.newEmail,
         nickName: req.data.nickName,
@@ -67,7 +67,7 @@ export default class UserService {
 
   logout() {
     axios
-      .post(`${axiosInstance}user/logout`)
+      .post(`${axiosInstance}api/user/logout`)
       .then(() => {
         console.log('로그아웃');
         window.location.replace('/');
@@ -79,7 +79,7 @@ export default class UserService {
   }
 
   getUser() {
-    const promise = axios.get(`${axiosInstance}user/loginCheck`);
+    const promise = axios.get(`${axiosInstance}api/user/loginCheck`);
     const userData = promise
       .then((res) => {
         const decryptData = decrypt(res.data, process.env.REACT_APP_USER_KEY);
@@ -94,7 +94,7 @@ export default class UserService {
 
   sign(data) {
     axios
-      .post(`${axiosInstance}user/`, {
+      .post(`${axiosInstance}api/user/`, {
         email: data.data.email,
         name: data.data.name,
         password: data.data.password,
@@ -115,7 +115,7 @@ export default class UserService {
 
   quitup(req) {
     axios
-      .delete(`${axiosInstance}user/delete/${req.data.email}`)
+      .delete(`${axiosInstance}api/user/delete/${req.data.email}`)
       .then(() => {
         if (!alert('회원탈퇴 완료')) {
           window.location.replace('/');
@@ -136,7 +136,7 @@ export default class UserService {
 
   pwUpdate(data) {
     axios
-      .put(`${axiosInstance}user/put/pw`, {
+      .put(`${axiosInstance}api/user/put/pw`, {
         email: data.data.email,
         password: data.data.password,
       })
@@ -155,7 +155,7 @@ export default class UserService {
   sendEmail(data) {
     console.log(data);
     axios
-      .post(`${axiosInstance}user/sendEmail`, {
+      .post(`${axiosInstance}api/user/sendEmail`, {
         email: data.data.email,
         auth: data.data.auth,
         check: data.data.check,

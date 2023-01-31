@@ -102,14 +102,14 @@ router.post("/upload/:tpye/:name", (req, res) => {
     return res.json({
       success: true,
       image: res.req.file.path,
-      imagePath: `img/${type}/${name}`,
+      imagePath: `/img/${type}/${name}`,
       fileName: res.req.file.filename,
     });
   });
   router.use(`../client/public/img/${type}/${name}`, express.static(path.join(__dirname, `../client/public/img/${type}/${name}`)));
 });
 
-router.post("/delete", async (req, res) => {
+router.post("/delete/route", async (req, res) => {
   const route = req.body.route;
   if (route === null) {
     res.status(403).send(`null`);
@@ -118,6 +118,26 @@ router.post("/delete", async (req, res) => {
     if (directory) {
       try {
         fs.rmdirSync(`../client/public/${route}`, { recursive: true });
+        console.log("image delete");
+        res.status(201).send(`../client/public/${route} 이미지 삭제완료`);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+});
+
+router.post("/delete/fill", async (req, res) => {
+  const route = req.body.route;
+  if (route === null) {
+    res.status(403).send(`null`);
+  } else {
+    const directory = fs.existsSync(`../client/public/${route}`);
+    if (directory) {
+      try {
+        fs.unlink(`../client/public/${route}`, (err) => {
+          console.error(err);
+        });
         console.log("image delete");
         res.status(201).send(`../client/public/${route} 이미지 삭제완료`);
       } catch (error) {

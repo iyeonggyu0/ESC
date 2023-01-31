@@ -12,6 +12,9 @@ import {
   productGetOneDataSuccess,
   productDelete,
   productDeleteSuccess,
+  productModify,
+  productModifySuccess,
+  productModifyFailure,
 } from '@reducer/productReducer';
 import ProductService from '../services/productService';
 
@@ -52,6 +55,15 @@ function* productDeleteSaga(action) {
   }
 }
 
+function* productModifySaga(action) {
+  try {
+    yield call(ProductService.prototype.put, action.payload);
+    yield put(productModifySuccess());
+  } catch (err) {
+    yield put(productModifyFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
 // listner
 function* watchCreate() {
   yield takeLatest(productCreate.type, createSaga);
@@ -69,13 +81,17 @@ function* watchProductDelete() {
   yield takeLatest(productDelete.type, productDeleteSaga);
 }
 
+function* watchProductModify() {
+  yield takeLatest(productModify.type, productModifySaga);
+}
+
 export default function* productSaga() {
   yield all([
     fork(watchCreate),
     fork(watchProductGetData),
     fork(watchProductGetOneData),
     fork(watchProductDelete),
-    // fork(watchpQuitup),
+    fork(watchProductModify),
     // fork(watchSendEmail),
     // fork(watchPasswordUpdate),
     // fork(watchputData),

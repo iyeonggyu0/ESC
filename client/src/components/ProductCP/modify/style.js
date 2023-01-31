@@ -4,11 +4,12 @@ export const TextInputDiv = styled.div``;
 export const TextEditorDiv = styled.div``;
 
 export const EnrollmentStyle = styled.div`
-  height: calc(100vh - 71px);
+  /* height: calc(100vh - 71px); */
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 10vh auto;
 
   & > div:first-child {
     width: ${(props) => (props.media.isPc ? '75vw' : '90vw')};
@@ -70,7 +71,7 @@ export const EnrollmentStyle = styled.div`
     cursor: pointer;
     font-family: Ubuntu;
     padding: 0 2%;
-    font-size: 1rem;
+    font-size: ${(props) => (props.media.isPc ? '1rem' : '0.8rem')};
   }
 
   & > div > div:nth-child(2) {
@@ -80,6 +81,17 @@ export const EnrollmentStyle = styled.div`
         : ({ theme }) => theme.palette.basicFont};
     padding-bottom: 3vh;
     border-bottom: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+  }
+
+  ${TextInputDiv}:last-child > form {
+    width: calc(90% - 20vh);
+  }
+
+  ${TextInputDiv}:last-child .mainImg {
+    width: 20vh;
+    height: 20vh;
+    margin-left: 2vw;
+    background: url(${(props) => props.mainImg}) no-repeat center center / contain;
   }
 
   /* 텍스트 에디터 */
@@ -93,6 +105,13 @@ export const EnrollmentStyle = styled.div`
       props.colorTheme === 'game'
         ? ({ theme }) => theme.palette.black
         : ({ theme }) => theme.palette.basicFont};
+  }
+
+  ${TextEditorDiv} div.img {
+    width: 30vw;
+    height: 30vw;
+    margin-bottom: 10vh;
+    background: url(${(props) => props.img}) no-repeat center center / contain;
   }
 
   /* 저장 */

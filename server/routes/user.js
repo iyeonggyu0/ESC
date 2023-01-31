@@ -113,10 +113,6 @@ router.put("/put/pw", async (req, res, next) => {
   }
 });
 
-router.put("/text", (res) => {
-  res.status(200).send("확인");
-});
-
 router.put("/put/profile", async (req, res) => {
   const newPw = await decryptFun(req.body.newPassword, process.env.REACT_APP_USER_KEY);
   const basicPw = await decryptFun(req.body.password, process.env.REACT_APP_USER_KEY);

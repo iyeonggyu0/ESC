@@ -15,7 +15,10 @@ const ProductForm = ({ productData, productModifyMod }) => {
     name: productData.name,
     price: `${productData.price}`,
     grade: productData.grade,
-    img: productData.img === '/null' ? '/img/product/notImg.png' : `"${productData.img}"`,
+    img:
+      productData.img === null || productData.img === '/null'
+        ? '/img/product/notImg.png'
+        : `"${productData.img}"`,
   };
 
   const nav = () => {

@@ -6,12 +6,14 @@ import NotAdmin from '../../_common/notAdmin';
 import NotLogin from '../../_common/notLogin';
 import { useInput } from '@hooks/useInput';
 
-import { productGetOneData, productDelete } from '@reducer/productReducer';
+import { productGetOneData, productDelete, productModify } from '@reducer/productReducer';
 
 import { EnrollmentStyle, TextInputDiv, TextEditorDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
 import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
+import axios from 'axios';
+import { axiosInstance } from '../../../util/axios';
 
 const ProductModifyMain = () => {
   // 새로고침 / 뒤로가기방지
@@ -53,11 +55,13 @@ const ProductModifyMain = () => {
   const [price, onChangePrice, setPrice] = useInput('');
 
   const [productMainImg, setProductMainImg] = useState(null);
+  const [productMainNewImg, setProductMainNewImg] = useState(null);
   const [productImg, setProductImg] = useState(null);
+  const [productNewImg, setProductNewImg] = useState(null);
 
   const [productData, setProductData] = useState(null);
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   //  product Data
   const productId = useParams().productId;
@@ -73,42 +77,31 @@ const ProductModifyMain = () => {
       setName(productData.name);
       setType(productData.type);
       setPrice(productData.price);
+      if (productData.img === '/null') {
+        setProductMainImg('/img/product/notImg.png');
+      } else {
+        setProductMainImg(`"${productData.img}"`);
+      }
+
+      if (productData.detailedImg === '/null') {
+        setProductImg('/img/product/notImg.png');
+      } else {
+        setProductImg(`"${productData.detailedImg}"`);
+      }
     }
     // eslint-disable-next-line
   }, [productData]);
 
-  // const data = {
-  //   id: productData === null ? 'null' : productData.id,
-  //   name: productData === null ? 'null' : productData.name,
-  //   price: productData === null ? 'null' : `${productData.price}`,
-  //   grade: productData === null ? 'null' : productData.grade,
-  //   img:
-  //     productData === null
-  //       ? 'null'
-  //       : productData.img === '/null'
-  //       ? '/img/product/notImg.png'
-  //       : `"${productData.img}"`,
-  //   detailedImg:
-  //     productData === null
-  //       ? 'null'
-  //       : productData.detailedImg === '/null'
-  //       ? '/img/product/notImg.png'
-  //       : `"${productData.detailedImg}"`,
-  // };
-
-  // axios
-  //   .post(`${axiosInstance}multer/delete`, {
-  //     route: img,
-  //   })
-  //   .then((res) => {
-  //     console.log(res);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //   });
-
   const textFun = (text, f) => {
     f(text);
+
+    if (f === 'setProductMainNewImg') {
+      localStorage.setItem('setProductMainNewImg', `${productMainNewImg}`);
+    }
+
+    if (f === 'setProductImg') {
+      localStorage.setItem('setProductImg', `${productImg}`);
+    }
   };
 
   useEffect(() => {
@@ -120,6 +113,92 @@ const ProductModifyMain = () => {
     }
   }, [name, type, price]);
 
+  const productModifyHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      // newData에서 이미지의 경로가 null이 아니면 기존 파일 삭제 후 데이터 업데이트
+      const productId = productData.id;
+
+      const productNewData = {
+        name: name,
+        type: type,
+        price: price,
+        img: productMainNewImg === null ? null : productMainNewImg,
+        detailedImg: productNewImg === null ? null : productNewImg,
+      };
+      dispatch(productModify({ productId: productId, productNewData: productNewData }));
+    },
+    [productData, name, type, price, productMainNewImg, productNewImg, dispatch],
+  );
+
+  useEffect(() => {
+    const img = localStorage.getItem('setProductImg');
+    const mainImg = localStorage.getItem('setProductMainNewImg');
+    if (img !== null) {
+      axios
+        .post(`${axiosInstance}api/multer/delete/fill`, {
+          route: mainImg,
+        })
+        .then(() => {
+          localStorage.removeItem('setProductImg');
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    if (mainImg !== null) {
+      axios
+        .post(`${axiosInstance}api/multer/delete/fill`, {
+          route: mainImg,
+        })
+        .then(() => {
+          localStorage.removeItem('setProductMainNewImg');
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  const productCancelHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      console.log(productNewImg, productMainNewImg);
+      if (productNewImg !== null) {
+        axios
+          .post(`${axiosInstance}api/multer/delete/fill`, {
+            route: `img/product/${productData.name}/${productNewImg}`,
+          })
+          .then(() => {
+            localStorage.removeItem('img');
+            setProductNewImg(null);
+            window.close();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+      if (productMainNewImg !== null) {
+        axios
+          .post(`${axiosInstance}api/multer/delete/fill`, {
+            route: `img/product/${productData.name}/${productMainNewImg}`,
+          })
+          .then(() => {
+            localStorage.removeItem('img');
+            setProductMainNewImg(null);
+            window.close();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    },
+    // eslint-disable-next-line
+    [],
+  );
+
   const productDeleteHandler = useCallback(
     (e) => {
       e.preventDefault();
@@ -130,12 +209,19 @@ const ProductModifyMain = () => {
     // eslint-disable-next-line
     [dispatch],
   );
+
   return (
     <>
       {login && (
         <>
-          {userData.authority === 'admin' && (
-            <EnrollmentStyle colorTheme={colorTheme} media={media} errorz={error}>
+          {userData.authority === 'admin' && productData !== null && (
+            <EnrollmentStyle
+              colorTheme={colorTheme}
+              media={media}
+              errorz={error}
+              mainImg={productMainImg}
+              img={productImg}
+            >
               <div>
                 <p>Modify Product</p>
                 <div>
@@ -236,24 +322,26 @@ const ProductModifyMain = () => {
                     <p>PRICE</p>
                     <input type="text" autoComplete="off" value={price} onChange={onChangePrice} />
                   </TextInputDiv>
-                  <TextInputDiv style={{ pointerEvents: error ? 'none' : 'all' }}>
+                  <TextInputDiv>
                     <p>IMG</p>
                     <FileUploadInput
                       type={'product'}
-                      name={name}
-                      // fun={setProductMainImg}
+                      name={productData.name}
+                      fun={setProductMainNewImg}
                       textFun={textFun}
                     />
+                    <div className="mainImg"></div>
                   </TextInputDiv>
                 </div>
-                <TextEditorDiv style={{ pointerEvents: error ? 'none' : 'all' }}>
+                <TextEditorDiv>
                   <p>Product Detailed Description</p>
                   <FileUploadInput
                     type={'product'}
-                    name={name}
-                    fun={setProductImg}
+                    name={productData.name}
+                    fun={setProductNewImg}
                     textFun={textFun}
                   />
+                  <div className="img"></div>
                 </TextEditorDiv>
                 <div>
                   <div
@@ -264,13 +352,13 @@ const ProductModifyMain = () => {
                   </div>
                   <div
                     style={{ backgroundColor: '#ff6d6d', border: '0px' }}
-                    // onClick={cancelHandler}
+                    onClick={productCancelHandler}
                   >
                     취소
                   </div>
                   <div
                     style={{ pointerEvents: error ? 'none' : 'all' }}
-                    // onClick={onProductCreateHandler}
+                    onClick={productModifyHandler}
                   >
                     저장
                   </div>

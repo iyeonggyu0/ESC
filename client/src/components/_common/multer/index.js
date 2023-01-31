@@ -16,13 +16,13 @@ const FileUpload = (props) => {
     const formData = new FormData();
     formData.append('profile_img', event.target.files[0]);
     axios
-      .post(`${axiosInstance}multer/upload/profile`, formData, {
+      .post(`${axiosInstance}api/multer/upload/profile`, formData, {
         header: { 'content-type': 'multipart/form-data' },
       })
       .then((res) => {
         console.log(res);
         axios
-          .put(`${axiosInstance}user/put/profile/img`, {
+          .put(`${axiosInstance}api/user/put/profile/img`, {
             email: userData.email,
             fileName: userData.profileImg,
             newFileName: res.data.fileName,

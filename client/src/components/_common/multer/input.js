@@ -11,13 +11,13 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
     const formData = new FormData();
     formData.append(type, event.target.files[0]);
     axios
-      .post(`${axiosInstance}multer/upload/${type}/${name}`, formData, {
+      .post(`${axiosInstance}api/multer/upload/${type}/${name}`, formData, {
         header: { 'content-type': 'multipart/form-data' },
       })
       .then((res) => {
         console.log(res);
         localStorage.setItem('img', `${res.data.imagePath}`);
-        textFun(`${res.data.imagePath}/${res.data.fileName}`, fun);
+        textFun(`${res.data.fileName}`, fun);
       })
       .catch((err) => {
         console.error(err);

@@ -66,6 +66,23 @@ export const productReducer = createSlice({
       state.isDone = true;
       state.error = null;
     },
+
+    // getAll
+    productModify: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productModifySuccess: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.productData = action.payload;
+    },
+    productModifyFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
   },
 });
 
@@ -80,4 +97,7 @@ export const {
   productGetOneDataSuccess,
   productDelete,
   productDeleteSuccess,
+  productModify,
+  productModifySuccess,
+  productModifyFailure,
 } = productReducer.actions;

@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true;
 export default class ProductService {
   create(req) {
     axios
-      .post(`${axiosInstance}product/create`, {
+      .post(`${axiosInstance}api/product/create`, {
         name: req.data.name,
         type: req.data.type,
         price: req.data.price,
@@ -20,6 +20,7 @@ export default class ProductService {
           req.fun.setName('');
           req.fun.setType('');
           req.fun.setPrice('');
+          window.location.replace('');
         }
       })
       .catch((err) => {
@@ -28,7 +29,7 @@ export default class ProductService {
   }
 
   get(req) {
-    const promise = axios.get(`${axiosInstance}product/get/all/${req.type}`);
+    const promise = axios.get(`${axiosInstance}api/product/get/all/${req.type}`);
     const productData = promise
       .then((res) => {
         return res.data;
@@ -40,7 +41,7 @@ export default class ProductService {
   }
 
   getOne(req) {
-    const promise = axios.get(`${axiosInstance}product/get/one/${req.productId}`);
+    const promise = axios.get(`${axiosInstance}api/product/get/one/${req.productId}`);
     const productData = promise
       .then((res) => {
         return res.data;
@@ -51,9 +52,22 @@ export default class ProductService {
     return productData;
   }
 
+  put(req) {
+    axios(`${axiosInstance}api/product/put`, {
+      productId: req.productId,
+      productNewData: req.productNewData,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   delete(req) {
     axios
-      .delete(`${axiosInstance}product/delete/${req.produceId}`)
+      .delete(`${axiosInstance}api/product/delete/${req.produceId}`)
       .then(() => {
         if (!alert('상품 삭제 완료')) {
           window.close();

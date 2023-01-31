@@ -17,8 +17,8 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       name: req.body.name,
       type: req.body.type,
       price: req.body.price,
-      img: "/" + req.body.img,
-      detailedImg: "/" + req.body.detailedImg,
+      img: req.body.img,
+      detailedImg: req.body.detailedImg,
     });
     res.status(201).send("상품 생성:" + data);
   } catch (err) {
@@ -70,16 +70,6 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
   } catch (err) {
     console.error(err);
   }
-
-  // 전체 검색
-  // if (filter === "ALL") {
-  //   try {
-  //     const data = await Product.findAll();
-  //     res.status(201).send(data);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
 });
 
 router.get("/get/one/:productId", async (req, res) => {
@@ -96,9 +86,91 @@ router.get("/get/one/:productId", async (req, res) => {
 
 router.delete("/delete/:productId", async (req, res) => {
   const { productId } = req.params;
+  try {
+    const oneData = await Product.findOne({
+      where: { id: productId },
+    });
+    if (oneData) {
+      fs.rmdirSync(`../client/public/img/product/${oneData.name}`, { recursive: true });
+    }
+  } catch (err) {
+    console.error(err);
+  }
   const deletedCount = await Product.destroy({ where: { id: productId } });
   if (!deletedCount) {
     res.status(404).send({ message: "There is no member with the id!" });
+  }
+});
+
+router.put("/put", async (req, res) => {
+  const productId = req.body.productId;
+  const productNewData = req.body.productNewData;
+
+  const data = await Product.findOne({
+    where: { id: productId },
+  });
+
+  if (!data) {
+    return res.status(402).send("productId값과 일치하는 상품이 없습니다.");
+  }
+  try {
+    if (data.name !== productNewData.name) {
+      await Product.update(
+        {
+          name: productNewData.name,
+        },
+        { where: { id: productId } }
+      );
+      fs.rename(`../client/public/img/product/${data.name}`, `../client/public/img/product/${productNewData.name}`, (err) => {
+        if (err) throw err;
+        console.log("success!");
+      });
+    }
+
+    if (productNewData.img !== null) {
+      fs.rmdir(`../client/public${data.img}`, { recursive: true }, (err) => {
+        console.log("err : ", err);
+      });
+      await Product.update(
+        {
+          img: `/img/product/${data.name}/${productNewData.img}`,
+        },
+        { where: { id: productId } }
+      );
+    }
+
+    if (detailedImg.img !== null) {
+      fs.rmdir(`../client/public${data.detailedImg}`, { recursive: true }, (err) => {
+        console.log("err : ", err);
+      });
+      await Product.update(
+        {
+          detailedImg: `/img/product/${data.name}/${productNewData.detailedImg}`,
+        },
+        { where: { id: productId } }
+      );
+    }
+
+    if (data.type !== productNewData.type) {
+      await Product.update(
+        {
+          type: productNewData.type,
+        },
+        { where: { id: productId } }
+      );
+    }
+
+    if (data.price !== productNewData.price) {
+      await Product.update(
+        {
+          price: productNewData.price,
+        },
+        { where: { id: productId } }
+      );
+    }
+    res.status(201).send("수정 완료:");
+  } catch (err) {
+    console.error(err);
   }
 });
 

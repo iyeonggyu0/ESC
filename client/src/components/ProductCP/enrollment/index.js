@@ -62,7 +62,7 @@ const ProductEnrollmentMain = () => {
     const img = localStorage.getItem('img');
     if (img !== null) {
       axios
-        .post(`${axiosInstance}multer/delete`, {
+        .post(`${axiosInstance}api/multer/delete/route`, {
           route: img,
         })
         .then((res) => {
@@ -91,18 +91,17 @@ const ProductEnrollmentMain = () => {
     const img = localStorage.getItem('img');
     if (img !== null) {
       axios
-        .post(`${axiosInstance}multer/delete`, {
+        .post(`${axiosInstance}api/multer/delete/route`, {
           route: img,
         })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          localStorage.removeItem('img');
+          window.location.replace('');
         })
         .catch((err) => {
           console.error(err);
         });
     }
-    localStorage.removeItem('img');
-    window.location.replace('');
   }, []);
 
   const onProductCreateHandler = useCallback(
@@ -113,8 +112,8 @@ const ProductEnrollmentMain = () => {
         name: name,
         type: type,
         price: price,
-        img: productMainImg,
-        detailedImg: productImg,
+        img: productMainImg === null ? null : `/img/product/${name}/${productMainImg}`,
+        detailedImg: productImg === null ? null : `/img/product/${name}/${productImg}`,
       };
       dispatch(productCreate({ data: data, fun: { setName, setType, setPrice } }));
     },
