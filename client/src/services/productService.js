@@ -20,7 +20,7 @@ export default class ProductService {
           req.fun.setName('');
           req.fun.setType('');
           req.fun.setPrice('');
-          window.location.replace('');
+          window.close();
         }
       })
       .catch((err) => {
@@ -58,7 +58,9 @@ export default class ProductService {
       productNewData: req.productNewData,
     })
       .then((res) => {
-        console.log(res);
+        if (!alert('저장 완료')) {
+          window.close();
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -66,8 +68,9 @@ export default class ProductService {
   }
 
   delete(req) {
+    console.log(req.productId);
     axios
-      .delete(`${axiosInstance}api/product/delete/${req.produceId}`)
+      .delete(`${axiosInstance}api/product/delete/${req.productId}`)
       .then(() => {
         if (!alert('상품 삭제 완료')) {
           window.close();

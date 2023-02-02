@@ -121,7 +121,7 @@ const ProductMain = () => {
             </div>
             {adminFocus && (
               <>
-                <div onClick={() => navigate('/product/enrollment')}>상품등록</div>
+                <div onClick={() => window.open(`/product/enrollment`)}>상품등록</div>
                 <div onClick={() => productModify(true)}>수정모드</div>
                 <div onClick={() => productModify(false)}>모드 초기화</div>
               </>

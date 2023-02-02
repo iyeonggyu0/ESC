@@ -77,13 +77,13 @@ const ProductModifyMain = () => {
       setName(productData.name);
       setType(productData.type);
       setPrice(productData.price);
-      if (productData.img === '/null') {
+      if (productData.img === '/null' || productData.img === null) {
         setProductMainImg('/img/product/notImg.png');
       } else {
         setProductMainImg(`"${productData.img}"`);
       }
 
-      if (productData.detailedImg === '/null') {
+      if (productData.detailedImg === '/null' || productData.detailedImg === null) {
         setProductImg('/img/product/notImg.png');
       } else {
         setProductImg(`"${productData.detailedImg}"`);
@@ -203,7 +203,7 @@ const ProductModifyMain = () => {
     (e) => {
       e.preventDefault();
       if (window.confirm('삭제하시겠습니까?')) {
-        dispatch(productDelete({ produceId: productData.id }));
+        dispatch(productDelete({ productId: productId }));
       }
     },
     // eslint-disable-next-line
@@ -212,9 +212,9 @@ const ProductModifyMain = () => {
 
   return (
     <>
-      {login && (
+      {login && productData !== null && (
         <>
-          {userData.authority === 'admin' && productData !== null && (
+          {userData.authority === 'admin' && (
             <EnrollmentStyle
               colorTheme={colorTheme}
               media={media}

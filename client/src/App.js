@@ -21,6 +21,7 @@ import MyPage from './pages/myPage';
 import ProductPage from './pages/productMain.js';
 import ProductEnrollmentPage from './pages/productEnrollment.js';
 import ProductModifyPage from './pages/productModify';
+import ProductDetailPage from './pages/productDetaliPage';
 
 export const ThemeContext = createContext(null);
 
@@ -70,7 +71,7 @@ function App() {
 
           {/* 상품 */}
           <Route path="/product/list/:filter" element={<ProductPage />} />
-          {/* <Route path="/product/:productId" element={<ProductPage />} /> */}
+          <Route path="/product/:productId" element={<ProductDetailPage />} />
           <Route path="/product/enrollment" element={<ProductEnrollmentPage />} />
           <Route path="/product/modify/:productId" element={<ProductModifyPage />} />
 

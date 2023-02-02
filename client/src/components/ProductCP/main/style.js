@@ -6,6 +6,17 @@ export const ProductMainDivStyle = styled.div`
   width: ${(props) => (props.media.isPc ? '75vw' : '100vw')};
   margin: 10vh auto;
 
+  & p,
+  & span,
+  & li,
+  & div {
+    -ms-user-select: none;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
   & > p {
     font-family: Ubuntu;
     font-weight: 900;
