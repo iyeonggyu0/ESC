@@ -53,11 +53,12 @@ export default class ProductService {
   }
 
   put(req) {
-    axios(`${axiosInstance}api/product/put`, {
-      productId: req.productId,
-      productNewData: req.productNewData,
-    })
-      .then((res) => {
+    axios
+      .put(`${axiosInstance}api/product/put`, {
+        productId: req.productId,
+        productNewData: req.productNewData,
+      })
+      .then(() => {
         if (!alert('저장 완료')) {
           window.close();
         }

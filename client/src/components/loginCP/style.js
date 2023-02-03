@@ -35,7 +35,7 @@ export const LoginMainStyle = styled.div`
     flex-wrap: wrap;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -65%);
+    transform: translate(-50%, -55%);
   }
 
   & > div > div {
@@ -75,7 +75,7 @@ export const LoginMainStyle = styled.div`
 
   & > div > div > input {
     font-family: Gothic A1;
-    width: 95%;
+    width: 100%;
     height: 65px;
     border: 1px solid
       ${(props) =>

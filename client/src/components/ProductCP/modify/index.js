@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
 import axios from 'axios';
 import { axiosInstance } from '../../../util/axios';
+import CommonLoadingPage from '../../_common/loadingPage';
 
 const ProductModifyMain = () => {
   // 새로고침 / 뒤로가기방지
@@ -92,16 +93,15 @@ const ProductModifyMain = () => {
     // eslint-disable-next-line
   }, [productData]);
 
-  const textFun = (text, f) => {
-    f(text);
+  const textFunMainImg = (text, imagePath, fileName) => {
+    console.log(imagePath, fileName);
+    setProductMainNewImg(text);
+    localStorage.setItem('setProductMainNewImg', `${imagePath}/${fileName}`);
+  };
 
-    if (f === 'setProductMainNewImg') {
-      localStorage.setItem('setProductMainNewImg', `${productMainNewImg}`);
-    }
-
-    if (f === 'setProductImg') {
-      localStorage.setItem('setProductImg', `${productImg}`);
-    }
+  const textFunImg = (text, imagePath, fileName) => {
+    setProductNewImg(text);
+    localStorage.setItem('setProductImg', `${imagePath}/${fileName}`);
   };
 
   useEffect(() => {
@@ -135,10 +135,12 @@ const ProductModifyMain = () => {
   useEffect(() => {
     const img = localStorage.getItem('setProductImg');
     const mainImg = localStorage.getItem('setProductMainNewImg');
+    console.log(img);
     if (img !== null) {
+      console.log('실행');
       axios
         .post(`${axiosInstance}api/multer/delete/fill`, {
-          route: mainImg,
+          route: img,
         })
         .then(() => {
           localStorage.removeItem('setProductImg');
@@ -169,7 +171,7 @@ const ProductModifyMain = () => {
       if (productNewImg !== null) {
         axios
           .post(`${axiosInstance}api/multer/delete/fill`, {
-            route: `img/product/${productData.name}/${productNewImg}`,
+            route: `/img/product/${productData.name}/${productNewImg}`,
           })
           .then(() => {
             localStorage.removeItem('img');
@@ -183,7 +185,7 @@ const ProductModifyMain = () => {
       if (productMainNewImg !== null) {
         axios
           .post(`${axiosInstance}api/multer/delete/fill`, {
-            route: `img/product/${productData.name}/${productMainNewImg}`,
+            route: `/img/product/${productData.name}/${productMainNewImg}`,
           })
           .then(() => {
             localStorage.removeItem('img');
@@ -212,6 +214,7 @@ const ProductModifyMain = () => {
 
   return (
     <>
+      {productData === null && <CommonLoadingPage />}
       {login && productData !== null && (
         <>
           {userData.authority === 'admin' && (
@@ -328,7 +331,7 @@ const ProductModifyMain = () => {
                       type={'product'}
                       name={productData.name}
                       fun={setProductMainNewImg}
-                      textFun={textFun}
+                      textFun={textFunMainImg}
                     />
                     <div className="mainImg"></div>
                   </TextInputDiv>
@@ -339,7 +342,7 @@ const ProductModifyMain = () => {
                     type={'product'}
                     name={productData.name}
                     fun={setProductNewImg}
-                    textFun={textFun}
+                    textFun={textFunImg}
                   />
                   <div className="img"></div>
                 </TextEditorDiv>

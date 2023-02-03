@@ -17,7 +17,12 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
       .then((res) => {
         console.log(res);
         localStorage.setItem('img', `${res.data.imagePath}`);
-        textFun(`${res.data.fileName}`, fun);
+        if (fun) {
+          textFun(`${res.data.fileName}`, res.data.imagePath, res.data.fileName);
+        }
+        if (!fun) {
+          textFun(`${res.data.fileName}`, fun);
+        }
       })
       .catch((err) => {
         console.error(err);

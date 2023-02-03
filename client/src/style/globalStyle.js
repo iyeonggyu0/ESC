@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import { reset } from "styled-reset";
+import { createGlobalStyle } from 'styled-components';
+import { reset } from 'styled-reset';
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
@@ -11,10 +11,11 @@ const GlobalStyle = createGlobalStyle`
 
   ${reset}
   *,*::before, *::after{
-	margin: 0;
-	padding: 0;
-	border: 0;
-	vertical-align: baseline;
+	  margin: 0;
+	  padding: 0;
+	  border: 0;
+    box-sizing: border-box;
+    vertical-align: baseline;
   }
   article, aside, details, figcaption, figure, 
   footer, header, hgroup, menu, nav, section {
@@ -51,12 +52,18 @@ const GlobalStyle = createGlobalStyle`
   }
   body::-webkit-scrollbar-track{
     display: block;
-    background: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameBg : ({ theme }) => theme.palette.basicBg)};
+    background: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameBg
+        : ({ theme }) => theme.palette.basicBg};
   }
   body::-webkit-scrollbar-thumb{
     display: block;
     border-radius:10px;
-    background: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicLightStroke)};
+    background: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameLightStroke
+        : ({ theme }) => theme.palette.basicLightStroke};
   }
 `;
 

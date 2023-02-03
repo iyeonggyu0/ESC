@@ -52,10 +52,10 @@ export const ProductMainDivStyle = styled.div`
   }
 
   & > div:nth-child(2) > div:first-child {
-    left: 0;
+    left: calc(((100% - 1212px) / 6) / 2);
   }
   & > div:nth-child(2) > div:nth-child(2) {
-    left: ${(props) => (props.media.isPc ? '150px' : '80px')};
+    left: ${(props) => (props.media.isPc ? 'calc((((100% - 1212px) / 6) / 2) + 150px)' : '80px')};
   }
 
   & > div:nth-child(2) > div:nth-child(3) {
@@ -93,7 +93,6 @@ export const ProductMainDivStyle = styled.div`
 
   ${ProductFormDiv} {
     z-index: 1;
-    width: 100%;
     display: flex;
     justify-content: start;
     flex-wrap: wrap;

@@ -12,6 +12,7 @@ import MyPageMain from './main';
 import { MyPageMainPageStyle, BG, MobileStyle } from './style';
 import { ModalIsOpen } from '../../pages/myPage';
 import PostCode from '../_common/postCode';
+import CommonLoadingPage from '../_common/loadingPage';
 
 const MyPageMainPage = () => {
   //hook
@@ -48,6 +49,7 @@ const MyPageMainPage = () => {
   return (
     <>
       {modalIsOpen && <PostCode />}
+      {userData === null && <CommonLoadingPage />}
       {userData !== null && media.isPc && (
         <MyPageMainPageStyle colorTheme={colorTheme} media={media} profileImg={profileImg}>
           <div>

@@ -133,19 +133,19 @@ router.put("/put", async (req, res) => {
       });
       await Product.update(
         {
-          img: `/img/product/${data.name}/${productNewData.img}`,
+          img: `/img/product/${productNewData.name}/${productNewData.img}`,
         },
         { where: { id: productId } }
       );
     }
 
-    if (detailedImg.img !== null) {
+    if (productNewData.detailedImg !== null) {
       fs.rmdir(`../client/public${data.detailedImg}`, { recursive: true }, (err) => {
         console.log("err : ", err);
       });
       await Product.update(
         {
-          detailedImg: `/img/product/${data.name}/${productNewData.detailedImg}`,
+          detailedImg: `/img/product/${productNewData.name}/${productNewData.detailedImg}`,
         },
         { where: { id: productId } }
       );

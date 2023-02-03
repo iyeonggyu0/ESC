@@ -132,17 +132,16 @@ router.post("/delete/fill", async (req, res) => {
   if (route === null) {
     res.status(403).send(`null`);
   } else {
-    const directory = fs.existsSync(`../client/public/${route}`);
-    if (directory) {
-      try {
-        fs.unlink(`../client/public/${route}`, (err) => {
-          console.error(err);
-        });
-        console.log("image delete");
-        res.status(201).send(`../client/public/${route} 이미지 삭제완료`);
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      fs.unlink(`../client/public${route}`, function (err) {
+        if (err) {
+          console.log("Error : ", err);
+        }
+      });
+      console.log("image delete");
+      res.status(201).send(`../client/public${route} 이미지 삭제완료`);
+    } catch (error) {
+      console.log(error);
     }
   }
 });

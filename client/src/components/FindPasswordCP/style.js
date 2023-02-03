@@ -111,7 +111,7 @@ export const FindPasswordMainStyle = styled.div`
 
   & > div > div > input {
     font-family: Gothic A1;
-    width: 95%;
+    width: 100%;
     height: 65px;
     border: 1px solid
       ${(props) =>

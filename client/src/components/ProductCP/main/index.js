@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { ProductMainDivStyle, ProductFormDiv } from './style';
+import CommonLoading from '../../_common/loading';
 
 const ProductMain = () => {
   const media = useMedia();
@@ -132,6 +133,7 @@ const ProductMain = () => {
 
       {/* 상품 */}
       <ProductFormDiv>
+        {productData === null && <CommonLoading />}
         {productData !== null && (
           <>
             {productData.map((state, key) => (
