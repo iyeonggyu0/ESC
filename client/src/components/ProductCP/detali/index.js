@@ -11,6 +11,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { ProductDetaliMain, ProductDetaliHeader } from './style';
 import CommonLoadingPage from '../../_common/loadingPage';
+import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -25,7 +26,7 @@ const ProductDetliMain = () => {
 
   const [img, setImg] = useState(null);
   const [detailedImg, setDetailedImg] = useState(null);
-  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState(0);
 
   const [pageMod, setPageMod] = useState('상세설명');
 
@@ -49,7 +50,6 @@ const ProductDetliMain = () => {
         setDetailedImg(`"${productData.detailedImg}"`);
       }
     }
-    console.log(productData);
   }, [productData]);
 
   return (
@@ -78,9 +78,23 @@ const ProductDetliMain = () => {
               <div></div>
               <div>
                 <p>{productData.name}</p>
+                <div>
+                  <div>
+                    {productData.grade === 0 && <p>리뷰 없음</p>}
+                    {0 < productData.grade && <FontAwesomeIcon icon={solid('star')} />}
+                    {2 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
+                    {3 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
+                    {4 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
+                    {5 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
+                    {/* 리뷰 수량 표시하기 */}
+                    {/* <span> (10,000)&nbsp;</span> */}
+                  </div>
+                  <span>구매 {productData.sale}</span>
+                </div>
                 <p>
-                  {productData.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
+                  {productData.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}원
                 </p>
+                <PlusMinusButtonFrom val={quantity} setVal={setQuantity} />
                 <div onClick={() => navigate('/')}>{/* 구매버튼 */}</div>
               </div>
             </section>

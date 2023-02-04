@@ -32,9 +32,13 @@ export const ProductDetaliHeader = styled.header`
 
 export const ProductDetaliMain = styled.section`
   width: 100%;
-  font-size: Gothic A1;
-
   position: relative;
+
+  & a,
+  & p,
+  & span {
+    font-family: Noto Sans Kr;
+  }
 
   // mainImg, 가격, 구매버튼 등
   & > section:nth-child(1) {
@@ -53,7 +57,7 @@ export const ProductDetaliMain = styled.section`
     height: ${(props) => (props.media.isPc ? 'calc(100vh - 2.3rem - 221px)' : '95vw')};
     margin: ${(props) => (props.media.isPc ? '0' : '10px auto')};
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
 
     background: url(${(props) => props.img}) no-repeat center center / cover;
   }
@@ -61,8 +65,7 @@ export const ProductDetaliMain = styled.section`
   // 오른쪽 text div
   & > section:nth-child(1) > div:last-child {
     width: ${(props) => (props.media.isPc ? ' 23vw' : '94vw')};
-    height: ${(props) =>
-      props.media.isPc ? 'calc(100vh - 2.3rem - 221px)' : 'calc(100vh - 95vw - 2.3rem - 140px)'};
+    height: ${(props) => (props.media.isPc ? 'calc(100vh - 2.3rem - 221px)' : 'auto')};
     padding: 40px 30px;
 
     position: ${(props) => (props.media.isPc ? 'absolute' : 'relative')};
@@ -73,8 +76,30 @@ export const ProductDetaliMain = styled.section`
   }
 
   & > section:nth-child(1) > div:last-child > p:nth-child(1) {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 900;
+  }
+
+  & > section:nth-child(1) > div:last-child > div:nth-child(2) {
+    display: flex;
+    font-size: 20px;
+    padding-top: 25px;
+    padding-bottom: 35px;
+  }
+
+  & > section:nth-child(1) > div:last-child > div:nth-child(2) > div:first-child {
+    width: 200px;
+  }
+
+  & > section:nth-child(1) > div:last-child > p:nth-child(3) {
+    font-weight: 500;
+    font-size: 2rem;
+    padding-bottom: 50px;
+    border-bottom: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.gameLightStroke
+          : ({ theme }) => theme.palette.basicSubFont};
   }
 
   // 상세보기, 구매후기 ...
