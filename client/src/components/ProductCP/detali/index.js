@@ -26,9 +26,11 @@ const ProductDetliMain = () => {
 
   const [img, setImg] = useState(null);
   const [detailedImg, setDetailedImg] = useState(null);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   const [pageMod, setPageMod] = useState('상세설명');
+
+  const [detaliImgSection, setDetaliImgSection] = useState(false);
 
   // dataGet
   useEffect(() => {
@@ -94,8 +96,13 @@ const ProductDetliMain = () => {
                 <p>
                   {productData.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}원
                 </p>
-                <PlusMinusButtonFrom val={quantity} setVal={setQuantity} />
-                <div onClick={() => navigate('/')}>{/* 구매버튼 */}</div>
+                <div>
+                  <PlusMinusButtonFrom val={quantity} setVal={setQuantity} />
+                </div>
+                <div>
+                  <div>장바구니</div>
+                  <div onClick={() => navigate('')}>구매</div>
+                </div>
               </div>
             </section>
 
@@ -128,6 +135,13 @@ const ProductDetliMain = () => {
                 </p>
               </div>
             </section>
+
+            {/* 이미지 */}
+            {pageMod === '상세설명' && (
+              <section media={media} detail={detaliImgSection}>
+                <div>자세히 보기</div>
+              </section>
+            )}
           </ProductDetaliMain>
         </div>
       )}

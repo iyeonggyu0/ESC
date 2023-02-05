@@ -3,6 +3,7 @@ import styled from 'styled-components';
 // HOME > 종류 > 이름
 export const ProductDetaliHeader = styled.header`
   width: 100%;
+  background-color: white;
 
   & > div {
     width: ${(props) => (props.media.isPc ? '75vw' : '95vw')};
@@ -43,10 +44,11 @@ export const ProductDetaliMain = styled.section`
   // mainImg, 가격, 구매버튼 등
   & > section:nth-child(1) {
     width: ${(props) => (props.media.isPc ? '75vw' : '95vw')};
-    height: calc(100vh - 71px - 2.3rem - 50px);
+    height: ${(props) => (props.media.isPc ? 'calc(100vh - 71px - 2.3rem - 50px)' : 'auto')};
     margin: 0 auto;
     position: relative;
 
+    display: block;
     display: ${(props) => (props.media.isPc ? 'flex' : 'block')};
     align-items: center;
   }
@@ -65,7 +67,7 @@ export const ProductDetaliMain = styled.section`
   // 오른쪽 text div
   & > section:nth-child(1) > div:last-child {
     width: ${(props) => (props.media.isPc ? ' 23vw' : '94vw')};
-    height: ${(props) => (props.media.isPc ? 'calc(100vh - 2.3rem - 221px)' : 'auto')};
+    height: ${(props) => (props.media.isPc ? 'calc(100vh - 2.3rem - 221px)' : '65vh')};
     padding: 40px 30px;
 
     position: ${(props) => (props.media.isPc ? 'absolute' : 'relative')};
@@ -102,7 +104,31 @@ export const ProductDetaliMain = styled.section`
           : ({ theme }) => theme.palette.basicSubFont};
   }
 
-  // 상세보기, 구매후기 ...
+  & > section:nth-child(1) > div:last-child > div:nth-child(4) {
+    margin-top: 20px;
+  }
+
+  & > section:nth-child(1) > div:last-child > div:last-child {
+    width: 100%;
+    padding: 0 30px;
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    display: flex;
+    justify-content: end;
+  }
+
+  & > section:nth-child(1) > div:last-child > div:last-child > div {
+    cursor: pointer;
+    width: 30%;
+    height: 45px;
+    margin-left: 20px;
+    text-align: center;
+    line-height: calc(1rem + 50px / 2);
+    border: 1px solid black;
+  }
+
+  // 상세보기, 구매후기 선택 메뉴 ...
   & > section:nth-child(2) {
     width: 100%;
 
@@ -113,6 +139,8 @@ export const ProductDetaliMain = styled.section`
           : ({ theme }) => theme.palette.basicSubFont};
     border-left: 0px;
     border-right: 0px;
+
+    margin-top: ${(props) => (props.media.isPc ? '0px' : '30px')};
   }
 
   & > section:nth-child(2) > div {
@@ -134,4 +162,16 @@ export const ProductDetaliMain = styled.section`
     padding-right: ${(props) => (props.media.isPc ? '2rem' : '0')};
     cursor: pointer;
   }
+`;
+
+export const DetaliImgSection = styled.section`
+  width: ${(props) => (props.media.isPc ? '75vw' : '100%')};
+  height: ${(props) =>
+    props.media.isPc && !props.detail
+      ? 'calc(100vh - 71px - 2.3rem - 50px)'
+      : props.media.isPc && props.detail
+      ? 'auto'
+      : !props.media.isPc && !props.detail
+      ? '100vh'
+      : 'auto'}; ;
 `;

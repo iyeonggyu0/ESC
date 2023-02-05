@@ -6,7 +6,6 @@ export const ButtonFromDiv = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  color: #333333;
   border: 1px solid #9a9a9a;
 
   -ms-user-select: none;
@@ -14,6 +13,10 @@ export const ButtonFromDiv = styled.div`
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+
+  .icon {
+    color: #333333;
+  }
 
   & > div:nth-child(1),
   & > div:nth-child(2),
@@ -55,5 +58,23 @@ export const ButtonFromDiv = styled.div`
   & > div:nth-child(3) {
     position: absolute;
     right: 0;
+  }
+`;
+
+export const SelectButtonDiv = styled.div`
+  width: 65px;
+  height: 39px;
+  color: #333333;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 30px;
+  cursor: pointer;
+  border: 1px solid #9a9a9a;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #eee;
   }
 `;
