@@ -255,7 +255,7 @@ const MyPageMain = () => {
           style={{
             marginTop: confirm !== newPw && newPw.length !== 0 ? 'calc(5% - 1rem - 5px)' : '5%',
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'start',
           }}
         >
           <p>주소</p>
@@ -267,7 +267,7 @@ const MyPageMain = () => {
             // onChange={}
             className={'inputwnth'}
             style={{
-              width: '70%',
+              width: '75%',
               fontSize: address === null ? '0.8rem' : address.length > 30 ? '0.7rem' : '0.8rem',
               wordWrap: 'break-word',
               wordBreak: 'break-all',

@@ -61,7 +61,7 @@ export const ProductDetaliMain = styled.section`
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
 
-    background: url(${(props) => props.img}) no-repeat center center / cover;
+    background: url(${(props) => props.img}) no-repeat center center / contain;
   }
 
   // 오른쪽 text div
@@ -131,7 +131,6 @@ export const ProductDetaliMain = styled.section`
   // 상세보기, 구매후기 선택 메뉴 ...
   & > section:nth-child(2) {
     width: 100%;
-
     border: 1px solid
       ${(props) =>
         props.colorTheme === 'game'
@@ -166,12 +165,59 @@ export const ProductDetaliMain = styled.section`
 
 export const DetaliImgSection = styled.section`
   width: ${(props) => (props.media.isPc ? '75vw' : '100%')};
-  height: ${(props) =>
-    props.media.isPc && !props.detail
-      ? 'calc(100vh - 71px - 2.3rem - 50px)'
-      : props.media.isPc && props.detail
-      ? 'auto'
-      : !props.media.isPc && !props.detail
-      ? '100vh'
-      : 'auto'}; ;
+  margin: 0 auto;
+  position: relative;
+
+  & > div:nth-child(1) {
+    width: ${(props) => (props.media.isPc ? '75vw' : '100%')};
+    height: ${(props) =>
+      props.media.isPc && !props.detail
+        ? 'calc(110vh)'
+        : props.media.isPc && props.detail
+        ? 'auto !important'
+        : !props.media.isPc && !props.detail
+        ? '100vh'
+        : 'auto !important'};
+    overflow: hidden;
+  }
+
+  & img {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    z-index: 1;
+  }
+
+  & > div:nth-child(1) > div {
+    width: ${(props) => (props.media.isPc ? '15%' : '70%')};
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    bottom: 100px;
+    transform: translate(-50%);
+
+    background-color: white;
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.black
+        : ({ theme }) => theme.palette.basicFont};
+    border: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.black
+          : ({ theme }) => theme.palette.basicFont};
+    transition: all 0.2s;
+  }
+
+  & > div:nth-child(1) > div:hover {
+    color: white;
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.black
+        : ({ theme }) => theme.palette.basicFont};
+  }
 `;

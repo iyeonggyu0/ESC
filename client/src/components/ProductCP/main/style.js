@@ -52,10 +52,10 @@ export const ProductMainDivStyle = styled.div`
   }
 
   & > div:nth-child(2) > div:first-child {
-    left: calc(((100% - 1212px) / 6) / 2);
+    left: 0;
   }
   & > div:nth-child(2) > div:nth-child(2) {
-    left: ${(props) => (props.media.isPc ? 'calc((((100% - 1212px) / 6) / 2) + 150px)' : '80px')};
+    left: ${(props) => (props.media.isPc ? '150px' : '80px')};
   }
 
   & > div:nth-child(2) > div:nth-child(3) {
@@ -92,11 +92,15 @@ export const ProductMainDivStyle = styled.div`
   }
 
   ${ProductFormDiv} {
+    width: ${(props) => (props.media.isPc ? '100%' : '90%')};
+    margin: 0 auto;
     z-index: 1;
     display: flex;
     justify-content: start;
     flex-wrap: wrap;
     overflow: initial;
+    gap: ${(props) =>
+      props.media.isPc ? '80px calc((100% - 1212px) / 5)' : '80px calc(100% - (30.7% * 3))'};
   }
 
   /* color: ${(props) =>

@@ -101,7 +101,7 @@ export const EmailSendDiv = styled.div`
   width: ${(props) => (props.media.isPc ? '550px' : '')};
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: start;
 
   & > div:first-child,
   & > input {
@@ -120,7 +120,7 @@ export const EmailSendDiv = styled.div`
   }
 
   & > input {
-    width: 62%;
+    width: 67%;
     padding-left: 5%;
     pointer-events: ${(props) => (props.emailCheck === true ? 'all' : 'none')};
   }
@@ -132,6 +132,7 @@ export const EmailSendDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: calc(95% - 30% - 62%);
     pointer-events: ${(props) => (props.emailCheck === true ? 'all' : 'none')};
   }
 `;
@@ -150,10 +151,11 @@ export const MyPageMainStyle = styled.div`
 
   .rjator {
     width: 22%;
-    height: 87px;
+    height: 75px;
     color: ${({ theme }) => theme.palette.black};
     border: 1px solid ${({ theme }) => theme.palette.gameLightStroke};
     background-color: ${({ theme }) => theme.palette.white};
+    margin-left: calc(100% - 75% - 22%);
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -180,8 +182,8 @@ export const MyPageMainStyle = styled.div`
 
     & > input {
       height: 70px;
-      width: 95%;
-      padding: 15px 0 0 5%;
+      width: 100%;
+      padding: 15px 5% 0 5%;
       font-size: 1.5rem;
       border: 1px solid #d0d7de;
       border-radius: 10px;

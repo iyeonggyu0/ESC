@@ -70,10 +70,12 @@ export default class UserService {
       .post(`${axiosInstance}api/user/logout`)
       .then(() => {
         console.log('로그아웃');
+        window.location.href = '/';
         window.location.replace('/');
       })
       .catch((err) => {
         console.log(err);
+        window.location.href = '/';
         window.location.replace('/');
       });
   }

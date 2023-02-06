@@ -39,7 +39,7 @@ export const MyPageMainPageStyle = styled.div`
 
   // 메뉴
   & > div > div:first-child {
-    width: 10vw;
+    width: 15vw;
     padding: 0 3%;
     margin: 3% 0;
     border-right: 1px solid

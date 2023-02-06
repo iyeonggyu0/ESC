@@ -8,11 +8,12 @@ export const MainStyle = styled.div`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
   border-radius: 2px;
   font-family: Noto Sans KR;
-  margin-bottom: ${(props) => (props.media.isPc ? '80px' : '40px')};
-  margin-left: ${(props) =>
-    props.media.isPc ? 'calc(((100% - 1212px) / 6) / 2)' : 'calc(((100% - (28.1% * 3)) / 3) / 2)'};
+  /* margin-bottom: ${(props) => (props.media.isPc ? '80px' : '40px')}; */
+  /* margin-left: ${(props) => (props.media.isPc ? 'calc(((100% - 1212px) / 6) / 2)' : ' / 2)')};
   margin-right: ${(props) =>
-    props.media.isPc ? 'calc(((100% - 1212px) / 6) / 2)' : 'calc(((100% - (28.2% * 3)) / 3) / 2)'};
+    props.media.isPc
+      ? 'calc(((100% - 1212px) / 6) / 2)'
+      : 'calc(((100% - (28.2% * 3)) / 3) / 2)'}; */
   z-index: 1;
   cursor: pointer;
   position: relative;

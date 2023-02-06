@@ -3,13 +3,12 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
-
 import { productGetOneData } from '@reducer/productReducer';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { ProductDetaliMain, ProductDetaliHeader } from './style';
+import { ProductDetaliMain, ProductDetaliHeader, DetaliImgSection } from './style';
 import CommonLoadingPage from '../../_common/loadingPage';
 import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
 
@@ -19,7 +18,7 @@ const ProductDetliMain = () => {
   // eslint-disable-next-line
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
-  // const userData = useContext(ThemeContext).userInfo.userData;
+  const userData = useContext(ThemeContext).userInfo.userData;
 
   const productId = useParams().productId;
   const [productData, setProductData] = useState(null);
@@ -49,7 +48,7 @@ const ProductDetliMain = () => {
       if (productData.detailedImg === '/null' || productData.detailedImg === null) {
         setDetailedImg('/img/product/notImg.png');
       } else {
-        setDetailedImg(`"${productData.detailedImg}"`);
+        setDetailedImg(`${productData.detailedImg}`);
       }
     }
   }, [productData]);
@@ -69,12 +68,7 @@ const ProductDetliMain = () => {
               <p>{productData.name}</p>
             </div>
           </ProductDetaliHeader>
-          <ProductDetaliMain
-            media={media}
-            colorTheme={colorTheme}
-            img={img}
-            detailedImg={detailedImg}
-          >
+          <ProductDetaliMain media={media} colorTheme={colorTheme} img={img}>
             {/* mainImg, 가격, 구매버튼 등 */}
             <section>
               <div></div>
@@ -133,17 +127,29 @@ const ProductDetliMain = () => {
                 >
                   교환/반품
                 </p>
+                {userData !== null && userData.authority === 'admin' && (
+                  <p onClick={() => window.open(`/product/modify/${productId}`)}>상품 수정</p>
+                )}
               </div>
             </section>
 
             {/* 이미지 */}
             {pageMod === '상세설명' && (
-              <section media={media} detail={detaliImgSection}>
-                <div>자세히 보기</div>
-              </section>
+              <DetaliImgSection media={media} colorTheme={colorTheme} detail={detaliImgSection}>
+                <div>
+                  {!detaliImgSection && (
+                    <div onClick={() => setDetaliImgSection(true)}>자세히 보기</div>
+                  )}
+                  {detaliImgSection && <div onClick={() => setDetaliImgSection(false)}>숨기기</div>}
+                  <img src={detailedImg}></img>
+                </div>
+                <div></div>
+              </DetaliImgSection>
             )}
           </ProductDetaliMain>
         </div>
+
+        // TODO: 리뷰 CRUD ( 이미지 포함 제작하기 )
       )}
     </>
   );
