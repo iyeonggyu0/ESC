@@ -107,7 +107,7 @@ const ProductEnrollmentMain = () => {
   const onProductCreateHandler = useCallback(
     (e) => {
       e.preventDefault();
-
+      console.log(productMainImg === null ? null : `/img/product/${name}/${productMainImg}`);
       const data = {
         name: name,
         type: type,
@@ -234,6 +234,7 @@ const ProductEnrollmentMain = () => {
                       name={name}
                       fun={setProductMainImg}
                       textFun={textFun}
+                      page={'enrollment'}
                     />
                   </TextInputDiv>
                 </div>
@@ -244,6 +245,7 @@ const ProductEnrollmentMain = () => {
                     name={name}
                     fun={setProductImg}
                     textFun={textFun}
+                    page={'enrollment'}
                   />
                 </TextEditorDiv>
                 <div>

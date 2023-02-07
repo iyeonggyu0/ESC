@@ -101,7 +101,7 @@ export const SectionUl = styled.section`
 export const HeaderMenu = styled.div`
   position: fixed;
   width: 100%;
-  height: 230px;
+  height: 300px;
   padding-top: 70px;
   background-color: ${(props) =>
     props.colorTheme === 'game'

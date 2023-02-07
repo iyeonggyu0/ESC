@@ -402,3 +402,13 @@ Img
 
 - 상품 디테일페이지 > 이미지 상세보기
 - input 요소 사이즈 버그 해결
+
+<br>
+
+### ProductPage11
+
+###### Feb 7, 2023
+
+- Product 등록에서의 에러 해결
+- 상품 리뷰 (ProductReview) DB 관계설정
+- //FIXME: 관계설정 끝내기

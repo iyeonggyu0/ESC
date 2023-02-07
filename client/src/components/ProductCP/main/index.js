@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
 import { productGetData } from '@reducer/productReducer';
@@ -21,6 +21,7 @@ const ProductMain = () => {
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
+  const params = useParams().filter;
 
   const [filterFocus, setFilterFocus] = useState(false);
   const [sortFocus, setSortFocus] = useState(false);
@@ -34,10 +35,15 @@ const ProductMain = () => {
   useEffect(() => {
     if (localStorage.getItem('locSet') === null) {
       localStorage.setItem('locSet', 'set');
-      localStorage.setItem('filter', `ALL`);
+      localStorage.setItem('filter', `${params}`);
       localStorage.setItem('sort', `인기`);
-      setFilter('ALL');
+      setFilter(`${params}`);
       setSort('인기');
+    }
+
+    if (localStorage.getItem('filter') !== `${params}`) {
+      localStorage.setItem('filter', `${params}`);
+      setFilter(`${params}`);
     }
     // eslint-disable-next-line
   }, []);

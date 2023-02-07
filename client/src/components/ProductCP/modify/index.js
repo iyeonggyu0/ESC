@@ -332,6 +332,7 @@ const ProductModifyMain = () => {
                       name={productData.name}
                       fun={setProductMainNewImg}
                       textFun={textFunMainImg}
+                      page={'modify'}
                     />
                     <div className="mainImg"></div>
                   </TextInputDiv>
@@ -343,6 +344,7 @@ const ProductModifyMain = () => {
                     name={productData.name}
                     fun={setProductNewImg}
                     textFun={textFunImg}
+                    page={'modify'}
                   />
                   <div className="img"></div>
                 </TextEditorDiv>
