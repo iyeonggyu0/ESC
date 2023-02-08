@@ -8,7 +8,7 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 
-const { Product } = require("../models");
+const { Product, ProductReview } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.post("/create", isLoggedIn, async (req, res, next) => {
@@ -77,6 +77,11 @@ router.get("/get/one/:productId", async (req, res) => {
   try {
     const oneData = await Product.findOne({
       where: { id: productId },
+      include: [
+        {
+          model: ProductReview,
+        },
+      ],
     });
     res.status(201).send(oneData);
   } catch (err) {

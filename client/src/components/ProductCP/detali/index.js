@@ -8,9 +8,11 @@ import { productGetOneData } from '@reducer/productReducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { ProductDetaliMain, ProductDetaliHeader, DetaliImgSection } from './style';
+import { ProductDetaliMain, ProductDetaliHeader, DetaliImgSection, ReviewDiv } from './style';
 import CommonLoadingPage from '../../_common/loadingPage';
 import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
+import GradeForm from '../_common/gradeForm';
+import ReviewInputForm from '../_common/reviewInputForm.js';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -146,10 +148,16 @@ const ProductDetliMain = () => {
                 <div></div>
               </DetaliImgSection>
             )}
+
+            {/* TODO: 리뷰 CRUD ( 이미지 포함 제작하기 ) */}
+            {pageMod === '구매후기' && (
+              <ReviewDiv media={media} colorTheme={colorTheme}>
+                <GradeForm productData={productData} />
+                <ReviewInputForm productData={productData} userData={userData} />
+              </ReviewDiv>
+            )}
           </ProductDetaliMain>
         </div>
-
-        // TODO: 리뷰 CRUD ( 이미지 포함 제작하기 )
       )}
     </>
   );

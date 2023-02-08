@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Product.associate = (db) => {
-    // db.User.hasMany(db.Post);
+    db.Product.hasMany(db.ProductReview);
     // db.User.hasMany(db.Comment);
     // db.User.hasMany(db.Reply);
   };

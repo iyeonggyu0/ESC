@@ -61,7 +61,7 @@ export const ProductDetaliMain = styled.section`
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
 
-    background: url(${(props) => props.img}) no-repeat center center / contain;
+    background: url(${(props) => props.img}) no-repeat center center / cover;
   }
 
   // 오른쪽 text div
@@ -220,4 +220,9 @@ export const DetaliImgSection = styled.section`
         ? ({ theme }) => theme.palette.black
         : ({ theme }) => theme.palette.basicFont};
   }
+`;
+
+export const ReviewDiv = styled.div`
+  width: ${(props) => (props.media.isPc ? '75vw' : '100vw')};
+  margin: 3vh auto;
 `;

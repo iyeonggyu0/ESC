@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const ProductFormDiv = styled.div``;
+export const BoxSizeDiv = styled.div``;
 
 export const ProductMainDivStyle = styled.div`
   width: ${(props) => (props.media.isPc ? '75vw' : '100vw')};
@@ -23,6 +24,10 @@ export const ProductMainDivStyle = styled.div`
     font-size: 2rem;
     text-align: center;
     margin-bottom: 7vh;
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.black
+        : ({ theme }) => theme.palette.basicFont};
   }
 
   & > div:nth-child(2) {
@@ -33,7 +38,9 @@ export const ProductMainDivStyle = styled.div`
     cursor: pointer;
   }
 
-  & > div:nth-child(2) > div {
+  & > div:nth-child(2) > div:first-child,
+  & > div:nth-child(2) > div:nth-child(2),
+  & > div:nth-child(2) > div.div3 {
     position: absolute;
     width: ${(props) => (props.media.isPc ? '130px' : '70px')};
     border-radius: 5px;
@@ -91,6 +98,27 @@ export const ProductMainDivStyle = styled.div`
     padding-left: 10px;
   }
 
+  & > div:nth-child(2) > div.boxsize {
+    position: absolute;
+    height: ${(props) => (props.media.isPc ? '50px' : '25px')};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  & > div:nth-child(2) > div.boxsize .icon {
+    font-size: ${(props) => (props.media.isPc ? '1rem' : '0.7rem')};
+    cursor: pointer;
+  }
+
+  & > div:nth-child(2) > div.boxsize .big {
+    color: ${(props) => (props.boxSize === 'big' ? 'black' : '#848484')};
+  }
+
+  & > div:nth-child(2) > div.boxsize .small {
+    color: ${(props) => (props.boxSize === 'small' ? 'black' : '#848484')};
+  }
+
   ${ProductFormDiv} {
     width: ${(props) => (props.media.isPc ? '100%' : '90%')};
     margin: 0 auto;
@@ -100,7 +128,13 @@ export const ProductMainDivStyle = styled.div`
     flex-wrap: wrap;
     overflow: initial;
     gap: ${(props) =>
-      props.media.isPc ? '80px calc((100% - 1212px) / 5)' : '80px calc(100% - (30.7% * 3))'};
+      props.media.isPc && props.boxSize === 'small'
+        ? '80px calc((100% - 1212px) / 5)'
+        : props.media.isPc && props.boxSize === 'big'
+        ? '80px calc((100% - 1320px) / 3)'
+        : !props.media.isPc && props.boxSize === 'small'
+        ? '50px calc(100% - (30.7% * 3))'
+        : '50px calc(100% - (30.7% * 3))'};
   }
 
   /* color: ${(props) =>

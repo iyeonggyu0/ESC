@@ -8,10 +8,11 @@ import { productGetData } from '@reducer/productReducer';
 import ProductForm from '../_common/productForm/index.js';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { ProductMainDivStyle, ProductFormDiv } from './style';
 import CommonLoading from '../../_common/loading';
+import ProductBigSizeForm from '../_common/productForm2';
 
 const ProductMain = () => {
   const media = useMedia();
@@ -27,6 +28,7 @@ const ProductMain = () => {
   const [sortFocus, setSortFocus] = useState(false);
   const [filter, setFilter] = useState(localStorage.getItem('filter'));
   const [sort, setSort] = useState(localStorage.getItem('sort'));
+  const [boxSize, setBoxSize] = useState(localStorage.getItem('boxSize'));
 
   const [admin, setAdmin] = useState('ADMIN');
   const [adminFocus, setAdminFocus] = useState(false);
@@ -35,6 +37,7 @@ const ProductMain = () => {
   useEffect(() => {
     if (localStorage.getItem('locSet') === null) {
       localStorage.setItem('locSet', 'set');
+      localStorage.setItem('boxSize', 'big');
       localStorage.setItem('filter', `${params}`);
       localStorage.setItem('sort', `인기`);
       setFilter(`${params}`);
@@ -78,7 +81,7 @@ const ProductMain = () => {
   const { productData } = useSelector((state) => state.product);
 
   return (
-    <ProductMainDivStyle colorTheme={colorTheme} media={media}>
+    <ProductMainDivStyle colorTheme={colorTheme} media={media} boxSize={boxSize}>
       <p>전체 상품</p>
       <div>
         {/* 제품 type */}
@@ -120,7 +123,7 @@ const ProductMain = () => {
 
         {/* ADMIN */}
         {userData !== null && userData.authority === 'admin' && (
-          <div onClick={() => setAdminFocus(adminFocus ? false : true)}>
+          <div className="div3" onClick={() => setAdminFocus(adminFocus ? false : true)}>
             <div>
               {admin}
               {adminFocus && <FontAwesomeIcon icon={solid('chevron-up')} className={'icon'} />}
@@ -135,12 +138,46 @@ const ProductMain = () => {
             )}
           </div>
         )}
+        <div
+          className="boxsize"
+          style={{
+            right:
+              userData !== null && userData.authority === 'admin'
+                ? media.isPc
+                  ? '150px'
+                  : '80px'
+                : '0px',
+          }}
+        >
+          <FontAwesomeIcon
+            icon={regular('square')}
+            className={'big icon'}
+            onClick={() => setBoxSize('big')}
+          />
+          <FontAwesomeIcon
+            icon={solid('table-cells-large')}
+            className={'small icon'}
+            onClick={() => setBoxSize('small')}
+          />
+        </div>
       </div>
 
       {/* 상품 */}
       <ProductFormDiv>
         {productData === null && <CommonLoading />}
-        {productData !== null && (
+        {productData !== null && boxSize === 'big' && (
+          <>
+            {productData.map((state, key) => (
+              <ProductBigSizeForm
+                key={state.id}
+                productData={productData[key]}
+                productModifyMod={productModifyMod}
+              />
+            ))}
+          </>
+        )}
+
+        {productData !== null && boxSize === 'small' && (
           <>
             {productData.map((state, key) => (
               <ProductForm

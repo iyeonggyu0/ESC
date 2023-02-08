@@ -411,4 +411,12 @@ Img
 
 - Product 등록에서의 에러 해결
 - 상품 리뷰 (ProductReview) DB 관계설정
-- //FIXME: 관계설정 끝내기
+
+<br>
+
+### ProductPage12
+
+###### Feb 8, 2023
+
+- productReview 관계설정 완료
+- productReview input textArea Cp 생성

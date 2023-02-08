@@ -43,7 +43,7 @@ export const MainStyle = styled.div`
     width: 100%;
     height: 65%;
     margin-bottom: ${(props) => (props.media.isPc ? '15px' : '5px')};
-    background: url(${(props) => props.data.img}) no-repeat center center / contain;
+    background: url(${(props) => props.data.img}) no-repeat center center / cover;
   }
   & > p:nth-child(3) {
     width: 100%;
