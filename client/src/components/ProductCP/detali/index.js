@@ -12,7 +12,7 @@ import { ProductDetaliMain, ProductDetaliHeader, DetaliImgSection, ReviewDiv } f
 import CommonLoadingPage from '../../_common/loadingPage';
 import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
 import GradeForm from '../_common/gradeForm';
-import ReviewInputForm from '../_common/reviewInputForm.js';
+import ReviewForm from '../_common/reviewForm.js';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -153,7 +153,7 @@ const ProductDetliMain = () => {
             {pageMod === '구매후기' && (
               <ReviewDiv media={media} colorTheme={colorTheme}>
                 <GradeForm productData={productData} />
-                <ReviewInputForm productData={productData} userData={userData} />
+                <ReviewForm productData={productData} userData={userData} colorTheme={colorTheme} />
               </ReviewDiv>
             )}
           </ProductDetaliMain>

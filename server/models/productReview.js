@@ -7,11 +7,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER(20),
         allowNull: false,
       },
-      // 작성자 닉네임
-      reviewerNickName: {
-        type: DataTypes.STRING(30),
-        allowNull: false,
-      },
       // 작성자 메일
       reviewerEmail: {
         type: DataTypes.STRING(50),
@@ -20,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       // 별점
       reviewerGrade: {
         type: DataTypes.INTEGER(20),
-        allowNull: true,
-        defaultValue: 0,
+        allowNull: false,
       },
       // 도움됬어요
       reviewLike: {
@@ -46,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
   ProductReview.associate = (db) => {
     db.ProductReview.belongsTo(db.Product, {
       foreignKey: "productId",
+    });
+    db.ProductReview.belongsTo(db.User, {
+      foreignKey: "reviewerEmail",
+      targetKey: "email",
     });
   };
   return ProductReview;

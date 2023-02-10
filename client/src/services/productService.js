@@ -13,8 +13,7 @@ export default class ProductService {
         img: req.data.img,
         detailedImg: req.data.detailedImg,
       })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         if (!alert('상품이 등록되었습니다.')) {
           localStorage.removeItem('img');
           req.fun.setName('');
@@ -69,7 +68,6 @@ export default class ProductService {
   }
 
   delete(req) {
-    console.log(req.productId);
     axios
       .delete(`${axiosInstance}api/product/delete/${req.productId}`)
       .then(() => {
@@ -80,6 +78,30 @@ export default class ProductService {
       .catch(() => {
         if (!alert('상품 삭제 완료')) {
           window.close();
+        }
+      });
+  }
+
+  reviewPost(req) {
+    axios
+      .post(`${axiosInstance}api/product/review/post`, {
+        productId: req.data.productId,
+        reviewerEmail: req.data.reviewerEmail,
+        reviewerGrade: req.data.reviewerGrade,
+        content: req.data.content,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 201) {
+          location.reload();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.response.status === 403) {
+          if (!alert('로그인 세션이 만료되었습니다.')) {
+            window.location.href = '/login';
+          }
         }
       });
   }

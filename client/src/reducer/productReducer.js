@@ -83,6 +83,24 @@ export const productReducer = createSlice({
       state.isDone = true;
       state.error = action.error;
     },
+
+    // 리뷰
+    // - post
+    productReviewPost: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productReviewPostSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+    productReviewPostFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
   },
 });
 
@@ -100,4 +118,7 @@ export const {
   productModify,
   productModifySuccess,
   productModifyFailure,
+  productReviewPost,
+  productReviewPostSuccess,
+  productReviewPostFailure,
 } = productReducer.actions;

@@ -223,6 +223,10 @@ export const DetaliImgSection = styled.section`
 `;
 
 export const ReviewDiv = styled.div`
-  width: ${(props) => (props.media.isPc ? '75vw' : '100vw')};
+  width: ${(props) => (props.media.isPc ? '75vw' : '90vw')};
   margin: 3vh auto;
+
+  & > div {
+    margin: 1vh auto;
+  }
 `;

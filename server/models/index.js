@@ -5,9 +5,9 @@ const db = {};
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
-db.ProductReview = require("./productReview")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Product = require("./product")(sequelize, Sequelize);
+db.ProductReview = require("./productReview")(sequelize, Sequelize);
 // db.Post = require("./post")(sequelize, Sequelize);
 // db.Reply = require("./reply")(sequelize, Sequelize);
 

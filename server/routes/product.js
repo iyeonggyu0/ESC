@@ -8,7 +8,7 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 
-const { Product, ProductReview } = require("../models");
+const { Product, ProductReview, User } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.post("/create", isLoggedIn, async (req, res, next) => {
@@ -77,12 +77,15 @@ router.get("/get/one/:productId", async (req, res) => {
   try {
     const oneData = await Product.findOne({
       where: { id: productId },
-      include: [
-        {
-          model: ProductReview,
-        },
-      ],
+      // include: [
+      //   {
+      //     model: ProductReview,
+      //     order: [[order, orderSort]],
+      //     include: [{ model: User, attributes: ["nickName", "profileImg", "email"] }],
+      //   },
+      // ],
     });
+
     res.status(201).send(oneData);
   } catch (err) {
     console.error(err);
@@ -174,6 +177,59 @@ router.put("/put", async (req, res) => {
       );
     }
     res.status(201).send("수정 완료:");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// 리뷰
+router.post("/review/post", isLoggedIn, async (req, res, next) => {
+  try {
+    const reviewPost = await ProductReview.create({
+      productId: req.body.productId,
+      reviewerEmail: req.body.reviewerEmail,
+      reviewerGrade: req.body.reviewerGrade,
+      content: req.body.content,
+    });
+    res.status(201).send("리뷰 포스트:" + reviewPost);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+// 인기: popularity
+// 최신: recent
+
+router.get("/review/get/:productId/:sort", async (req, res) => {
+  const { productId } = req.params;
+  const { sort } = req.params;
+
+  let order;
+  let orderSort;
+  if (sort === "인기순") {
+    order = "reviewLike";
+    orderSort = "DESC";
+  }
+
+  if (sort === "최신순") {
+    order = "reviewerGrade";
+    orderSort = "DESC";
+  }
+
+  try {
+    const oneData = await ProductReview.findAll({
+      where: { productId: productId },
+      order: [[order, orderSort]],
+      include: [
+        {
+          model: User,
+          attributes: ["nickName", "profileImg", "email"],
+        },
+      ],
+    });
+
+    res.status(201).send(oneData);
   } catch (err) {
     console.error(err);
   }

@@ -420,3 +420,13 @@ Img
 
 - productReview 관계설정 완료
 - productReview input textArea Cp 생성
+
+<br>
+
+### ProductPage13
+
+###### Feb 10, 2023
+
+- productReview Get 완성
+- productReview input textArea Cp 완성
+- productReview 수정 textArea Cp 제작중
