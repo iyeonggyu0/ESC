@@ -61,8 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "reviewerEmail",
       sourceKey: "email",
     });
-    // db.User.hasMany(db.Comment);
-    // db.User.hasMany(db.Reply);
+    db.User.belongsToMany(db.ProductReview, { through: "UserProductReviewLike" });
   };
   return User;
 };

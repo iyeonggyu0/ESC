@@ -8,7 +8,7 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 
-const { Product, ProductReview, User } = require("../models");
+const { Product, ProductReview, User, ProductReviewLike } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.post("/create", isLoggedIn, async (req, res, next) => {
@@ -232,6 +232,49 @@ router.get("/review/get/:productId/:sort", async (req, res) => {
     res.status(201).send(oneData);
   } catch (err) {
     console.error(err);
+  }
+});
+
+router.post("/review/like", async (req, res, next) => {
+  const { type } = req.body;
+  const { ProductReviewId } = req.body;
+  const { UserId } = req.body;
+
+  if (type === "get") {
+    try {
+      const Data = await ProductReview.getProductReviewLikes({
+        where: { ProductReviewId: ProductReviewId, UserId: UserId },
+      });
+      if (Data) {
+        return res.status(201).send(Data);
+      }
+      if (!Data) {
+        return res.status(201).send(flase);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  if (type === "add") {
+    try {
+      Data = await ProductReviewLike.create({
+        ProductReviewId: ProductReviewId,
+        UserId: UserId,
+      });
+      res.status(201).send("like");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  if (type === "minus") {
+    try {
+      await ProductReviewLike.destroy({
+        where: { ProductReviewId: ProductReviewId, UserId: UserId },
+      });
+      res.status(201).send("deleteLike");
+    } catch (err) {
+      console.error(err);
+    }
   }
 });
 

@@ -37,14 +37,17 @@ module.exports = (sequelize, DataTypes) => {
       collate: "utf8_general_ci",
     }
   );
+  // 상품
   ProductReview.associate = (db) => {
     db.ProductReview.belongsTo(db.Product, {
       foreignKey: "productId",
     });
+    //   // 작성자
     db.ProductReview.belongsTo(db.User, {
       foreignKey: "reviewerEmail",
       targetKey: "email",
     });
+    db.ProductReview.belongsToMany(db.User, { through: "UserProductReviewLike" });
   };
   return ProductReview;
 };

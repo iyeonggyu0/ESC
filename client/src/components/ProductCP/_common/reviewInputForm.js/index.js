@@ -89,6 +89,7 @@ const ReviewInputForm = ({ colorTheme, productData, userData }) => {
                   value={text}
                   onChange={onChangeText}
                   minRows={5}
+                  spellcheck="false"
                   placeholder="욕설이 섞이거나 부적절한 리뷰는 삭제될 수 있습니다."
                 />
                 {media.isPc && (

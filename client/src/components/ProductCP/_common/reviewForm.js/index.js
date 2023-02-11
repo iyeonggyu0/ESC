@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useMedia } from '../../../../hooks/useMedia.js';
 import ReviewInputForm from '../reviewInputForm.js';
 import { axiosInstance } from '@util/axios';
-import { useInput } from '@hooks/useInput';
+// import { useInput } from '@hooks/useInput';
 
 import { ReviewFormWrapper } from './style';
 import ReviewTextForm from './reviewTextForm/index.js';
@@ -12,14 +12,12 @@ const ReviewForm = ({ productData, userData, colorTheme }) => {
   const media = useMedia();
   const [sort, setSort] = useState('인기순');
   const [list, setList] = useState(null);
-  const [content, onChangeContent, setContent] = useInput(null);
 
   useEffect(() => {
     axios
       .get(`${axiosInstance}api/product/review/get/${productData.id}/${sort}`)
       .then((res) => {
         setList(res.data);
-        setContent(res.data.content);
       })
       .catch((err) => {
         console.error(err);
