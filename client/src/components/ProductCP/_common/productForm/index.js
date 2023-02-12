@@ -22,6 +22,7 @@ const ProductForm = ({ productData, productModifyMod }) => {
   };
 
   const nav = () => {
+    localStorage.setItem('pageModLoc', '상세설명');
     if (productModifyMod) {
       window.open(`/product/modify/${data.id}`);
     }

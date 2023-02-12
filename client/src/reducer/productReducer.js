@@ -101,6 +101,40 @@ export const productReducer = createSlice({
       state.isDone = true;
       state.error = action.error;
     },
+
+    // - delete
+    productReviewDelete: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productReviewDeleteSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+    productReviewDeleteFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
+
+    // - put
+    productReviewPut: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productReviewPutSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+    productReviewPutFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
   },
 });
 
@@ -121,4 +155,10 @@ export const {
   productReviewPost,
   productReviewPostSuccess,
   productReviewPostFailure,
+  productReviewDelete,
+  productReviewDeleteSuccess,
+  productReviewDeleteFailure,
+  productReviewPut,
+  productReviewPutSuccess,
+  productReviewPutFailure,
 } = productReducer.actions;

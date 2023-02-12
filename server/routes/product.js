@@ -8,7 +8,7 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 
-const { Product, ProductReview, User, ProductReviewLike } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.post("/create", isLoggedIn, async (req, res, next) => {
@@ -228,50 +228,115 @@ router.get("/review/get/:productId/:sort", async (req, res) => {
         },
       ],
     });
-
     res.status(201).send(oneData);
   } catch (err) {
     console.error(err);
   }
 });
 
-router.post("/review/like", async (req, res, next) => {
+router.put("/review/put", async (req, res) => {
+  const { reviewId } = req.body;
+  const { content } = req.body;
+  const { reviewerGrade } = req.body;
+
+  if (content) {
+    await ProductReview.update(
+      {
+        content: content,
+      },
+      { where: { id: reviewId } }
+    );
+  }
+
+  if (reviewerGrade) {
+    await ProductReview.update(
+      {
+        reviewerGrade: reviewerGrade,
+      },
+      { where: { id: reviewId } }
+    );
+  }
+  res.status(201).send("수정 완료");
+});
+
+// 댓글 삭제
+router.delete("/review/delete/:reviewId", async (req, res) => {
+  const { reviewId } = req.params;
+  try {
+    UserProductReviewLike.destroy({
+      where: { ProductReviewId: reviewId },
+    });
+
+    await ProductReview.destroy({
+      where: { id: reviewId },
+    });
+    res.status(201).send("삭제 완료");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// 댓글 좋아요
+router.post("/review/like", isLoggedIn, async (req, res, next) => {
   const { type } = req.body;
   const { ProductReviewId } = req.body;
-  const { UserId } = req.body;
+  const { UserEmail } = req.body;
+
+  const data = await ProductReview.findOne({
+    where: { id: ProductReviewId },
+  });
 
   if (type === "get") {
     try {
-      const Data = await ProductReview.getProductReviewLikes({
-        where: { ProductReviewId: ProductReviewId, UserId: UserId },
+      const Data = await UserProductReviewLike.findOne({
+        where: {
+          ProductReviewId: ProductReviewId,
+          UserEmail: UserEmail,
+        },
       });
       if (Data) {
-        return res.status(201).send(Data);
+        return res.status(201).json({ result: true, like: data.reviewLike });
       }
       if (!Data) {
-        return res.status(201).send(flase);
+        return res.status(201).send({ result: false, like: data.reviewLike });
       }
     } catch (err) {
       console.error(err);
     }
   }
+
   if (type === "add") {
     try {
-      Data = await ProductReviewLike.create({
+      await UserProductReviewLike.create({
         ProductReviewId: ProductReviewId,
-        UserId: UserId,
+        UserEmail: UserEmail,
       });
-      res.status(201).send("like");
+      await ProductReview.update(
+        {
+          reviewLike: data.reviewLike + 1,
+        },
+        { where: { id: ProductReviewId } }
+      );
+
+      res.status(201).json({ result: true, like: data.reviewLike + 1 });
     } catch (err) {
       console.error(err);
     }
   }
   if (type === "minus") {
     try {
-      await ProductReviewLike.destroy({
-        where: { ProductReviewId: ProductReviewId, UserId: UserId },
+      await UserProductReviewLike.destroy({
+        where: { ProductReviewId: ProductReviewId, UserEmail: UserEmail },
       });
-      res.status(201).send("deleteLike");
+
+      await ProductReview.update(
+        {
+          reviewLike: data.reviewLike - 1,
+        },
+        { where: { id: ProductReviewId } }
+      );
+
+      res.status(201).json({ result: false, like: data.reviewLike - 1 });
     } catch (err) {
       console.error(err);
     }

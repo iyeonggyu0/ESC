@@ -40,6 +40,7 @@ const ProductMain = () => {
       localStorage.setItem('boxSize', 'big');
       localStorage.setItem('filter', `${params}`);
       localStorage.setItem('sort', `인기`);
+      localStorage.setItem('pageModLoc', '상세설명');
       setFilter(`${params}`);
       setSort('인기');
     }

@@ -105,4 +105,32 @@ export default class ProductService {
         }
       });
   }
+
+  reviewDelete(req) {
+    axios
+      .delete(`${axiosInstance}api/product/review/delete/${req.data.reviewId}`)
+      .then(() => {
+        console.log('삭제완료');
+        location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  reviewPut(req) {
+    axios
+      .put(`${axiosInstance}api/product/review/put`, {
+        reviewId: req.data.reviewId,
+        reviewerGrade: req.data.reviewerGrade,
+        content: req.data.content,
+      })
+      .then(() => {
+        console.log('수정완료');
+        location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 }

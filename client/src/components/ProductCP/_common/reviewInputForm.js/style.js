@@ -15,7 +15,7 @@ export const InputForm = styled.div`
   & > div:nth-child(2) {
     width: 98%;
     padding: 12px;
-    margin: 0 auto 12px auto;
+    margin: 0 auto 20px auto;
     border-radius: 5px;
     background-color: #f7f7f9;
   }

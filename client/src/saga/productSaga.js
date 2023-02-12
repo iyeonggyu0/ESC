@@ -18,6 +18,12 @@ import {
   productReviewPost,
   productReviewPostSuccess,
   productReviewPostFailure,
+  productReviewDelete,
+  productReviewDeleteSuccess,
+  productReviewDeleteFailure,
+  productReviewPut,
+  productReviewPutSuccess,
+  productReviewPutFailure,
 } from '@reducer/productReducer';
 import ProductService from '../services/productService';
 
@@ -67,12 +73,34 @@ function* productModifySaga(action) {
   }
 }
 
+// 리뷰
+// - post
 function* productReviewPostSaga(action) {
   try {
     yield call(ProductService.prototype.reviewPost, action.payload);
     yield put(productReviewPostSuccess());
   } catch (err) {
     yield put(productReviewPostFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
+// - delete
+function* productReviewDeleteSaga(action) {
+  try {
+    yield call(ProductService.prototype.reviewDelete, action.payload);
+    yield put(productReviewDeleteSuccess());
+  } catch (err) {
+    yield put(productReviewDeleteFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
+// - put
+function* productReviewPutSaga(action) {
+  try {
+    yield call(ProductService.prototype.reviewPut, action.payload);
+    yield put(productReviewPutSuccess());
+  } catch (err) {
+    yield put(productReviewPutFailure(new Error('UNKNODW ERROR')));
   }
 }
 
@@ -101,6 +129,14 @@ function* watchProductReviewPost() {
   yield takeLatest(productReviewPost.type, productReviewPostSaga);
 }
 
+function* watchProductReviewDelete() {
+  yield takeLatest(productReviewDelete.type, productReviewDeleteSaga);
+}
+
+function* watchProductReviewPut() {
+  yield takeLatest(productReviewPut.type, productReviewPutSaga);
+}
+
 export default function* productSaga() {
   yield all([
     fork(watchCreate),
@@ -109,7 +145,7 @@ export default function* productSaga() {
     fork(watchProductDelete),
     fork(watchProductModify),
     fork(watchProductReviewPost),
-    // fork(watchPasswordUpdate),
-    // fork(watchputData),
+    fork(watchProductReviewDelete),
+    fork(watchProductReviewPut),
   ]);
 }

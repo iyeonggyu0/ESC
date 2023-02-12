@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "reviewerEmail",
       targetKey: "email",
     });
-    db.ProductReview.belongsToMany(db.User, { through: "UserProductReviewLike" });
+    db.ProductReview.belongsToMany(db.User, { through: "UserProductReviewLike", foreignKey: "ProductReviewId" });
   };
   return ProductReview;
 };

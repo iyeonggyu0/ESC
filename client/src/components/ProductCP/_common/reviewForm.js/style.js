@@ -9,11 +9,6 @@ export const ReviewFormWrapper = styled.div`
     margin: 0 auto;
     height: 40px;
     padding: 0 12px;
-    border-bottom: 1px solid
-      ${(props) =>
-        props.colorTheme === 'game'
-          ? ({ theme }) => theme.palette.gameLightStroke
-          : ({ theme }) => theme.palette.basicSubFont};
     display: flex;
     justify-content: end;
     align-items: center;

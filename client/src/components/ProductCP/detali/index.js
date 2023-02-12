@@ -29,7 +29,8 @@ const ProductDetliMain = () => {
   const [detailedImg, setDetailedImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
-  const [pageMod, setPageMod] = useState('상세설명');
+  const pageModLoc = localStorage.getItem('pageModLoc');
+  const [pageMod, setPageMod] = useState(`${pageModLoc}`);
 
   const [detaliImgSection, setDetaliImgSection] = useState(false);
 
@@ -54,6 +55,10 @@ const ProductDetliMain = () => {
       }
     }
   }, [productData]);
+
+  useEffect(() => {
+    localStorage.setItem('pageModLoc', pageMod);
+  }, [pageMod]);
 
   return (
     <>

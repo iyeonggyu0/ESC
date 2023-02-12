@@ -46,8 +46,23 @@ const ReviewForm = ({ productData, userData, colorTheme }) => {
         </div>
 
         {/* list div */}
+
         {list && (
-          <>
+          <div>
+            {list.length === 0 && (
+              <div
+                style={{
+                  width: '100%',
+                  height: '100px',
+                  backgroundColor: '#f7f7f9',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                남겨진 리뷰가 없습니다.
+              </div>
+            )}
             {list.map((state, key) => (
               <ReviewTextForm
                 key={state.id}
@@ -57,7 +72,7 @@ const ReviewForm = ({ productData, userData, colorTheme }) => {
                 media={media}
               />
             ))}
-          </>
+          </div>
         )}
       </ReviewFormWrapper>
     </div>
