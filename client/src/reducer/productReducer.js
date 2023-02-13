@@ -55,6 +55,18 @@ export const productReducer = createSlice({
       state.error = null;
     },
 
+    // getBestProduct
+    productGetBestProductData: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productGetBestProductDataSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+
     // delete
     productDelete: (state) => {
       state.isLoading = true;
@@ -161,4 +173,6 @@ export const {
   productReviewPut,
   productReviewPutSuccess,
   productReviewPutFailure,
+  productGetBestProductData,
+  productGetBestProductDataSuccess,
 } = productReducer.actions;

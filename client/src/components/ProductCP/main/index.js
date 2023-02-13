@@ -100,6 +100,7 @@ const ProductMain = () => {
               <div onClick={() => filterHandler('PLATE')}>PLATE</div>
               <div onClick={() => filterHandler('SWITCHES')}>SWITCHES</div>
               <div onClick={() => filterHandler('KEYCAPS')}>KEYCAPS</div>
+              <div onClick={() => filterHandler('KEYBOARD')}>KEYBOARD</div>
             </>
           )}
         </div>

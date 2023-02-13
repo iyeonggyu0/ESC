@@ -51,6 +51,18 @@ export default class ProductService {
     return productData;
   }
 
+  getBestProducts() {
+    const promise = axios.get(`${axiosInstance}api/product/get/best`);
+    const productData = promise
+      .then((res) => {
+        return res.data;
+      })
+      .catch(() => {
+        return null;
+      });
+    return productData;
+  }
+
   put(req) {
     axios
       .put(`${axiosInstance}api/product/put`, {

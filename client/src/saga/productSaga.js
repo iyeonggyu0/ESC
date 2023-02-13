@@ -24,6 +24,8 @@ import {
   productReviewPut,
   productReviewPutSuccess,
   productReviewPutFailure,
+  productGetBestProductData,
+  productGetBestProductDataSuccess,
 } from '@reducer/productReducer';
 import ProductService from '../services/productService';
 
@@ -50,6 +52,17 @@ function* productGetOneDataSaga(action) {
     const productData = yield call(ProductService.prototype.getOne, action.payload);
     yield action.payload.setProductData(productData);
     yield put(productGetOneDataSuccess());
+  } catch (err) {
+    yield console.error(err);
+  }
+}
+
+function* productGetBestProductsDataSaga(action) {
+  try {
+    const productData = yield call(ProductService.prototype.getBestProducts, action.payload);
+    yield action.payload.setProductData(productData.bestProduct);
+    yield action.payload.setProductKeyData(productData.bestKeyboard);
+    yield put(productGetBestProductDataSuccess());
   } catch (err) {
     yield console.error(err);
   }
@@ -117,6 +130,10 @@ function* watchProductGetOneData() {
   yield takeLatest(productGetOneData.type, productGetOneDataSaga);
 }
 
+function* watchProductGetBestProductData() {
+  yield takeLatest(productGetBestProductData.type, productGetBestProductsDataSaga);
+}
+
 function* watchProductDelete() {
   yield takeLatest(productDelete.type, productDeleteSaga);
 }
@@ -142,6 +159,7 @@ export default function* productSaga() {
     fork(watchCreate),
     fork(watchProductGetData),
     fork(watchProductGetOneData),
+    fork(watchProductGetBestProductData),
     fork(watchProductDelete),
     fork(watchProductModify),
     fork(watchProductReviewPost),

@@ -7,6 +7,7 @@ const { sendEmail } = require("../mailer/mail");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
+const { Op } = require("sequelize");
 
 const { Product, ProductReview, User, UserProductReviewLike } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
@@ -87,6 +88,27 @@ router.get("/get/one/:productId", async (req, res) => {
     });
 
     res.status(201).send(oneData);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.get("/get/best", async (req, res) => {
+  try {
+    const dataProdut = await Product.findAll({
+      attributes: ["name", "type", "img", "id"],
+      order: [["sale", "DESC"]],
+      limit: 3,
+      where: { type: { [Op.ne]: "KEYBOARD" } },
+    });
+
+    const dataKeyboard = await Product.findAll({
+      attributes: ["name", "type", "img", "id"],
+      order: [["sale", "DESC"]],
+      limit: 3,
+      where: { type: "KEYBOARD" },
+    });
+    return res.status(201).json({ bestProduct: dataProdut, bestKeyboard: dataKeyboard });
   } catch (err) {
     console.error(err);
   }

@@ -307,6 +307,19 @@ const ProductModifyMain = () => {
                         KEYCAPS
                       </span>
                       <span
+                        onClick={() => setType('KEYBOARD')}
+                        style={{
+                          color:
+                            colorTheme === 'game' && type === 'KEYBOARD'
+                              ? 'black'
+                              : colorTheme !== 'game' && type === 'KEYBOARD'
+                              ? '#796763'
+                              : '#AEAEAE',
+                        }}
+                      >
+                        KEYBOARD
+                      </span>
+                      <span
                         onClick={() => setType('ETC')}
                         style={{
                           color:

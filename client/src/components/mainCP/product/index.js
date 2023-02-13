@@ -1,18 +1,41 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { ThemeContext } from "../../../App";
-import { ProductDiv } from "./style";
+import { useCallback, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ThemeContext } from '../../../App';
+import { ProductDiv } from './style';
 
-const MainPageProduct = () => {
+const MainPageProductForm = ({ productData }) => {
   const colorTheme = useContext(ThemeContext).colorTheme;
   const navigate = useNavigate();
+
+  const Data = {
+    id: productData.id,
+    name: productData.name,
+    type: productData.type,
+    img:
+      productData.img === null || productData.img === '/null'
+        ? '/img/product/notImg.png'
+        : `"${productData.img}"`,
+  };
+
+  const onClickHandler = useCallback(
+    (e) => {
+      e.preventDefault();
+      localStorage.setItem('pageModLoc', '상세설명');
+      navigate(`/product/${Data.id}`);
+    },
+    // eslint-disable-next-line
+    [navigate],
+  );
+
   return (
-    <ProductDiv colorTheme={colorTheme}>
+    <ProductDiv colorTheme={colorTheme} img={Data.img}>
       <div>
-        <p>상품이름</p>
-        <p>용도</p>
+        <div>
+          <p>{Data.name}</p>
+          <p>{Data.type}</p>
+        </div>
         <div></div>
-        <div onClick={() => navigate("/")}>
+        <div onClick={onClickHandler}>
           <p>자세히 보기</p>
         </div>
       </div>
@@ -20,4 +43,4 @@ const MainPageProduct = () => {
   );
 };
 
-export default MainPageProduct;
+export default MainPageProductForm;

@@ -66,8 +66,9 @@ const ReviewTextForm = ({ reviewData, userData, colorTheme, media }) => {
     const data = {
       reviewId: reviewData.id,
     };
-    console.log(data);
-    dispatch(productReviewDelete({ data: data }));
+    if (!alert('리뷰를 삭제합니다.')) {
+      dispatch(productReviewDelete({ data: data }));
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -85,7 +86,6 @@ const ReviewTextForm = ({ reviewData, userData, colorTheme, media }) => {
       ProductReviewId: reviewData.id,
       UserEmail: userData.email,
     };
-    console.log(data);
     axios
       .post(`${axiosInstance}api/product/review/like`, data)
       .then((res) => {

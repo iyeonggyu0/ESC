@@ -1,8 +1,10 @@
 import MainLayOut from '../../layout/mainLayOut';
 import { useMedia } from '../../hooks/useMedia';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../App';
+import { useDispatch } from 'react-redux';
+import { productGetBestProductData } from '@reducer/productReducer';
 
 // library
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -19,13 +21,27 @@ import { BannerDiv, BannerTextDiv, MainPageDiv, Advice, IconDiv, Fixed } from '.
 
 // Components
 import BannerText from '../../components/mainCP/bannerText';
-import MainPageProduct from '../../components/mainCP/product';
+import MainPageProductForm from '../../components/mainCP/product';
 
 const MainPage = () => {
   // eslint-disable-next-line
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [productData, setProductData] = useState(null);
+  const [productDatakey, setProductKeyData] = useState(null);
+
+  useEffect(() => {
+    dispatch(
+      productGetBestProductData({
+        setProductData: setProductData,
+        setProductKeyData: setProductKeyData,
+      }),
+    );
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <MainLayOut>
@@ -74,14 +90,19 @@ const MainPage = () => {
         <Advice colorTheme={colorTheme} media={media}>
           {/* POPULAR CUSTOM */}
           <div>
-            <p>POPULAR CUSTOM</p>
-            {colorTheme === 'game' && <span>게이머들이 추천하는 커스텀 조합입니다.</span>}
-            {colorTheme === 'basic' && <span>회사원들이 추천하는 커스텀 조합입니다.</span>}
+            <p>POPULAR PRODUCT</p>
+            <span>자주 구매하시는 제품들 입니다</span>
           </div>
           <div>
-            <MainPageProduct />
-            <MainPageProduct />
-            <MainPageProduct />
+            {productData !== null && (
+              <>
+                {productData.map((state, key) => (
+                  <MainPageProductForm key={state.id} productData={productData[key]} />
+                ))}
+              </>
+            )}
+            {productData !== null && !media.isPc && <MainPageProductForm data={productData[0]} />}
+
             {/* Swiper map 돌리기 */}
           </div>
         </Advice>
@@ -112,15 +133,20 @@ const MainPage = () => {
         <Advice colorTheme={colorTheme} media={media}>
           {/* POPULAR PRODUCTS */}
           <div>
-            <p>POPULAR PRODUCTS</p>
-            {colorTheme === 'game' && <span>인기 게이밍 키보드</span>}
-            {colorTheme === 'basic' && <span>인기 사무용 키보드</span>}
+            <p>POPULAR KEYBOARD</p>
+            <span>인기 키보드</span>
           </div>
           <div>
-            <MainPageProduct />
-            <MainPageProduct />
-            <MainPageProduct />
-            {/* Swiper map 돌리기 */}
+            {productDatakey !== null && (
+              <>
+                {productDatakey.map((state, key) => (
+                  <MainPageProductForm key={state.id} productData={productDatakey[key]} />
+                ))}
+              </>
+            )}
+            {productDatakey !== null && !media.isPc && (
+              <MainPageProductForm data={productDatakey[0]} />
+            )}
           </div>
         </Advice>
         <div style={{ marginTop: '30vh', height: '1px' }}></div>

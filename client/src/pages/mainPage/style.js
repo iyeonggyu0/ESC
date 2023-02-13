@@ -58,7 +58,6 @@ export const Advice = styled.div`
     height: 50vh;
     position: absolute;
     bottom: 0px;
-    border: 1px solid #fff;
     display: flex;
     justify-content: space-between;
   }
