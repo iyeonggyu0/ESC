@@ -42,10 +42,11 @@ const MainPage = () => {
     );
     // eslint-disable-next-line
   }, []);
+  console.log();
 
   return (
     <MainLayOut>
-      <MainPageDiv colorTheme={colorTheme}>
+      <MainPageDiv colorTheme={colorTheme} media={media}>
         <BannerTextDiv>
           <BannerText />
         </BannerTextDiv>
@@ -94,15 +95,16 @@ const MainPage = () => {
             <span>자주 구매하시는 제품들 입니다</span>
           </div>
           <div>
-            {productData !== null && (
+            {productData !== null && media.isPc && (
               <>
                 {productData.map((state, key) => (
                   <MainPageProductForm key={state.id} productData={productData[key]} />
                 ))}
               </>
             )}
-            {productData !== null && !media.isPc && <MainPageProductForm data={productData[0]} />}
-
+            {productData !== null && media.isMobile && (
+              <MainPageProductForm productData={productData[0]} />
+            )}
             {/* Swiper map 돌리기 */}
           </div>
         </Advice>
@@ -137,15 +139,15 @@ const MainPage = () => {
             <span>인기 키보드</span>
           </div>
           <div>
-            {productDatakey !== null && (
+            {productDatakey !== null && media.isPc && (
               <>
                 {productDatakey.map((state, key) => (
                   <MainPageProductForm key={state.id} productData={productDatakey[key]} />
                 ))}
               </>
             )}
-            {productDatakey !== null && !media.isPc && (
-              <MainPageProductForm data={productDatakey[0]} />
+            {productDatakey !== null && media.isMobile && (
+              <MainPageProductForm productData={productDatakey[0]} />
             )}
           </div>
         </Advice>

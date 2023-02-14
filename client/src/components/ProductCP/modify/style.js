@@ -3,6 +3,87 @@ import styled from 'styled-components';
 export const TextInputDiv = styled.div``;
 export const TextEditorDiv = styled.div``;
 
+export const DiscountDiv = styled.div`
+  padding: 5vh 0;
+
+  & > p:first-child {
+    font-family: Ubuntu;
+    font-size: 2rem;
+    font-weight: 500;
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.black
+        : ({ theme }) => theme.palette.basicFont};
+  }
+  & > p:first-child > .icon {
+    margin-left: 30px;
+    font-size: 1.2rem;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  & > div:nth-child(2) > ${TextInputDiv} > div:nth-child(1) {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3vh 0 2vh 0;
+  }
+
+  & > div:nth-child(2) > ${TextInputDiv} > div:nth-child(1) > input {
+    width: 95%;
+  }
+
+  & > div:nth-child(2) > ${TextInputDiv} > div:nth-child(2) {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    color: gray;
+  }
+  & > div:nth-child(2) > ${TextInputDiv} > div:nth-child(2) > div {
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+
+    font-weight: 300;
+  }
+  & > div:nth-child(2) > div:nth-child(2) > div {
+    width: 95%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+  }
+  & > div:nth-child(2) > ${TextInputDiv} > div:nth-child(2) > div > p {
+    width: auto;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) {
+    width: 100%;
+    height: 45px;
+    margin: 5vh 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  & > div:nth-child(2) > div:nth-child(2) > p {
+    width: 13%;
+    margin-bottom: ${(props) => (props.media.isPc ? '' : '1vh')};
+    font-family: Ubuntu;
+    font-size: 1.3rem;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  & ${TextInputDiv} {
+    display: flex;
+    flex-wrap: wrap;
+  }
+`;
+
 export const EnrollmentStyle = styled.div`
   /* height: calc(100vh - 71px); */
   position: relative;
@@ -84,14 +165,7 @@ export const EnrollmentStyle = styled.div`
   }
 
   ${TextInputDiv}:last-child > form {
-    width: calc(90% - 20vh);
-  }
-
-  ${TextInputDiv}:last-child .mainImg {
-    width: 20vh;
-    height: 20vh;
-    margin-left: 2vw;
-    background: url(${(props) => props.mainImg}) no-repeat center center / contain;
+    width: 95%;
   }
 
   /* 텍스트 에디터 */
@@ -107,11 +181,9 @@ export const EnrollmentStyle = styled.div`
         : ({ theme }) => theme.palette.basicFont};
   }
 
-  ${TextEditorDiv} div.img {
-    width: 30vw;
-    height: 30vw;
-    margin-bottom: 10vh;
-    background: url(${(props) => props.img}) no-repeat center center / contain;
+  ${TextEditorDiv} {
+    padding-bottom: 5vh;
+    border-bottom: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
   }
 
   /* 저장 */

@@ -23,7 +23,7 @@ export const BannerTextDiv = styled.div`
 `;
 
 export const Advice = styled.div`
-  width: 75vw;
+  width: ${(props) => (props.media.isPc ? '75vw' : '90vw')};
   height: 65vh;
   margin: 0 auto;
   margin-top: 20vh;
@@ -161,11 +161,11 @@ export const MainPageDiv = styled.div`
   }
   .FixedImgGame {
     background-image: url('/img/fixed/game_fixedImg.jpg');
-    background-position-y: -55vh;
+    background-position-y: ${(props) => (props.media.isPc ? '-55vh' : '')};
   }
   .FixedImgBasic {
     background-image: url('/img/fixed/basic_fixedImg.jpg');
-    background-position-y: -165vh;
+    background-position-y: ${(props) => (props.media.isPc ? '-165vh' : '-10vh')};
   }
   /* Swiper css */
   .swiper-pagination-bullet-active {

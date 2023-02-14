@@ -26,11 +26,11 @@ export const ProductDiv = styled.div`
     font-family: Ubuntu;
     font-weight: 500;
     overflow: hidden;
-    font-size: 1.2rem;
+    font-size: ${(props) => (props.name.length >= 15 ? '1rem' : '1.2rem')};
   }
   & > div > div:nth-child(1) > p:nth-child(2) {
     font-family: Gothic A1;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     padding: 10px 0px;
   }
 

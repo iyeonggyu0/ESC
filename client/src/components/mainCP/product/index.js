@@ -16,6 +16,7 @@ const MainPageProductForm = ({ productData }) => {
         ? '/img/product/notImg.png'
         : `"${productData.img}"`,
   };
+  console.log(productData);
 
   const onClickHandler = useCallback(
     (e) => {
@@ -28,7 +29,7 @@ const MainPageProductForm = ({ productData }) => {
   );
 
   return (
-    <ProductDiv colorTheme={colorTheme} img={Data.img}>
+    <ProductDiv name={Data.name} colorTheme={colorTheme} img={Data.img}>
       <div>
         <div>
           <p>{Data.name}</p>

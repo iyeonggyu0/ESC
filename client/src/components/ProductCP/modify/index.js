@@ -8,13 +8,16 @@ import { useInput } from '@hooks/useInput';
 
 import { productGetOneData, productDelete, productModify } from '@reducer/productReducer';
 
-import { EnrollmentStyle, TextInputDiv, TextEditorDiv } from './style';
+import { EnrollmentStyle, TextInputDiv, TextEditorDiv, DiscountDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
 import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
 import axios from 'axios';
 import { axiosInstance } from '../../../util/axios';
 import CommonLoadingPage from '../../_common/loadingPage';
+import DateAndTimePickers from '../../_common/dateAndTimePickers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 const ProductModifyMain = () => {
   // 새로고침 / 뒤로가기방지
@@ -61,6 +64,51 @@ const ProductModifyMain = () => {
   const [productNewImg, setProductNewImg] = useState(null);
 
   const [productData, setProductData] = useState(null);
+
+  const [discount, setDiscount] = useState(false);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [dateData, setDateData] = useState(null);
+
+  const [year, setYear] = useState(null);
+  const [month, setMonth] = useState(null);
+  const [date, setDate] = useState(null);
+  useEffect(() => {
+    console.log(dateData);
+    if (dateData !== null) {
+      setYear(dateData.toString().match(/20[0-9]{2}/g));
+
+      setMonth(dateData.toString().match(/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/g));
+      // if (month !== null) {
+
+      // }
+
+      setDate(
+        dateData
+          .toString()
+          .replace(/\D/g, '')
+          .match(/^[0-9]{2}/g),
+      );
+
+      // setMonth(
+      //   month
+      //     .toString()
+      //     .replace(/Jan/g, 1)
+      //     .replace(/Feb/g, 2)
+      //     .replace(/Mar/g, 3)
+      //     .replace(/Apr/g, 4)
+      //     .replace(/May/g, 5)
+      //     .replace(/Jun/g, 6)
+      //     .replace(/Jul/g, 7)
+      //     .replace(/Aug/g, 8)
+      //     .replace(/Sep/g, 9)
+      //     .replace(/Oct/g, 10)
+      //     .replace(/Nov/g, 11)
+      //     .replace(/Dec/g, 12),
+      // );
+    }
+
+    // eslint-disable-next-line
+  }, [dateData]);
 
   const [error, setError] = useState(false);
 
@@ -347,7 +395,6 @@ const ProductModifyMain = () => {
                       textFun={textFunMainImg}
                       page={'modify'}
                     />
-                    <div className="mainImg"></div>
                   </TextInputDiv>
                 </div>
                 <TextEditorDiv>
@@ -359,8 +406,81 @@ const ProductModifyMain = () => {
                     textFun={textFunImg}
                     page={'modify'}
                   />
-                  <div className="img"></div>
                 </TextEditorDiv>
+                <DiscountDiv media={media} colorTheme={colorTheme}>
+                  <p>
+                    DISCOUNT
+                    {!discount && (
+                      <span className={'icon'} onClick={() => setDiscount(true)}>
+                        할인 추가
+                        <FontAwesomeIcon icon={solid('plus')} />
+                      </span>
+                    )}
+                    {discount && (
+                      <span className={'icon'} onClick={() => setDiscount(false)}>
+                        할인 제거
+                        <FontAwesomeIcon icon={solid('minus')} />
+                      </span>
+                    )}
+                  </p>
+                  {discount && (
+                    <div>
+                      <TextInputDiv>
+                        <div>
+                          <p>할인 금액</p>
+                          <input
+                            type="text"
+                            autoComplete="off"
+                            value={discountPercentage}
+                            onChange={(e) => setDiscountPercentage(e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <p></p>
+                          <div>
+                            <p>{price}원</p>
+                            <p>-</p>
+                            <p>{discountPercentage}원</p>
+                            <p>=</p>
+                            <p>{price - discountPercentage}원</p>
+                          </div>
+                        </div>
+                      </TextInputDiv>
+                      <div>
+                        <p>적용기간</p>
+                        <div>
+                          <DateAndTimePickers
+                            value={dateData}
+                            setValue={setDateData}
+                            label={'적용 기간'}
+                            views={'day'}
+                          />
+                          {year && <p>{year}년</p>}
+                          {month && (
+                            <p>
+                              {month
+                                .toString()
+                                .replace(/Jan/g, 1)
+                                .replace(/Feb/g, 2)
+                                .replace(/Mar/g, 3)
+                                .replace(/Apr/g, 4)
+                                .replace(/May/g, 5)
+                                .replace(/Jun/g, 6)
+                                .replace(/Jul/g, 7)
+                                .replace(/Aug/g, 8)
+                                .replace(/Sep/g, 9)
+                                .replace(/Oct/g, 10)
+                                .replace(/Nov/g, 11)
+                                .replace(/Dec/g, 12)}
+                              월
+                            </p>
+                          )}
+                          {date && <p>{date}일</p>}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </DiscountDiv>
                 <div>
                   <div
                     style={{ backgroundColor: '#ff6d6d', border: '0px' }}

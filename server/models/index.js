@@ -9,6 +9,7 @@ db.User = require("./user")(sequelize, Sequelize);
 db.Product = require("./product")(sequelize, Sequelize);
 db.ProductReview = require("./productReview")(sequelize, Sequelize);
 db.UserProductReviewLike = require("./UserProductReviewLike")(sequelize, Sequelize);
+db.ProductDiscount = require("./productDiscount")(sequelize, Sequelize);
 // db.Post = require("./post")(sequelize, Sequelize);
 // db.Reply = require("./reply")(sequelize, Sequelize);
 

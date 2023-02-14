@@ -60,8 +60,10 @@ module.exports = (sequelize, DataTypes) => {
   );
   Product.associate = (db) => {
     db.Product.hasMany(db.ProductReview);
-    // db.User.hasMany(db.Comment);
-    // db.User.hasMany(db.Reply);
+    db.Product.hasOne(db.ProductDiscount, {
+      foreignKey: "productId",
+      sourceKey: "id",
+    });
   };
   return Product;
 };

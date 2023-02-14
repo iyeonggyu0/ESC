@@ -27,8 +27,8 @@ export const ListDiv = styled.div`
 
   & > div:nth-child(2) {
     padding: 0 12px;
-    margin: 12px 0;
-    border-left: 1px solid
+    margin: 12px auto;
+    border-left: ${(props) => (props.media.isPc ? '1px' : '0px')} solid
       ${(props) =>
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameLightStroke
@@ -54,6 +54,7 @@ export const ListDiv = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 8px;
+    margin: 0px auto 8px auto;
     border-top: 1px solid
       ${(props) =>
         props.colorTheme === 'game'
@@ -63,6 +64,7 @@ export const ListDiv = styled.div`
 
   & textarea {
     width: ${(props) => (props.media.isPc && props.modify ? '87%' : '100%')};
+    /* margin: 0 ${(props) => (props.media.isPc && props.modify ? '0' : 'auto')}; */
     padding: 12px;
     resize: none;
     pointer-events: ${(props) => (props.modify ? 'all' : 'none')};
