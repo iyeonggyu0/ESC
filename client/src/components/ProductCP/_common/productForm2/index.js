@@ -5,10 +5,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { MainStyle, MainStyleDiv } from './style';
+import { useEffect, useState } from 'react';
+import { useDiscountDate } from '../../../../hooks/useDiscountDate';
 
 const ProductBigSizeForm = ({ productData, productModifyMod }) => {
   const media = useMedia();
   const navigate = useNavigate();
+
+  const [discountData, setDiscountData] = useState();
+  const [discountDataCheck, setDiscountDataCheck] = useDiscountDate();
+
+  useEffect(() => {
+    if (productData.ProductDiscount !== null) {
+      setDiscountData(productData.ProductDiscount);
+      setDiscountDataCheck(productData.ProductDiscount);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const data = {
     id: productData.id,
@@ -40,7 +53,21 @@ const ProductBigSizeForm = ({ productData, productModifyMod }) => {
         <div>{/* img */}</div>
       </MainStyle>
       <p>{data.name}</p>
-      <p>{data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</p>
+      <p>
+        {!discountDataCheck && <span>{data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</span>}
+        {discountDataCheck && (
+          <span className="text">{data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</span>
+        )}
+        {discountDataCheck && (
+          <span>
+            {(data.price - discountData.discountAmount)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            원
+            <FontAwesomeIcon icon={solid('tags')} className={'icon'} />
+          </span>
+        )}
+      </p>
     </MainStyleDiv>
   );
 };

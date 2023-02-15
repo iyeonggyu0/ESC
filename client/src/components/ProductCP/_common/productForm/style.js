@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const MainStyle = styled.div`
   width: ${(props) => (props.media.isPc ? '202px' : '28%')};
-  height: ${(props) => (props.media.isPc ? '240px' : '150px')};
+  height: ${(props) => (props.media.isPc ? '260px' : '150px')};
   padding: ${(props) => (props.media.isPc ? '25px 25px' : '10px 10px')};
   background-color: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
@@ -41,7 +41,7 @@ export const MainStyle = styled.div`
   }
   & > div:nth-child(2) {
     width: 100%;
-    height: 65%;
+    height: 55%;
     margin-bottom: ${(props) => (props.media.isPc ? '15px' : '5px')};
     background: url(${(props) => props.data.img}) no-repeat center center / cover;
   }
@@ -61,6 +61,16 @@ export const MainStyle = styled.div`
   & > div:nth-child(4) {
     width: 50%;
     font-size: 0.8rem;
+  }
+  & > p.discount {
+    font-size: ${(props) => (props.media.isPc ? '1.1rem' : '0.6rem')};
+    position: absolute;
+    color: gray;
+    bottom: ${(props) => (props.media.isPc ? 'calc(28px + 1.3rem)' : 'calc(10px + 0.7rem)')};
+    right: ${(props) => (props.media.isPc ? '25px' : '10px')};
+  }
+  & > p.discount > .icon {
+    padding-left: 5px;
   }
   & > p:last-child {
     font-size: ${(props) => (props.media.isPc ? '1.3rem' : '0.7rem')};

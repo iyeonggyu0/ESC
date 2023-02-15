@@ -18,6 +18,7 @@ import CommonLoadingPage from '../../_common/loadingPage';
 import DateAndTimePickers from '../../_common/dateAndTimePickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { useDiscountDate } from '../../../hooks/useDiscountDate';
 
 const ProductModifyMain = () => {
   // 새로고침 / 뒤로가기방지
@@ -65,22 +66,22 @@ const ProductModifyMain = () => {
 
   const [productData, setProductData] = useState(null);
 
+  // 쿠폰
   const [discount, setDiscount] = useState(false);
-  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [discountAmount, setDiscountAmount] = useState(null);
   const [dateData, setDateData] = useState(null);
-
   const [year, setYear] = useState(null);
   const [month, setMonth] = useState(null);
   const [date, setDate] = useState(null);
+
+  const [discountDate, discountDateCheck] = useDiscountDate();
+
   useEffect(() => {
     console.log(dateData);
     if (dateData !== null) {
       setYear(dateData.toString().match(/20[0-9]{2}/g));
 
       setMonth(dateData.toString().match(/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/g));
-      // if (month !== null) {
-
-      // }
 
       setDate(
         dateData
@@ -88,23 +89,6 @@ const ProductModifyMain = () => {
           .replace(/\D/g, '')
           .match(/^[0-9]{2}/g),
       );
-
-      // setMonth(
-      //   month
-      //     .toString()
-      //     .replace(/Jan/g, 1)
-      //     .replace(/Feb/g, 2)
-      //     .replace(/Mar/g, 3)
-      //     .replace(/Apr/g, 4)
-      //     .replace(/May/g, 5)
-      //     .replace(/Jun/g, 6)
-      //     .replace(/Jul/g, 7)
-      //     .replace(/Aug/g, 8)
-      //     .replace(/Sep/g, 9)
-      //     .replace(/Oct/g, 10)
-      //     .replace(/Nov/g, 11)
-      //     .replace(/Dec/g, 12),
-      // );
     }
 
     // eslint-disable-next-line
@@ -137,6 +121,17 @@ const ProductModifyMain = () => {
       } else {
         setProductImg(`"${productData.detailedImg}"`);
       }
+      //쿠폰
+      if (productData.ProductDiscount !== null) {
+        if (discountDate) {
+          setDiscount(true);
+          setDiscountAmount(productData.ProductDiscount.discountAmount);
+          setYear(productData.ProductDiscount.periodYear);
+          setMonth(productData.ProductDiscount.periodMonth);
+          setDate(productData.ProductDiscount.periodDate);
+          discountDateCheck(productData.ProductDiscount);
+        }
+      }
     }
     // eslint-disable-next-line
   }, [productData]);
@@ -154,16 +149,26 @@ const ProductModifyMain = () => {
 
   useEffect(() => {
     if (name.length > 0 && type.length > 0 && price.length > 0) {
+      if (discount) {
+        if (discountAmount === 0 || year === null || month === null || date === null) {
+          return setError(true);
+        }
+      }
+
       setError(false);
       return;
     } else {
       setError(true);
     }
-  }, [name, type, price]);
+  }, [name, type, price, discountAmount, discount, year, month, date]);
 
   const productModifyHandler = useCallback(
     (e) => {
       e.preventDefault();
+
+      if (discount && discountAmount > price) {
+        return alert('할인된 값이 마이너스(-)입니다');
+      }
 
       // newData에서 이미지의 경로가 null이 아니면 기존 파일 삭제 후 데이터 업데이트
       const productId = productData.id;
@@ -175,9 +180,50 @@ const ProductModifyMain = () => {
         img: productMainNewImg === null ? null : productMainNewImg,
         detailedImg: productNewImg === null ? null : productNewImg,
       };
-      dispatch(productModify({ productId: productId, productNewData: productNewData }));
+
+      const newProductDiscount = {
+        discount: discount,
+        discountAmount: discountAmount,
+        year: year,
+        month: month
+          .toString()
+          .replace(/Jan/g, 1)
+          .replace(/Feb/g, 2)
+          .replace(/Mar/g, 3)
+          .replace(/Apr/g, 4)
+          .replace(/May/g, 5)
+          .replace(/Jun/g, 6)
+          .replace(/Jul/g, 7)
+          .replace(/Aug/g, 8)
+          .replace(/Sep/g, 9)
+          .replace(/Oct/g, 10)
+          .replace(/Nov/g, 11)
+          .replace(/Dec/g, 12),
+        date: date,
+      };
+      console.log(newProductDiscount);
+      dispatch(
+        productModify({
+          productId: productId,
+          productNewData: productNewData,
+          newProductDiscount: newProductDiscount,
+        }),
+      );
     },
-    [productData, name, type, price, productMainNewImg, productNewImg, dispatch],
+    [
+      productData,
+      name,
+      type,
+      price,
+      productMainNewImg,
+      productNewImg,
+      discountAmount,
+      year,
+      month,
+      date,
+      discount,
+      dispatch,
+    ],
   );
 
   useEffect(() => {
@@ -263,7 +309,7 @@ const ProductModifyMain = () => {
   return (
     <>
       {productData === null && <CommonLoadingPage />}
-      {login && productData !== null && (
+      {login && productData !== null && media.isPc && (
         <>
           {userData.authority === 'admin' && (
             <EnrollmentStyle
@@ -431,8 +477,8 @@ const ProductModifyMain = () => {
                           <input
                             type="text"
                             autoComplete="off"
-                            value={discountPercentage}
-                            onChange={(e) => setDiscountPercentage(e.target.value)}
+                            value={discountAmount || ''}
+                            onChange={(e) => setDiscountAmount(e.target.value)}
                           />
                         </div>
                         <div>
@@ -440,9 +486,9 @@ const ProductModifyMain = () => {
                           <div>
                             <p>{price}원</p>
                             <p>-</p>
-                            <p>{discountPercentage}원</p>
+                            <p>{discountAmount || 0}원</p>
                             <p>=</p>
-                            <p>{price - discountPercentage}원</p>
+                            <p>{price - discountAmount}원</p>
                           </div>
                         </div>
                       </TextInputDiv>

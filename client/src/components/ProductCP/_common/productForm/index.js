@@ -5,15 +5,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { MainStyle } from './style';
+import { useEffect, useState } from 'react';
+import { useDiscountDate } from '../../../../hooks/useDiscountDate';
 
 const ProductForm = ({ productData, productModifyMod }) => {
   const media = useMedia();
   const navigate = useNavigate();
 
+  const [discountData, setDiscountData] = useState();
+  const [discountDataCheck, setDiscountDataCheck] = useDiscountDate();
+
+  useEffect(() => {
+    if (productData.ProductDiscount !== null) {
+      setDiscountData(productData.ProductDiscount);
+      setDiscountDataCheck(productData.ProductDiscount);
+    }
+    // eslint-disable-next-line
+  }, []);
+
   const data = {
     id: productData.id,
     name: productData.name,
-    price: `${productData.price}`,
+    price: productData.price,
     grade: productData.grade,
     img:
       productData.img === null || productData.img === '/null'
@@ -48,7 +61,19 @@ const ProductForm = ({ productData, productModifyMod }) => {
         {5 <= data.grade && <FontAwesomeIcon icon={solid('star')} />}
         {/* <span> 연결된 별점 리뷰의 수 </span> */}
       </div>
-      <p>{data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</p>
+      {discountDataCheck && (
+        <p className="discount">
+          -{discountData.discountAmount}
+          <FontAwesomeIcon icon={solid('tags')} className={'icon'} />
+        </p>
+      )}
+      <p>
+        {discountDataCheck &&
+          (data.price - discountData.discountAmount)
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+        {!discountDataCheck && data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+      </p>
     </MainStyle>
   );
 };

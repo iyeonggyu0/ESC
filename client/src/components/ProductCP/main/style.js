@@ -42,8 +42,7 @@ export const ProductMainDivStyle = styled.div`
   & > div:nth-child(2) > div:nth-child(2),
   & > div:nth-child(2) > div.div3 {
     position: absolute;
-    width: ${(props) => (props.media.isPc ? '130px' : '70px')};
-    border-radius: 5px;
+    width: ${(props) => (props.media.isPc ? '130px' : '25%')};
     border: 1px solid
       ${(props) =>
         props.colorTheme === 'game'
@@ -62,7 +61,8 @@ export const ProductMainDivStyle = styled.div`
     left: 0;
   }
   & > div:nth-child(2) > div:nth-child(2) {
-    left: ${(props) => (props.media.isPc ? '150px' : '80px')};
+    /* width: ${(props) => (props.media.isPc ? '130px' : '78px')}; */
+    left: ${(props) => (props.media.isPc ? '150px' : 'calc(25% + 10px)')};
   }
 
   & > div:nth-child(2) > div:nth-child(3) {
@@ -78,7 +78,7 @@ export const ProductMainDivStyle = styled.div`
   }
 
   & > div:nth-child(2) > div > div {
-    width: ${(props) => (props.media.isPc ? '130px' : '70px')};
+    width: ${(props) => (props.media.isPc ? '130px' : '100%')};
     height: ${(props) => (props.media.isPc ? '50px' : '25px')};
     background-color: white;
     display: flex;

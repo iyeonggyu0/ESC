@@ -16,6 +16,19 @@ export const MainStyleDiv = styled.div`
     font-size: ${(props) => (props.media.isPc ? '1.3rem' : '1rem')};
     color: black;
   }
+
+  & > p:nth-child(3) > span.text {
+    font-family: Noto Sans KR;
+    font-weight: 300;
+    font-size: ${(props) => (props.media.isPc ? '1rem' : '0.9rem')};
+    color: gray;
+    text-decoration: line-through;
+    padding-right: 10px;
+  }
+
+  & > p:nth-child(3) > span .icon {
+    padding-left: 5px;
+  }
 `;
 
 export const MainStyle = styled.div`

@@ -4,6 +4,7 @@ export const TextInputDiv = styled.div``;
 export const TextEditorDiv = styled.div``;
 
 export const EnrollmentStyle = styled.div`
+  width: 100%;
   height: calc(100vh - 71px);
   position: relative;
   display: flex;
@@ -43,7 +44,7 @@ export const EnrollmentStyle = styled.div`
   }
 
   ${TextInputDiv} input, ${TextInputDiv} > form {
-    width: 95%;
+    width: 100%;
     height: ${(props) => (props.media.isPc ? '' : '35px')};
     padding: 1% 0% 1% 2%;
     border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
@@ -59,18 +60,22 @@ export const EnrollmentStyle = styled.div`
   }
 
   ${TextInputDiv}:nth-child(2) div {
-    width: 95%;
-    height: ${(props) => (props.media.isPc ? '' : '35px')};
+    width: 100%;
+    height: ${(props) => (props.media.isPc ? '' : '65px')};
     padding: 1% 0;
     border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
     border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+    display: ${(props) => (props.media.isPc ? 'block' : 'flex')};
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
   }
 
   ${TextInputDiv}:nth-child(2) div span {
     cursor: pointer;
     font-family: Ubuntu;
     padding: 0 2%;
-    font-size: 1rem;
+    font-size: ${(props) => (props.media.isPc ? '1rem' : '0.9rem')};
   }
 
   & > div > div:nth-child(2) {

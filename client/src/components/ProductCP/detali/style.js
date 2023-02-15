@@ -102,6 +102,34 @@ export const ProductDetaliMain = styled.section`
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameLightStroke
           : ({ theme }) => theme.palette.basicSubFont};
+    display: flex;
+    align-items: center;
+  }
+
+  & > section:nth-child(1) > div:last-child > p:nth-child(3) > .icon {
+    padding-top: 5px;
+    padding-right: 5px;
+    font-size: 1.3rem;
+  }
+
+  & > section:nth-child(1) > div:last-child > p:nth-child(3) > div {
+    width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 7%;
+    text-align: center;
+    color: gray;
+  }
+
+  & > section:nth-child(1) > div:last-child > p:nth-child(3) > div > span:nth-child(1) {
+    font-size: 0.5rem;
+    padding-bottom: 5px;
+  }
+  & > section:nth-child(1) > div:last-child > p:nth-child(3) > div > span:nth-child(2) {
+    font-size: 1.3rem;
+    text-decoration: line-through;
   }
 
   & > section:nth-child(1) > div:last-child > div:nth-child(4) {
@@ -169,7 +197,7 @@ export const DetaliImgSection = styled.section`
   position: relative;
 
   & > div:nth-child(1) {
-    width: ${(props) => (props.media.isPc ? '75vw' : '100%')};
+    width: ${(props) => (props.media.isPc ? '45vw' : '100%')};
     height: ${(props) =>
       props.media.isPc && !props.detail
         ? 'calc(110vh)'
@@ -178,6 +206,7 @@ export const DetaliImgSection = styled.section`
         : !props.media.isPc && !props.detail
         ? '100vh'
         : 'auto !important'};
+    margin: 0 auto;
     overflow: hidden;
   }
 

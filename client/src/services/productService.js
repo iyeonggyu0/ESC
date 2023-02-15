@@ -68,6 +68,7 @@ export default class ProductService {
       .put(`${axiosInstance}api/product/put`, {
         productId: req.productId,
         productNewData: req.productNewData,
+        newProductDiscount: req.newProductDiscount,
       })
       .then(() => {
         if (!alert('저장 완료')) {

@@ -123,6 +123,19 @@ const ProductEnrollmentMain = () => {
 
   return (
     <>
+      {/* {media.isMobile && (
+        <div
+          style={{
+            width: '100vw',
+            height: 'calc(100vh - 70px)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          pc로 접속해 주세요
+        </div>
+      )} */}
       {login && (
         <>
           {userData.authority === 'admin' && (

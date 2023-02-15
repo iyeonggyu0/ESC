@@ -13,6 +13,7 @@ import CommonLoadingPage from '../../_common/loadingPage';
 import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
 import GradeForm from '../_common/gradeForm';
 import ReviewForm from '../_common/reviewForm.js';
+import { useDiscountDate } from '../../../hooks/useDiscountDate';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -34,6 +35,9 @@ const ProductDetliMain = () => {
 
   const [detaliImgSection, setDetaliImgSection] = useState(false);
 
+  const [discountData, setDiscountData] = useState(0);
+  const [discountDataCheck, setDiscountDataCheck] = useDiscountDate();
+
   // dataGet
   useEffect(() => {
     dispatch(productGetOneData({ productId: productId, setProductData: setProductData }));
@@ -53,7 +57,12 @@ const ProductDetliMain = () => {
       } else {
         setDetailedImg(`${productData.detailedImg}`);
       }
+      if (productData.ProductDiscount !== null) {
+        setDiscountData(productData.ProductDiscount);
+        setDiscountDataCheck(productData.ProductDiscount);
+      }
     }
+    // eslint-disable-next-line
   }, [productData]);
 
   useEffect(() => {
@@ -95,7 +104,28 @@ const ProductDetliMain = () => {
                   <span>구매 {productData.sale}</span>
                 </div>
                 <p>
-                  {productData.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}원
+                  {discountDataCheck && <FontAwesomeIcon icon={solid('tags')} className={'icon'} />}
+                  {discountDataCheck &&
+                    (productData.price - discountData.discountAmount)
+                      .toString()
+                      .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
+                  {!discountDataCheck &&
+                    productData.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
+                  원
+                  {discountDataCheck && (
+                    <div>
+                      <span>
+                        {discountData.periodYear}년 {discountData.periodMonth}월{' '}
+                        {discountData.periodDate}일 까지
+                      </span>
+                      <span>
+                        {productData.price
+                          .toString()
+                          .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
+                        원
+                      </span>
+                    </div>
+                  )}
                 </p>
                 <div>
                   <PlusMinusButtonFrom val={quantity} setVal={setQuantity} />

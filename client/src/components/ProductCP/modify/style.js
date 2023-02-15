@@ -31,7 +31,7 @@ export const DiscountDiv = styled.div`
   }
 
   & > div:nth-child(2) > ${TextInputDiv} > div:nth-child(1) > input {
-    width: 95%;
+    width: 100%;
   }
 
   & > div:nth-child(2) > ${TextInputDiv} > div:nth-child(2) {
@@ -51,7 +51,7 @@ export const DiscountDiv = styled.div`
     font-weight: 300;
   }
   & > div:nth-child(2) > div:nth-child(2) > div {
-    width: 95%;
+    width: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
@@ -86,6 +86,7 @@ export const DiscountDiv = styled.div`
 
 export const EnrollmentStyle = styled.div`
   /* height: calc(100vh - 71px); */
+  width: 100%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -125,7 +126,7 @@ export const EnrollmentStyle = styled.div`
   }
 
   ${TextInputDiv} input, ${TextInputDiv} > form {
-    width: 95%;
+    width: 100%;
     height: ${(props) => (props.media.isPc ? '' : '35px')};
     padding: 1% 0% 1% 2%;
     border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
@@ -141,11 +142,15 @@ export const EnrollmentStyle = styled.div`
   }
 
   ${TextInputDiv}:nth-child(2) div {
-    width: 95%;
-    height: ${(props) => (props.media.isPc ? '' : '35px')};
+    width: 100%;
+    height: ${(props) => (props.media.isPc ? '' : '65px')};
     padding: 1% 0;
     border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
     border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+    display: ${(props) => (props.media.isPc ? 'block' : 'flex')};
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
   }
 
   ${TextInputDiv}:nth-child(2) div span {
@@ -165,7 +170,7 @@ export const EnrollmentStyle = styled.div`
   }
 
   ${TextInputDiv}:last-child > form {
-    width: 95%;
+    width: 100%;
   }
 
   /* 텍스트 에디터 */

@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER(10),
         allowNull: false,
       },
+      // 삭제 (년)
+      periodYear: {
+        type: DataTypes.INTEGER(10),
+        allowNull: true,
+      },
       // 삭제 (월)
       periodMonth: {
         type: DataTypes.INTEGER(10),

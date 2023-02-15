@@ -9,7 +9,7 @@ const multer = require("multer");
 const fs = require("fs");
 const { Op } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.post("/create", isLoggedIn, async (req, res, next) => {
@@ -57,14 +57,16 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
 
   try {
     if (filter === "ALL") {
-      const data = await Product.findAll({ order: [[order, orderSort]] });
+      const data = await Product.findAll({ order: [[order, orderSort]], include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }], attributes: ["img", "grade", "id", "name", "price"] });
       res.status(201).send(data);
     } else {
       const data = await Product.findAll({
         where: {
           type: filter,
         },
+        attributes: ["img", "grade", "id", "name", "price"],
         order: [[order, orderSort]],
+        include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }],
       });
       res.status(201).send(data);
     }
@@ -78,13 +80,12 @@ router.get("/get/one/:productId", async (req, res) => {
   try {
     const oneData = await Product.findOne({
       where: { id: productId },
-      // include: [
-      //   {
-      //     model: ProductReview,
-      //     order: [[order, orderSort]],
-      //     include: [{ model: User, attributes: ["nickName", "profileImg", "email"] }],
-      //   },
-      // ],
+      include: [
+        {
+          model: ProductDiscount,
+          attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
+        },
+      ],
     });
 
     res.status(201).send(oneData);
@@ -126,6 +127,7 @@ router.delete("/delete/:productId", async (req, res) => {
   } catch (err) {
     console.error(err);
   }
+  await ProductDiscount.destroy({ where: { ProductId: productId } });
   const deletedCount = await Product.destroy({ where: { id: productId } });
   if (!deletedCount) {
     res.status(404).send({ message: "There is no member with the id!" });
@@ -135,6 +137,7 @@ router.delete("/delete/:productId", async (req, res) => {
 router.put("/put", async (req, res) => {
   const productId = req.body.productId;
   const productNewData = req.body.productNewData;
+  const newProductDiscount = req.body.newProductDiscount;
 
   const data = await Product.findOne({
     where: { id: productId },
@@ -198,10 +201,48 @@ router.put("/put", async (req, res) => {
         { where: { id: productId } }
       );
     }
+
+    // 쿠폰
+    const discountData = await ProductDiscount.findOne({
+      where: { productId: productId },
+    });
+
+    if (newProductDiscount.discount === false) {
+      await ProductDiscount.destroy({ where: { ProductId: productId } });
+    }
+
+    if (newProductDiscount.discount) {
+      if (!discountData) {
+        await ProductDiscount.create({
+          ProductId: productId,
+          discountAmount: newProductDiscount.discountAmount,
+          periodYear: newProductDiscount.year,
+          periodMonth: newProductDiscount.month,
+          periodDate: newProductDiscount.date,
+        });
+      } else if (discountData) {
+        await ProductDiscount.update(
+          {
+            discountAmount: newProductDiscount.discountAmount,
+            periodYear: newProductDiscount.year,
+            periodMonth: newProductDiscount.month,
+            periodDate: newProductDiscount.date,
+          },
+          { where: { ProductId: productId } }
+        );
+      }
+    }
+
     res.status(201).send("수정 완료:");
   } catch (err) {
     console.error(err);
   }
+});
+
+// 할인 삭제
+router.delete("/discount/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  await ProductDiscount.destroy({ where: { id: id } });
 });
 
 // 리뷰

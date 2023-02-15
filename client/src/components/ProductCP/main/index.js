@@ -64,6 +64,11 @@ const ProductMain = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('boxSize', `${boxSize}`);
+    // eslint-disable-next-line
+  }, [boxSize]);
+
   const productModify = useCallback((text) => {
     if (text === true) {
       setAdmin('수정 모드');
@@ -109,8 +114,12 @@ const ProductMain = () => {
         <div onClick={() => setSortFocus(sortFocus ? false : true)}>
           <div>
             {sort}
-            {sortFocus && <FontAwesomeIcon icon={solid('chevron-up')} className={'icon'} />}
-            {!sortFocus && <FontAwesomeIcon icon={solid('chevron-down')} className={'icon'} />}
+            {sortFocus && (media.isPc || (sort !== '가격 높은 순' && sort !== '가격 낮은 순')) && (
+              <FontAwesomeIcon icon={solid('chevron-up')} className={'icon'} />
+            )}
+            {!sortFocus && (media.isPc || (sort !== '가격 높은 순' && sort !== '가격 낮은 순')) && (
+              <FontAwesomeIcon icon={solid('chevron-down')} className={'icon'} />
+            )}
           </div>
           {sortFocus && (
             <>
@@ -147,7 +156,7 @@ const ProductMain = () => {
               userData !== null && userData.authority === 'admin'
                 ? media.isPc
                   ? '150px'
-                  : '80px'
+                  : 'calc(25% + 10px)'
                 : '0px',
           }}
         >
