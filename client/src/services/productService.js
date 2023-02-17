@@ -40,7 +40,7 @@ export default class ProductService {
   }
 
   getOne(req) {
-    const promise = axios.get(`${axiosInstance}api/product/get/one/${req.productId}`);
+    const promise = axios.get(`${axiosInstance}api/product/get/one/${req.productId}/${req.sort}`);
     const productData = promise
       .then((res) => {
         return res.data;

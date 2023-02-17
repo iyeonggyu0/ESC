@@ -11,9 +11,9 @@ const store = createStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <ThemeProvider theme={theme}>
-        <Provider store={store}>
-            <App />
-        </Provider>
-    </ThemeProvider>,
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ThemeProvider>,
 );

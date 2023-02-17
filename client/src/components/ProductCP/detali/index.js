@@ -8,12 +8,19 @@ import { productGetOneData } from '@reducer/productReducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { ProductDetaliMain, ProductDetaliHeader, DetaliImgSection, ReviewDiv } from './style';
+import {
+  ProductDetaliMain,
+  ProductDetaliHeader,
+  DetaliImgSection,
+  ReviewDiv,
+  ReviewFormWrapper,
+} from './style';
 import CommonLoadingPage from '../../_common/loadingPage';
 import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
 import GradeForm from '../_common/gradeForm';
-import ReviewForm from '../_common/reviewForm.js';
 import { useDiscountDate } from '../../../hooks/useDiscountDate';
+import ReviewInputForm from '../_common/reviewInputForm.js';
+import ReviewTextForm from '../_common/reviewTextForm';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -38,9 +45,14 @@ const ProductDetliMain = () => {
   const [discountData, setDiscountData] = useState(0);
   const [discountDataCheck, setDiscountDataCheck] = useDiscountDate();
 
+  const [sort, setSort] = useState('인기순');
+  const [list, setList] = useState([]);
+
   // dataGet
   useEffect(() => {
-    dispatch(productGetOneData({ productId: productId, setProductData: setProductData }));
+    dispatch(
+      productGetOneData({ productId: productId, sort: sort, setProductData: setProductData }),
+    );
     // eslint-disable-next-line
   }, []);
 
@@ -60,6 +72,9 @@ const ProductDetliMain = () => {
       if (productData.ProductDiscount !== null) {
         setDiscountData(productData.ProductDiscount);
         setDiscountDataCheck(productData.ProductDiscount);
+      }
+      if (productData.ProductReviews) {
+        setList(productData.ProductReviews);
       }
     }
     // eslint-disable-next-line
@@ -113,7 +128,7 @@ const ProductDetliMain = () => {
                     productData.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
                   원
                   {discountDataCheck && (
-                    <div>
+                    <span>
                       <span>
                         {discountData.periodYear}년 {discountData.periodMonth}월{' '}
                         {discountData.periodDate}일 까지
@@ -124,7 +139,7 @@ const ProductDetliMain = () => {
                           .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
                         원
                       </span>
-                    </div>
+                    </span>
                   )}
                 </p>
                 <div>
@@ -188,7 +203,58 @@ const ProductDetliMain = () => {
             {pageMod === '구매후기' && (
               <ReviewDiv media={media} colorTheme={colorTheme}>
                 <GradeForm productData={productData} />
-                <ReviewForm productData={productData} userData={userData} colorTheme={colorTheme} />
+                <ReviewInputForm
+                  productData={productData}
+                  userData={userData}
+                  colorTheme={colorTheme}
+                />
+                <ReviewFormWrapper colorTheme={colorTheme}>
+                  {/* sort div */}
+                  <div>
+                    <div
+                      onClick={() => setSort('인기순')}
+                      style={{ fontWeight: sort === '인기순' ? '600' : '400' }}
+                    >
+                      인기순
+                    </div>
+                    <div
+                      onClick={() => setSort('최신순')}
+                      style={{ fontWeight: sort === '최신순' ? '600' : '400' }}
+                    >
+                      최신순
+                    </div>
+                  </div>
+
+                  {/* list div */}
+
+                  {list && (
+                    <div>
+                      {list.length === 0 && (
+                        <div
+                          style={{
+                            width: '100%',
+                            height: '100px',
+                            backgroundColor: '#f7f7f9',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                        >
+                          남겨진 리뷰가 없습니다.
+                        </div>
+                      )}
+                      {list.map((state, key) => (
+                        <ReviewTextForm
+                          key={state.id}
+                          reviewData={list[key]}
+                          userData={userData}
+                          colorTheme={colorTheme}
+                          media={media}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </ReviewFormWrapper>
               </ReviewDiv>
             )}
           </ProductDetaliMain>

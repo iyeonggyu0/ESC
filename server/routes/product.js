@@ -11,6 +11,7 @@ const { Op } = require("sequelize");
 
 const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
+const productReview = require("../models/productReview");
 
 router.post("/create", isLoggedIn, async (req, res, next) => {
   try {
@@ -75,9 +76,35 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
   }
 });
 
-router.get("/get/one/:productId", async (req, res) => {
+router.get("/get/one/:productId/:reviewSort", async (req, res) => {
   const { productId } = req.params;
+  const { reviewSort } = req.params;
+
+  let order;
+  let orderSort;
+  if (reviewSort === "인기순") {
+    order = "reviewLike";
+    orderSort = "DESC";
+  }
+
+  if (reviewSort === "최신순") {
+    order = "reviewerGrade";
+    orderSort = "DESC";
+  }
+
   try {
+    const reviewData = await ProductReview.findAll({ where: { ProductId: productId } });
+    let gradeNum;
+    if (reviewData) {
+      let num = 0;
+      if (reviewData.length !== 0) {
+        for (let i = 0; i < reviewData.length; i++) {
+          num = num + reviewData[i].reviewerGrade;
+        }
+        gradeNum = num / reviewData.length;
+      }
+    }
+
     const oneData = await Product.findOne({
       where: { id: productId },
       include: [
@@ -85,9 +112,42 @@ router.get("/get/one/:productId", async (req, res) => {
           model: ProductDiscount,
           attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
         },
+        {
+          model: ProductReview,
+          order: [[order, orderSort]],
+          include: [
+            {
+              model: User,
+              attributes: ["nickName", "profileImg", "email"],
+            },
+          ],
+        },
       ],
     });
 
+    if (gradeNum !== oneData.grade) {
+      await Product.update({ grade: gradeNum }, { where: { id: productId } });
+      const data = await Product.findOne({
+        where: { id: productId },
+        include: [
+          {
+            model: ProductDiscount,
+            attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
+          },
+          {
+            model: ProductReview,
+            order: [[order, orderSort]],
+            include: [
+              {
+                model: User,
+                attributes: ["nickName", "profileImg", "email"],
+              },
+            ],
+          },
+        ],
+      });
+      return res.status(201).send(data);
+    }
     res.status(201).send(oneData);
   } catch (err) {
     console.error(err);
@@ -258,6 +318,22 @@ router.post("/review/post", isLoggedIn, async (req, res, next) => {
   } catch (err) {
     console.error(err);
     next(err);
+  }
+});
+
+router.put("/review/putProduct", async (req, res) => {
+  try {
+    const { productId, grade } = req.body;
+
+    await Product.update(
+      {
+        grade: grade,
+      },
+      { where: { id: productId } }
+    );
+    res.status(201).send("수정 완료");
+  } catch (err) {
+    console.error(err);
   }
 });
 

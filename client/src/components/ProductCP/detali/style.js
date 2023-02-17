@@ -112,7 +112,7 @@ export const ProductDetaliMain = styled.section`
     font-size: 1.3rem;
   }
 
-  & > section:nth-child(1) > div:last-child > p:nth-child(3) > div {
+  & > section:nth-child(1) > div:last-child > p:nth-child(3) > span {
     width: 30%;
     display: flex;
     flex-wrap: wrap;
@@ -123,11 +123,11 @@ export const ProductDetaliMain = styled.section`
     color: gray;
   }
 
-  & > section:nth-child(1) > div:last-child > p:nth-child(3) > div > span:nth-child(1) {
+  & > section:nth-child(1) > div:last-child > p:nth-child(3) > span > span:nth-child(1) {
     font-size: 0.5rem;
     padding-bottom: 5px;
   }
-  & > section:nth-child(1) > div:last-child > p:nth-child(3) > div > span:nth-child(2) {
+  & > section:nth-child(1) > div:last-child > p:nth-child(3) > span > span:nth-child(2) {
     font-size: 1.3rem;
     text-decoration: line-through;
   }
@@ -257,5 +257,25 @@ export const ReviewDiv = styled.div`
 
   & > div {
     margin: 1vh auto;
+  }
+`;
+
+export const ReviewFormWrapper = styled.div`
+  width: 100%;
+  font-family: Roboto;
+
+  & > div:nth-child(1) {
+    width: 98%;
+    margin: 0 auto;
+    height: 40px;
+    padding: 0 12px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  & > div:nth-child(1) div {
+    margin-left: 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
   }
 `;

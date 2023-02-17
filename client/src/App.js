@@ -22,6 +22,7 @@ import ProductPage from './pages/productMain.js';
 import ProductEnrollmentPage from './pages/productEnrollment.js';
 import ProductModifyPage from './pages/productModify';
 import ProductDetailPage from './pages/productDetaliPage';
+import ScrollToTop from './components/_common/scrollToTop';
 
 export const ThemeContext = createContext(null);
 
@@ -59,6 +60,7 @@ function App() {
   return (
     <ThemeContext.Provider value={{ colorTheme, toggleTheme, userInfo }}>
       <BrowserRouter>
+        <ScrollToTop />
         <GlobalStyle colorTheme={colorTheme} />
         <Routes>
           {/* 메인 페이지 */}
