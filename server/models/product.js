@@ -64,6 +64,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "productId",
       sourceKey: "id",
     });
+    db.Product.hasMany(db.ProductInquiry, {
+      foreingKey: "productId",
+      sourceKey: "id",
+    });
   };
   return Product;
 };

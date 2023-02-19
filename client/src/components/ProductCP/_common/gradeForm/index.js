@@ -2,25 +2,39 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { GradeFormDiv } from './style';
-import { useState } from 'react';
 
-const GradeForm = ({ productData }) => {
+const GradeForm = ({ productData, colorTheme }) => {
   // eslint-disable-next-line
 
   return (
     <>
       {productData.ProductReviews.length !== 0 && (
-        <GradeFormDiv>
+        <GradeFormDiv colorTheme={colorTheme}>
           <div>
             <p>{productData.grade}</p>
+            <p>({productData.ProductReviews.length})</p>
           </div>
           <div>
-            {0 < productData.grade && <FontAwesomeIcon icon={solid('star')} />}
-            {2 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
-            {3 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
-            {4 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
-            {5 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
-            <p>{productData.ProductReviews.length}</p>
+            <FontAwesomeIcon
+              icon={solid('star')}
+              style={{ color: productData.grade >= 1 ? 'black' : 'gray' }}
+            />
+            <FontAwesomeIcon
+              icon={solid('star')}
+              style={{ color: productData.grade >= 2 ? 'black' : 'gray' }}
+            />
+            <FontAwesomeIcon
+              icon={solid('star')}
+              style={{ color: productData.grade >= 3 ? 'black' : 'gray' }}
+            />
+            <FontAwesomeIcon
+              icon={solid('star')}
+              style={{ color: productData.grade >= 4 ? 'black' : 'gray' }}
+            />
+            <FontAwesomeIcon
+              icon={solid('star')}
+              style={{ color: productData.grade >= 5 ? 'black' : 'gray' }}
+            />
           </div>
         </GradeFormDiv>
       )}

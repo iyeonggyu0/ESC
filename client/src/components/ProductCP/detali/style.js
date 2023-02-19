@@ -90,7 +90,7 @@ export const ProductDetaliMain = styled.section`
   }
 
   & > section:nth-child(1) > div:last-child > div:nth-child(2) > div:first-child {
-    width: 200px;
+    width: 208px;
   }
 
   & > section:nth-child(1) > div:last-child > p:nth-child(3) {
@@ -253,7 +253,7 @@ export const DetaliImgSection = styled.section`
 
 export const ReviewDiv = styled.div`
   width: ${(props) => (props.media.isPc ? '75vw' : '90vw')};
-  margin: 3vh auto;
+  margin: 0 auto;
 
   & > div {
     margin: 1vh auto;

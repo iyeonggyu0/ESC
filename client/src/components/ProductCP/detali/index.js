@@ -202,7 +202,7 @@ const ProductDetliMain = () => {
             {/* TODO: 리뷰 CRUD ( 이미지 포함 제작하기 ) */}
             {pageMod === '구매후기' && (
               <ReviewDiv media={media} colorTheme={colorTheme}>
-                <GradeForm productData={productData} />
+                <GradeForm productData={productData} colorTheme={colorTheme} />
                 <ReviewInputForm
                   productData={productData}
                   userData={userData}

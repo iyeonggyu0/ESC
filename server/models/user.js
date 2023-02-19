@@ -1,5 +1,3 @@
-const UserProductReviewLike = require("./UserProductReviewLike");
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
@@ -64,6 +62,10 @@ module.exports = (sequelize, DataTypes) => {
       sourceKey: "email",
     });
     db.User.belongsToMany(db.ProductReview, { through: "UserProductReviewLike", foreignKey: "UserEmail" });
+    db.User.hasMany(db.ProductInquiry, {
+      foreignKey: "email",
+      sourceKey: "email",
+    });
   };
   return User;
 };

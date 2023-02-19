@@ -1,0 +1,42 @@
+module.exports = (sequelize, DataTypes) => {
+  const ProductAnswer = sequelize.define(
+    "ProductAnswer",
+    {
+      productId: {
+        type: DataTypes.INTEGER(10),
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
+      // 비밀설정
+      secret: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      // 답변 내용
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      // 질문 Id
+      inquiryId: {
+        type: DataTypes.INTEGER(10),
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      timestamps: true,
+      modelName: "ProductAnswer",
+      tableName: "ProductAnswers",
+      charset: "utf8",
+      collate: "utf8_general_ci",
+    }
+  );
+  ProductAnswer.associate = (db) => {
+    db.ProductAnswer.belongsTo(db.ProductInquiry, { foreignKey: "inquiryId", targetKey: "id" });
+  };
+  return ProductAnswer;
+};
