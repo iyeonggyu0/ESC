@@ -146,4 +146,37 @@ export default class ProductService {
         console.error(err);
       });
   }
+
+  inquiryPost(req) {
+    axios
+      .post(`${axiosInstance}api/product/inquiry/post`, {
+        productId: req.data.productId,
+        email: req.data.email,
+        inquiryType: req.data.inquiryType,
+        secret: req.data.secret,
+        title: req.data.title,
+        content: req.data.content,
+      })
+      .then(() => {
+        console.log('수정완료');
+        location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  inquiryGet(req) {
+    const promise = axios.get(`${axiosInstance}api/product/inquiry/get/${req.inquiryType}`);
+
+    const inquiryData = promise
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      })
+      .catch(() => {
+        return null;
+      });
+    return inquiryData;
+  }
 }

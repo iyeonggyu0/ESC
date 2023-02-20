@@ -107,6 +107,7 @@ export const ListDiv = styled.div`
   & > div:nth-child(2) > div:nth-child(3) > *,
   ${ModifyButtonForm} {
     cursor: pointer;
+    padding-bottom: ${(props) => (props.media.isPc ? '0' : '3%')};
   }
 
   & > div:nth-child(2) > div:nth-child(3) > p {

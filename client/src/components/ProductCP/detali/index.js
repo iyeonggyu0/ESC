@@ -14,6 +14,7 @@ import {
   DetaliImgSection,
   ReviewDiv,
   ReviewFormWrapper,
+  InquiryWrapper,
 } from './style';
 import CommonLoadingPage from '../../_common/loadingPage';
 import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
@@ -21,6 +22,7 @@ import GradeForm from '../_common/gradeForm';
 import { useDiscountDate } from '../../../hooks/useDiscountDate';
 import ReviewInputForm from '../_common/reviewInputForm.js';
 import ReviewTextForm from '../_common/reviewTextForm';
+import ProductInquiryForm from '../_common/productInquiryForm';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -199,7 +201,6 @@ const ProductDetliMain = () => {
               </DetaliImgSection>
             )}
 
-            {/* TODO: 리뷰 CRUD ( 이미지 포함 제작하기 ) */}
             {pageMod === '구매후기' && (
               <ReviewDiv media={media} colorTheme={colorTheme}>
                 <GradeForm productData={productData} colorTheme={colorTheme} />
@@ -224,9 +225,7 @@ const ProductDetliMain = () => {
                       최신순
                     </div>
                   </div>
-
                   {/* list div */}
-
                   {list && (
                     <div>
                       {list.length === 0 && (
@@ -256,6 +255,17 @@ const ProductDetliMain = () => {
                   )}
                 </ReviewFormWrapper>
               </ReviewDiv>
+            )}
+
+            {pageMod === '상품문의' && (
+              <InquiryWrapper media={media}>
+                <ProductInquiryForm
+                  productData={productData}
+                  userData={userData}
+                  colorTheme={colorTheme}
+                  media={media}
+                />
+              </InquiryWrapper>
             )}
           </ProductDetaliMain>
         </div>

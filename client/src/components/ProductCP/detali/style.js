@@ -279,3 +279,8 @@ export const ReviewFormWrapper = styled.div`
     cursor: pointer;
   }
 `;
+
+export const InquiryWrapper = styled.section`
+  width: ${(props) => (props.media.isPc ? '75vw' : '90vw')};
+  margin: 3vh auto;
+`;

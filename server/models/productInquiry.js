@@ -11,9 +11,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
 
+      // 문의유형
+      inquiryType: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
       // 비밀설정
       secret: {
         type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      // 제목
+      title: {
+        type: DataTypes.STRING(50),
         allowNull: false,
       },
       // 내용
@@ -21,11 +31,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      // 답변 Id
-      // answerId: {
-      //   type: DataTypes.INTEGER(10),
-      //   allowNull: true,
-      // },
     },
     {
       sequelize,
@@ -39,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
   ProductInquiry.associate = (db) => {
     db.ProductInquiry.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
     db.ProductInquiry.belongsTo(db.User, { foreignKey: "email", targetKey: "email" });
-    db.ProductInquiry.hasOne(db.ProductInquiry, { foreignKey: "inquiryId", sourceKey: "id" });
+    db.ProductInquiry.hasOne(db.ProductAnswer, { foreignKey: "inquiryId", sourceKey: "id" });
   };
   return ProductInquiry;
 };

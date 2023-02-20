@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { all, delay, fork, takeLatest, put, call } from 'redux-saga/effects';
+import { all, fork, takeLatest, put, call } from 'redux-saga/effects';
 // eslint-disable-next-line
 import {
   productCreate,
@@ -26,6 +26,12 @@ import {
   productReviewPutFailure,
   productGetBestProductData,
   productGetBestProductDataSuccess,
+  productInquiry,
+  productInquirySuccess,
+  productInquiryFailure,
+  productInquiryGet,
+  productInquiryGetSuccess,
+  productInquiryGetFailure,
 } from '@reducer/productReducer';
 import ProductService from '../services/productService';
 
@@ -117,6 +123,28 @@ function* productReviewPutSaga(action) {
   }
 }
 
+// 상품문의
+// - post
+function* ProductInquiryPostSaga(action) {
+  try {
+    yield call(ProductService.prototype.inquiryPost, action.payload);
+    yield put(productInquirySuccess());
+  } catch (err) {
+    yield put(productInquiryFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
+// - get
+function* ProductInquiryGetSaga(action) {
+  try {
+    const data = yield call(ProductService.prototype.inquiryGet, action.payload);
+    yield action.payload.setInquiryData(data);
+    yield put(productInquiryGetSuccess());
+  } catch (err) {
+    yield put(productInquiryGetFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
 // listner
 function* watchCreate() {
   yield takeLatest(productCreate.type, createSaga);
@@ -154,6 +182,14 @@ function* watchProductReviewPut() {
   yield takeLatest(productReviewPut.type, productReviewPutSaga);
 }
 
+function* watchProductInquiryPost() {
+  yield takeLatest(productInquiry.type, ProductInquiryPostSaga);
+}
+
+function* watchProductInquiryGet() {
+  yield takeLatest(productInquiryGet.type, ProductInquiryGetSaga);
+}
+
 export default function* productSaga() {
   yield all([
     fork(watchCreate),
@@ -165,5 +201,7 @@ export default function* productSaga() {
     fork(watchProductReviewPost),
     fork(watchProductReviewDelete),
     fork(watchProductReviewPut),
+    fork(watchProductInquiryPost),
+    fork(watchProductInquiryGet),
   ]);
 }

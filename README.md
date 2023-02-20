@@ -493,3 +493,13 @@ Img
 - 리뷰 추가에 따른 평균별점 front 완성
 - 상품 QnA(상품문의) sectionPage
 - 상품 QnA(상품문의) DB 생성 및 관계설정
+
+<br>
+
+### ProductPage20
+
+###### Feb 20, 2023
+
+- 상품문의 관련 front 정의
+- DB 라우터 설정
+- front의 redux설정

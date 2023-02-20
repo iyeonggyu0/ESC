@@ -9,7 +9,7 @@ const multer = require("multer");
 const fs = require("fs");
 const { Op } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const productReview = require("../models/productReview");
 
@@ -479,6 +479,28 @@ router.post("/review/like", isLoggedIn, async (req, res, next) => {
     } catch (err) {
       console.error(err);
     }
+  }
+});
+
+// Inquiry
+router.get("/inquiry/get/:inquiryType", async (req, res) => {
+  const { inquiryType } = req.params;
+  try {
+    if (inquiryType === "all") {
+      const data = await ProductInquiry.findAll({ include: [{ model: ProductAnswer }], order: [["createdAt", "DESC"]] });
+      res.status(201).send(data);
+    } else {
+      const data = await ProductInquiry.findAll({
+        where: {
+          inquiryType: inquiryType,
+        },
+        include: [{ model: ProductAnswer }],
+        order: [["createdAt", "DESC"]],
+      });
+      res.status(201).send(data);
+    }
+  } catch (err) {
+    console.error(err);
   }
 });
 

@@ -147,6 +147,41 @@ export const productReducer = createSlice({
       state.isDone = true;
       state.error = action.error;
     },
+
+    // 상품문의
+    // - post
+    productInquiry: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productInquirySuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+    productInquiryFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
+
+    // - get
+    productInquiryGet: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productInquiryGetSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+    productInquiryGetFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
   },
 });
 
@@ -175,4 +210,10 @@ export const {
   productReviewPutFailure,
   productGetBestProductData,
   productGetBestProductDataSuccess,
+  productInquiry,
+  productInquirySuccess,
+  productInquiryFailure,
+  productInquiryGet,
+  productInquiryGetSuccess,
+  productInquiryGetFailure,
 } = productReducer.actions;
