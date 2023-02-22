@@ -159,6 +159,9 @@ export default class ProductService {
       })
       .then(() => {
         console.log('수정완료');
+        if (res.status === 403) {
+          if (!alert('로그인이 필요합니다')) return;
+        }
         location.reload();
       })
       .catch((err) => {
@@ -171,7 +174,6 @@ export default class ProductService {
 
     const inquiryData = promise
       .then((res) => {
-        console.log(res);
         return res.data;
       })
       .catch(() => {

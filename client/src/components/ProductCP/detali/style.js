@@ -101,7 +101,7 @@ export const ProductDetaliMain = styled.section`
       ${(props) =>
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameLightStroke
-          : ({ theme }) => theme.palette.basicSubFont};
+          : ({ theme }) => theme.palette.basicStroke};
     display: flex;
     align-items: center;
   }
@@ -163,7 +163,7 @@ export const ProductDetaliMain = styled.section`
       ${(props) =>
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameLightStroke
-          : ({ theme }) => theme.palette.basicSubFont};
+          : ({ theme }) => theme.palette.basicStroke};
     border-left: 0px;
     border-right: 0px;
 

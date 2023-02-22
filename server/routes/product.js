@@ -504,4 +504,16 @@ router.get("/inquiry/get/:inquiryType", async (req, res) => {
   }
 });
 
+router.post("/inquiry/post/", isLoggedIn, async (req, res) => {
+  const { data } = req.body;
+  await ProductInquiry.create({
+    productId: data.productId,
+    email: data.email,
+    title: data.title,
+    secret: data.secret,
+    content: data.content,
+    inquiryType: data.inquiryType,
+  });
+});
+
 module.exports = router;

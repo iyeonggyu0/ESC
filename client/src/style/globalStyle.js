@@ -65,6 +65,24 @@ const GlobalStyle = createGlobalStyle`
         ? ({ theme }) => theme.palette.gameLightStroke
         : ({ theme }) => theme.palette.basicLightStroke};
   }
+    // 가로의 중앙
+    .flexWidthCenter {
+    display: flex;
+    justify-content: center;
+  }
+
+  // 세로의 중앙
+  .flexHeightCenter {
+    display: flex;
+    align-items: center;
+  }
+
+  // 정중앙
+  .flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export default GlobalStyle;
