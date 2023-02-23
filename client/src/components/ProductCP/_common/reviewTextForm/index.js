@@ -173,7 +173,7 @@ const ReviewTextForm = ({ reviewData, userData, colorTheme, media }) => {
           <ReactTextareaAutosize
             value={content.replace(/[<br/>]{1}/g, '/n')}
             onChange={onChangeContent}
-            spellcheck="false"
+            spellCheck="false"
             minRows={5}
           />
           {modify && <ButtonForm onClick={onModifyHandler}>저장</ButtonForm>}

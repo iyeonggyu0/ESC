@@ -5,14 +5,14 @@ import { productInquiryGet } from '@reducer/productReducer';
 
 import { MainStyle } from './style';
 import InquiryInputForm from './inquiryInputForm';
+import InquiryViewForm from './productInquiryViewForm';
 
 const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
   const dispatch = useDispatch();
   const [inquiryType, setInquiryType] = useState('all');
   const [inquiryData, setInquiryData] = useState([]);
 
-  //FIXME: 개발끝나고 false로 돌려놓기 ( 개발의 편의성을 위해 기본값을 true로 바꿔둠 )
-  const [questionMod, setQuestionMod] = useState(true);
+  const [questionMod, setQuestionMod] = useState(false);
 
   useEffect(() => {
     console.log(inquiryType);
@@ -36,9 +36,16 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
       <section className="flexCenter">{productData.name} : Q & A</section>
       <section>
         <div>
-          <div className="flexCenter" onClick={changeQuestionModHandler}>
-            문의하기
-          </div>
+          {!questionMod && (
+            <div className="flexCenter" onClick={changeQuestionModHandler}>
+              문의하기
+            </div>
+          )}
+          {questionMod && (
+            <div className="flexCenter" onClick={() => setQuestionMod(false)}>
+              작성취소
+            </div>
+          )}
           <select
             name="type"
             onChange={(e) => {
@@ -56,7 +63,7 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
       </section>
       <section>
         {/* 리뷰 작성  FIXME: 조건에 userData 추가하기 */}
-        {questionMod && (
+        {questionMod && userData && (
           <InquiryInputForm
             productId={productData.id}
             userData={userData}
@@ -82,9 +89,16 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
         )}
         {/* 리뷰O */}
         {inquiryData.length >= 1 && (
-          <div>
+          <div className="inquiryData">
+            <div className="flexHeightCenter">
+              <p>고유번호</p>
+              <p>답변상태</p>
+              <p>문의유형</p>
+              <p>문의제목</p>
+              <p>작성자(메일)</p>
+            </div>
             {inquiryData.map((state, key) => (
-              <div
+              <InquiryViewForm
                 key={state.id}
                 inquiryData={inquiryData[key]}
                 userData={userData}

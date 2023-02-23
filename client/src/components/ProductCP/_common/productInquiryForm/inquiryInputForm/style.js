@@ -25,7 +25,7 @@ export const MainStyle = styled.section`
 
   & > div:nth-child(1) > input {
     width: 100%;
-    padding: 25px;
+    padding: 15px 25px;
     border-radius: 10px;
     border: 1px solid
       ${(props) =>
@@ -75,7 +75,7 @@ export const MainStyle = styled.section`
     width: 100%;
     resize: none;
     border-radius: 3px;
-    padding: 25px 30px;
+    padding: 25px 25px;
     outline: 1px solid
       ${(props) =>
         props.colorTheme === 'game'

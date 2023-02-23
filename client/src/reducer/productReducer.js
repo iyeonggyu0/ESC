@@ -182,6 +182,30 @@ export const productReducer = createSlice({
       state.isDone = true;
       state.error = action.error;
     },
+
+    // - delete
+    productInquiryDelete: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productInquiryDeleteSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+
+    // - put
+    productInquiryPut: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productInquiryPutSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
   },
 });
 
@@ -216,4 +240,8 @@ export const {
   productInquiryGet,
   productInquiryGetSuccess,
   productInquiryGetFailure,
+  productInquiryDelete,
+  productInquiryDeleteSuccess,
+  productInquiryPut,
+  productInquiryPutSuccess,
 } = productReducer.actions;

@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useInput } from '@hooks/useInput';
 import TextareaAutosize from 'react-textarea-autosize';
 import { productInquiry } from '@reducer/productReducer';
 
 import { MainStyle } from './style';
 import { useCallback } from 'react';
-import { useEffect } from 'react';
 
 const InquiryInputForm = ({ productId, userData, colorTheme, media }) => {
   const dispatch = useDispatch();
@@ -103,7 +101,8 @@ const InquiryInputForm = ({ productId, userData, colorTheme, media }) => {
           value={content || ''}
           onChange={(e) => setContent(e.target.value)}
           minRows={10}
-          spellcheck="false"
+          spellCheck="false"
+          placeholder="도배성 질문은 삭제될 수 있습니다."
         />
       </div>
       <div className="flexCenter" onClick={onPostHandler}>

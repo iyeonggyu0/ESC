@@ -157,8 +157,13 @@ export default class ProductService {
         title: req.data.title,
         content: req.data.content,
       })
-      .then(() => {
+      .then((res) => {
         console.log('수정완료');
+        if (res.status === 200) {
+          {
+            if (!alert('작성되었습니다.')) return location.reload();
+          }
+        }
         if (res.status === 403) {
           if (!alert('로그인이 필요합니다')) return;
         }
@@ -180,5 +185,37 @@ export default class ProductService {
         return null;
       });
     return inquiryData;
+  }
+
+  inquiryDelete(req) {
+    axios
+      .delete(`${axiosInstance}api/product/inquiry/delete/${req.id}`)
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          if (!alert('삭제되었습니다.')) return location.reload();
+        }
+        if (res.status === 403) {
+          if (!alert('로그인이 필요합니다.')) return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  inquiryPut(req) {
+    axios
+      .put(`${axiosInstance}api/product/inquiry/put`, req.data)
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          if (!alert('수정되었습니다.')) return;
+        }
+        if (res.status === 403) {
+          if (!alert('로그인이 필요합니다.')) return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 }

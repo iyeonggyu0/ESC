@@ -505,15 +505,46 @@ router.get("/inquiry/get/:inquiryType", async (req, res) => {
 });
 
 router.post("/inquiry/post/", isLoggedIn, async (req, res) => {
-  const { data } = req.body;
-  await ProductInquiry.create({
-    productId: data.productId,
-    email: data.email,
-    title: data.title,
-    secret: data.secret,
-    content: data.content,
-    inquiryType: data.inquiryType,
-  });
+  try {
+    const create = await ProductInquiry.create({
+      productId: req.body.productId,
+      email: req.body.email,
+      title: req.body.title,
+      secret: req.body.secret,
+      content: req.body.content,
+      inquiryType: req.body.inquiryType,
+    });
+    res.status(200).send(create);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.delete("/inquiry/delete/:id", isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  try {
+    await ProductInquiry.destroy({ where: { id: id } });
+    res.status(200).send("삭제");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.put("/inquiry/put", isLoggedIn, async (req, res) => {
+  try {
+    await ProductInquiry.update(
+      {
+        inquiryType: req.body.inquiryType,
+        secret: req.body.secret,
+        title: req.body.title,
+        content: req.body.content,
+      },
+      { where: { id: req.body.id } }
+    );
+    res.status(200).send("업데이트");
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 module.exports = router;

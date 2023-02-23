@@ -32,6 +32,10 @@ import {
   productInquiryGet,
   productInquiryGetSuccess,
   productInquiryGetFailure,
+  productInquiryDelete,
+  productInquiryDeleteSuccess,
+  productInquiryPut,
+  productInquiryPutSuccess,
 } from '@reducer/productReducer';
 import ProductService from '../services/productService';
 
@@ -145,6 +149,26 @@ function* ProductInquiryGetSaga(action) {
   }
 }
 
+// - delete
+function* ProductInquiryDeleteSaga(action) {
+  try {
+    yield call(ProductService.prototype.inquiryDelete, action.payload);
+    yield put(productInquiryDeleteSuccess());
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// - put
+function* ProductInquiryPutSaga(action) {
+  try {
+    yield call(ProductService.prototype.inquiryPut, action.payload);
+    yield put(productInquiryPutSuccess());
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 // listner
 function* watchCreate() {
   yield takeLatest(productCreate.type, createSaga);
@@ -190,6 +214,14 @@ function* watchProductInquiryGet() {
   yield takeLatest(productInquiryGet.type, ProductInquiryGetSaga);
 }
 
+function* watchProductInquiryDelete() {
+  yield takeLatest(productInquiryDelete.type, ProductInquiryDeleteSaga);
+}
+
+function* watchProductInquiryPut() {
+  yield takeLatest(productInquiryPut.type, ProductInquiryPutSaga);
+}
+
 export default function* productSaga() {
   yield all([
     fork(watchCreate),
@@ -203,5 +235,7 @@ export default function* productSaga() {
     fork(watchProductReviewPut),
     fork(watchProductInquiryPost),
     fork(watchProductInquiryGet),
+    fork(watchProductInquiryDelete),
+    fork(watchProductInquiryPut),
   ]);
 }
