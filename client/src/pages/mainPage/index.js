@@ -30,8 +30,8 @@ const MainPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [productData, setProductData] = useState(null);
-  const [productDatakey, setProductKeyData] = useState(null);
+  const [productData, setProductData] = useState([]);
+  const [productDatakey, setProductKeyData] = useState([]);
 
   useEffect(() => {
     dispatch(
@@ -95,14 +95,14 @@ const MainPage = () => {
             <span>자주 구매하시는 제품들 입니다</span>
           </div>
           <div>
-            {productData !== null && media.isPc && (
+            {productData.length > 0 && media.isPc && (
               <>
                 {productData.map((state, key) => (
                   <MainPageProductForm key={state.id} productData={productData[key]} />
                 ))}
               </>
             )}
-            {productData !== null && media.isMobile && (
+            {productData.length > 0 && media.isMobile && (
               <MainPageProductForm productData={productData[0]} />
             )}
             {/* Swiper map 돌리기 */}
@@ -139,14 +139,14 @@ const MainPage = () => {
             <span>인기 키보드</span>
           </div>
           <div>
-            {productDatakey !== null && media.isPc && (
+            {productDatakey.length > 0 && media.isPc && (
               <>
                 {productDatakey.map((state, key) => (
                   <MainPageProductForm key={state.id} productData={productDatakey[key]} />
                 ))}
               </>
             )}
-            {productDatakey !== null && media.isMobile && (
+            {productDatakey.length > 0 && media.isMobile && (
               <MainPageProductForm productData={productDatakey[0]} />
             )}
           </div>

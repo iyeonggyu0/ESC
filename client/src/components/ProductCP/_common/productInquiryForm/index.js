@@ -91,11 +91,12 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
         {inquiryData.length >= 1 && (
           <div className="inquiryData">
             <div className="flexHeightCenter">
-              <p>고유번호</p>
+              <p>번호</p>
               <p>답변상태</p>
               <p>문의유형</p>
               <p>문의제목</p>
-              <p>작성자(메일)</p>
+              {media.isPc && <p>작성자(메일)</p>}
+              {!media.isPc && <p>나의질문</p>}
             </div>
             {inquiryData.map((state, key) => (
               <InquiryViewForm

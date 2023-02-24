@@ -201,6 +201,7 @@ const ProductDetliMain = () => {
               </DetaliImgSection>
             )}
 
+            {/* 구매후기 */}
             {pageMod === '구매후기' && (
               <ReviewDiv media={media} colorTheme={colorTheme}>
                 <GradeForm productData={productData} colorTheme={colorTheme} />
@@ -257,6 +258,7 @@ const ProductDetliMain = () => {
               </ReviewDiv>
             )}
 
+            {/* 상품문의 */}
             {pageMod === '상품문의' && (
               <InquiryWrapper media={media}>
                 <ProductInquiryForm

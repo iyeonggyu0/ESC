@@ -40,6 +40,7 @@ export const ListDiv = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
+    padding-top: ${(props) => (props.media.isPc ? '0px' : '8px')};
     margin-bottom: 8px;
   }
 

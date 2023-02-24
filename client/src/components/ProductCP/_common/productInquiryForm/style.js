@@ -77,8 +77,8 @@ export const MainStyle = styled.section`
 
   & > section:nth-child(3) > div.inquiryData > div:nth-child(1) > p {
     font-family: Gothic A1;
-    font-size: 0.9rem;
-    width: calc((100% - 60%) / 4);
+    font-size: ${(props) => (props.media.isPc ? '0.9rem' : '0.5rem')};
+    width: ${(props) => (props.media.isPc ? 'calc((100% - 60%) / 4)' : 'calc((100% - 40%) / 4)')};
     text-align: center;
     color: ${(props) =>
       props.colorTheme === 'game'
@@ -87,6 +87,6 @@ export const MainStyle = styled.section`
   }
 
   & > section:nth-child(3) > div.inquiryData > div:nth-child(1) > p:nth-child(4) {
-    width: 60%;
+    width: ${(props) => (props.media.isPc ? '60%' : '40%')};
   }
 `;

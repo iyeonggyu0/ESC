@@ -14,6 +14,10 @@ export const InquiryViewFormDiv = styled.section`
     padding-left: 10px;
   }
 
+  & .icon2 {
+    padding-left: 5px;
+  }
+
   // 메인 div
   & > div:nth-child(1) {
     width: 100%;
@@ -22,6 +26,7 @@ export const InquiryViewFormDiv = styled.section`
     box-shadow: 0px ${(props) => (props.explanation ? '0px 15px' : '0px 0px')} rgba(0, 0, 0, 0.15);
     z-index: ${(props) => (props.explanation ? '2' : '3')};
     position: relative;
+    justify-content: space-evenly;
     cursor: ${(props) =>
       props.inquiryData.secret
         ? props.userData !== null
@@ -33,14 +38,14 @@ export const InquiryViewFormDiv = styled.section`
   }
 
   & > div:nth-child(1) > p {
-    width: calc((100% - 60%) / 4);
     font-family: Gothic A1;
-    font-size: 0.9rem;
     text-align: center;
+    font-size: ${(props) => (props.media.isPc ? '0.9rem' : '0.5rem')};
+    width: ${(props) => (props.media.isPc ? 'calc((100% - 60%) / 4)' : 'calc((100% - 40%) / 4)')};
   }
 
   & > div:nth-child(1) > p:nth-child(4) {
-    width: 60%;
+    width: ${(props) => (props.media.isPc ? '60%' : '40%')};
     overflow: hidden;
   }
 

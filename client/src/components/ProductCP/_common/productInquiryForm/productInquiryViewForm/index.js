@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 
 import { InquiryViewFormDiv } from './style';
@@ -113,10 +113,15 @@ const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
           {inquiryData.secret && <FontAwesomeIcon icon={solid('lock')} className={'icon'} />}
         </p>
         <p>
-          {inquiryData.email
-            .toString()
-            .replace(/@[a-zA-Z]+.[a-zA-Z]+/g, '')
-            .replaceAll(/[a-zA-Z0-9]{1,4}$/g, '***')}
+          {media.isPc &&
+            inquiryData.email
+              .toString()
+              .replace(/@[a-zA-Z]+.[a-zA-Z]+/g, '')
+              .replaceAll(/[a-zA-Z0-9]{1,4}$/g, '***')}
+          {userData && inquiryData.email === userData.email && (
+            <FontAwesomeIcon icon={solid('check')} className={'icon2'} />
+          )}
+          {!media.isPc && <FontAwesomeIcon icon={solid('xmark')} style={{ color: 'gray' }} />}
         </p>
       </div>
       {explanation && (
@@ -151,7 +156,6 @@ const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
             <ReactTextareaAutosize
               value={content || ''}
               onChange={(e) => setContent(e.target.value)}
-              minRows={10}
               spellCheck="false"
               placeholder="도배성 질문은 삭제될 수 있습니다."
             />
