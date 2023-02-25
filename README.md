@@ -519,3 +519,13 @@ Img
 ###### Feb 23, 2023
 
 - front 문의 수정
+
+<br>
+
+### ProductPage23
+
+###### Feb 25, 2023
+
+- front,back 문의 답변 CRUD
+- gabia 도메인 구매
+- Web Puhs 설정

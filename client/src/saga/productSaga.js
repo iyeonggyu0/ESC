@@ -36,6 +36,13 @@ import {
   productInquiryDeleteSuccess,
   productInquiryPut,
   productInquiryPutSuccess,
+  productAnswerPost,
+  productAnswerPostSuccess,
+  productAnswerPostFailure,
+  productAnswerPut,
+  productAnswerPutSuccess,
+  productAnswerDelete,
+  productAnswerDeleteSuccess,
 } from '@reducer/productReducer';
 import ProductService from '../services/productService';
 
@@ -169,6 +176,35 @@ function* ProductInquiryPutSaga(action) {
   }
 }
 
+function* ProductAnswerPostSaga(action) {
+  try {
+    yield call(ProductService.prototype.answerPost, action.payload);
+    yield put(productAnswerPostSuccess());
+  } catch (err) {
+    yield put(productAnswerPostFailure(new Error('UNKNODW ERROR')));
+  }
+}
+
+// - delete
+function* ProductAnswerDeleteSaga(action) {
+  try {
+    yield call(ProductService.prototype.answerDelete, action.payload);
+    yield put(productAnswerDeleteSuccess());
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// - put
+function* ProductAnswerPutSaga(action) {
+  try {
+    yield call(ProductService.prototype.answerPut, action.payload);
+    yield put(productAnswerPutSuccess());
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 // listner
 function* watchCreate() {
   yield takeLatest(productCreate.type, createSaga);
@@ -222,6 +258,18 @@ function* watchProductInquiryPut() {
   yield takeLatest(productInquiryPut.type, ProductInquiryPutSaga);
 }
 
+function* watchProductAnswerPost() {
+  yield takeLatest(productAnswerPost.type, ProductAnswerPostSaga);
+}
+
+function* watchProductAnswerDelete() {
+  yield takeLatest(productAnswerPut.type, ProductAnswerPutSaga);
+}
+
+function* watchProductAnswerPut() {
+  yield takeLatest(productAnswerDelete.type, ProductAnswerDeleteSaga);
+}
+
 export default function* productSaga() {
   yield all([
     fork(watchCreate),
@@ -237,5 +285,8 @@ export default function* productSaga() {
     fork(watchProductInquiryGet),
     fork(watchProductInquiryDelete),
     fork(watchProductInquiryPut),
+    fork(watchProductAnswerPost),
+    fork(watchProductAnswerDelete),
+    fork(watchProductAnswerPut),
   ]);
 }

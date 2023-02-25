@@ -206,6 +206,48 @@ export const productReducer = createSlice({
       state.isDone = true;
       state.error = null;
     },
+
+    // 상품문의 - 답변
+    // - post
+    productAnswerPost: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productAnswerPostSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+    productAnswerPostFailure: (state, action) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = action.error;
+    },
+
+    // - put
+    productAnswerPut: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productAnswerPutSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+
+    // - delete
+    productAnswerDelete: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    productAnswerDeleteSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
   },
 });
 
@@ -244,4 +286,11 @@ export const {
   productInquiryDeleteSuccess,
   productInquiryPut,
   productInquiryPutSuccess,
+  productAnswerPost,
+  productAnswerPostSuccess,
+  productAnswerPostFailure,
+  productAnswerPut,
+  productAnswerPutSuccess,
+  productAnswerDelete,
+  productAnswerDeleteSuccess,
 } = productReducer.actions;

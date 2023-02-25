@@ -71,22 +71,6 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
             media={media}
           />
         )}
-        {/* 리뷰X */}
-        {Array.isArray(inquiryData) && inquiryData.length === 0 && (
-          <div
-            style={{
-              width: '100%',
-              height: '200px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#f7f7f9',
-              margin: '2vh auto 30vh auto',
-            }}
-          >
-            남겨진 문의가 없습니다.
-          </div>
-        )}
         {/* 리뷰O */}
         {inquiryData.length >= 1 && (
           <div className="inquiryData">
@@ -107,6 +91,22 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
                 media={media}
               />
             ))}
+            {/* 리뷰X */}
+            {Array.isArray(inquiryData) && inquiryData.length === 0 && (
+              <div
+                style={{
+                  width: '100%',
+                  height: '200px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#f7f7f9',
+                  margin: '2vh auto 30vh auto',
+                }}
+              >
+                남겨진 문의가 없습니다.
+              </div>
+            )}
           </div>
         )}
       </section>

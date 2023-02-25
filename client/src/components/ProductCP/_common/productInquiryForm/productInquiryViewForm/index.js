@@ -7,15 +7,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useDispatch } from 'react-redux';
 import { productInquiryDelete, productInquiryPut } from '@reducer/productReducer';
+import AnswerInputForm from '../productAnswerInputForm';
+import AnswerViewForm from '../productAnswerViewForm';
 
 const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
   const [explanation, setExplanation] = useState(false);
   const [content, setContent] = useState(inquiryData.content);
   const [modifyMod, setModifyMod] = useState(false);
+  const [answerCreate, setAnswerCreate] = useState(false);
+  const [answer, setAnswer] = useState(inquiryData.ProductAnswer);
   const [title, setTitle] = useState(inquiryData.title);
   const [secret, setSecret] = useState(inquiryData.secret);
   const [inquiryType, setInquiryType] = useState(inquiryData.inquiryType);
   const dispatch = useDispatch();
+
+  console.log(answer);
 
   const explanationHandler = () => {
     if (!inquiryData.secret) {
@@ -133,6 +139,9 @@ const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
             </p>
             {userData && userData.email === inquiryData.email && (
               <div className="flexCenter">
+                {userData && userData.authority === 'admin' && !answerCreate && !answer && (
+                  <p onClick={() => setAnswerCreate(true)}>답변</p>
+                )}
                 <p onClick={onDeleteHandler}>삭제</p>
                 {!modifyMod && <p onClick={onModifyModHandler}>수정</p>}
                 {modifyMod && <p onClick={onCancelHandler}>취소</p>}
@@ -193,6 +202,24 @@ const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
                 </p>
               </div>
             </div>
+          )}
+          {answerCreate && (
+            <AnswerInputForm
+              inquiryId={inquiryData.id}
+              email={userData.email}
+              colorTheme={colorTheme}
+              media={media}
+              setAnswerCreate={setAnswerCreate}
+              setAnswer={setAnswer}
+            />
+          )}
+          {answer && (
+            <AnswerViewForm
+              userData={userData}
+              answer={answer}
+              colorTheme={colorTheme}
+              media={media}
+            />
           )}
         </div>
       )}

@@ -218,4 +218,50 @@ export default class ProductService {
         console.error(err);
       });
   }
+
+  answerPost(req) {
+    axios
+      .post(`${axiosInstance}api/product/answer/post`, req.data)
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          if (!alert('작성되었습니다.')) return;
+        }
+        if (res.status === 403) {
+          if (!alert('로그인이 필요합니다.')) return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+  answerDelete(req) {
+    axios
+      .delete(`${axiosInstance}api/product/answer/delete/${req.id}`)
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          if (!alert('삭제되었습니다.')) return location.reload();
+        }
+        if (res.status === 403) {
+          if (!alert('로그인이 필요합니다.')) return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+  answerPut(req) {
+    axios
+      .put(`${axiosInstance}api/product/answer/put`, req.data)
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          if (!alert('수정되었습니다.')) return;
+        }
+        if (res.status === 403) {
+          if (!alert('로그인이 필요합니다.')) return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 }

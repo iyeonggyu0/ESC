@@ -2,27 +2,19 @@ module.exports = (sequelize, DataTypes) => {
   const ProductAnswer = sequelize.define(
     "ProductAnswer",
     {
-      productId: {
+      // 질문 Id
+      inquiryId: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
       },
+      // 이메일
       email: {
         type: DataTypes.STRING(50),
-        allowNull: false,
-      },
-      // 비밀설정
-      secret: {
-        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       // 답변 내용
       content: {
         type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      // 질문 Id
-      inquiryId: {
-        type: DataTypes.INTEGER(10),
         allowNull: false,
       },
     },

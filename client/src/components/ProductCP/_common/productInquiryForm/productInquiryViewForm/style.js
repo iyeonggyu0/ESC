@@ -95,7 +95,7 @@ export const InquiryViewFormDiv = styled.section`
           : ({ theme }) => theme.palette.basicStroke};
   }
 
-  & textarea {
+  & > div:nth-child(2) > div:nth-child(2) > textarea {
     width: calc(100% - 40px);
     resize: none;
     pointer-events: ${(props) => (props.modifyMod ? 'all' : 'none')};
@@ -109,7 +109,7 @@ export const InquiryViewFormDiv = styled.section`
     border-radius: 5px;
   }
 
-  & textarea:focus {
+  & > div:nth-child(2) > div:nth-child(2) > textarea:focus {
     outline: ${(props) => (props.modifyMod ? '2px' : '0px')} solid
       ${(props) =>
         props.colorTheme === 'game'

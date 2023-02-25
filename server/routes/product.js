@@ -487,14 +487,14 @@ router.get("/inquiry/get/:inquiryType", async (req, res) => {
   const { inquiryType } = req.params;
   try {
     if (inquiryType === "all") {
-      const data = await ProductInquiry.findAll({ include: [{ model: ProductAnswer }], order: [["createdAt", "DESC"]] });
+      const data = await ProductInquiry.findAll({ include: [{ model: ProductAnswer, attributes: ["content", "email", "id"] }], order: [["createdAt", "DESC"]] });
       res.status(201).send(data);
     } else {
       const data = await ProductInquiry.findAll({
         where: {
           inquiryType: inquiryType,
         },
-        include: [{ model: ProductAnswer }],
+        include: [{ model: ProductAnswer, attributes: ["content", "email", "id"] }],
         order: [["createdAt", "DESC"]],
       });
       res.status(201).send(data);
@@ -542,6 +542,45 @@ router.put("/inquiry/put", isLoggedIn, async (req, res) => {
       { where: { id: req.body.id } }
     );
     res.status(200).send("업데이트");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.post("/answer/post", isLoggedIn, async (req, res) => {
+  try {
+    await ProductAnswer.create({
+      inquiryId: req.body.inquiryId,
+      email: req.body.email,
+      content: req.body.content,
+    });
+    res.status(200).send("답변완료");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.delete("/answer/delete/:id", isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  try {
+    await ProductAnswer.destroy({
+      where: { id: id },
+    });
+    res.status(200).send("삭제완료");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.put("/answer/put", isLoggedIn, async (req, res) => {
+  try {
+    await ProductAnswer.update(
+      {
+        content: req.body.content,
+      },
+      { where: { id: req.body.id } }
+    );
+    res.status(200).send("수정완료");
   } catch (err) {
     console.error(err);
   }
