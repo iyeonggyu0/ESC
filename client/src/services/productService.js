@@ -12,6 +12,7 @@ export default class ProductService {
         price: req.data.price,
         img: req.data.img,
         detailedImg: req.data.detailedImg,
+        inventoryQuantity: req.data.inventoryQuantity,
       })
       .then(() => {
         if (!alert('상품이 등록되었습니다.')) {

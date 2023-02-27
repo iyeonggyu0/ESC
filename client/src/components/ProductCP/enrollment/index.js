@@ -22,6 +22,7 @@ const ProductEnrollmentMain = () => {
   const [name, onChangeName, setName] = useInput('');
   const [type, setType] = useState('');
   const [price, onChangePrice, setPrice] = useInput('');
+  const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
 
   const [productMainImg, setProductMainImg] = useState(null);
   const [productImg, setProductImg] = useState(null);
@@ -114,28 +115,16 @@ const ProductEnrollmentMain = () => {
         price: price,
         img: productMainImg === null ? null : `/img/product/${name}/${productMainImg}`,
         detailedImg: productImg === null ? null : `/img/product/${name}/${productImg}`,
+        inventoryQuantity: inventoryQuantity,
       };
       dispatch(productCreate({ data: data, fun: { setName, setType, setPrice } }));
     },
     // eslint-disable-next-line
-    [name, type, price, productMainImg, productImg, dispatch],
+    [name, type, price, productMainImg, productImg, inventoryQuantity, dispatch],
   );
 
   return (
     <>
-      {/* {media.isMobile && (
-        <div
-          style={{
-            width: '100vw',
-            height: 'calc(100vh - 70px)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          pc로 접속해 주세요
-        </div>
-      )} */}
       {login && (
         <>
           {userData.authority === 'admin' && (
@@ -252,6 +241,16 @@ const ProductEnrollmentMain = () => {
                   <TextInputDiv>
                     <p>PRICE</p>
                     <input type="text" autoComplete="off" value={price} onChange={onChangePrice} />
+                  </TextInputDiv>
+                  <TextInputDiv>
+                    <p style={{ fontFamily: 'Noto Sans Kr' }}>재고</p>
+                    <input
+                      type="text"
+                      autoComplete="off"
+                      placeholder={'0'}
+                      value={inventoryQuantity === 0 ? '' : inventoryQuantity}
+                      onChange={onChangeInventoryQuantity}
+                    />
                   </TextInputDiv>
                   <TextInputDiv style={{ pointerEvents: error ? 'none' : 'all' }}>
                     <p>IMG</p>

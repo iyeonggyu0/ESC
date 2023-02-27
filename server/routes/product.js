@@ -21,6 +21,7 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       price: req.body.price,
       img: req.body.img,
       detailedImg: req.body.detailedImg,
+      inventoryQuantity: req.body.inventoryQuantity,
     });
     res.status(201).send("상품 생성:" + data);
   } catch (err) {
@@ -58,14 +59,14 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
 
   try {
     if (filter === "ALL") {
-      const data = await Product.findAll({ order: [[order, orderSort]], include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }], attributes: ["img", "grade", "id", "name", "price"] });
+      const data = await Product.findAll({ order: [[order, orderSort]], include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }], attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity"] });
       res.status(201).send(data);
     } else {
       const data = await Product.findAll({
         where: {
           type: filter,
         },
-        attributes: ["img", "grade", "id", "name", "price"],
+        attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity"],
         order: [[order, orderSort]],
         include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }],
       });
@@ -157,14 +158,14 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
 router.get("/get/best", async (req, res) => {
   try {
     const dataProdut = await Product.findAll({
-      attributes: ["name", "type", "img", "id"],
+      attributes: ["name", "type", "img", "id", "inventoryQuantity"],
       order: [["sale", "DESC"]],
       limit: 3,
       where: { type: { [Op.ne]: "KEYBOARD" } },
     });
 
     const dataKeyboard = await Product.findAll({
-      attributes: ["name", "type", "img", "id"],
+      attributes: ["name", "type", "img", "id", "inventoryQuantity"],
       order: [["sale", "DESC"]],
       limit: 3,
       where: { type: "KEYBOARD" },

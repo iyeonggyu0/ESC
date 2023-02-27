@@ -23,6 +23,7 @@ import { useDiscountDate } from '../../../hooks/useDiscountDate';
 import ReviewInputForm from '../_common/reviewInputForm.js';
 import ReviewTextForm from '../_common/reviewTextForm';
 import ProductInquiryForm from '../_common/productInquiryForm';
+import ExchangeReturn from '../_common/exchangeReturn';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -269,6 +270,8 @@ const ProductDetliMain = () => {
                 />
               </InquiryWrapper>
             )}
+
+            {pageMod === '교환/반품' && <ExchangeReturn media={media} />}
           </ProductDetaliMain>
         </div>
       )}

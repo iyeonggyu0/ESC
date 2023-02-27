@@ -13,7 +13,7 @@ const ProductBigSizeForm = ({ productData, productModifyMod }) => {
   const navigate = useNavigate();
 
   const [discountData, setDiscountData] = useState();
-  const [discountDataCheck, setDiscountDataCheck] = useDiscountDate();
+  const [discountDataCheck, setDiscountDataCheck] = useDiscountDate(productData);
 
   useEffect(() => {
     if (productData.ProductDiscount !== null) {

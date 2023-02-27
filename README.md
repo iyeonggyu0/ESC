@@ -529,3 +529,11 @@ Img
 - front,back 문의 답변 CRUD
 - gabia 도메인 구매
 - Web Puhs 설정
+
+<br>
+
+### ProductPage24
+
+###### Feb 27, 2023
+
+- 교환/반품 관련 안내문 고지페이지

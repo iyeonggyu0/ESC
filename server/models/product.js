@@ -48,6 +48,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0,
       },
+      inventoryQuantity: {
+        // 현재 재고
+        type: DataTypes.INTEGER(20),
+        allowNull: true,
+        defaultValue: 0,
+      },
     },
     {
       sequelize,
