@@ -1,5 +1,5 @@
 import Layout from '../layout/mainLayOut';
-import FindPasswordMain from '../components/FindPasswordCP';
+import FindPasswordMain from '../components/findPasswordCP';
 
 const FindPasswordPage = () => {
   return (

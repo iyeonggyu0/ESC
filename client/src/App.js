@@ -23,6 +23,7 @@ import ProductEnrollmentPage from './pages/productEnrollment.js';
 import ProductModifyPage from './pages/productModify';
 import ProductDetailPage from './pages/productDetaliPage';
 import ScrollToTop from './components/_common/scrollToTop';
+import AdminPage from './pages/adminPage';
 
 export const ThemeContext = createContext(null);
 
@@ -79,7 +80,10 @@ function App() {
 
           {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>
+            {/* 마이페이지 */}
             <Route path="/mypage/:page" element={<MyPage />} />
+            {/* 어드민 */}
+            <Route path="/admin/:page" element={<AdminPage />} />
           </Route>
 
           {/* 404 */}

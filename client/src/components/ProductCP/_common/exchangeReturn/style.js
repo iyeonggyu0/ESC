@@ -14,11 +14,13 @@ export const MainStyle = styled.div`
     padding: 3px 0;
     line-height: 150%;
     font-size: 0.9rem;
+    font-weight: 500;
   }
 
   span {
     font-size: 0.8rem;
     padding-left: 5px;
+    font-weight: 400;
   }
 
   & > div > p:nth-child(1) {
@@ -26,6 +28,6 @@ export const MainStyle = styled.div`
     margin-bottom: 10px;
     color: ${({ theme }) => theme.palette.gameStroke};
     border-bottom: 1px solid ${({ theme }) => theme.palette.gameStroke};
-    font-weight: 500;
+    font-weight: 600;
   }
 `;

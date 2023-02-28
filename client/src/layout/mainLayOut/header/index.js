@@ -20,7 +20,7 @@ import {
   MobileMenu,
   MobileMenuDiv,
 } from './style';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 const LayOutHeader = () => {
@@ -136,7 +136,7 @@ const LayOutHeader = () => {
                     {userLoginData.login && <li onClick={() => navigate('/')}>장바구니</li>}
                     {userLoginData.login && <li onClick={() => navigate('/')}>결제내역</li>}
                     {userLoginData.login && userLoginData.userData.authority === 'admin' && (
-                      <li onClick={() => navigate('/')}>ADMIN</li>
+                      <li onClick={() => navigate('/admin/main')}>ADMIN</li>
                     )}
                   </MenuUl>
                 </div>
@@ -258,7 +258,7 @@ const LayOutHeader = () => {
                     <p>FAQ</p>
                     <p>채팅 상담</p>
                     {userLoginData.login && userLoginData.userInfo.authority === 'admin' && (
-                      <p>ADMIN</p>
+                      <p onClick={() => navigate('/admin/main')}>ADMIN</p>
                     )}
                   </div>
                 )}
