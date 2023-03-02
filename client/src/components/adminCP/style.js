@@ -4,36 +4,37 @@ export const MainStyle = styled.section`
   width: ${(props) => (props.media.isPc ? '75vw' : '95vw')};
   margin: 0 auto;
   font-family: Noto Sans Kr;
+  background-color: white;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.09);
+
+  & > section:nth-child(2) {
+    width: calc(100% - 13vw);
+    height: 1000px;
+    margin-left: 13vw;
+    z-index: 2;
+    position: relative;
+  }
 `;
 
 export const MenuMainStyle = styled.section`
-  width: 13vw;
+  position: fixed;
   height: 100%;
-  position: relative;
-
-  & > div:first-child {
-    position: fixed;
-    height: 100%;
-    padding: 3vh 0;
-    width: 13vw;
-    padding: 0 10px;
-    line-height: 2.3rem;
-    border-right: 1px solid
-      ${(props) =>
-        props.colorTheme === 'game'
-          ? ({ theme }) => theme.palette.gameLightStroke
-          : ({ theme }) => theme.palette.basicStroke};
-  }
+  width: 13vw;
+  padding: 3vh 20px;
+  line-height: 2.3rem;
+  border-right: 1px solid lightgray;
+  background-color: white;
 
   // 메뉴 Ul, Li
-  & > div:first-child p {
+  & > p {
     font-weight: 500;
+    padding-left: 5%;
   }
 
-  & > div:first-child ul {
-    padding-left: 10px;
-    margin-bottom: 20px;
+  & > ul {
+    padding-left: 5%;
     padding-bottom: 20px;
+    margin-bottom: 20px;
     border-bottom: 1px solid
       ${(props) =>
         props.colorTheme === 'game'
@@ -41,11 +42,12 @@ export const MenuMainStyle = styled.section`
           : ({ theme }) => theme.palette.basicLightStroke};
   }
 
-  & > div:first-child > ul:last-child {
+  & > ul:last-child {
     border-bottom: 0;
   }
 
-  & > div:first-child li {
+  & > ul > li {
     cursor: pointer;
+    padding-left: 5%;
   }
 `;

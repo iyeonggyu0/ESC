@@ -83,7 +83,7 @@ function App() {
             {/* 마이페이지 */}
             <Route path="/mypage/:page" element={<MyPage />} />
             {/* 어드민 */}
-            <Route path="/admin/:page" element={<AdminPage />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Route>
 
           {/* 404 */}

@@ -1,15 +1,23 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Footer = styled.footer`
   width: 100%;
   height: 290px;
-  background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameStroke : ({ theme }) => theme.palette.basicBg)};
+  background-color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameStroke
+      : ({ theme }) => theme.palette.basicBg};
 
-  border-top: ${(props) => (props.colorTheme === "basic" ? "1px" : "0px")} solid ${({ theme }) => theme.palette.basicStroke};
-
+  border-top: ${(props) => (props.colorTheme === 'basic' ? '1px' : '0px')} solid
+    ${({ theme }) => theme.palette.basicStroke};
+  position: relative;
+  z-index: 100;
   /* Font */
   /* font-size: ${({ theme }) => theme.fontSize.mediumLarge}; */
-  color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicStroke)};
+  color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameFont
+      : ({ theme }) => theme.palette.basicStroke};
 `;
 
 export const Title = styled.div`
@@ -17,12 +25,16 @@ export const Title = styled.div`
   height: 80px;
   margin: 0 auto;
   position: relative;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   display: flex;
   justify-content: start;
   align-items: flex-end;
   padding-bottom: 14px;
-  border-bottom: 1px solid ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameLightStroke : ({ theme }) => theme.palette.basicBg)};
+  border-bottom: 1px solid
+    ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameLightStroke
+        : ({ theme }) => theme.palette.basicBg};
 
   font-size: ${({ theme }) => theme.fontSize.xxxxLarge};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
@@ -64,12 +76,18 @@ export const IconDiv = styled.div`
 
   span {
     font-size: ${({ theme }) => theme.fontSize.medium};
-    color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicStroke)};
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameFont
+        : ({ theme }) => theme.palette.basicStroke};
   }
 
   .icon {
     font-size: ${({ theme }) => theme.fontSize.large};
-    color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicStroke)};
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameFont
+        : ({ theme }) => theme.palette.basicStroke};
     padding-right: 10px;
   }
 
@@ -82,11 +100,17 @@ export const MobileFooter = styled.footer`
   z-index: 0;
   width: 100vw;
   height: 350px;
-  background-color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameStroke : ({ theme }) => theme.palette.basicBg)};
+  background-color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameStroke
+      : ({ theme }) => theme.palette.basicBg};
 
   /* Font */
   /* font-size: ${({ theme }) => theme.fontSize.mediumLarge}; */
-  color: ${(props) => (props.colorTheme === "game" ? ({ theme }) => theme.palette.gameFont : ({ theme }) => theme.palette.basicStroke)};
+  color: ${(props) =>
+    props.colorTheme === 'game'
+      ? ({ theme }) => theme.palette.gameFont
+      : ({ theme }) => theme.palette.basicStroke};
   ${Title} {
     padding-bottom: 0px;
   }

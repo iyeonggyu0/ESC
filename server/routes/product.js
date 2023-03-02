@@ -56,17 +56,25 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
     order = "grade";
     orderSort = "DESC";
   }
+  if (sort === "재고 순") {
+    order = "inventoryQuantity";
+    orderSort = "DESC";
+  }
+  if (sort === "재고 적은 순") {
+    order = "inventoryQuantity";
+    orderSort = "ASC";
+  }
 
   try {
     if (filter === "ALL") {
-      const data = await Product.findAll({ order: [[order, orderSort]], include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }], attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity"] });
+      const data = await Product.findAll({ order: [[order, orderSort]], include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }], attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity", "type"] });
       res.status(201).send(data);
     } else {
       const data = await Product.findAll({
         where: {
           type: filter,
         },
-        attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity"],
+        attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity", "type"],
         order: [[order, orderSort]],
         include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }],
       });
@@ -295,6 +303,15 @@ router.put("/put", async (req, res) => {
     }
 
     res.status(201).send("수정 완료:");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.put("/put/inventoryQuantity", async (req, res) => {
+  try {
+    await Product.update({ inventoryQuantity: req.body.inventoryQuantity }, { where: { id: req.body.id } });
+    res.status(200).send("성공");
   } catch (err) {
     console.error(err);
   }

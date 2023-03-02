@@ -6,15 +6,14 @@ import Layout from '../layout/mainLayOut/index';
 
 const AdminPage = () => {
   const userData = useContext(ThemeContext).userInfo.userData;
-  console.log(userData);
   return (
     <section>
-      {(!userData || (userData && userData.authority !== 'admin')) && <NotFountPage />}
       {userData && userData.authority === 'admin' && (
         <Layout>
           <AdminMain />
         </Layout>
       )}
+      {(!userData || (userData && userData.authority !== 'admin')) && <NotFountPage />}
     </section>
   );
 };
