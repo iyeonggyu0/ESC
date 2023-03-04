@@ -6,11 +6,12 @@ import { productGetData } from '@reducer/productReducer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { MainStyle, ProductFormDiv } from './style';
+import { MainStyle, ProductFormDiv, PaginationBox } from './style';
 import { ThemeContext } from '../../../../App.js';
 import CommonLoading from '../../../_common/loading';
 import { useMedia } from '../../../../hooks/useMedia';
 import ProductAdminForm from './productAdminForm';
+import Pagination from 'react-js-pagination';
 
 const InventoryQuantity = () => {
   const media = useMedia();
@@ -23,8 +24,16 @@ const InventoryQuantity = () => {
   const [sortFocus, setSortFocus] = useState(false);
   const [filter, setFilter] = useState('ALL');
   const [sort, setSort] = useState('재고 적은 순');
+  const [activePage, setActivePage] = useState(1);
 
   const { productData } = useSelector((state) => state.product);
+
+  const onActivePageHandler = (page) => {
+    setActivePage(page);
+    conl;
+  };
+
+  console.log();
 
   useEffect(() => {
     if (productData) {
@@ -109,7 +118,26 @@ const InventoryQuantity = () => {
               <p>재고</p>
               <p>상품수정</p>
             </div>
-            <ProductAdminForm productData={productData[0]} />
+            {productData && (
+              <>
+                {productData
+                  .slice(1 * (activePage - 1), 1 * (activePage - 1) + 1)
+                  .map((state, key) => (
+                    <ProductAdminForm key={state.id} productData={productData[key]} />
+                  ))}
+                <PaginationBox>
+                  <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={productData.length}
+                    totalItemsCount={parseInt(productData.length / 1) + 1}
+                    pageRangeDisplayed={parseInt(productData.length / 1) + 1}
+                    prevPageText={'‹'}
+                    nextPageText={'›'}
+                    onChange={onActivePageHandler}
+                  />
+                </PaginationBox>
+              </>
+            )}
           </>
         )}
       </ProductFormDiv>
