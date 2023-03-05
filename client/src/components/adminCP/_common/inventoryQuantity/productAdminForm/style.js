@@ -8,7 +8,7 @@ export const MainStyle = styled.section`
     ${(props) =>
       props.colorTheme === 'game' ? 'lightgray' : ({ theme }) => theme.palette.basicLightStroke};
   justify-content: space-evenly;
-  z-index: 3;
+  z-index: 1;
   position: relative;
   padding: 20px 0;
 
@@ -22,6 +22,9 @@ export const MainStyle = styled.section`
 
   & > p:nth-child(3) {
     width: ${(props) => (props.media.isPc ? '60%' : '40%')};
+  }
+  & > p:nth-child(3) > span {
+    cursor: pointer;
   }
 
   & > p > input {

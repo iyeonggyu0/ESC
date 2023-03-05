@@ -17,7 +17,11 @@ const ProductAdminForm = ({ productData }) => {
   const [inventoryQuantityModify, setInventoryQuantityModify] = useState(false);
 
   const openModify = () => {
-    window.open(`/product/modify/${data.id}`);
+    window.open(`/product/modify/${productData.id}`);
+  };
+
+  const openProduct = () => {
+    window.open(`/product/${productData.id}`);
   };
 
   const onEnterHandelr = (e) => {
@@ -44,7 +48,9 @@ const ProductAdminForm = ({ productData }) => {
     <MainStyle media={media} colorTheme={colorTheme} className={'flexHeightCenter'}>
       <p>{productData.id}</p>
       <p>{productData.type}</p>
-      <p>{productData.name}</p>
+      <p>
+        <span onClick={openProduct}>{productData.name}</span>
+      </p>
       <p>{productData.price}</p>
       <p>
         {inventoryQuantityModify && (

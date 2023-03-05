@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { productInquiryGet } from '@reducer/productReducer';
 
-import { MainStyle } from './style';
+import { MainStyle, PaginationBox } from './style';
 import InquiryInputForm from './inquiryInputForm';
 import InquiryViewForm from './productInquiryViewForm';
+import Pagination from 'react-js-pagination';
 
 const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
   const dispatch = useDispatch();
@@ -13,6 +14,14 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
   const [inquiryData, setInquiryData] = useState([]);
 
   const [questionMod, setQuestionMod] = useState(false);
+
+  const [activePage, setActivePage] = useState(1);
+  // eslint-disable-next-line
+  const [items, setItems] = useState(15);
+
+  const onActivePageHandler = (page) => {
+    setActivePage(page);
+  };
 
   useEffect(() => {
     console.log(inquiryType);
@@ -82,15 +91,28 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
               {media.isPc && <p>작성자(메일)</p>}
               {!media.isPc && <p>나의질문</p>}
             </div>
-            {inquiryData.map((state, key) => (
-              <InquiryViewForm
-                key={state.id}
-                inquiryData={inquiryData[key]}
-                userData={userData}
-                colorTheme={colorTheme}
-                media={media}
-              />
-            ))}
+            {media.isPc &&
+              inquiryData
+                .slice(items * (activePage - 1), items * (activePage - 1) + items)
+                .map((state, key) => (
+                  <InquiryViewForm
+                    key={key}
+                    inquiryData={state}
+                    userData={userData}
+                    colorTheme={colorTheme}
+                    media={media}
+                  />
+                ))}
+            {!media.isPc &&
+              inquiryData.map((state, key) => (
+                <InquiryViewForm
+                  key={key}
+                  inquiryData={state}
+                  userData={userData}
+                  colorTheme={colorTheme}
+                  media={media}
+                />
+              ))}
             {/* 리뷰X */}
             {Array.isArray(inquiryData) && inquiryData.length === 0 && (
               <div
@@ -108,6 +130,18 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
               </div>
             )}
           </div>
+        )}
+        {inquiryData.length >= 1 && media.isPc && (
+          <PaginationBox colorTheme={colorTheme}>
+            <Pagination
+              activePage={activePage}
+              itemsCountPerPage={items}
+              totalItemsCount={parseInt(inquiryData.length / 1) + 1}
+              prevPageText={'‹'}
+              nextPageText={'›'}
+              onChange={onActivePageHandler}
+            />
+          </PaginationBox>
         )}
       </section>
     </MainStyle>

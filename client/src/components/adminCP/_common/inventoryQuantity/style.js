@@ -33,6 +33,7 @@ export const MainStyle = styled.section`
     margin: 0 auto 5vh auto;
     position: relative;
     display: flex;
+    z-index: 3;
   }
 
   & > div:nth-child(2) > div:first-child,
@@ -77,6 +78,7 @@ export const MainStyle = styled.section`
     align-items: center;
     flex-wrap: wrap;
     cursor: pointer;
+    z-index: 3;
   }
 
   & > div:nth-child(2) > div > div:first-child:hover {
@@ -116,7 +118,7 @@ export const MainStyle = styled.section`
     background-color: ${(props) =>
       props.colorTheme === 'game' ? 'lightgray' : ({ theme }) => theme.palette.basicLightStroke};
     justify-content: space-evenly;
-    z-index: 3;
+    z-index: 1;
     position: relative;
     font-family: Noto Sans Kr;
   }
@@ -140,7 +142,8 @@ export const PaginationBox = styled.div`
   .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 5vh;
+    font-family: Gothic A1;
   }
   ul {
     list-style: none;
@@ -148,33 +151,42 @@ export const PaginationBox = styled.div`
   }
   ul.pagination li {
     display: inline-block;
-    width: 30px;
-    height: 30px;
-    border: 1px solid #e2e2e2;
+    width: 35px;
+    height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    cursor: pointer;
   }
-  ul.pagination li:first-child {
-    border-radius: 5px 0 0 5px;
-  }
+  ul.pagination li:first-child,
   ul.pagination li:last-child {
-    border-radius: 0 5px 5px 0;
+    width: 10px;
   }
+
   ul.pagination li a {
     text-decoration: none;
-    color: #337ab7;
-    font-size: 1rem;
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameStroke
+        : ({ theme }) => theme.palette.basicStroke};
+    font-size: 0.8rem;
+    padding-top: 3px;
   }
+
   ul.pagination li.active a {
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+
   ul.pagination li.active {
-    background-color: #337ab7;
-  }
-  ul.pagination li a:hover,
-  ul.pagination li a.active {
-    color: blue;
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameStroke
+        : ({ theme }) => theme.palette.basicStroke};
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
   }
 `;

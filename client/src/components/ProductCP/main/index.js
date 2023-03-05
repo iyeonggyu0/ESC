@@ -10,9 +10,10 @@ import ProductForm from '../_common/productForm/index.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { ProductMainDivStyle, ProductFormDiv } from './style';
+import { ProductMainDivStyle, ProductFormDiv, PaginationBox } from './style';
 import CommonLoading from '../../_common/loading';
 import ProductBigSizeForm from '../_common/productForm2';
+import Pagination from 'react-js-pagination';
 
 const ProductMain = () => {
   const media = useMedia();
@@ -34,6 +35,14 @@ const ProductMain = () => {
   const [adminFocus, setAdminFocus] = useState(false);
   const [productModifyMod, setProductModifyMod] = useState(false);
 
+  const [activePage, setActivePage] = useState(1);
+  const [items, setItems] = useState(10);
+  console.log(items);
+
+  const onActivePageHandler = (page) => {
+    setActivePage(page);
+  };
+
   useEffect(() => {
     if (localStorage.getItem('locSet') === null) {
       localStorage.setItem('locSet', 'set');
@@ -43,6 +52,12 @@ const ProductMain = () => {
       localStorage.setItem('pageModLoc', '상세설명');
       setFilter(`${params}`);
       setSort('인기');
+    }
+
+    if (localStorage.getItem('boxSize') === 'big') {
+      setItems(8);
+    } else {
+      setItems(18);
     }
 
     if (localStorage.getItem('filter') !== `${params}`) {
@@ -55,6 +70,12 @@ const ProductMain = () => {
   const filterHandler = useCallback((text) => {
     localStorage.setItem('filter', `${text}`);
     setFilter(`${text}`);
+
+    if (text === 'big') {
+      setItems(8);
+    } else {
+      setItems(18);
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -178,26 +199,52 @@ const ProductMain = () => {
         {productData === null && <CommonLoading />}
         {productData !== null && boxSize === 'big' && (
           <>
-            {productData.map((state, key) => (
-              <ProductBigSizeForm
-                key={state.id}
-                productData={productData[key]}
-                productModifyMod={productModifyMod}
-              />
-            ))}
+            {media.isPc &&
+              productData
+                .slice(items * (activePage - 1), items * (activePage - 1) + items)
+                .map((state, key) => (
+                  <ProductBigSizeForm
+                    key={key}
+                    productData={state}
+                    productModifyMod={productModifyMod}
+                  />
+                ))}
+            {!media.isPc &&
+              productData.map((state, key) => (
+                <ProductBigSizeForm
+                  key={state.id}
+                  productData={productData[key]}
+                  productModifyMod={productModifyMod}
+                />
+              ))}
           </>
         )}
 
         {productData !== null && boxSize === 'small' && (
           <>
-            {productData.map((state, key) => (
-              <ProductForm
-                key={state.id}
-                productData={productData[key]}
-                productModifyMod={productModifyMod}
-              />
-            ))}
+            {media.isPc &&
+              productData
+                .slice(items * (activePage - 1), items * (activePage - 1) + items)
+                .map((state, key) => (
+                  <ProductForm key={key} productData={state} productModifyMod={productModifyMod} />
+                ))}
+            {!media.isPc &&
+              productData.map((state, key) => (
+                <ProductForm key={key} productData={state} productModifyMod={productModifyMod} />
+              ))}
           </>
+        )}
+        {productData !== null && media.isPc && (
+          <PaginationBox colorTheme={colorTheme}>
+            <Pagination
+              activePage={activePage}
+              itemsCountPerPage={items}
+              totalItemsCount={parseInt(productData.length / 1) + 1}
+              prevPageText={'‹'}
+              nextPageText={'›'}
+              onChange={onActivePageHandler}
+            />
+          </PaginationBox>
         )}
       </ProductFormDiv>
     </ProductMainDivStyle>

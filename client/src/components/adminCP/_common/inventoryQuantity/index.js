@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { productGetData } from '@reducer/productReducer';
+import { useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
@@ -25,15 +25,14 @@ const InventoryQuantity = () => {
   const [filter, setFilter] = useState('ALL');
   const [sort, setSort] = useState('재고 적은 순');
   const [activePage, setActivePage] = useState(1);
+  // eslint-disable-next-line
+  const [items, setItems] = useState(10);
 
   const { productData } = useSelector((state) => state.product);
 
   const onActivePageHandler = (page) => {
     setActivePage(page);
-    conl;
   };
-
-  console.log();
 
   useEffect(() => {
     if (productData) {
@@ -47,6 +46,7 @@ const InventoryQuantity = () => {
 
   const reLodeProduct = useCallback(() => {
     dispatch(productGetData({ type: `${filter}/${sort}` }));
+    setActivePage(1);
   }, [filter, sort, dispatch]);
 
   return (
@@ -121,16 +121,15 @@ const InventoryQuantity = () => {
             {productData && (
               <>
                 {productData
-                  .slice(1 * (activePage - 1), 1 * (activePage - 1) + 1)
+                  .slice(items * (activePage - 1), items * (activePage - 1) + items)
                   .map((state, key) => (
-                    <ProductAdminForm key={state.id} productData={productData[key]} />
+                    <ProductAdminForm key={key} productData={state} />
                   ))}
-                <PaginationBox>
+                <PaginationBox colorTheme={colorTheme}>
                   <Pagination
                     activePage={activePage}
-                    itemsCountPerPage={productData.length}
+                    itemsCountPerPage={items}
                     totalItemsCount={parseInt(productData.length / 1) + 1}
-                    pageRangeDisplayed={parseInt(productData.length / 1) + 1}
                     prevPageText={'‹'}
                     nextPageText={'›'}
                     onChange={onActivePageHandler}

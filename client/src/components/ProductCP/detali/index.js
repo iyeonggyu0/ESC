@@ -15,6 +15,7 @@ import {
   ReviewDiv,
   ReviewFormWrapper,
   InquiryWrapper,
+  PaginationBox,
 } from './style';
 import CommonLoadingPage from '../../_common/loadingPage';
 import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
@@ -24,6 +25,7 @@ import ReviewInputForm from '../_common/reviewInputForm.js';
 import ReviewTextForm from '../_common/reviewTextForm';
 import ProductInquiryForm from '../_common/productInquiryForm';
 import ExchangeReturn from '../_common/exchangeReturn';
+import Pagination from 'react-js-pagination';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -50,6 +52,14 @@ const ProductDetliMain = () => {
 
   const [sort, setSort] = useState('인기순');
   const [list, setList] = useState([]);
+
+  const [activePage, setActivePage] = useState(1);
+  // eslint-disable-next-line
+  const [items, setItems] = useState(15);
+
+  const onActivePageHandler = (page) => {
+    setActivePage(page);
+  };
 
   // dataGet
   useEffect(() => {
@@ -229,7 +239,7 @@ const ProductDetliMain = () => {
                   </div>
                   {/* list div */}
                   {list && (
-                    <div>
+                    <div style={{ minHeight: '50vh' }}>
                       {list.length === 0 && (
                         <div
                           style={{
@@ -239,20 +249,35 @@ const ProductDetliMain = () => {
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
+                            marginBottom: '10vh',
                           }}
                         >
                           남겨진 리뷰가 없습니다.
                         </div>
                       )}
-                      {list.map((state, key) => (
-                        <ReviewTextForm
-                          key={state.id}
-                          reviewData={list[key]}
-                          userData={userData}
-                          colorTheme={colorTheme}
-                          media={media}
-                        />
-                      ))}
+                      {list
+                        .slice(items * (activePage - 1), items * (activePage - 1) + items)
+                        .map((state, key) => (
+                          <ReviewTextForm
+                            key={key}
+                            reviewData={state}
+                            userData={userData}
+                            colorTheme={colorTheme}
+                            media={media}
+                          />
+                        ))}
+                      {list.length >= 1 && media.isPc && (
+                        <PaginationBox colorTheme={colorTheme}>
+                          <Pagination
+                            activePage={activePage}
+                            itemsCountPerPage={items}
+                            totalItemsCount={parseInt(list.length / 1) + 1}
+                            prevPageText={'‹'}
+                            nextPageText={'›'}
+                            onChange={onActivePageHandler}
+                          />
+                        </PaginationBox>
+                      )}
                     </div>
                   )}
                 </ReviewFormWrapper>

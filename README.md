@@ -561,3 +561,11 @@ Img
 ###### Mar 04, 2023
 
 - pagination 적용 시도
+
+<br>
+
+### pagination2
+
+###### Mar 05, 2023
+
+- 전체상품, 구매후기, 상품문의, 어드민페이지 pagination 적용
