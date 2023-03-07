@@ -604,4 +604,18 @@ router.put("/answer/put", isLoggedIn, async (req, res) => {
   }
 });
 
+// router.post("/tag/save", isLoggedIn, async (req, res) => {
+//   try {
+//     await ProductAnswer.update(
+//       {
+//         content: req.body.content,
+//       },
+//       { where: { id: req.body.id } }
+//     );
+//     res.status(200).send("수정완료");
+//   } catch (err) {
+//     console.error(err);
+//   }
+// });
+
 module.exports = router;
