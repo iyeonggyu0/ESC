@@ -21,8 +21,6 @@ const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
   const [inquiryType, setInquiryType] = useState(inquiryData.inquiryType);
   const dispatch = useDispatch();
 
-  console.log(answer);
-
   const explanationHandler = () => {
     if (!inquiryData.secret) {
       setExplanation(explanation ? false : true);

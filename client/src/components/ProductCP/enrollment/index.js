@@ -8,7 +8,7 @@ import { useInput } from '@hooks/useInput';
 import { axiosInstance } from '@util/axios';
 import { productCreate } from '@reducer/productReducer';
 
-import { EnrollmentStyle, TextInputDiv, TextEditorDiv } from './style';
+import { EnrollmentStyle, TextInputDiv, TextEditorDiv, TagDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
 import axios from 'axios';
 
@@ -21,6 +21,8 @@ const ProductEnrollmentMain = () => {
 
   const [name, onChangeName, setName] = useInput('');
   const [type, setType] = useState('');
+  const [tagList, setTagList] = useState([]);
+  const [tagText, onChangeTagText, setTagText] = useInput('');
   const [price, onChangePrice, setPrice] = useInput('');
   const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
 
@@ -122,6 +124,14 @@ const ProductEnrollmentMain = () => {
     // eslint-disable-next-line
     [name, type, price, productMainImg, productImg, inventoryQuantity, dispatch],
   );
+
+  const onTagSaveHandler = (e) => {
+    e.preventDefault();
+    if (e.key === 'Enter') {
+      console.log('인식');
+    }
+  };
+  // FIXME: 여기부터 수정
 
   return (
     <>
@@ -251,6 +261,20 @@ const ProductEnrollmentMain = () => {
                       value={inventoryQuantity === 0 ? '' : inventoryQuantity}
                       onChange={onChangeInventoryQuantity}
                     />
+                  </TextInputDiv>
+                  <TextInputDiv>
+                    <p>TAG</p>
+                    <TagDiv colorTheme={colorTheme} media={media} tagList={tagList}>
+                      <div>{tagList.length === 0 && '적용된 태그가 없습니다.'}</div>
+                      <input
+                        type="text"
+                        autoComplete="off"
+                        placeholder={'엔터시 태그 적용 ( 하나씩 적용 해 주세요 )'}
+                        value={tagText || ''}
+                        onChange={onChangeTagText}
+                        onKeyPress={onTagSaveHandler}
+                      />
+                    </TagDiv>
                   </TextInputDiv>
                   <TextInputDiv style={{ pointerEvents: error ? 'none' : 'all' }}>
                     <p>IMG</p>

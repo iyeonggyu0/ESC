@@ -139,3 +139,20 @@ export const EnrollmentStyle = styled.div`
     cursor: pointer;
   }
 `;
+
+export const TagDiv = styled.div`
+  width: 100%;
+
+  & > div:first-child {
+    font-size: 0.9rem !important;
+    text-align: start;
+    color: grey !important;
+    padding: 1% 2%;
+    border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
+    border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+  }
+
+  & > input {
+    margin-top: 10px;
+  }
+`;

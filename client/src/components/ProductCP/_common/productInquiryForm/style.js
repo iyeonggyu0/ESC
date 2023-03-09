@@ -58,7 +58,6 @@ export const MainStyle = styled.section`
   & > section:nth-child(3) > div.inquiryData {
     width: 100%;
     margin-top: 3vh;
-    border: 1px solid black;
     min-height: 600px;
     overflow: hidden;
   }

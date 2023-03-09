@@ -9,7 +9,7 @@ const multer = require("multer");
 const fs = require("fs");
 const { Op } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const productReview = require("../models/productReview");
 
@@ -67,7 +67,17 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
 
   try {
     if (filter === "ALL") {
-      const data = await Product.findAll({ order: [[order, orderSort]], include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }], attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity", "type"] });
+      const data = await Product.findAll({
+        order: [[order, orderSort]],
+        include: [
+          {
+            model: ProductDiscount,
+            attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
+          },
+          { model: ProductTag },
+        ],
+        attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity", "type"],
+      });
       res.status(201).send(data);
     } else {
       const data = await Product.findAll({
@@ -604,18 +614,25 @@ router.put("/answer/put", isLoggedIn, async (req, res) => {
   }
 });
 
-// router.post("/tag/save", isLoggedIn, async (req, res) => {
-//   try {
-//     await ProductAnswer.update(
-//       {
-//         content: req.body.content,
-//       },
-//       { where: { id: req.body.id } }
-//     );
-//     res.status(200).send("수정완료");
-//   } catch (err) {
-//     console.error(err);
-//   }
-// });
+router.post("/tag/post", isLoggedIn, async (req, res) => {
+  try {
+    await ProductTag.create({
+      productId: req.body.productId,
+      tag: req.body.tag,
+    });
+    res.status(200).send("추가완료");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.delete("/tag/delete/:id", isLoggedIn, async (req, res) => {
+  try {
+    await ProductTag.destroy({ where: { id: req.body.id } });
+    res.status(200).send("삭제");
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 module.exports = router;
