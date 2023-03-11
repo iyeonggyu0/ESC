@@ -21,7 +21,7 @@ const ProductEnrollmentMain = () => {
 
   const [name, onChangeName, setName] = useInput('');
   const [type, setType] = useState('');
-  const [tagList, setTagList] = useState([]);
+  const [tagList, setTagList] = useState('');
   const [tagText, onChangeTagText, setTagText] = useInput('');
   const [price, onChangePrice, setPrice] = useInput('');
   const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
@@ -125,14 +125,23 @@ const ProductEnrollmentMain = () => {
     [name, type, price, productMainImg, productImg, inventoryQuantity, dispatch],
   );
 
-  const onTagSaveHandler = (e) => {
-    e.preventDefault();
-    if (e.key === 'Enter') {
-      console.log('인식');
-    }
-  };
   // FIXME: 여기부터 수정
+  const onSaveHandler = (e) => {
+    e.preventDefault();
 
+    if (tagText.length === 0) {
+      return alert('태그를 입력하세요');
+    }
+
+    if (!/#/.test(tagText)) {
+      return alert('#가 포함되어야 합니다.');
+    }
+
+    setTagList(tagText.replace(/ #/g, ',').replace(/^#/g, '').replace(/ /g, '_').split(/,/g));
+    setTagText('');
+    console.log(tagList);
+  };
+  console.log(tagList);
   return (
     <>
       {login && (
@@ -265,15 +274,21 @@ const ProductEnrollmentMain = () => {
                   <TextInputDiv>
                     <p>TAG</p>
                     <TagDiv colorTheme={colorTheme} media={media} tagList={tagList}>
-                      <div>{tagList.length === 0 && '적용된 태그가 없습니다.'}</div>
-                      <input
-                        type="text"
-                        autoComplete="off"
-                        placeholder={'엔터시 태그 적용 ( 하나씩 적용 해 주세요 )'}
-                        value={tagText || ''}
-                        onChange={onChangeTagText}
-                        onKeyPress={onTagSaveHandler}
-                      />
+                      <div>
+                        {!tagList && tagList.length === 0 && '적용된 태그가 없습니다.'}
+                        {tagList && tagList.map((element) => <div key={element}>{element}</div>)}
+                      </div>
+
+                      <div className="flexHeightCenter">
+                        <input
+                          type="text"
+                          autoComplete="off"
+                          placeholder={'#이런식 #으로 #작성'}
+                          value={tagText || ''}
+                          onChange={onChangeTagText}
+                        />
+                        <div onClick={onSaveHandler}>저장</div>
+                      </div>
                     </TagDiv>
                   </TextInputDiv>
                   <TextInputDiv style={{ pointerEvents: error ? 'none' : 'all' }}>

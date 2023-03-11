@@ -143,16 +143,24 @@ export const EnrollmentStyle = styled.div`
 export const TagDiv = styled.div`
   width: 100%;
 
-  & > div:first-child {
-    font-size: 0.9rem !important;
+  & > div:first-child,
+  & > div:nth-child(2) > div:last-child {
+    font-size: 0.9rem;
     text-align: start;
-    color: grey !important;
+    color: grey;
     padding: 1% 2%;
     border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
     border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
   }
 
-  & > input {
+  & > div:nth-child(2) {
     margin-top: 10px;
+    gap: 0 10px;
+  }
+
+  & > div:nth-child(2) > div:last-child {
+    width: 10%;
+    text-align: center;
+    cursor: pointer;
   }
 `;
