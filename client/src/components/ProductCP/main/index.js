@@ -37,7 +37,6 @@ const ProductMain = () => {
 
   const [activePage, setActivePage] = useState(1);
   const [items, setItems] = useState(10);
-  console.log(items);
 
   const onActivePageHandler = (page) => {
     setActivePage(page);
@@ -55,7 +54,7 @@ const ProductMain = () => {
     }
 
     if (localStorage.getItem('boxSize') === 'big') {
-      setItems(8);
+      setItems(12);
     } else {
       setItems(18);
     }

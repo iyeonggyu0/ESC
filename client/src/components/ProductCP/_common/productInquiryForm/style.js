@@ -92,7 +92,7 @@ export const MainStyle = styled.section`
 
 export const PaginationBox = styled.div`
   width: 100%;
-  margin-top: 3vh;
+  margin: 3vh auto 20vh auto;
   font-family: Gothic A1;
 
   .pagination {

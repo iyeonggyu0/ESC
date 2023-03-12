@@ -2,6 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const ProductAnswer = sequelize.define(
     "ProductAnswer",
     {
+      productId: {
+        type: DataTypes.INTEGER(10),
+        allowNull: false,
+      },
       // 질문 Id
       inquiryId: {
         type: DataTypes.INTEGER(10),
@@ -28,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   ProductAnswer.associate = (db) => {
+    db.ProductInquiry.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
     db.ProductAnswer.belongsTo(db.ProductInquiry, { foreignKey: "inquiryId", targetKey: "id" });
   };
   return ProductAnswer;

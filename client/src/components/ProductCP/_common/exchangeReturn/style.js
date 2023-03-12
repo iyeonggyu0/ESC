@@ -2,12 +2,12 @@ import styled from 'styled-components';
 
 export const MainStyle = styled.div`
   width: ${(props) => (props.media.isPc ? '75vw' : '95vw')};
-  margin: 0 auto;
+  margin: 10vh auto;
   font-family: Noto Sans Kr;
   color: ${({ theme }) => theme.palette.gameStroke};
 
   & > div {
-    margin: 3vh 0;
+    margin: 5vh 0;
   }
 
   & > div > p {

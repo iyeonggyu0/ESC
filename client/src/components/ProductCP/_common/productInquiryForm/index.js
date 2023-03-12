@@ -12,7 +12,6 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
   const dispatch = useDispatch();
   const [inquiryType, setInquiryType] = useState('all');
   const [inquiryData, setInquiryData] = useState([]);
-
   const [questionMod, setQuestionMod] = useState(false);
 
   const [activePage, setActivePage] = useState(1);
@@ -25,8 +24,14 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
 
   useEffect(() => {
     console.log(inquiryType);
-    dispatch(productInquiryGet({ inquiryType: inquiryType, setInquiryData: setInquiryData }));
-  }, [inquiryType, dispatch]);
+    dispatch(
+      productInquiryGet({
+        productId: productData.id,
+        inquiryType: inquiryType,
+        setInquiryData: setInquiryData,
+      }),
+    );
+  }, [productData, inquiryType, dispatch]);
 
   const changeQuestionModHandler = useCallback(
     (e) => {
@@ -39,6 +44,8 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
     },
     [userData],
   );
+
+  console.log(inquiryData.length);
 
   return (
     <MainStyle colorTheme={colorTheme} media={media}>
@@ -101,6 +108,7 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
                     userData={userData}
                     colorTheme={colorTheme}
                     media={media}
+                    productId={productData.id}
                   />
                 ))}
             {!media.isPc &&
@@ -111,24 +119,25 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
                   userData={userData}
                   colorTheme={colorTheme}
                   media={media}
+                  productId={productData.id}
                 />
               ))}
             {/* 리뷰X */}
-            {Array.isArray(inquiryData) && inquiryData.length === 0 && (
-              <div
-                style={{
-                  width: '100%',
-                  height: '200px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: '#f7f7f9',
-                  margin: '2vh auto 30vh auto',
-                }}
-              >
-                남겨진 문의가 없습니다.
-              </div>
-            )}
+          </div>
+        )}
+        {inquiryData.length === 0 && (
+          <div
+            style={{
+              width: '100%',
+              height: '200px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#f7f7f9',
+              margin: '2vh auto 30vh auto',
+            }}
+          >
+            남겨진 문의가 없습니다.
           </div>
         )}
         {inquiryData.length >= 1 && media.isPc && (

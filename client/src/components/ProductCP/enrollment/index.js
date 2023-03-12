@@ -21,8 +21,7 @@ const ProductEnrollmentMain = () => {
 
   const [name, onChangeName, setName] = useInput('');
   const [type, setType] = useState('');
-  const [tagList, setTagList] = useState('');
-  const [tagText, onChangeTagText, setTagText] = useInput('');
+  const [tagText, onChangeTagText] = useInput('');
   const [price, onChangePrice, setPrice] = useInput('');
   const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
 
@@ -110,7 +109,14 @@ const ProductEnrollmentMain = () => {
   const onProductCreateHandler = useCallback(
     (e) => {
       e.preventDefault();
-      console.log(productMainImg === null ? null : `/img/product/${name}/${productMainImg}`);
+      if (tagText.length === 0) {
+        return alert('태그를 입력하세요');
+      }
+
+      if (!/#/.test(tagText)) {
+        return alert('#가 포함되어야 합니다.');
+      }
+
       const data = {
         name: name,
         type: type,
@@ -118,30 +124,18 @@ const ProductEnrollmentMain = () => {
         img: productMainImg === null ? null : `/img/product/${name}/${productMainImg}`,
         detailedImg: productImg === null ? null : `/img/product/${name}/${productImg}`,
         inventoryQuantity: inventoryQuantity,
+        tag: tagText
+          .replace(/^#/g, '')
+          .replace(/ {1,}#/g, ',')
+          .replace(/ /g, '_')
+          .split(/,/g),
       };
       dispatch(productCreate({ data: data, fun: { setName, setType, setPrice } }));
     },
     // eslint-disable-next-line
-    [name, type, price, productMainImg, productImg, inventoryQuantity, dispatch],
+    [name, type, price, productMainImg, productImg, inventoryQuantity, tagText, dispatch],
   );
 
-  // FIXME: 여기부터 수정
-  const onSaveHandler = (e) => {
-    e.preventDefault();
-
-    if (tagText.length === 0) {
-      return alert('태그를 입력하세요');
-    }
-
-    if (!/#/.test(tagText)) {
-      return alert('#가 포함되어야 합니다.');
-    }
-
-    setTagList(tagText.replace(/ #/g, ',').replace(/^#/g, '').replace(/ /g, '_').split(/,/g));
-    setTagText('');
-    console.log(tagList);
-  };
-  console.log(tagList);
   return (
     <>
       {login && (
@@ -273,22 +267,14 @@ const ProductEnrollmentMain = () => {
                   </TextInputDiv>
                   <TextInputDiv>
                     <p>TAG</p>
-                    <TagDiv colorTheme={colorTheme} media={media} tagList={tagList}>
-                      <div>
-                        {!tagList && tagList.length === 0 && '적용된 태그가 없습니다.'}
-                        {tagList && tagList.map((element) => <div key={element}>{element}</div>)}
-                      </div>
-
-                      <div className="flexHeightCenter">
-                        <input
-                          type="text"
-                          autoComplete="off"
-                          placeholder={'#이런식 #으로 #작성'}
-                          value={tagText || ''}
-                          onChange={onChangeTagText}
-                        />
-                        <div onClick={onSaveHandler}>저장</div>
-                      </div>
+                    <TagDiv colorTheme={colorTheme} media={media}>
+                      <input
+                        type="text"
+                        autoComplete="off"
+                        placeholder={'#이런식 #으로 #작성'}
+                        value={tagText || ''}
+                        onChange={onChangeTagText}
+                      />
                     </TagDiv>
                   </TextInputDiv>
                   <TextInputDiv style={{ pointerEvents: error ? 'none' : 'all' }}>

@@ -90,7 +90,6 @@ const AnswerViewForm = ({ answer, colorTheme, media, userData }) => {
         onChange={(e) => setContent(e.target.value)}
         spellCheck="false"
         placeholder="답변을 입력하세요"
-        autoFocus
       />
     </MainStyle>
   );

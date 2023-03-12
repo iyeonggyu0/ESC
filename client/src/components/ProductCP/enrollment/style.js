@@ -143,8 +143,7 @@ export const EnrollmentStyle = styled.div`
 export const TagDiv = styled.div`
   width: 100%;
 
-  & > div:first-child,
-  & > div:nth-child(2) > div:last-child {
+  & > div > div:last-child {
     font-size: 0.9rem;
     text-align: start;
     color: grey;
@@ -153,13 +152,12 @@ export const TagDiv = styled.div`
     border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
   }
 
-  & > div:nth-child(2) {
-    margin-top: 10px;
+  & > div {
     gap: 0 10px;
   }
 
-  & > div:nth-child(2) > div:last-child {
-    width: 10%;
+  & > div > div:last-child {
+    width: 15%;
     text-align: center;
     cursor: pointer;
   }

@@ -74,6 +74,10 @@ module.exports = (sequelize, DataTypes) => {
       foreingKey: "productId",
       sourceKey: "id",
     });
+    db.Product.hasMany(db.ProductAnswer, {
+      foreingKey: "productId",
+      sourceKey: "id",
+    });
     db.Product.hasMany(db.ProductTag, {
       foreingKey: "productId",
       sourceKey: "id",

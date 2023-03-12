@@ -23,6 +23,14 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       detailedImg: req.body.detailedImg,
       inventoryQuantity: req.body.inventoryQuantity,
     });
+
+    for (let i = 0; i < req.body.tag.length; i++) {
+      await ProductTag.create({
+        productId: data.id,
+        tag: req.body.tag[i],
+      });
+    }
+
     res.status(201).send("상품 생성:" + data);
   } catch (err) {
     console.error(err);
@@ -199,6 +207,7 @@ router.delete("/delete/:productId", async (req, res) => {
   try {
     const oneData = await Product.findOne({
       where: { id: productId },
+      include: [{ model: ProductReview }],
     });
     if (oneData) {
       fs.rmdirSync(`../client/public/img/product/${oneData.name}`, { recursive: true });
@@ -206,11 +215,18 @@ router.delete("/delete/:productId", async (req, res) => {
   } catch (err) {
     console.error(err);
   }
-  await ProductDiscount.destroy({ where: { ProductId: productId } });
+  await ProductDiscount.destroy({ where: { productId: productId } });
+  await ProductInquiry.destroy({ where: { productId: productId } });
+  await ProductTag.destroy({ where: { productId: productId } });
+  await ProductAnswer.destroy({ where: { productId: productId } });
+  await ProductReview.destroy({ where: { productId: productId } });
+
   const deletedCount = await Product.destroy({ where: { id: productId } });
+
   if (!deletedCount) {
-    res.status(404).send({ message: "There is no member with the id!" });
+    res.status(404).send("실패");
   }
+  res.status(200).send("삭제");
 });
 
 router.put("/put", async (req, res) => {
@@ -511,15 +527,20 @@ router.post("/review/like", isLoggedIn, async (req, res, next) => {
 });
 
 // Inquiry
-router.get("/inquiry/get/:inquiryType", async (req, res) => {
-  const { inquiryType } = req.params;
+router.get("/inquiry/get/:productId/:inquiryType", async (req, res) => {
+  const { inquiryType, productId } = req.params;
   try {
     if (inquiryType === "all") {
-      const data = await ProductInquiry.findAll({ include: [{ model: ProductAnswer, attributes: ["content", "email", "id"] }], order: [["createdAt", "DESC"]] });
+      const data = await ProductInquiry.findAll({
+        where: { productId: productId },
+        order: [["createdAt", "DESC"]],
+        include: [{ model: ProductAnswer, attributes: ["content", "email", "id"] }],
+      });
       res.status(201).send(data);
     } else {
       const data = await ProductInquiry.findAll({
         where: {
+          productId: productId,
           inquiryType: inquiryType,
         },
         include: [{ model: ProductAnswer, attributes: ["content", "email", "id"] }],
@@ -578,6 +599,7 @@ router.put("/inquiry/put", isLoggedIn, async (req, res) => {
 router.post("/answer/post", isLoggedIn, async (req, res) => {
   try {
     await ProductAnswer.create({
+      productId: req.body.productId,
       inquiryId: req.body.inquiryId,
       email: req.body.email,
       content: req.body.content,

@@ -10,7 +10,7 @@ import { productInquiryDelete, productInquiryPut } from '@reducer/productReducer
 import AnswerInputForm from '../productAnswerInputForm';
 import AnswerViewForm from '../productAnswerViewForm';
 
-const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
+const InquiryViewForm = ({ productId, inquiryData, userData, colorTheme, media }) => {
   const [explanation, setExplanation] = useState(false);
   const [content, setContent] = useState(inquiryData.content);
   const [modifyMod, setModifyMod] = useState(false);
@@ -140,8 +140,8 @@ const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
                 {userData && userData.authority === 'admin' && !answerCreate && !answer && (
                   <p onClick={() => setAnswerCreate(true)}>답변</p>
                 )}
-                <p onClick={onDeleteHandler}>삭제</p>
-                {!modifyMod && <p onClick={onModifyModHandler}>수정</p>}
+                {answer && <p onClick={onDeleteHandler}>삭제</p>}
+                {!modifyMod && !answer && <p onClick={onModifyModHandler}>수정</p>}
                 {modifyMod && <p onClick={onCancelHandler}>취소</p>}
                 {modifyMod && <p onClick={onSaveHandler}>저장</p>}
               </div>
@@ -209,6 +209,7 @@ const InquiryViewForm = ({ inquiryData, userData, colorTheme, media }) => {
               media={media}
               setAnswerCreate={setAnswerCreate}
               setAnswer={setAnswer}
+              productId={productId}
             />
           )}
           {answer && (

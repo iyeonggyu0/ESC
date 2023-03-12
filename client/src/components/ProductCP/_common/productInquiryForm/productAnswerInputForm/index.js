@@ -4,7 +4,15 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import { MainStyle } from './style';
 import { productAnswerPost } from '@reducer/productReducer';
 
-const AnswerInputForm = ({ inquiryId, colorTheme, email, media, setAnswerCreate, setAnswer }) => {
+const AnswerInputForm = ({
+  productId,
+  inquiryId,
+  colorTheme,
+  email,
+  media,
+  setAnswerCreate,
+  setAnswer,
+}) => {
   const [content, setContent] = useState('');
   const dispatch = useDispatch();
 
@@ -20,13 +28,14 @@ const AnswerInputForm = ({ inquiryId, colorTheme, email, media, setAnswerCreate,
       setAnswerCreate(false);
       setAnswer(content);
       const data = {
+        productId: productId,
         inquiryId: inquiryId,
         email: email,
         content: content,
       };
       dispatch(productAnswerPost({ data: data }));
     },
-    [inquiryId, email, content, setAnswerCreate, setAnswer, dispatch],
+    [productId, inquiryId, email, content, setAnswerCreate, setAnswer, dispatch],
   );
 
   return (

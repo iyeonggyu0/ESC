@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "ProductDiscount",
     {
       // 할인 상품
-      ProductId: {
+      productId: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
       },
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   ProductDiscount.associate = (db) => {
     db.ProductDiscount.belongsTo(db.Product, {
-      foreignKey: "ProductId",
+      foreignKey: "productId",
       targetKey: "id",
     });
   };

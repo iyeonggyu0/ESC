@@ -13,6 +13,7 @@ export default class ProductService {
         img: req.data.img,
         detailedImg: req.data.detailedImg,
         inventoryQuantity: req.data.inventoryQuantity,
+        tag: req.data.tag,
       })
       .then(() => {
         if (!alert('상품이 등록되었습니다.')) {
@@ -141,7 +142,7 @@ export default class ProductService {
       })
       .then(() => {
         console.log('수정완료');
-        location.reload();
+        // location.reload();
       })
       .catch((err) => {
         console.error(err);
@@ -176,7 +177,9 @@ export default class ProductService {
   }
 
   inquiryGet(req) {
-    const promise = axios.get(`${axiosInstance}api/product/inquiry/get/${req.inquiryType}`);
+    const promise = axios.get(
+      `${axiosInstance}api/product/inquiry/get/${req.productId}/${req.inquiryType}`,
+    );
 
     const inquiryData = promise
       .then((res) => {

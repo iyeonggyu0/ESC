@@ -127,7 +127,7 @@ const ProductDetliMain = () => {
                     {4 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
                     {5 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
                     {/* 리뷰 수량 표시하기 */}
-                    {/* <span> (10,000)&nbsp;</span> */}
+                    <span> ({productData.ProductReviews.length})&nbsp;</span>
                   </div>
                   <span>구매 {productData.sale}</span>
                 </div>
