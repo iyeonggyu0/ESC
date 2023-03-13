@@ -43,11 +43,28 @@ const lineHeight = {
   xxxLarge: '32px',
 };
 
+const paginationItem = {
+  // 전체상품
+  productMainBig: 12,
+  productMainSmall: 18,
+
+  //   - 구매후기
+  productReview: 15,
+
+  //   - 상품문의
+  productInquiry: 15,
+
+  // 어드민 페이지
+  //   - 재고관리
+  adminInventoryQuantity: 10,
+};
+
 const theme = {
   palette,
   fontSize,
   fontWeight,
   lineHeight,
+  paginationItem,
 };
 
 export default theme;

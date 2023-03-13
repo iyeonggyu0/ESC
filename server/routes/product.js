@@ -136,6 +136,10 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
       where: { id: productId },
       include: [
         {
+          model: ProductTag,
+          attributes: ["tag"],
+        },
+        {
           model: ProductDiscount,
           attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
         },
@@ -157,6 +161,10 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
       const data = await Product.findOne({
         where: { id: productId },
         include: [
+          {
+            model: ProductTag,
+            attributes: ["tag"],
+          },
           {
             model: ProductDiscount,
             attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
@@ -295,6 +303,17 @@ router.put("/put", async (req, res) => {
         },
         { where: { id: productId } }
       );
+    }
+
+    await ProductTag.destroy({
+      where: { productId: productId },
+    });
+
+    for (let i = 0; i < productNewData.tag.length; i++) {
+      await ProductTag.create({
+        productId: data.id,
+        tag: productNewData.tag[i],
+      });
     }
 
     // 쿠폰

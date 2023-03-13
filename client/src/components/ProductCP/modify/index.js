@@ -74,10 +74,11 @@ const ProductModifyMain = () => {
   const [month, setMonth] = useState(null);
   const [date, setDate] = useState(null);
 
+  const [tag, onChangeTag, setTag] = useInput('');
+
   const [discountDate, discountDateCheck] = useDiscountDate();
 
   useEffect(() => {
-    console.log(dateData);
     if (dateData !== null) {
       setYear(dateData.toString().match(/20[0-9]{2}/g));
 
@@ -110,6 +111,14 @@ const ProductModifyMain = () => {
       setName(productData.name);
       setType(productData.type);
       setPrice(productData.price);
+
+      setTag(
+        '#' +
+          productData.ProductTags.map((item) => item.tag)
+            .join(' #')
+            .replace(/_/g, ' '),
+      );
+
       if (productData.img === '/null' || productData.img === null) {
         setProductMainImg('/img/product/notImg.png');
       } else {
@@ -137,7 +146,6 @@ const ProductModifyMain = () => {
   }, [productData]);
 
   const textFunMainImg = (text, imagePath, fileName) => {
-    console.log(imagePath, fileName);
     setProductMainNewImg(text);
     localStorage.setItem('setProductMainNewImg', `${imagePath}/${fileName}`);
   };
@@ -170,6 +178,14 @@ const ProductModifyMain = () => {
         return alert('할인된 값이 마이너스(-)입니다');
       }
 
+      if (tag.length === 0) {
+        return alert('태그를 입력하세요');
+      }
+
+      if (!/#/.test(tag)) {
+        return alert('#가 포함되어야 합니다.');
+      }
+
       // newData에서 이미지의 경로가 null이 아니면 기존 파일 삭제 후 데이터 업데이트
       const productId = productData.id;
 
@@ -179,6 +195,11 @@ const ProductModifyMain = () => {
         price: price,
         img: productMainNewImg === null ? null : productMainNewImg,
         detailedImg: productNewImg === null ? null : productNewImg,
+        tag: tag
+          .replace(/^#/g, '')
+          .replace(/ {1,}#/g, ',')
+          .replace(/ /g, '_')
+          .split(/,/g),
       };
 
       const newProductDiscount = {
@@ -186,22 +207,23 @@ const ProductModifyMain = () => {
         discountAmount: discountAmount,
         year: year,
         month: month
-          .toString()
-          .replace(/Jan/g, 1)
-          .replace(/Feb/g, 2)
-          .replace(/Mar/g, 3)
-          .replace(/Apr/g, 4)
-          .replace(/May/g, 5)
-          .replace(/Jun/g, 6)
-          .replace(/Jul/g, 7)
-          .replace(/Aug/g, 8)
-          .replace(/Sep/g, 9)
-          .replace(/Oct/g, 10)
-          .replace(/Nov/g, 11)
-          .replace(/Dec/g, 12),
+          ? month
+              .toString()
+              .replace(/Jan/g, 1)
+              .replace(/Feb/g, 2)
+              .replace(/Mar/g, 3)
+              .replace(/Apr/g, 4)
+              .replace(/May/g, 5)
+              .replace(/Jun/g, 6)
+              .replace(/Jul/g, 7)
+              .replace(/Aug/g, 8)
+              .replace(/Sep/g, 9)
+              .replace(/Oct/g, 10)
+              .replace(/Nov/g, 11)
+              .replace(/Dec/g, 12)
+          : '',
         date: date,
       };
-      console.log(newProductDiscount);
       dispatch(
         productModify({
           productId: productId,
@@ -222,6 +244,7 @@ const ProductModifyMain = () => {
       month,
       date,
       discount,
+      tag,
       dispatch,
     ],
   );
@@ -229,9 +252,7 @@ const ProductModifyMain = () => {
   useEffect(() => {
     const img = localStorage.getItem('setProductImg');
     const mainImg = localStorage.getItem('setProductMainNewImg');
-    console.log(img);
     if (img !== null) {
-      console.log('실행');
       axios
         .post(`${axiosInstance}api/multer/delete/fill`, {
           route: img,
@@ -261,7 +282,7 @@ const ProductModifyMain = () => {
   const productCancelHandler = useCallback(
     (e) => {
       e.preventDefault();
-      console.log(productNewImg, productMainNewImg);
+
       if (productNewImg !== null) {
         axios
           .post(`${axiosInstance}api/multer/delete/fill`, {
@@ -431,6 +452,15 @@ const ProductModifyMain = () => {
                   <TextInputDiv>
                     <p>PRICE</p>
                     <input type="text" autoComplete="off" value={price} onChange={onChangePrice} />
+                  </TextInputDiv>
+                  <TextInputDiv>
+                    <p>TAG</p>
+                    <input
+                      type="text"
+                      autoComplete="off"
+                      value={tag || ''}
+                      onChange={onChangeTag}
+                    />
                   </TextInputDiv>
                   <TextInputDiv>
                     <p>IMG</p>

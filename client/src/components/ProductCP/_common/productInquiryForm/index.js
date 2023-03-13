@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { productInquiryGet } from '@reducer/productReducer';
+import theme from '@style/theme.js';
 
 import { MainStyle, PaginationBox } from './style';
 import InquiryInputForm from './inquiryInputForm';
@@ -16,7 +17,7 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
 
   const [activePage, setActivePage] = useState(1);
   // eslint-disable-next-line
-  const [items, setItems] = useState(15);
+  const [items, setItems] = useState(theme.paginationItem.productInquiry);
 
   const onActivePageHandler = (page) => {
     setActivePage(page);

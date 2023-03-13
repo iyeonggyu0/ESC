@@ -12,6 +12,7 @@ import CommonLoading from '../../../_common/loading';
 import { useMedia } from '../../../../hooks/useMedia';
 import ProductAdminForm from './productAdminForm';
 import Pagination from 'react-js-pagination';
+import theme from '@style/theme.js';
 
 const InventoryQuantity = () => {
   const media = useMedia();
@@ -26,7 +27,7 @@ const InventoryQuantity = () => {
   const [sort, setSort] = useState('재고 적은 순');
   const [activePage, setActivePage] = useState(1);
   // eslint-disable-next-line
-  const [items, setItems] = useState(10);
+  const [items, setItems] = useState(theme.paginationItem.adminInventoryQuantity);
 
   const { productData } = useSelector((state) => state.product);
 

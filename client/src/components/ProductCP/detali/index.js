@@ -26,6 +26,7 @@ import ReviewTextForm from '../_common/reviewTextForm';
 import ProductInquiryForm from '../_common/productInquiryForm';
 import ExchangeReturn from '../_common/exchangeReturn';
 import Pagination from 'react-js-pagination';
+import theme from '@style/theme.js';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -55,7 +56,7 @@ const ProductDetliMain = () => {
 
   const [activePage, setActivePage] = useState(1);
   // eslint-disable-next-line
-  const [items, setItems] = useState(15);
+  const [items, setItems] = useState(theme.paginationItem.productReview);
 
   const onActivePageHandler = (page) => {
     setActivePage(page);

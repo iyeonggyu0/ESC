@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
 import { productGetData } from '@reducer/productReducer';
+import theme from '@style/theme.js';
 
 import ProductForm from '../_common/productForm/index.js';
 
@@ -36,7 +37,7 @@ const ProductMain = () => {
   const [productModifyMod, setProductModifyMod] = useState(false);
 
   const [activePage, setActivePage] = useState(1);
-  const [items, setItems] = useState(10);
+  const [items, setItems] = useState(theme.paginationItem.productMainBig);
 
   const onActivePageHandler = (page) => {
     setActivePage(page);
@@ -54,9 +55,9 @@ const ProductMain = () => {
     }
 
     if (localStorage.getItem('boxSize') === 'big') {
-      setItems(12);
+      setItems(theme.paginationItem.productMainBig);
     } else {
-      setItems(18);
+      setItems(theme.paginationItem.productMainSmall);
     }
 
     if (localStorage.getItem('filter') !== `${params}`) {
