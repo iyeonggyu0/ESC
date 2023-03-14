@@ -24,6 +24,8 @@ import ProductModifyPage from './pages/productModify';
 import ProductDetailPage from './pages/productDetaliPage';
 import ScrollToTop from './components/_common/scrollToTop';
 import AdminPage from './pages/adminPage';
+import EstimatePage from './pages/estimatePage';
+import PreferencePage from './pages/preferencePage';
 
 export const ThemeContext = createContext(null);
 
@@ -77,6 +79,10 @@ function App() {
           <Route path="/product/:productId" element={<ProductDetailPage />} />
           <Route path="/product/enrollment" element={<ProductEnrollmentPage />} />
           <Route path="/product/modify/:productId" element={<ProductModifyPage />} />
+
+          {/* 견적내기 */}
+          <Route path="/estimate/:pageNum" element={<EstimatePage />} />
+          <Route path="/preference/:pageNum" element={<PreferencePage />} />
 
           {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>

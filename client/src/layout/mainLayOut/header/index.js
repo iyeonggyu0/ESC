@@ -72,7 +72,7 @@ const LayOutHeader = () => {
             <HeaderSection>
               <Logo className={`${colorTheme}`} onClick={() => navigate('/')}></Logo>
               <Ul>
-                <li onClick={() => navigate('/estimate')}>견적내기</li>
+                <li onClick={() => navigate('/estimate/1')}>견적내기</li>
                 <li onClick={() => navigate('/product/list/ALL')}>전체상품</li>
                 <li onClick={() => navigate('/community')}>커뮤니티</li>
                 <li onClick={() => navigate('/service')}>고객센터</li>
@@ -111,7 +111,7 @@ const LayOutHeader = () => {
               <MenuDiv colorTheme={colorTheme}>
                 <div>
                   <MenuUl>
-                    <li onClick={() => navigate('/')}>취향찾기</li>
+                    <li onClick={() => navigate('/preference/1')}>취향찾기</li>
                   </MenuUl>
                   <MenuUl>
                     <li onClick={() => navigate('/product/list/CASE')}>CASE</li>
@@ -184,7 +184,7 @@ const LayOutHeader = () => {
               </MobileMenuDiv>
 
               <MobileMenuDiv>
-                <span>견적내기</span>
+                <span onClick={navigate('/estimate/1')}>견적내기</span>
                 {mobileMenu1 === 'none' && (
                   <FontAwesomeIcon
                     icon={solid('caret-down')}
@@ -201,7 +201,7 @@ const LayOutHeader = () => {
                 )}
                 {mobileMenu1 === 'block' && (
                   <div>
-                    <p>취향찾기</p>
+                    <p onClick={navigate('/preference/1')}>취향찾기</p>
                   </div>
                 )}
               </MobileMenuDiv>
