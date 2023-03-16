@@ -1,4 +1,4 @@
-import PreferenceMain from '../components/preferenceCP';
+import PreferenceMain from '../components/ProductFindCP/preference';
 
 const PreferencePage = () => {
   return (

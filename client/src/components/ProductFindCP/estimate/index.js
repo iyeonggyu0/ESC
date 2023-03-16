@@ -1,9 +1,9 @@
-import EstimateHeader from './_common/header';
+import ProductFindHeader from '../_common/header';
 
 const EstimateMain = () => {
   return (
     <>
-      <EstimateHeader />
+      <ProductFindHeader Page={'EstimateMain'} />
       <></>
     </>
   );

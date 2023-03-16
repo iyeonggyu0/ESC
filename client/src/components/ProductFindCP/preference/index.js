@@ -1,9 +1,9 @@
-import PreferenceHeader from './_common/header';
+import ProductFindHeader from '../_common/header';
 
 const PreferenceMain = () => {
   return (
     <>
-      <PreferenceHeader />
+      <ProductFindHeader Page={'PreferenceMain'} />
       <></>
     </>
   );

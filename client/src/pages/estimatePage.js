@@ -1,4 +1,4 @@
-import EstimateMain from '../components/estimateCP';
+import EstimateMain from '../components/ProductFindCP/estimate';
 
 const EstimatePage = () => {
   return <EstimateMain />;
