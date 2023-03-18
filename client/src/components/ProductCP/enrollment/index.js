@@ -11,6 +11,7 @@ import { productCreate } from '@reducer/productReducer';
 import { EnrollmentStyle, TextInputDiv, TextEditorDiv, TagDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
 import axios from 'axios';
+import ExTagForm from '../_common/exTagForm';
 
 const ProductEnrollmentMain = () => {
   const media = useMedia();
@@ -20,8 +21,9 @@ const ProductEnrollmentMain = () => {
   const login = useContext(ThemeContext).userInfo.login;
 
   const [name, onChangeName, setName] = useInput('');
-  const [type, setType] = useState('');
-  const [tagText, onChangeTagText] = useInput('');
+  const [type, setType] = useState(null);
+  const [tagText, onChangeTagText, setTagText] = useInput('');
+  const [tagEx, setTagEx] = useState('');
   const [price, onChangePrice, setPrice] = useInput('');
   const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
 
@@ -74,6 +76,17 @@ const ProductEnrollmentMain = () => {
           console.error(err);
         });
     }
+
+    axios
+      .get(`${axiosInstance}api/product/tag/ex/get`)
+      .then((res) => {
+        if (res.status === 200) {
+          setTagEx(res.data);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     // eslint-disable-next-line
   }, []);
 
@@ -126,7 +139,7 @@ const ProductEnrollmentMain = () => {
         inventoryQuantity: inventoryQuantity,
         tag: tagText
           .replace(/^#/g, '')
-          .replace(/ {1,}#/g, ',')
+          .replace(/ {0,}#/g, ',')
           .replace(/ /g, '_')
           .split(/,/g),
       };
@@ -268,12 +281,11 @@ const ProductEnrollmentMain = () => {
                   <TextInputDiv>
                     <p>TAG</p>
                     <TagDiv colorTheme={colorTheme} media={media}>
-                      <input
-                        type="text"
-                        autoComplete="off"
-                        placeholder={'#이런식 #으로 #작성'}
-                        value={tagText || ''}
-                        onChange={onChangeTagText}
+                      <ExTagForm
+                        tagEx={tagEx}
+                        tagText={tagText}
+                        setTagText={setTagText}
+                        type={type}
                       />
                     </TagDiv>
                   </TextInputDiv>

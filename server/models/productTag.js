@@ -5,12 +5,23 @@ module.exports = (sequelize, DataTypes) => {
       // 상품 id
       productId: {
         type: DataTypes.INTEGER(10),
-        allowNull: false,
+        allowNull: true,
         unique: false,
       },
       tag: {
         type: DataTypes.STRING(50),
         allowNull: false,
+        unique: false,
+      },
+      type: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        unique: false,
+        defaultValue: "product",
+      },
+      productType: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
         unique: false,
       },
     },

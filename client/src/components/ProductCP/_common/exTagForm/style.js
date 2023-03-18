@@ -1,0 +1,59 @@
+import styled from 'styled-components';
+
+export const MainWapper = styled.section`
+  width: 100%;
+  font-size: 0.9rem;
+  text-align: start;
+  color: grey;
+  position: relative;
+  padding: 1.5%;
+  border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
+  border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+
+  & > div:nth-child(1) {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+    padding-bottom: 1%;
+  }
+
+  & > div:nth-child(1) > span:nth-child(2) {
+    cursor: pointer;
+  }
+
+  & > div:nth-child(1) > span:nth-child(2) > .icon {
+    padding-left: 5px;
+  }
+
+  & > div:last-child {
+    text-align: center;
+    line-height: 120%;
+    font-size: 0.7rem;
+    user-select: none;
+    cursor: pointer;
+    margin-top: calc(10px + 1%);
+  }
+`;
+
+export const InputDivStyle = styled.div`
+  margin-bottom: 10px;
+  gap: 0 10px;
+  position: relative;
+
+  & div {
+    width: 80px;
+    height: 42px;
+    font-size: 0.9rem;
+    color: grey;
+    border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
+    border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+    cursor: pointer;
+
+    transition: 0.3s all;
+  }
+
+  & div:hover {
+    border: 1px solid black;
+    color: black;
+  }
+`;

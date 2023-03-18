@@ -676,4 +676,26 @@ router.delete("/tag/delete/:id", isLoggedIn, async (req, res) => {
   }
 });
 
+router.post("/tag/ex/post", isLoggedIn, async (req, res) => {
+  try {
+    await ProductTag.create({
+      tag: req.body.tag,
+      type: "ex",
+      productType: req.body.productType,
+    });
+    res.status(200).send("추가완료");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.get("/tag/ex/get", isLoggedIn, async (req, res) => {
+  try {
+    const data = await Product.findAll({ where: { type: "ex" } });
+    res.status(200).send(data);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 module.exports = router;
