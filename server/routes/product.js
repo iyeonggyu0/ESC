@@ -678,11 +678,13 @@ router.delete("/tag/delete/:id", isLoggedIn, async (req, res) => {
 
 router.post("/tag/ex/post", isLoggedIn, async (req, res) => {
   try {
-    await ProductTag.create({
-      tag: req.body.tag,
-      type: "ex",
-      productType: req.body.productType,
-    });
+    for (let i = 0; i < req.body.tag.length; i++) {
+      await ProductTag.create({
+        tag: req.body.tag[i],
+        type: "ex",
+        productType: req.body.productType,
+      });
+    }
     res.status(200).send("추가완료");
   } catch (err) {
     console.error(err);
@@ -691,8 +693,14 @@ router.post("/tag/ex/post", isLoggedIn, async (req, res) => {
 
 router.get("/tag/ex/get", isLoggedIn, async (req, res) => {
   try {
-    const data = await Product.findAll({ where: { type: "ex" } });
-    res.status(200).send(data);
+    const CASE = await ProductTag.findAll({ where: { type: "ex", productType: "CASE" } });
+    const PCB = await ProductTag.findAll({ where: { type: "ex", productType: "PCB" } });
+    const PLATE = await ProductTag.findAll({ where: { type: "ex", productType: "PLATE" } });
+    const SWITCHES = await ProductTag.findAll({ where: { type: "ex", productType: "SWITCHES" } });
+    const KEYCAPS = await ProductTag.findAll({ where: { type: "ex", productType: "KEYCAPS" } });
+    const KEYBOARD = await ProductTag.findAll({ where: { type: "ex", productType: "KEYBOARD" } });
+    const ETC = await ProductTag.findAll({ where: { type: "ex", productType: "ETC" } });
+    res.status(200).json([{ CASE }, { PCB }, { PLATE }, { SWITCHES }, { KEYCAPS }, { KEYBOARD }, { ETC }]);
   } catch (err) {
     console.error(err);
   }

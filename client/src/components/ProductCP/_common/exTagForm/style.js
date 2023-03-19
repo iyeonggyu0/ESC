@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const MainWapper = styled.section`
   width: 100%;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-align: start;
   color: grey;
   position: relative;
@@ -15,13 +15,18 @@ export const MainWapper = styled.section`
     justify-content: space-between;
     border-bottom: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
     padding-bottom: 1%;
+    color: black;
   }
 
-  & > div:nth-child(1) > span:nth-child(2) {
+  & > div:nth-child(1) > div:nth-child(2) {
     cursor: pointer;
   }
 
-  & > div:nth-child(1) > span:nth-child(2) > .icon {
+  & > div:nth-child(1) > div:nth-child(2) > span {
+    padding-left: 15px;
+  }
+
+  & > div:nth-child(1) > div:nth-child(2) .icon {
     padding-left: 5px;
   }
 
@@ -55,5 +60,19 @@ export const InputDivStyle = styled.div`
   & div:hover {
     border: 1px solid black;
     color: black;
+  }
+`;
+
+export const ExTagStyle = styled.div`
+  padding: 15px 0;
+  & > h2 {
+    font-size: 1rem;
+    color: black;
+  }
+
+  & > div {
+    width: 100%;
+    padding: 10px 5px 0px;
+    gap: 5px 8px;
   }
 `;

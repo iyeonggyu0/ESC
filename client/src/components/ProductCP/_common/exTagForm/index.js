@@ -1,43 +1,89 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../../App';
 import { useMedia } from '../../../../hooks/useMedia';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { useInput } from '@hooks/useInput';
-
-import { MainWapper, InputDivStyle } from './style';
+import { MainWapper, InputDivStyle, ExTagStyle } from './style';
 import { useCallback } from 'react';
+import axios from 'axios';
+import { axiosInstance } from '../../../../util/axios';
+import ExTagSpan from './exTagSpan';
 
-const ExTagForm = ({ tagEx, tagText, setTagText, type }) => {
+const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
-  const [tag, onChangeTag, setTag] = useInput(tagText);
 
   const [fullView, setFullView] = useState(false);
   const [additional, setAdditional] = useState(false);
 
-  const onCancelHandler = useCallback((e) => {
-    e.preventDefault();
-    setAdditional(false);
-    setTag(null);
-    // eslint-disable-next-line
+  const [addTag, setAddTag] = useState('');
+  const [tagArr, setTagArr] = useState([]);
+
+  // setTag(
+  //   '#' +
+  //     productData.ProductTags.map((item) => item.tag)
+  //       .join(' #')
+  //       .replace(/_/g, ' '),
+  // );
+
+  useEffect(() => {
+    axios
+      .get(`${axiosInstance}api/product/tag/ex/get`)
+      .then((res) => {
+        if (res.status === 200) {
+          setTagArr(res.data);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
+
+  // EX태그 리로드
+  const exTagRelodeHandler = useCallback(() => {
+    axios.get(`${axiosInstance}api/product/tag/ex/get`).then((res) => {
+      if (res.status === 200) {
+        setTagArr(res.data);
+      }
+    });
+  }, []);
+
+  // 추가(취소)
+  const onCancelHandler = useCallback(() => {
+    setAdditional(false);
+    setAddTag(null);
+  }, [setAdditional, setAddTag]);
 
   const onSaveHandler = useCallback((e) => {
     e.preventDefault();
 
-    if (tag.length === 0) {
+    if (addTag.length === 0) {
       return alert('태그를 입력하세요');
     }
 
-    if (!/#/.test(tag)) {
+    if (!/#/.test(addTag)) {
       return alert('#가 포함되어야 합니다.');
     }
 
-    if (confirm('저장과 함께 새로고침 됩니다.') == true) {
-      setAdditional(false);
-      setTagText(tag);
+    // 추가(저장)
+    setAdditional(false);
+    if (addTag !== null) {
+      axios
+        .post(`${axiosInstance}api/product/tag/ex/post`, {
+          tag: addTag
+            .replace(/^#/g, '')
+            .replace(/ {0,}#/g, ',')
+            .replace(/ /g, '_')
+            .split(/,/g),
+          productType: type,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            alert('저장되었습니다.');
+            exTagRelodeHandler();
+          }
+        });
     } else {
       return;
     }
@@ -45,8 +91,8 @@ const ExTagForm = ({ tagEx, tagText, setTagText, type }) => {
     // eslint-disable-next-line
   }, []);
 
-  console.log(tagEx);
-  // FIXME: 추가구간 만들기
+  console.log(tagArr);
+
   return (
     <div>
       {additional && (
@@ -59,9 +105,10 @@ const ExTagForm = ({ tagEx, tagText, setTagText, type }) => {
           <input
             type="text"
             autoComplete="off"
-            placeholder={'#태그(TYPE) #태그(TYPE)'}
-            value={tag || ''}
-            onChange={onChangeTag}
+            spellCheck="false"
+            placeholder={`#${type}에 #태그를_추가합니다.`}
+            value={addTag || ''}
+            onChange={(e) => setAddTag(e.target.value)}
           />
           <div onClick={onCancelHandler} className="flexCenter">
             취소
@@ -75,14 +122,39 @@ const ExTagForm = ({ tagEx, tagText, setTagText, type }) => {
         <div>
           {!type && <span>선택된 TYPE가 없습니다.</span>}
           {type && <span>{type}와 관련된 태그입니다.</span>}
-          {!additional && (
-            <span onClick={() => setAdditional(additional ? false : true)}>
-              추가
-              <FontAwesomeIcon icon={solid('pen')} className="icon" />
-            </span>
+          {!additional && type !== null && (
+            <div>
+              <span onClick={() => setAdditional(additional ? false : true)}>
+                추가
+                <FontAwesomeIcon icon={solid('pen')} className="icon" />
+              </span>
+              <span onClick={() => setAdditional(additional ? false : true)}>
+                삭제
+                <FontAwesomeIcon icon={solid('trash-can')} className="icon" />
+              </span>
+            </div>
           )}
         </div>
-        <div>{tagEx && tagEx.map((item) => item.tag)}</div>
+        <div></div>
+        {/* 전체 보기 */}
+        <div>
+          {tagArr.map((item, index) => (
+            <ExTagStyle key={index} media={media}>
+              <h2>{Object.keys(item)[0]}</h2>
+              <div className="flexHeightCenter">
+                {Object.values(item)[0].map((subItem, subIndex) => (
+                  <ExTagSpan
+                    key={subIndex}
+                    colorTheme={colorTheme}
+                    tagText={tagText}
+                    tag={subItem.tag}
+                    setTagTextHandler={setTagTextHandler}
+                  />
+                ))}
+              </div>
+            </ExTagStyle>
+          ))}
+        </div>
         <div>
           <span onClick={() => setFullView(fullView ? false : true)}>
             {fullView && (

@@ -22,8 +22,7 @@ const ProductEnrollmentMain = () => {
 
   const [name, onChangeName, setName] = useInput('');
   const [type, setType] = useState(null);
-  const [tagText, onChangeTagText, setTagText] = useInput('');
-  const [tagEx, setTagEx] = useState('');
+  const [tagText, setTagText] = useState(null);
   const [price, onChangePrice, setPrice] = useInput('');
   const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
 
@@ -77,16 +76,6 @@ const ProductEnrollmentMain = () => {
         });
     }
 
-    axios
-      .get(`${axiosInstance}api/product/tag/ex/get`)
-      .then((res) => {
-        if (res.status === 200) {
-          setTagEx(res.data);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
     // eslint-disable-next-line
   }, []);
 
@@ -98,6 +87,12 @@ const ProductEnrollmentMain = () => {
       setError(true);
     }
   }, [name, type, price]);
+
+  const setTagTextHandler = (text) => {
+    setTagText(text);
+    console.log(text);
+    console.log(tagText);
+  };
 
   const cancelHandler = useCallback((e) => {
     e.preventDefault();
@@ -282,9 +277,8 @@ const ProductEnrollmentMain = () => {
                     <p>TAG</p>
                     <TagDiv colorTheme={colorTheme} media={media}>
                       <ExTagForm
-                        tagEx={tagEx}
                         tagText={tagText}
-                        setTagText={setTagText}
+                        setTagTextHandler={setTagTextHandler}
                         type={type}
                       />
                     </TagDiv>

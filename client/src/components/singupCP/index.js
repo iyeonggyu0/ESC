@@ -135,7 +135,11 @@ const SignMain = () => {
             value={email}
             onChange={onChangeEmail}
             autoFocus
-            style={{ width: '65%', pointerEvents: mailSend === 0 ? 'all' : 'none' }}
+            style={{
+              width: '65%',
+              pointerEvents: mailSend === 0 ? 'all' : 'none',
+              imeMode: 'inactive',
+            }}
           />
           <div onClick={onSendEmailHandler}>발송</div>
         </div>
@@ -160,6 +164,7 @@ const SignMain = () => {
             autoComplete="off"
             value={userName}
             onChange={onChangeUserName}
+            style={{ imeMode: 'active' }}
           />
         </div>
         <div>
@@ -170,6 +175,7 @@ const SignMain = () => {
             autoComplete="off"
             value={nick}
             onChange={onChangeNick}
+            style={{ imeMode: 'active' }}
           />
         </div>
         <div>

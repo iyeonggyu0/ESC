@@ -75,6 +75,7 @@ const LoginMain = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="off"
+            style={{ imeMode: 'inactive' }}
             autoFocus
           />
         </div>
