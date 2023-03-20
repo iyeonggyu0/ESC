@@ -90,8 +90,6 @@ const ProductEnrollmentMain = () => {
 
   const setTagTextHandler = (text) => {
     setTagText(text);
-    console.log(text);
-    console.log(tagText);
   };
 
   const cancelHandler = useCallback((e) => {

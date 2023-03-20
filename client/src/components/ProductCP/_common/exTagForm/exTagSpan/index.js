@@ -19,20 +19,23 @@ const ExTagSpan = ({ colorTheme, tagText, tag, setTagTextHandler }) => {
   const ChoiceHandler = useCallback(() => {
     // Plus
     if (!application) {
-      setTagTextHandler(tagText + ` #${tag}`);
+      if (tagText) {
+        setTagTextHandler(tagText + ` #${tag}`);
+      }
+      if (!tagText) {
+        setTagTextHandler(`#${tag}`);
+      }
       setAdditional(true);
     }
 
+    // Minus
     if (application) {
       console.log('실행');
-      const regex = new RegExp(tag, 'g');
+      const regex = new RegExp(`#${tag}`, 'g');
       setTagTextHandler(tagText.replace(regex, ''));
       setAdditional(false);
     }
-
-    // Minus
-    // eslint-disable-next-line
-  }, [tag]);
+  }, [tag, application, setTagTextHandler, tagText]);
 
   // FIXME:
   return (
@@ -51,7 +54,7 @@ const Span = styled.span`
   color: black;
   background-color: ${(props) =>
     props.colorTheme === 'game' && props.application
-      ? '#D0D7DE'
+      ? '#EAEAEA'
       : props.colorTheme !== 'game' && props.application
       ? '#DBD2D1'
       : 'white'};

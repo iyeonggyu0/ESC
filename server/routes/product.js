@@ -693,6 +693,7 @@ router.post("/tag/ex/post", isLoggedIn, async (req, res) => {
 
 router.get("/tag/ex/get", isLoggedIn, async (req, res) => {
   try {
+    const COMMON = await ProductTag.findAll({ where: { type: "ex", productType: "COMMON" } });
     const CASE = await ProductTag.findAll({ where: { type: "ex", productType: "CASE" } });
     const PCB = await ProductTag.findAll({ where: { type: "ex", productType: "PCB" } });
     const PLATE = await ProductTag.findAll({ where: { type: "ex", productType: "PLATE" } });
@@ -700,7 +701,7 @@ router.get("/tag/ex/get", isLoggedIn, async (req, res) => {
     const KEYCAPS = await ProductTag.findAll({ where: { type: "ex", productType: "KEYCAPS" } });
     const KEYBOARD = await ProductTag.findAll({ where: { type: "ex", productType: "KEYBOARD" } });
     const ETC = await ProductTag.findAll({ where: { type: "ex", productType: "ETC" } });
-    res.status(200).json([{ CASE }, { PCB }, { PLATE }, { SWITCHES }, { KEYCAPS }, { KEYBOARD }, { ETC }]);
+    res.status(200).json({ common: { COMMON }, data: [{ CASE }, { PCB }, { PLATE }, { SWITCHES }, { KEYCAPS }, { KEYBOARD }, { ETC }, { COMMON }] });
   } catch (err) {
     console.error(err);
   }

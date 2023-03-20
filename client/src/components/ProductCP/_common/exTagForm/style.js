@@ -64,7 +64,7 @@ export const InputDivStyle = styled.div`
 `;
 
 export const ExTagStyle = styled.div`
-  padding: 15px 0;
+  padding-top: 25px;
   & > h2 {
     font-size: 1rem;
     color: black;

@@ -19,6 +19,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
 
   const [addTag, setAddTag] = useState('');
   const [tagArr, setTagArr] = useState([]);
+  const [tagCommonArr, setTagCommonArr] = useState([]);
 
   // setTag(
   //   '#' +
@@ -32,7 +33,9 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
       .get(`${axiosInstance}api/product/tag/ex/get`)
       .then((res) => {
         if (res.status === 200) {
-          setTagArr(res.data);
+          console.log(res);
+          setTagArr(res.data.data);
+          setTagCommonArr(res.data.common);
         }
       })
       .catch((err) => {
@@ -44,7 +47,8 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
   const exTagRelodeHandler = useCallback(() => {
     axios.get(`${axiosInstance}api/product/tag/ex/get`).then((res) => {
       if (res.status === 200) {
-        setTagArr(res.data);
+        setTagArr(res.data.data);
+        setTagCommonArr(res.data.common);
       }
     });
   }, []);
@@ -52,12 +56,11 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
   // 추가(취소)
   const onCancelHandler = useCallback(() => {
     setAdditional(false);
-    setAddTag(null);
+    setAddTag('');
   }, [setAdditional, setAddTag]);
 
   const onSaveHandler = useCallback((e) => {
     e.preventDefault();
-
     if (addTag.length === 0) {
       return alert('태그를 입력하세요');
     }
@@ -76,7 +79,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
             .replace(/ {0,}#/g, ',')
             .replace(/ /g, '_')
             .split(/,/g),
-          productType: type,
+          productType: type === null ? 'COMMON' : type,
         })
         .then((res) => {
           if (res.status === 200) {
@@ -87,11 +90,8 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
     } else {
       return;
     }
-
     // eslint-disable-next-line
   }, []);
-
-  console.log(tagArr);
 
   return (
     <div>
@@ -122,7 +122,8 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
         <div>
           {!type && <span>선택된 TYPE가 없습니다.</span>}
           {type && <span>{type}와 관련된 태그입니다.</span>}
-          {!additional && type !== null && (
+
+          {!additional && (
             <div>
               <span onClick={() => setAdditional(additional ? false : true)}>
                 추가
@@ -135,25 +136,47 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
             </div>
           )}
         </div>
-        <div></div>
-        {/* 전체 보기 */}
         <div>
-          {tagArr.map((item, index) => (
-            <ExTagStyle key={index} media={media}>
-              <h2>{Object.keys(item)[0]}</h2>
+          {tagArr &&
+            tagArr.map((item, index) => (
+              <ExTagStyle
+                key={index}
+                media={media}
+                style={{
+                  display:
+                    (!fullView && Object.keys(item)[0] === type) || fullView ? 'block' : 'none',
+                }}
+              >
+                <h2>{Object.keys(item)[0]}</h2>
+                <div className="flexHeightCenter">
+                  {Object.values(item)[0].map((subItem, subIndex) => (
+                    <ExTagSpan
+                      key={subIndex}
+                      colorTheme={colorTheme}
+                      tagText={tagText}
+                      tag={subItem.tag}
+                      setTagTextHandler={setTagTextHandler}
+                    />
+                  ))}
+                </div>
+              </ExTagStyle>
+            ))}
+          {tagCommonArr && !fullView && (
+            <ExTagStyle media={media}>
+              <h2>COMMON</h2>
               <div className="flexHeightCenter">
-                {Object.values(item)[0].map((subItem, subIndex) => (
+                {tagCommonArr.COMMON.map((item, key) => (
                   <ExTagSpan
-                    key={subIndex}
+                    key={key}
                     colorTheme={colorTheme}
                     tagText={tagText}
-                    tag={subItem.tag}
+                    tag={item.tag}
                     setTagTextHandler={setTagTextHandler}
                   />
                 ))}
               </div>
             </ExTagStyle>
-          ))}
+          )}
         </div>
         <div>
           <span onClick={() => setFullView(fullView ? false : true)}>
