@@ -10,7 +10,8 @@ import axios from 'axios';
 import { axiosInstance } from '../../../../util/axios';
 import ExTagSpan from './exTagSpan';
 
-const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
+//FIXME: ㅍ페이지 모드에 따라 ex, 태그 수정 기능 설정하기
+const ExTagForm = ({ tagText, setTagTextHandler, type, pageMod }) => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
 
@@ -18,6 +19,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
   const [additional, setAdditional] = useState(false);
 
   const [addTag, setAddTag] = useState('');
+  const [exAllTag, setExAllTag] = useState([]);
   const [tagArr, setTagArr] = useState([]);
   const [tagCommonArr, setTagCommonArr] = useState([]);
 
@@ -36,6 +38,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
           console.log(res);
           setTagArr(res.data.data);
           setTagCommonArr(res.data.common);
+          setExAllTag(res.data);
         }
       })
       .catch((err) => {
@@ -49,49 +52,86 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
       if (res.status === 200) {
         setTagArr(res.data.data);
         setTagCommonArr(res.data.common);
+        setExAllTag(res.data);
       }
     });
   }, []);
 
-  // 추가(취소)
+  // 수정
+  const onCorrectionHandler = useCallback(
+    (text) => {
+      exTagRelodeHandler();
+
+      console.log(text);
+      console.log(exAllTag);
+
+      if (type === null) {
+        exAllTag?.common?.COMMON?.length > 0 &&
+          setAddTag(
+            '#' +
+              exAllTag?.common?.COMMON?.map((item) => item.tag)
+                .join(' #')
+                .replace(/_/g, ' '),
+          );
+        console.log(exAllTag.common.COMMON);
+      }
+
+      if (type !== null) {
+        exAllTag?.type?.COMMON?.length > 0 &&
+          setAddTag(
+            '#' +
+              exAllTag?.common?.COMMON?.map((item) => item.tag)
+                .join(' #')
+                .replace(/_/g, ' '),
+          );
+        console.log(exAllTag.common.COMMON);
+      }
+
+      setAdditional(true);
+    },
+    [exTagRelodeHandler, exAllTag, type],
+  );
+
+  // 취소
   const onCancelHandler = useCallback(() => {
     setAdditional(false);
     setAddTag('');
   }, [setAdditional, setAddTag]);
 
-  const onSaveHandler = useCallback((e) => {
-    e.preventDefault();
-    if (addTag.length === 0) {
-      return alert('태그를 입력하세요');
-    }
+  // 저장
+  const onSaveHandler = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    if (!/#/.test(addTag)) {
-      return alert('#가 포함되어야 합니다.');
-    }
+      if (!/#[a-zA-Zㄱ-ㅎ가-힣0-9]{1,}/g.test(addTag)) {
+        return alert('#가 포함된 태그를 입력하세요.');
+      }
 
-    // 추가(저장)
-    setAdditional(false);
-    if (addTag !== null) {
-      axios
-        .post(`${axiosInstance}api/product/tag/ex/post`, {
-          tag: addTag
-            .replace(/^#/g, '')
-            .replace(/ {0,}#/g, ',')
-            .replace(/ /g, '_')
-            .split(/,/g),
-          productType: type === null ? 'COMMON' : type,
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            alert('저장되었습니다.');
-            exTagRelodeHandler();
-          }
-        });
-    } else {
-      return;
-    }
-    // eslint-disable-next-line
-  }, []);
+      // 추가(저장)
+      setAdditional(false);
+      if (addTag !== null) {
+        axios
+          .post(`${axiosInstance}api/product/tag/ex/post`, {
+            tag: addTag
+              .replace(/^#/g, '')
+              .replace(/ {0,}#/g, ',')
+              .replace(/ /g, '_')
+              .split(/,/g),
+            productType: type === null ? 'COMMON' : type,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              alert('저장되었습니다.');
+              setAddTag('');
+              exTagRelodeHandler();
+            }
+          });
+      } else {
+        return;
+      }
+    },
+    [addTag, type, setAddTag, exTagRelodeHandler],
+  );
 
   return (
     <div>
@@ -106,7 +146,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
             type="text"
             autoComplete="off"
             spellCheck="false"
-            placeholder={`#${type}에 #태그를_추가합니다.`}
+            placeholder={`#${type || 'COMMON'}의 #태그를_변경합니다.`}
             value={addTag || ''}
             onChange={(e) => setAddTag(e.target.value)}
           />
@@ -125,13 +165,9 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
 
           {!additional && (
             <div>
-              <span onClick={() => setAdditional(additional ? false : true)}>
-                추가
+              <span onClick={onCorrectionHandler}>
+                수정
                 <FontAwesomeIcon icon={solid('pen')} className="icon" />
-              </span>
-              <span onClick={() => setAdditional(additional ? false : true)}>
-                삭제
-                <FontAwesomeIcon icon={solid('trash-can')} className="icon" />
               </span>
             </div>
           )}
@@ -165,21 +201,22 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
             <ExTagStyle media={media}>
               <h2>COMMON</h2>
               <div className="flexHeightCenter">
-                {tagCommonArr.COMMON.map((item, key) => (
-                  <ExTagSpan
-                    key={key}
-                    colorTheme={colorTheme}
-                    tagText={tagText}
-                    tag={item.tag}
-                    setTagTextHandler={setTagTextHandler}
-                  />
-                ))}
+                {tagCommonArr?.COMMON?.length > 0 &&
+                  tagCommonArr.COMMON.map((item, key) => (
+                    <ExTagSpan
+                      key={key}
+                      colorTheme={colorTheme}
+                      tagText={tagText}
+                      tag={item.tag}
+                      setTagTextHandler={setTagTextHandler}
+                    />
+                  ))}
               </div>
             </ExTagStyle>
           )}
         </div>
         <div>
-          <span onClick={() => setFullView(fullView ? false : true)}>
+          <p onClick={() => setFullView(fullView ? false : true)}>
             {fullView && (
               <FontAwesomeIcon
                 icon={solid('caret-up')}
@@ -198,7 +235,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
                 onClick={() => setFullView(fullView ? false : true)}
               />
             )}
-          </span>
+          </p>
         </div>
       </MainWapper>
     </div>

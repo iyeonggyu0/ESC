@@ -678,6 +678,7 @@ router.delete("/tag/delete/:id", isLoggedIn, async (req, res) => {
 
 router.post("/tag/ex/post", isLoggedIn, async (req, res) => {
   try {
+    await ProductTag.destroy({ where: { id: req.body.id } });
     for (let i = 0; i < req.body.tag.length; i++) {
       await ProductTag.create({
         tag: req.body.tag[i],
@@ -701,7 +702,8 @@ router.get("/tag/ex/get", isLoggedIn, async (req, res) => {
     const KEYCAPS = await ProductTag.findAll({ where: { type: "ex", productType: "KEYCAPS" } });
     const KEYBOARD = await ProductTag.findAll({ where: { type: "ex", productType: "KEYBOARD" } });
     const ETC = await ProductTag.findAll({ where: { type: "ex", productType: "ETC" } });
-    res.status(200).json({ common: { COMMON }, data: [{ CASE }, { PCB }, { PLATE }, { SWITCHES }, { KEYCAPS }, { KEYBOARD }, { ETC }, { COMMON }] });
+
+    res.status(200).json({ common: { COMMON }, CASE: { CASE }, PCB: { PCB }, PLATE: { PLATE }, SWITCHES: { SWITCHES }, KEYCAPS: { KEYCAPS }, KEYBOARD: { KEYBOARD }, ETC: { ETC }, data: [{ CASE }, { PCB }, { PLATE }, { SWITCHES }, { KEYCAPS }, { KEYBOARD }, { ETC }, { COMMON }] });
   } catch (err) {
     console.error(err);
   }

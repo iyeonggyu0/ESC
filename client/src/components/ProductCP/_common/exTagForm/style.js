@@ -35,8 +35,14 @@ export const MainWapper = styled.section`
     line-height: 120%;
     font-size: 0.7rem;
     user-select: none;
-    cursor: pointer;
     margin-top: calc(10px + 1%);
+  }
+
+  & > div:last-child > p {
+    text-align: center;
+    padding: 5px 0;
+    cursor: pointer;
+    margin: 0 auto;
   }
 `;
 

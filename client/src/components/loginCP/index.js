@@ -48,7 +48,7 @@ const LoginMain = () => {
         email: email,
         password: encrypt(password, process.env.REACT_APP_USER_KEY),
       };
-      dispatch(loginUser({ data: data, navigate: navigate }));
+      dispatch(loginUser({ data: data, navigate: navigate, setPassword: setPassword }));
     },
     // eslint-disable-next-line
     [email, password, dispatch, navigate],

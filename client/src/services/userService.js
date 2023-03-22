@@ -30,6 +30,7 @@ export default class UserService {
           }
         } else if (err.response.status === 401) {
           alert('이메일 또는 비밀번호가 틀렸습니다.');
+          req.setPassword('');
           return { userData: null, login: false };
         }
         err.response.status === 401 ? alert('잘못된 비밀번호') : '';
