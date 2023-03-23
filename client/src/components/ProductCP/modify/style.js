@@ -230,3 +230,22 @@ export const EnrollmentStyle = styled.div`
     cursor: pointer;
   }
 `;
+export const TagDiv = styled.div`
+  width: 100%;
+  & > div > div:last-child {
+    font-size: 0.9rem;
+    text-align: start;
+    color: grey;
+    padding: 1% 2%;
+    border-radius: ${(props) => (props.media.isPc ? '10px' : '5px')};
+    border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+  }
+  & > div {
+    gap: 0 10px;
+  }
+  & > div > div:last-child {
+    width: 15%;
+    text-align: center;
+    cursor: pointer;
+  }
+`;

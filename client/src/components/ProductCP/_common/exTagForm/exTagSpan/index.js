@@ -11,7 +11,6 @@ const ExTagSpan = ({ colorTheme, tagText, tag, setTagTextHandler }) => {
     if (tagText !== null && tagText.leght !== 0) {
       if (regex.test(tagText)) {
         setAdditional(true);
-        console.log('인식' + tag);
       }
     }
   }, [tagText, tag]);
@@ -30,14 +29,12 @@ const ExTagSpan = ({ colorTheme, tagText, tag, setTagTextHandler }) => {
 
     // Minus
     if (application) {
-      console.log('실행');
       const regex = new RegExp(`#${tag}`, 'g');
       setTagTextHandler(tagText.replace(regex, ''));
       setAdditional(false);
     }
   }, [tag, application, setTagTextHandler, tagText]);
 
-  // FIXME:
   return (
     <Span onClick={ChoiceHandler} colorTheme={colorTheme} application={application}>
       #{tag}

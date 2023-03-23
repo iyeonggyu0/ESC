@@ -8,7 +8,7 @@ import { useInput } from '@hooks/useInput';
 
 import { productGetOneData, productDelete, productModify } from '@reducer/productReducer';
 
-import { EnrollmentStyle, TextInputDiv, TextEditorDiv, DiscountDiv } from './style';
+import { EnrollmentStyle, TextInputDiv, TextEditorDiv, DiscountDiv, TagDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
 import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
@@ -19,6 +19,7 @@ import DateAndTimePickers from '../../_common/dateAndTimePickers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useDiscountDate } from '../../../hooks/useDiscountDate';
+import ExTagForm from '../_common/exTagForm';
 
 const ProductModifyMain = () => {
   // 새로고침 / 뒤로가기방지
@@ -57,7 +58,7 @@ const ProductModifyMain = () => {
 
   const [name, onChangeName, setName] = useInput('');
   const [type, setType] = useState('');
-  const [price, onChangePrice, setPrice] = useInput('');
+  const [price, setPrice] = useState(0);
 
   const [productMainImg, setProductMainImg] = useState(null);
   const [productMainNewImg, setProductMainNewImg] = useState(null);
@@ -74,7 +75,7 @@ const ProductModifyMain = () => {
   const [month, setMonth] = useState(null);
   const [date, setDate] = useState(null);
 
-  const [tag, onChangeTag, setTag] = useInput('');
+  const [tag, setTag] = useState('');
 
   const [discountDate, discountDateCheck] = useDiscountDate();
 
@@ -91,8 +92,6 @@ const ProductModifyMain = () => {
           .match(/^[0-9]{2}/g),
       );
     }
-
-    // eslint-disable-next-line
   }, [dateData]);
 
   const [error, setError] = useState(false);
@@ -100,11 +99,14 @@ const ProductModifyMain = () => {
   //  product Data
   const productId = useParams().productId;
 
+  const setTagTextHandler = (text) => {
+    setTag(text);
+  };
+
   // dataGet
   useEffect(() => {
     dispatch(productGetOneData({ productId: productId, setProductData: setProductData }));
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch, productId]);
 
   useEffect(() => {
     if (productData !== null) {
@@ -112,12 +114,14 @@ const ProductModifyMain = () => {
       setType(productData.type);
       setPrice(productData.price);
 
-      setTag(
-        '#' +
-          productData.ProductTags.map((item) => item.tag)
-            .join(' #')
-            .replace(/_/g, ' '),
-      );
+      if (productData?.ProductTags?.length > 0) {
+        setTag(
+          '#' +
+            productData.ProductTags.map((item) => item.tag)
+              .join(' #')
+              .replace(/_/g, ' '),
+        );
+      }
 
       if (productData.img === '/null' || productData.img === null) {
         setProductMainImg('/img/product/notImg.png');
@@ -142,8 +146,7 @@ const ProductModifyMain = () => {
         }
       }
     }
-    // eslint-disable-next-line
-  }, [productData]);
+  }, [productData, discountDate, discountDateCheck, setName, setPrice]);
 
   const textFunMainImg = (text, imagePath, fileName) => {
     setProductMainNewImg(text);
@@ -156,7 +159,11 @@ const ProductModifyMain = () => {
   };
 
   useEffect(() => {
-    if (name.length > 0 && type.length > 0 && price.length > 0) {
+    if (name.length > 0 && type.length > 0) {
+      if (price === null) {
+        setPrice(0);
+      }
+
       if (discount) {
         if (discountAmount === 0 || year === null || month === null || date === null) {
           return setError(true);
@@ -276,7 +283,6 @@ const ProductModifyMain = () => {
           console.error(err);
         });
     }
-    // eslint-disable-next-line
   }, []);
 
   const productCancelHandler = useCallback(
@@ -312,8 +318,7 @@ const ProductModifyMain = () => {
           });
       }
     },
-    // eslint-disable-next-line
-    [],
+    [productData, productMainNewImg, productNewImg],
   );
 
   const productDeleteHandler = useCallback(
@@ -323,8 +328,7 @@ const ProductModifyMain = () => {
         dispatch(productDelete({ productId: productId }));
       }
     },
-    // eslint-disable-next-line
-    [dispatch],
+    [dispatch, productId],
   );
 
   return (
@@ -451,16 +455,24 @@ const ProductModifyMain = () => {
                   </TextInputDiv>
                   <TextInputDiv>
                     <p>PRICE</p>
-                    <input type="text" autoComplete="off" value={price} onChange={onChangePrice} />
+                    <input
+                      type="text"
+                      autoComplete="off"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
                   </TextInputDiv>
                   <TextInputDiv>
                     <p>TAG</p>
-                    <input
+                    {/* <input
                       type="text"
                       autoComplete="off"
                       value={tag || ''}
                       onChange={onChangeTag}
-                    />
+                    /> */}
+                    <TagDiv colorTheme={colorTheme} media={media}>
+                      <ExTagForm tagText={tag} setTagTextHandler={setTagTextHandler} type={type} />
+                    </TagDiv>
                   </TextInputDiv>
                   <TextInputDiv>
                     <p>IMG</p>

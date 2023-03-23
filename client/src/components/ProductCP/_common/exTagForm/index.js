@@ -10,8 +10,7 @@ import axios from 'axios';
 import { axiosInstance } from '../../../../util/axios';
 import ExTagSpan from './exTagSpan';
 
-//FIXME: ㅍ페이지 모드에 따라 ex, 태그 수정 기능 설정하기
-const ExTagForm = ({ tagText, setTagTextHandler, type, pageMod }) => {
+const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
 
@@ -160,8 +159,12 @@ const ExTagForm = ({ tagText, setTagTextHandler, type, pageMod }) => {
       )}
       <MainWapper media={media} colorTheme={colorTheme}>
         <div>
-          {!type && <span>선택된 TYPE가 없습니다.</span>}
-          {type && <span>{type}와 관련된 태그입니다.</span>}
+          {!type && <span>선택된 TYPE가 없습니다.{tagText}</span>}
+          {type && (
+            <span>
+              {type}와 관련된 태그입니다.{tagText}
+            </span>
+          )}
 
           {!additional && (
             <div>
