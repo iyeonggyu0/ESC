@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useMedia } from '../../../../hooks/useMedia';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { ThemeContext } from '../../../../App';
 import theme from '../../../../style/theme';
 
@@ -16,7 +16,19 @@ const ProductFindHeader = ({ Page }) => {
   const pageNum = useParams('').pageNum;
   const [pageChangeMode, setPageChangeMode] = useState(false);
 
-  //FIXME: 페이지 이동 ( 현재 페이지오ㅓㅏ 일치하는지 검사하고 이동시키기)
+  const onClickChangePage = useCallback(() => {
+    if (!pageChangeMode) {
+      return;
+    }
+
+    if (Page === 'EstimateMain') {
+      return navigate('/preference/1');
+    }
+
+    if (Page === 'PreferenceMain') {
+      return navigate('/estimate/1');
+    }
+  }, [Page, pageChangeMode, navigate]);
 
   return (
     <HeaderWapper pageChangeMode={pageChangeMode} media={media} colorTheme={colorTheme}>
@@ -34,7 +46,7 @@ const ProductFindHeader = ({ Page }) => {
         </div>
         {pageChangeMode && (
           <div className={'flexHeightCenter'}>
-            <div>
+            <div onClick={onClickChangePage}>
               {Page !== 'EstimateMain' && <p>CUSTOM</p>}
               {Page !== 'PreferenceMain' && <p>KEYBOARD</p>}
               {Page !== 'EstimateMain' && <p>KEYBOARD</p>}
@@ -123,7 +135,28 @@ const ProductFindHeader = ({ Page }) => {
           </ul>
         </section>
       )}
-      <div className="flexCenter">
+      {media.isPc && Page === 'PreferenceMain' && (
+        <section className={'flexHeightCenter'}>
+          <ul className={'flexHeightCenter'}>
+            <li
+              style={{
+                color:
+                  pageNum === '1' && colorTheme === 'game'
+                    ? theme.palette.white
+                    : pageNum === '1'
+                    ? theme.palette.basicFont
+                    : pageNum !== '1' && colorTheme === 'game'
+                    ? '#ADADAD'
+                    : theme.palette.basicSubFont,
+              }}
+            >
+              CASE
+              <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
+            </li>
+          </ul>
+        </section>
+      )}
+      <div className="flexCenter" onClick={() => navigate('/')}>
         <FontAwesomeIcon icon={solid('house')} />
       </div>
     </HeaderWapper>

@@ -106,7 +106,6 @@ export default class ProductService {
         content: req.data.content,
       })
       .then((res) => {
-        console.log(res);
         if (res.status === 201) {
           location.reload();
         }

@@ -73,10 +73,6 @@ export const HeaderWapper = styled.header`
     height: 70px;
     position: absolute;
     right: 0;
-    border-left: ${(props) => (props.media.isPc ? '2px' : '1px')} solid
-      ${(props) =>
-        props.colorTheme === 'game'
-          ? ({ theme }) => theme.palette.gameStroke
-          : ({ theme }) => theme.palette.basicStroke};
+    cursor: pointer;
   }
 `;

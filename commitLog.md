@@ -467,7 +467,7 @@
 
 ###### Mar 17, 2023
 
-- 완성
+- header 완성
 
 <br>
 
@@ -509,3 +509,12 @@
 ###### Mar 23, 2023
 
 - 상품 태그, Ex태그, 태그 수정 최종 완성
+
+<br>
+
+### EstimatePage3
+
+###### Mar 23, 2023
+
+- EstimatePage Header 완성
+- EstimatePage 레이아웃 크기 지정

@@ -42,7 +42,6 @@ const MainPage = () => {
     );
     // eslint-disable-next-line
   }, []);
-  console.log();
 
   return (
     <MainLayOut>
