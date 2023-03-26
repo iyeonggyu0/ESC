@@ -99,6 +99,9 @@ router.post("/upload/:tpye/:name", (req, res) => {
     if (err) {
       return res.json({ success: false, err });
     }
+    if (res.req.file.path.length === 0) {
+      return;
+    }
     return res.json({
       success: true,
       image: res.req.file.path,

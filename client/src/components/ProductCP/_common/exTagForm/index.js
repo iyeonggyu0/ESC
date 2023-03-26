@@ -57,39 +57,33 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
   }, []);
 
   // 수정
-  const onCorrectionHandler = useCallback(
-    (text) => {
-      exTagRelodeHandler();
+  const onCorrectionHandler = useCallback(() => {
+    exTagRelodeHandler();
 
-      console.log(text);
-      console.log(exAllTag);
+    if (type === null) {
+      exAllTag?.common?.COMMON?.length > 0 &&
+        setAddTag(
+          '#' +
+            exAllTag?.common?.COMMON?.map((item) => item.tag)
+              .join(' #')
+              .replace(/_/g, ' '),
+        );
+      console.log(exAllTag.common.COMMON);
+    }
 
-      if (type === null) {
-        exAllTag?.common?.COMMON?.length > 0 &&
-          setAddTag(
-            '#' +
-              exAllTag?.common?.COMMON?.map((item) => item.tag)
-                .join(' #')
-                .replace(/_/g, ' '),
-          );
-        console.log(exAllTag.common.COMMON);
-      }
+    if (type !== null) {
+      exAllTag?.type?.COMMON?.length > 0 &&
+        setAddTag(
+          '#' +
+            exAllTag?.common?.COMMON?.map((item) => item.tag)
+              .join(' #')
+              .replace(/_/g, ' '),
+        );
+      console.log(exAllTag.common.COMMON);
+    }
 
-      if (type !== null) {
-        exAllTag?.type?.COMMON?.length > 0 &&
-          setAddTag(
-            '#' +
-              exAllTag?.common?.COMMON?.map((item) => item.tag)
-                .join(' #')
-                .replace(/_/g, ' '),
-          );
-        console.log(exAllTag.common.COMMON);
-      }
-
-      setAdditional(true);
-    },
-    [exTagRelodeHandler, exAllTag, type],
-  );
+    setAdditional(true);
+  }, [exTagRelodeHandler, exAllTag, type]);
 
   // 취소
   const onCancelHandler = useCallback(() => {

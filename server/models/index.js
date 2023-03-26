@@ -15,6 +15,7 @@ db.ProductDiscount = require("./productDiscount")(sequelize, Sequelize);
 db.ProductInquiry = require("./productInquiry")(sequelize, Sequelize);
 db.ProductAnswer = require("./productAnswer")(sequelize, Sequelize);
 db.ProductTag = require("./productTag")(sequelize, Sequelize);
+db.ProductImg = require("./productImg")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

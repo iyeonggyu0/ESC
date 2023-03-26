@@ -8,14 +8,7 @@ import { useInput } from '@hooks/useInput';
 
 import { productGetOneData, productDelete, productModify } from '@reducer/productReducer';
 
-import {
-  EnrollmentStyle,
-  TextInputDiv,
-  TextEditorDiv,
-  DiscountDiv,
-  TagDiv,
-  ImgsDiv,
-} from './style';
+import { EnrollmentStyle, TextInputDiv, TextEditorDiv, DiscountDiv, TagDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
 import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
@@ -27,7 +20,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useDiscountDate } from '../../../hooks/useDiscountDate';
 import ExTagForm from '../_common/exTagForm';
-import ProductImgForm from '../_common/productImgForm';
 
 const ProductModifyMain = () => {
   // 새로고침 / 뒤로가기방지
@@ -68,9 +60,10 @@ const ProductModifyMain = () => {
   const [type, setType] = useState('');
   const [price, setPrice] = useState(0);
 
-  const [productMainImg, setProductMainImg] = useState('');
-  const [productImg, setProductImg] = useState('');
-  const [productImgs, setProductImgs] = useState('');
+  const [productMainImg, setProductMainImg] = useState(null);
+  const [productMainNewImg, setProductMainNewImg] = useState(null);
+  const [productImg, setProductImg] = useState(null);
+  const [productNewImg, setProductNewImg] = useState(null);
 
   const [productData, setProductData] = useState(null);
 
@@ -85,8 +78,6 @@ const ProductModifyMain = () => {
   const [tag, setTag] = useState('');
 
   const [discountDate, discountDateCheck] = useDiscountDate();
-
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (dateData !== null) {
@@ -103,29 +94,7 @@ const ProductModifyMain = () => {
     }
   }, [dateData]);
 
-  useEffect(() => {
-    console.log(
-      'productMainImg:',
-      productMainImg,
-      ' productImg:',
-      productImg,
-      ' productImgs:',
-      productImgs,
-    );
-  }, [productMainImg, productImg, productImgs]);
-
-  const setMainImg = (text) => {
-    setProductMainImg(text);
-  };
-
-  const removeImage = (text) => {
-    const regex = new RegExp(`, ${text}`, 'g');
-    const regex1 = new RegExp(`${text}`, 'g');
-    if (regex.test(productImgs)) {
-      return setProductImgs(productImgs.replace(regex, ''));
-    }
-    setProductImgs(productImgs.replace(regex1, ''));
-  };
+  const [error, setError] = useState(false);
 
   //  product Data
   const productId = useParams().productId;
@@ -154,31 +123,17 @@ const ProductModifyMain = () => {
         );
       }
 
-      // ProductImgs > detailedImg인 파일 =  productImg / setProductImg
-      // ProductImgs > main인 파일 =  productMainImg / setProductMainImg
-      // ProductImgs > main, assist인 파일 =  productImgs / setProductImgs
-      if (productData?.ProductImgs?.length > 0) {
-        for (let i = 0; i < productData.ProductImgs.length; i++) {
-          if (productData.ProductImgs[i].type === 'detailedImg') {
-            setProductImg(productData.ProductImgs[i].img);
-          } else if (productData.ProductImgs[i].type === 'main') {
-            setProductMainImg(productData.ProductImgs[i].img);
-          }
-
-          if (
-            productData.ProductImgs[i].type === 'main' ||
-            productData.ProductImgs[i].type === 'assist'
-          ) {
-            if (productImgs?.length === 0) {
-              setProductImgs(`${productData.ProductImgs[i].img}`);
-            }
-            if (productImgs?.length > 0) {
-              setProductImgs((prevImgs) => prevImgs + ',' + productData.ProductImgs[i].img);
-            }
-          }
-        }
+      if (productData.img === '/null' || productData.img === null) {
+        setProductMainImg('/img/product/notImg.png');
+      } else {
+        setProductMainImg(`"${productData.img}"`);
       }
 
+      if (productData.detailedImg === '/null' || productData.detailedImg === null) {
+        setProductImg('/img/product/notImg.png');
+      } else {
+        setProductImg(`"${productData.detailedImg}"`);
+      }
       //쿠폰
       if (productData.ProductDiscount !== null) {
         if (discountDate) {
@@ -194,12 +149,12 @@ const ProductModifyMain = () => {
   }, [productData, discountDate, discountDateCheck, setName, setPrice]);
 
   const textFunMainImg = (text, imagePath, fileName) => {
-    // setProductMainNewImg(text);
+    setProductMainNewImg(text);
     localStorage.setItem('setProductMainNewImg', `${imagePath}/${fileName}`);
   };
 
   const textFunImg = (text, imagePath, fileName) => {
-    // setProductNewImg(text);
+    setProductNewImg(text);
     localStorage.setItem('setProductImg', `${imagePath}/${fileName}`);
   };
 
@@ -242,39 +197,39 @@ const ProductModifyMain = () => {
       const productId = productData.id;
 
       const productNewData = {
-        // name: name,
-        // type: type,
-        // price: price,
-        // img: productMainNewImg === null ? null : productMainNewImg,
-        // detailedImg: productNewImg === null ? null : productNewImg,
-        // tag: tag
-        //   .replace(/^#/g, '')
-        //   .replace(/ {1,}#/g, ',')
-        //   .replace(/ /g, '_')
-        //   .split(/,/g),
+        name: name,
+        type: type,
+        price: price,
+        img: productMainNewImg === null ? null : productMainNewImg,
+        detailedImg: productNewImg === null ? null : productNewImg,
+        tag: tag
+          .replace(/^#/g, '')
+          .replace(/ {1,}#/g, ',')
+          .replace(/ /g, '_')
+          .split(/,/g),
       };
 
       const newProductDiscount = {
-        // discount: discount,
-        // discountAmount: discountAmount,
-        // year: year,
-        // month: month
-        //   ? month
-        //       .toString()
-        //       .replace(/Jan/g, 1)
-        //       .replace(/Feb/g, 2)
-        //       .replace(/Mar/g, 3)
-        //       .replace(/Apr/g, 4)
-        //       .replace(/May/g, 5)
-        //       .replace(/Jun/g, 6)
-        //       .replace(/Jul/g, 7)
-        //       .replace(/Aug/g, 8)
-        //       .replace(/Sep/g, 9)
-        //       .replace(/Oct/g, 10)
-        //       .replace(/Nov/g, 11)
-        //       .replace(/Dec/g, 12)
-        //   : '',
-        // date: date,
+        discount: discount,
+        discountAmount: discountAmount,
+        year: year,
+        month: month
+          ? month
+              .toString()
+              .replace(/Jan/g, 1)
+              .replace(/Feb/g, 2)
+              .replace(/Mar/g, 3)
+              .replace(/Apr/g, 4)
+              .replace(/May/g, 5)
+              .replace(/Jun/g, 6)
+              .replace(/Jul/g, 7)
+              .replace(/Aug/g, 8)
+              .replace(/Sep/g, 9)
+              .replace(/Oct/g, 10)
+              .replace(/Nov/g, 11)
+              .replace(/Dec/g, 12)
+          : '',
+        date: date,
       };
       dispatch(
         productModify({
@@ -284,7 +239,21 @@ const ProductModifyMain = () => {
         }),
       );
     },
-    [productData, name, type, price, discountAmount, year, month, date, discount, tag, dispatch],
+    [
+      productData,
+      name,
+      type,
+      price,
+      productMainNewImg,
+      productNewImg,
+      discountAmount,
+      year,
+      month,
+      date,
+      discount,
+      tag,
+      dispatch,
+    ],
   );
 
   useEffect(() => {
@@ -320,37 +289,36 @@ const ProductModifyMain = () => {
     (e) => {
       e.preventDefault();
 
-      // if (productNewImg !== null) {
-      //   axios
-      //     .post(`${axiosInstance}api/multer/delete/fill`, {
-      //       route: `/img/product/${productData.name}/${productNewImg}`,
-      //     })
-      //     .then(() => {
-      //       localStorage.removeItem('img');
-      //       setProductNewImg(null);
-      //       window.close();
-      //     })
-      //     .catch((err) => {
-      //       console.error(err);
-      //     });
-      // }
-      // if (productMainNewImg !== null) {
-      //   axios
-      //     .post(`${axiosInstance}api/multer/delete/fill`, {
-      //       route: `/img/product/${productData.name}/${productMainNewImg}`,
-      //     })
-      //     .then(() => {
-      //       localStorage.removeItem('img');
-      //       setProductMainNewImg(null);
-      //       window.close();
-      //     })
-      //     .catch((err) => {
-      //       console.error(err);
-      //     });
-      // }
+      if (productNewImg !== null) {
+        axios
+          .post(`${axiosInstance}api/multer/delete/fill`, {
+            route: `/img/product/${productData.name}/${productNewImg}`,
+          })
+          .then(() => {
+            localStorage.removeItem('img');
+            setProductNewImg(null);
+            window.close();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+      if (productMainNewImg !== null) {
+        axios
+          .post(`${axiosInstance}api/multer/delete/fill`, {
+            route: `/img/product/${productData.name}/${productMainNewImg}`,
+          })
+          .then(() => {
+            localStorage.removeItem('img');
+            setProductMainNewImg(null);
+            window.close();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     },
-    // productData, productMainNewImg, productNewImg
-    [],
+    [productData, productMainNewImg, productNewImg],
   );
 
   const productDeleteHandler = useCallback(
@@ -511,37 +479,18 @@ const ProductModifyMain = () => {
                     <FileUploadInput
                       type={'product'}
                       name={productData.name}
-                      // fun={setProductMainNewImg}
+                      fun={setProductMainNewImg}
                       textFun={textFunMainImg}
                       page={'modify'}
                     />
                   </TextInputDiv>
-                  <ImgsDiv className="flexHeightCenter">
-                    <div></div>
-                    {/* FIXME:여기 오류 해결하기 */}
-                    {productImgs?.length > 0 && (
-                      <div className="flexHeightCenter">
-                        {productImgs.split(/, /g).map((state, key) => (
-                          <ProductImgForm
-                            key={key}
-                            img={state}
-                            name={name}
-                            setMainImg={setMainImg}
-                            productMainImg={productMainImg}
-                            productImgs={productImgs}
-                            removeImage={removeImage}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </ImgsDiv>
                 </div>
                 <TextEditorDiv>
                   <p>Product Detailed Description</p>
                   <FileUploadInput
                     type={'product'}
                     name={productData.name}
-                    // fun={setProductNewImg}
+                    fun={setProductNewImg}
                     textFun={textFunImg}
                     page={'modify'}
                   />

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const TextInputDiv = styled.div``;
 export const TextEditorDiv = styled.div``;
+export const ImgsDiv = styled.div``;
 
 export const DiscountDiv = styled.div`
   padding: 5vh 0;
@@ -247,5 +248,16 @@ export const TagDiv = styled.div`
     width: 15%;
     text-align: center;
     cursor: pointer;
+  }
+
+  & ${ImgsDiv} {
+    width: 100%;
+  }
+  & ${ImgsDiv} > div:first-child {
+    width: 13%;
+  }
+  & ${ImgsDiv} > div:nth-child(2) {
+    width: 100%;
+    height: 130px;
   }
 `;

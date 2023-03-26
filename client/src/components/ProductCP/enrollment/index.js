@@ -8,10 +8,11 @@ import { useInput } from '@hooks/useInput';
 import { axiosInstance } from '@util/axios';
 import { productCreate } from '@reducer/productReducer';
 
-import { EnrollmentStyle, TextInputDiv, TextEditorDiv, TagDiv } from './style';
+import { EnrollmentStyle, TextInputDiv, TextEditorDiv, TagDiv, ImgsDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
 import axios from 'axios';
 import ExTagForm from '../_common/exTagForm';
+import ProductImgForm from '../_common/productImgForm';
 
 const ProductEnrollmentMain = () => {
   const media = useMedia();
@@ -27,7 +28,8 @@ const ProductEnrollmentMain = () => {
   const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
 
   const [productMainImg, setProductMainImg] = useState(null);
-  const [productImg, setProductImg] = useState(null);
+  const [productImg, setProductImg] = useState('');
+  const [productImgs, setProductImgs] = useState('');
 
   const [error, setError] = useState(null);
 
@@ -57,8 +59,47 @@ const ProductEnrollmentMain = () => {
     // eslint-disable-next-line
   }, []);
 
-  const textFun = (text, f) => {
-    f(text);
+  const setMainImg = (text) => {
+    setProductMainImg(text);
+  };
+
+  const removeImage = (text) => {
+    const regex = new RegExp(`, ${text}`, 'g');
+    const regex1 = new RegExp(`${text}`, 'g');
+    if (regex.test(productImgs)) {
+      return setProductImgs(productImgs.replace(regex, ''));
+    }
+    setProductImgs(productImgs.replace(regex1, ''));
+  };
+
+  const imgsText = (text) => {
+    if (productImgs?.length === 0) {
+      setProductImgs(text);
+      setProductMainImg(text);
+    }
+
+    if (productImgs?.length > 0) {
+      setProductImgs(productImgs + ', ' + text);
+    }
+  };
+
+  const detailedText = (text) => {
+    if (productImg?.length === 0) {
+      setProductImg(text);
+    }
+
+    if (productImg?.length > 0) {
+      axios
+        .post(`${axiosInstance}api/multer/delete/fill`, {
+          route: `/img/product/${name}/${productImg}`,
+        })
+        .then(() => {
+          setProductImg(text);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   useEffect(() => {
@@ -80,7 +121,7 @@ const ProductEnrollmentMain = () => {
   }, []);
 
   useEffect(() => {
-    if (name.length > 0 && type.length > 0 && price.length > 0) {
+    if (name?.length > 0 && type?.length > 0 && price?.length > 0) {
       setError(false);
       return;
     } else {
@@ -115,31 +156,35 @@ const ProductEnrollmentMain = () => {
   const onProductCreateHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (tagText.length === 0) {
-        return alert('태그를 입력하세요');
-      }
-
-      if (!/#/.test(tagText)) {
-        return alert('#가 포함되어야 합니다.');
-      }
-
       const data = {
         name: name,
         type: type,
         price: price,
-        img: productMainImg === null ? null : `/img/product/${name}/${productMainImg}`,
-        detailedImg: productImg === null ? null : `/img/product/${name}/${productImg}`,
+        imgArr: (productImg + ',' + productImgs).split(/,/g),
+        mainImg: productMainImg,
+        detailedImg: productImg,
         inventoryQuantity: inventoryQuantity,
         tag: tagText
-          .replace(/^#/g, '')
+          ?.replace(/^#/g, '')
           .replace(/ {0,}#/g, ',')
           .replace(/ /g, '_')
           .split(/,/g),
       };
       dispatch(productCreate({ data: data, fun: { setName, setType, setPrice } }));
     },
-    // eslint-disable-next-line
-    [name, type, price, productMainImg, productImg, inventoryQuantity, tagText, dispatch],
+    [
+      name,
+      type,
+      price,
+      productMainImg,
+      productImg,
+      inventoryQuantity,
+      tagText,
+      setName,
+      setPrice,
+      productImgs,
+      dispatch,
+    ],
   );
 
   return (
@@ -286,11 +331,29 @@ const ProductEnrollmentMain = () => {
                     <FileUploadInput
                       type={'product'}
                       name={name}
-                      fun={setProductMainImg}
-                      textFun={textFun}
-                      page={'enrollment'}
+                      fun={setProductImgs}
+                      textFun={imgsText}
+                      page={'enrollment_main'}
                     />
                   </TextInputDiv>
+                  <ImgsDiv className="flexHeightCenter">
+                    <div></div>
+                    {productImgs?.length > 0 && (
+                      <div className="flexHeightCenter">
+                        {productImgs.split(/, /g).map((state, key) => (
+                          <ProductImgForm
+                            key={key}
+                            img={state}
+                            name={name}
+                            setMainImg={setMainImg}
+                            productMainImg={productMainImg}
+                            productImgs={productImgs}
+                            removeImage={removeImage}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </ImgsDiv>
                 </div>
                 <TextEditorDiv style={{ pointerEvents: error ? 'none' : 'all' }}>
                   <p>Product Detailed Description</p>
@@ -298,8 +361,8 @@ const ProductEnrollmentMain = () => {
                     type={'product'}
                     name={name}
                     fun={setProductImg}
-                    textFun={textFun}
-                    page={'enrollment'}
+                    textFun={detailedText}
+                    page={'enrollment_detailed'}
                   />
                 </TextEditorDiv>
                 <div>

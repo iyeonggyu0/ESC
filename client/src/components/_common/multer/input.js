@@ -4,7 +4,7 @@ import { axiosInstance } from '../../../util/axios';
 
 //  <FileUploadInput type={1} name={2} fun={set함수명} />
 //                   저장경로: ..1/2  / 함수 = 저장성공시 경로/파일명
-
+// eslint-disable-next-line
 const FileUploadInput = ({ type, name, fun, textFun, page }) => {
   const handleFileOnChange = (event) => {
     // 서버 api에 Post 요청
@@ -15,14 +15,15 @@ const FileUploadInput = ({ type, name, fun, textFun, page }) => {
         header: { 'content-type': 'multipart/form-data' },
       })
       .then((res) => {
-        console.log(res);
         localStorage.setItem('img', `${res.data.imagePath}`);
-        console.log(fun);
         if (page === 'modify') {
-          textFun(`${res.data.fileName}`, res.data.imagePath, res.data.fileName);
+          return textFun(`${res.data.fileName}`, res.data.imagePath, res.data.fileName);
         }
-        if (page === 'enrollment') {
-          textFun(`${res.data.fileName}`, fun);
+        if (page === 'enrollment_detailed') {
+          return textFun(`${res.data.fileName}`);
+        }
+        if (page === 'enrollment_main') {
+          return textFun(`${res.data.fileName}`);
         }
       })
       .catch((err) => {

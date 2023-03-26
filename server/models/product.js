@@ -30,12 +30,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0,
       },
-      // 상품 예시 이미지
-      img: {
-        type: DataTypes.STRING(100),
-        allowNull: true,
-        defaultValue: "/img/product/notImg.png",
-      },
       detailedImg: {
         // 상품 상세 이미지
         type: DataTypes.STRING(100),
@@ -79,6 +73,10 @@ module.exports = (sequelize, DataTypes) => {
       sourceKey: "id",
     });
     db.Product.hasMany(db.ProductTag, {
+      foreingKey: "productId",
+      sourceKey: "id",
+    });
+    db.Product.hasMany(db.ProductImg, {
       foreingKey: "productId",
       sourceKey: "id",
     });

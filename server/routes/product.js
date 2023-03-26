@@ -9,7 +9,7 @@ const multer = require("multer");
 const fs = require("fs");
 const { Op } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const productReview = require("../models/productReview");
 
@@ -19,12 +19,32 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       name: req.body.name,
       type: req.body.type,
       price: req.body.price,
-      img: req.body.img,
-      detailedImg: req.body.detailedImg,
       inventoryQuantity: req.body.inventoryQuantity,
     });
 
-    for (let i = 0; i < req.body.tag.length; i++) {
+    for (let i = 0; i < req.body.imgArr?.length; i++) {
+      if (req.body.imgArr[i] === req.body.mainImg) {
+        await ProductImg.create({
+          productId: data.id,
+          img: `/img/product/${data.name}/${req.body.imgArr[i]}`,
+          type: "main",
+        });
+      } else if (req.body.imgArr[i] === req.body.detailedImg) {
+        await ProductImg.create({
+          productId: data.id,
+          img: `/img/product/${data.name}/${req.body.imgArr[i]}`,
+          type: "detailedImg",
+        });
+      } else {
+        await ProductImg.create({
+          productId: data.id,
+          img: `/img/product/${data.name}/${req.body.imgArr[i]}`,
+          type: "assist",
+        });
+      }
+    }
+
+    for (let i = 0; i < req.body.tag?.length; i++) {
       await ProductTag.create({
         productId: data.id,
         tag: req.body.tag[i],
@@ -83,8 +103,9 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
             attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
           },
           { model: ProductTag },
+          { model: ProductImg, where: { type: "main" } },
         ],
-        attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity", "type"],
+        attributes: ["grade", "id", "name", "price", "inventoryQuantity", "type"],
       });
       res.status(201).send(data);
     } else {
@@ -92,9 +113,12 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
         where: {
           type: filter,
         },
-        attributes: ["img", "grade", "id", "name", "price", "inventoryQuantity", "type"],
+        attributes: ["grade", "id", "name", "price", "inventoryQuantity", "type"],
         order: [[order, orderSort]],
-        include: [{ model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] }],
+        include: [
+          { model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] },
+          { model: ProductImg, where: { type: "main" } },
+        ],
       });
       res.status(201).send(data);
     }
@@ -143,6 +167,7 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
           model: ProductDiscount,
           attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
         },
+        { model: ProductImg },
         {
           model: ProductReview,
           order: [[order, orderSort]],
@@ -169,6 +194,7 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
             model: ProductDiscount,
             attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
           },
+          { model: ProductImg },
           {
             model: ProductReview,
             order: [[order, orderSort]],
@@ -192,17 +218,19 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
 router.get("/get/best", async (req, res) => {
   try {
     const dataProdut = await Product.findAll({
-      attributes: ["name", "type", "img", "id", "inventoryQuantity"],
+      attributes: ["name", "type", "id", "inventoryQuantity"],
       order: [["sale", "DESC"]],
       limit: 3,
       where: { type: { [Op.ne]: "KEYBOARD" } },
+      include: [{ model: ProductImg, where: { type: "main" } }],
     });
 
     const dataKeyboard = await Product.findAll({
-      attributes: ["name", "type", "img", "id", "inventoryQuantity"],
+      attributes: ["name", "type", "id", "inventoryQuantity"],
       order: [["sale", "DESC"]],
       limit: 3,
       where: { type: "KEYBOARD" },
+      include: [{ model: ProductImg, where: { type: "main" } }],
     });
     return res.status(201).json({ bestProduct: dataProdut, bestKeyboard: dataKeyboard });
   } catch (err) {
@@ -228,6 +256,7 @@ router.delete("/delete/:productId", async (req, res) => {
   await ProductTag.destroy({ where: { productId: productId } });
   await ProductAnswer.destroy({ where: { productId: productId } });
   await ProductReview.destroy({ where: { productId: productId } });
+  await ProductImg.destroy({ where: { productId: productId } });
 
   const deletedCount = await Product.destroy({ where: { id: productId } });
 
@@ -263,29 +292,32 @@ router.put("/put", async (req, res) => {
       });
     }
 
-    if (productNewData.img !== null) {
-      fs.rmdir(`../client/public${data.img}`, { recursive: true }, (err) => {
-        console.log("err : ", err);
-      });
-      await Product.update(
-        {
-          img: `/img/product/${productNewData.name}/${productNewData.img}`,
-        },
-        { where: { id: productId } }
-      );
-    }
+    // FIXME: req.body.ChangeMainImg !== null
 
-    if (productNewData.detailedImg !== null) {
-      fs.rmdir(`../client/public${data.detailedImg}`, { recursive: true }, (err) => {
-        console.log("err : ", err);
-      });
-      await Product.update(
-        {
-          detailedImg: `/img/product/${productNewData.name}/${productNewData.detailedImg}`,
-        },
-        { where: { id: productId } }
-      );
-    }
+    // if (productNewData.img !== null) {
+    //   fs.rmdir(`../client/public${data.img}`, { recursive: true }, (err) => {
+    //     console.log("err : ", err);
+    //   });
+    //   await Product.update(
+    //     {
+    //       img: `/img/product/${productNewData.name}/${productNewData.img}`,
+    //     },
+    //     { where: { id: productId } }
+    //   );
+    // }
+
+    // FIXME: req.body.ChangeDetailedImg !== null
+    // if (productNewData.detailedImg !== null) {
+    //   fs.rmdir(`../client/public${data.detailedImg}`, { recursive: true }, (err) => {
+    //     console.log("err : ", err);
+    //   });
+    //   await Product.update(
+    //     {
+    //       detailedImg: `/img/product/${productNewData.name}/${productNewData.detailedImg}`,
+    //     },
+    //     { where: { id: productId } }
+    //   );
+    // }
 
     if (data.type !== productNewData.type) {
       await Product.update(
