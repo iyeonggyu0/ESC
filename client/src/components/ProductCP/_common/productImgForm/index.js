@@ -3,48 +3,56 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 import axios from 'axios';
 import { axiosInstance } from '../../../../util/axios';
-import { useEffect, useState } from 'react';
 
-const ProductImgForm = ({ img, setMainImg, name, productMainImg, removeImage }) => {
-  const deleteFile = () => {
+const ProductImgForm = ({
+  productImgs,
+  setProductImgs,
+  productMainImg,
+  setProductMainImg,
+  textFun,
+}) => {
+  const deleteFile = (route) => {
+    console.log(route);
+    console.log(productImgs);
     axios
       .post(`${axiosInstance}api/multer/delete/fill`, {
-        route: `/img/product/${name}/${img.replace(/ $/, '')}`,
+        route: route,
       })
       .then(() => {
-        removeImage(img);
+        if (route === productMainImg) {
+          textFun(null, setProductMainImg);
+        }
+        const regex = new RegExp(`, ${route}`, 'g');
+        const regex2 = new RegExp(`${route}`, 'g');
+        if (regex.test(productImgs)) {
+          textFun(productImgs.replace(regex, ''), setProductImgs);
+        } else {
+          textFun(productImgs.replace(regex2, ''), setProductImgs);
+        }
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  const onChangeMainImg = () => {
-    setMainImg(img);
+  const onChangeMainImg = (route) => {
+    textFun(route, setProductMainImg);
   };
 
-  const [route, setRoute] = useState('/img/product/');
-  useEffect(
-    () => {
-      if (!img.startsWith('/img')) {
-        setRoute(`/img/product/${name}/${img}`);
-      } else if (route === '/img/product/') {
-        setRoute(`${img}`);
-      }
-    },
-    // eslint-disable-next-line
-    [img, name],
-  );
-
   return (
-    <Div img={img}>
-      <div className="flexCenter">
-        <FontAwesomeIcon icon={solid('check')} onClick={onChangeMainImg} />
-        <FontAwesomeIcon icon={regular('square-minus')} onClick={deleteFile} />
-      </div>
-      <div>{productMainImg === img && <FontAwesomeIcon icon={solid('bookmark')} />}</div>
-      <img src={`${route}`} alt="img" />
-    </Div>
+    <div className="flexHeightCenter">
+      {productImgs?.length > 0 &&
+        productImgs?.split(/, /g).map((state, key) => (
+          <Div key={key}>
+            <div className="flexCenter">
+              <FontAwesomeIcon icon={solid('check')} onClick={() => onChangeMainImg(state)} />
+              <FontAwesomeIcon icon={regular('square-minus')} onClick={() => deleteFile(state)} />
+            </div>
+            <div>{productMainImg === state && <FontAwesomeIcon icon={solid('bookmark')} />}</div>
+            <img src={`${state}`} alt="img" />
+          </Div>
+        ))}
+    </div>
   );
 };
 export default ProductImgForm;

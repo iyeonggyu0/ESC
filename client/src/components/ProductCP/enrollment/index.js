@@ -13,6 +13,7 @@ import FileUploadInput from '../../_common/multer/input';
 import axios from 'axios';
 import ExTagForm from '../_common/exTagForm';
 import ProductImgForm from '../_common/productImgForm';
+// import ProductImgForm from '../_common/productImgForm';
 
 const ProductEnrollmentMain = () => {
   const media = useMedia();
@@ -27,9 +28,11 @@ const ProductEnrollmentMain = () => {
   const [price, onChangePrice, setPrice] = useInput('');
   const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
 
-  const [productMainImg, setProductMainImg] = useState(null);
   const [productImg, setProductImg] = useState('');
-  const [productImgs, setProductImgs] = useState('');
+
+  const [uploadFile, setUploadFile] = useState(null);
+  const [productMainImg, setProductMainImg] = useState(null);
+  const [productImgs, setProductImgs] = useState(null);
 
   const [error, setError] = useState(null);
 
@@ -45,7 +48,6 @@ const ProductEnrollmentMain = () => {
     return () => {
       window.removeEventListener('beforeunload', preventClose);
     };
-    // eslint-disable-next-line
   }, []);
   const preventGoBack = () => {
     history.pushState(null, '', location.href);
@@ -56,42 +58,39 @@ const ProductEnrollmentMain = () => {
     return () => {
       window.removeEventListener('popstate', preventGoBack);
     };
-    // eslint-disable-next-line
   }, []);
 
-  const setMainImg = (text) => {
-    setProductMainImg(text);
-  };
+  const textFun = useCallback((text, f) => {
+    console.log('실행');
+    f(text);
+  }, []);
 
-  const removeImage = (text) => {
-    const regex = new RegExp(`, ${text}`, 'g');
-    const regex1 = new RegExp(`${text}`, 'g');
-    if (regex.test(productImgs)) {
-      return setProductImgs(productImgs.replace(regex, ''));
-    }
-    setProductImgs(productImgs.replace(regex1, ''));
-  };
+  // 상품 메인 이미지
+  // 멀터input에서 수정하는 uploadFile를 감지하여 productImgs에 이어 붙히기
+  useEffect(
+    () => {
+      if (productImgs?.length > 0) {
+        setProductImgs((text) => text + ', ' + uploadFile);
+      } else if (productImgs?.length === 0 || productImgs === null) {
+        setProductImgs(uploadFile);
+        if (!productMainImg) {
+          setProductMainImg(uploadFile);
+        }
+      }
+      console.log(productImgs);
+    },
+    // eslint-disable-next-line
+    [uploadFile],
+  );
 
-  const imgsText = (text) => {
-    if (productImgs?.length === 0) {
-      setProductImgs(text);
-      setProductMainImg(text);
-    }
-
-    if (productImgs?.length > 0) {
-      setProductImgs(productImgs + ', ' + text);
-    }
-  };
-
-  const detailedText = (text) => {
-    if (productImg?.length === 0) {
-      setProductImg(text);
-    }
-
+  // 상품 이미지
+  const onChangeProductImg = (text) => {
+    console.log(text);
+    console.log(productImg);
     if (productImg?.length > 0) {
       axios
         .post(`${axiosInstance}api/multer/delete/fill`, {
-          route: `/img/product/${name}/${productImg}`,
+          route: productImg,
         })
         .then(() => {
           setProductImg(text);
@@ -99,6 +98,8 @@ const ProductEnrollmentMain = () => {
         .catch((err) => {
           console.error(err);
         });
+    } else {
+      setProductImg(text);
     }
   };
 
@@ -116,8 +117,6 @@ const ProductEnrollmentMain = () => {
           console.error(err);
         });
     }
-
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -156,13 +155,13 @@ const ProductEnrollmentMain = () => {
   const onProductCreateHandler = useCallback(
     (e) => {
       e.preventDefault();
+
       const data = {
         name: name,
         type: type,
         price: price,
-        imgArr: (productImg + ',' + productImgs).split(/,/g),
-        mainImg: productMainImg,
-        detailedImg: productImg,
+        img: productMainImg === null ? null : `/img/product/${name}/${productMainImg}`,
+        detailedImg: productImg === null ? null : `/img/product/${name}/${productImg}`,
         inventoryQuantity: inventoryQuantity,
         tag: tagText
           ?.replace(/^#/g, '')
@@ -170,21 +169,11 @@ const ProductEnrollmentMain = () => {
           .replace(/ /g, '_')
           .split(/,/g),
       };
-      dispatch(productCreate({ data: data, fun: { setName, setType, setPrice } }));
+      console.log(data);
+      // dispatch(productCreate({ data: data, fun: { setName, setType, setPrice } }));
     },
-    [
-      name,
-      type,
-      price,
-      productMainImg,
-      productImg,
-      inventoryQuantity,
-      tagText,
-      setName,
-      setPrice,
-      productImgs,
-      dispatch,
-    ],
+    // eslint-disable-next-line
+    [name, type, price, productMainImg, productImg, inventoryQuantity, tagText, dispatch],
   );
 
   return (
@@ -331,39 +320,29 @@ const ProductEnrollmentMain = () => {
                     <FileUploadInput
                       type={'product'}
                       name={name}
-                      fun={setProductImgs}
-                      textFun={imgsText}
-                      page={'enrollment_main'}
+                      fun={setUploadFile}
+                      textFun={textFun}
                     />
                   </TextInputDiv>
                   <ImgsDiv className="flexHeightCenter">
                     <div></div>
                     {productImgs?.length > 0 && (
-                      <div className="flexHeightCenter">
-                        {productImgs.split(/, /g).map((state, key) => (
-                          <ProductImgForm
-                            key={key}
-                            img={state}
-                            name={name}
-                            setMainImg={setMainImg}
-                            productMainImg={productMainImg}
-                            productImgs={productImgs}
-                            removeImage={removeImage}
-                          />
-                        ))}
+                      <div>
+                        {/* productImgs */}
+                        <ProductImgForm
+                          productImgs={productImgs}
+                          setProductImgs={setProductImgs}
+                          productMainImg={productMainImg}
+                          setProductMainImg={setProductMainImg}
+                          textFun={textFun}
+                        />
                       </div>
                     )}
                   </ImgsDiv>
                 </div>
                 <TextEditorDiv style={{ pointerEvents: error ? 'none' : 'all' }}>
                   <p>Product Detailed Description</p>
-                  <FileUploadInput
-                    type={'product'}
-                    name={name}
-                    fun={setProductImg}
-                    textFun={detailedText}
-                    page={'enrollment_detailed'}
-                  />
+                  <FileUploadInput type={'product'} name={name} fun={onChangeProductImg} />
                 </TextEditorDiv>
                 <div>
                   <div

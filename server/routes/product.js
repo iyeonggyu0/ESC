@@ -19,6 +19,7 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       name: req.body.name,
       type: req.body.type,
       price: req.body.price,
+      detailedImg: req.body.detailedImg,
       inventoryQuantity: req.body.inventoryQuantity,
     });
 

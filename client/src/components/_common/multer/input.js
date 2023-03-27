@@ -16,15 +16,23 @@ const FileUploadInput = ({ type, name, fun, textFun, page }) => {
       })
       .then((res) => {
         localStorage.setItem('img', `${res.data.imagePath}`);
-        if (page === 'modify') {
-          return textFun(`${res.data.fileName}`, res.data.imagePath, res.data.fileName);
+        if (!textFun) {
+          return fun(`${res.data.imagePathName}`);
         }
-        if (page === 'enrollment_detailed') {
-          return textFun(`${res.data.fileName}`);
+
+        if (textFun) {
+          return textFun(`${res.data.imagePathName}`, fun);
         }
-        if (page === 'enrollment_main') {
-          return textFun(`${res.data.fileName}`);
-        }
+
+        // if (page === 'modify') {
+        //   return textFun(`${res.data.fileName}`, res.data.imagePath, res.data.fileName);
+        // }
+        // if (page === 'enrollment_detailed') {
+        //   return textFun(`${res.data.fileName}`, fun);
+        // }
+        // if (page === 'enrollment_main') {
+        //   return textFun(`${res.data.fileName}`);
+        // }
       })
       .catch((err) => {
         console.error(err);

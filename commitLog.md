@@ -527,3 +527,11 @@
 
 - EstimatePage이미지 여러개 저장 가능,
 - ModifyPage 제작중
+
+<br>
+
+### ProductPage34
+
+###### Mar 27, 2023
+
+- 여러 이미지 등록 재사용성 업그레이드

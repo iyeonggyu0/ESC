@@ -106,6 +106,7 @@ router.post("/upload/:tpye/:name", (req, res) => {
       success: true,
       image: res.req.file.path,
       imagePath: `/img/${type}/${name}`,
+      imagePathName: `/img/${type}/${name}/${res.req.file.filename}`,
       fileName: res.req.file.filename,
     });
   });

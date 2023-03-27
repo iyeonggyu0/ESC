@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
       // 이미지경로
       img: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "/img/product/notImg.png",
       },
       // tpye 종류: main:메인 이미지, assist: 상품 추가이미지, detailedImg: 상품 상세 이미지
       type: {
