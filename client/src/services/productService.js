@@ -10,9 +10,6 @@ export default class ProductService {
       .then(() => {
         if (!alert('상품이 등록되었습니다.')) {
           localStorage.removeItem('img');
-          req.fun.setName('');
-          req.fun.setType('');
-          req.fun.setPrice('');
           window.close();
         }
       })

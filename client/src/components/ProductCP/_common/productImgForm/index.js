@@ -22,7 +22,7 @@ const ProductImgForm = ({
         if (route === productMainImg) {
           textFun(null, setProductMainImg);
         }
-        const regex = new RegExp(`, ${route}`, 'g');
+        const regex = new RegExp(`,${route}`, 'g');
         const regex2 = new RegExp(`${route}`, 'g');
         if (regex.test(productImgs)) {
           textFun(productImgs.replace(regex, ''), setProductImgs);
@@ -42,7 +42,7 @@ const ProductImgForm = ({
   return (
     <div className="flexHeightCenter">
       {productImgs?.length > 0 &&
-        productImgs?.split(/, /g).map((state, key) => (
+        productImgs?.split(/,/g).map((state, key) => (
           <Div key={key}>
             <div className="flexCenter">
               <FontAwesomeIcon icon={solid('check')} onClick={() => onChangeMainImg(state)} />

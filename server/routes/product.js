@@ -24,22 +24,22 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
     });
 
     for (let i = 0; i < req.body.imgArr?.length; i++) {
-      if (req.body.imgArr[i] === req.body.mainImg) {
+      if (req.body.img === null) {
         await ProductImg.create({
           productId: data.id,
-          img: `/img/product/${data.name}/${req.body.imgArr[i]}`,
           type: "main",
         });
-      } else if (req.body.imgArr[i] === req.body.detailedImg) {
+      }
+      if (req.body.imgArr[i] === req.body.img) {
         await ProductImg.create({
           productId: data.id,
-          img: `/img/product/${data.name}/${req.body.imgArr[i]}`,
-          type: "detailedImg",
+          img: `${req.body.imgArr[i]}`,
+          type: "main",
         });
       } else {
         await ProductImg.create({
           productId: data.id,
-          img: `/img/product/${data.name}/${req.body.imgArr[i]}`,
+          img: `${req.body.imgArr[i]}`,
           type: "assist",
         });
       }

@@ -22,15 +22,14 @@ const ProductEnrollmentMain = () => {
   const userData = useContext(ThemeContext).userInfo.userData;
   const login = useContext(ThemeContext).userInfo.login;
 
-  const [name, onChangeName, setName] = useInput('');
+  const [name, onChangeName] = useInput('');
   const [type, setType] = useState(null);
   const [tagText, setTagText] = useState(null);
-  const [price, onChangePrice, setPrice] = useInput('');
+  const [price, onChangePrice] = useInput('');
   const [inventoryQuantity, onChangeInventoryQuantity] = useInput(0);
 
   const [productImg, setProductImg] = useState('');
 
-  const [uploadFile, setUploadFile] = useState(null);
   const [productMainImg, setProductMainImg] = useState(null);
   const [productImgs, setProductImgs] = useState(null);
 
@@ -61,27 +60,23 @@ const ProductEnrollmentMain = () => {
   }, []);
 
   const textFun = useCallback((text, f) => {
-    console.log('실행');
     f(text);
   }, []);
 
   // 상품 메인 이미지
   // 멀터input에서 수정하는 uploadFile를 감지하여 productImgs에 이어 붙히기
-  useEffect(
-    () => {
-      if (productImgs?.length > 0) {
-        setProductImgs((text) => text + ', ' + uploadFile);
-      } else if (productImgs?.length === 0 || productImgs === null) {
-        setProductImgs(uploadFile);
-        if (!productMainImg) {
-          setProductMainImg(uploadFile);
-        }
+
+  const uploadFile = (uploadFileText) => {
+    if (productImgs?.length > 0) {
+      setProductImgs((text) => text + ',' + uploadFileText);
+    } else if (productImgs?.length === 0 || productImgs === null) {
+      setProductImgs(uploadFileText);
+      if (!productMainImg) {
+        setProductMainImg(uploadFileText);
       }
-      console.log(productImgs);
-    },
-    // eslint-disable-next-line
-    [uploadFile],
-  );
+    }
+    console.log(productImgs);
+  };
 
   // 상품 이미지
   const onChangeProductImg = (text) => {
@@ -160,20 +155,30 @@ const ProductEnrollmentMain = () => {
         name: name,
         type: type,
         price: price,
-        img: productMainImg === null ? null : `/img/product/${name}/${productMainImg}`,
-        detailedImg: productImg === null ? null : `/img/product/${name}/${productImg}`,
+        imgArr: productImgs?.split(/,/g),
+        img: productMainImg === null || productMainImg?.length === 0 ? null : productMainImg,
+        detailedImg: productImg === null || productImg?.length === 0 ? null : productImg,
         inventoryQuantity: inventoryQuantity,
         tag: tagText
           ?.replace(/^#/g, '')
           .replace(/ {0,}#/g, ',')
           .replace(/ /g, '_')
-          .split(/,/g),
+          .split(/, /g),
       };
       console.log(data);
-      // dispatch(productCreate({ data: data, fun: { setName, setType, setPrice } }));
+      dispatch(productCreate({ data: data }));
     },
-    // eslint-disable-next-line
-    [name, type, price, productMainImg, productImg, inventoryQuantity, tagText, dispatch],
+    [
+      name,
+      type,
+      price,
+      productMainImg,
+      productImgs,
+      productImg,
+      inventoryQuantity,
+      tagText,
+      dispatch,
+    ],
   );
 
   return (
@@ -320,7 +325,7 @@ const ProductEnrollmentMain = () => {
                     <FileUploadInput
                       type={'product'}
                       name={name}
-                      fun={setUploadFile}
+                      fun={uploadFile}
                       textFun={textFun}
                     />
                   </TextInputDiv>

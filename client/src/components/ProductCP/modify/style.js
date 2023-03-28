@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const TextInputDiv = styled.div``;
 export const TextEditorDiv = styled.div``;
-export const ImgsDiv = styled.div``;
+export const ImgDiv = styled.div``;
 
 export const DiscountDiv = styled.div`
   padding: 5vh 0;
@@ -229,6 +229,21 @@ export const EnrollmentStyle = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+
+    & ${ImgDiv} {
+      width: 100%;
+      position: relative;
+    }
+
+    & ${ImgDiv} > div:first-child {
+      width: 13%;
+      height: 130px;
+    }
+
+    & ${ImgDiv} > div:nth-child(2) {
+      width: 100%;
+      height: 130px;
+    }
   }
 `;
 export const TagDiv = styled.div`
@@ -248,16 +263,5 @@ export const TagDiv = styled.div`
     width: 15%;
     text-align: center;
     cursor: pointer;
-  }
-
-  & ${ImgsDiv} {
-    width: 100%;
-  }
-  & ${ImgsDiv} > div:first-child {
-    width: 13%;
-  }
-  & ${ImgsDiv} > div:nth-child(2) {
-    width: 100%;
-    height: 130px;
   }
 `;
