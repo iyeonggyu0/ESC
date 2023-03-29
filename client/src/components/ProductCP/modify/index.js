@@ -65,7 +65,7 @@ const ProductModifyMain = () => {
   const [productMainNewImg, setProductMainNewImg] = useState(null);
   const [productImg, setProductImg] = useState(null);
   const [productNewImg, setProductNewImg] = useState(null);
-  const [productImgs, setProductImgs] = useState(null);
+  const [productImgs, setProductImgs] = useState('');
 
   const [productData, setProductData] = useState(null);
 
@@ -129,19 +129,12 @@ const ProductModifyMain = () => {
         );
       }
 
-      if (productData?.ProductImgs?.length > 0) {
-        productData.ProductImgs.map((item) => {
-          if (item.type === 'main') {
-            setProductMainImg(item.img);
-            if (productImgs) setProductImgs((state) => state + ',' + item.img);
-            if (!productImgs) setProductImgs(item.img);
-          } else {
-            if (productImgs) setProductImgs((state) => state + ',' + item.img);
-            if (!productImgs) setProductImgs(item.img);
-          }
-          console.log(item);
-        });
-      }
+      productData?.ProductImgs?.forEach((item) => {
+        if (item.type === 'main') {
+          setProductMainImg(item.img);
+        }
+        setProductImgs((state) => `${state},${item.img}`);
+      });
 
       // 디테일 이미지
       if (productData.detailedImg === '/null' || productData.detailedImg === null) {
@@ -502,11 +495,12 @@ const ProductModifyMain = () => {
                       <div>
                         {/* productImgs */}
                         <ProductImgForm
-                          productImgs={productImgs}
+                          productImgs={productImgs.replace(/^,/g, '')}
                           setProductImgs={setProductImgs}
                           productMainImg={productMainImg}
                           setProductMainImg={setProductMainNewImg}
                           textFun={textFun}
+                          name={productData?.name || ''}
                         />
                       </div>
                     )}

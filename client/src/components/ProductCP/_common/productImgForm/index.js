@@ -10,13 +10,14 @@ const ProductImgForm = ({
   productMainImg,
   setProductMainImg,
   textFun,
+  name,
 }) => {
   const deleteFile = (route) => {
     console.log(route);
     console.log(productImgs);
     axios
       .post(`${axiosInstance}api/multer/delete/fill`, {
-        route: route,
+        route: `/img/product/${name}/${route}`,
       })
       .then(() => {
         if (route === productMainImg) {
@@ -39,6 +40,8 @@ const ProductImgForm = ({
     textFun(route, setProductMainImg);
   };
 
+  console.log(productImgs);
+
   return (
     <div className="flexHeightCenter">
       {productImgs?.length > 0 &&
@@ -49,7 +52,7 @@ const ProductImgForm = ({
               <FontAwesomeIcon icon={regular('square-minus')} onClick={() => deleteFile(state)} />
             </div>
             <div>{productMainImg === state && <FontAwesomeIcon icon={solid('bookmark')} />}</div>
-            <img src={`${state}`} alt="img" />
+            <img src={`/img/product/${name}/${state}`} alt="img" />
           </Div>
         ))}
     </div>

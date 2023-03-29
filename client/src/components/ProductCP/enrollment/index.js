@@ -63,6 +63,15 @@ const ProductEnrollmentMain = () => {
     f(text);
   }, []);
 
+  // FIXME: 이미지 업로드후 파일 이름 변경 헨들링
+  const [nameImgMod, setNameImgMod] = useState(true);
+  useEffect(() => {
+    if (productImgs?.length > 0 || productImg?.length > 0) {
+      setNameImgMod(false);
+    } else {
+      setNameImgMod(true);
+    }
+  }, [productImgs, productImg]);
   // 상품 메인 이미지
   // 멀터input에서 수정하는 uploadFile를 감지하여 productImgs에 이어 붙히기
 
@@ -85,7 +94,7 @@ const ProductEnrollmentMain = () => {
     if (productImg?.length > 0) {
       axios
         .post(`${axiosInstance}api/multer/delete/fill`, {
-          route: productImg,
+          route: `/img/product/${name}/${productImg}`,
         })
         .then(() => {
           setProductImg(text);
@@ -190,7 +199,7 @@ const ProductEnrollmentMain = () => {
               <div>
                 <p>Add Product</p>
                 <div>
-                  <TextInputDiv>
+                  <TextInputDiv style={{ pointerEvents: nameImgMod ? 'all' : 'none' }}>
                     <p>NAME</p>
                     <input
                       type="text"
@@ -340,6 +349,7 @@ const ProductEnrollmentMain = () => {
                           productMainImg={productMainImg}
                           setProductMainImg={setProductMainImg}
                           textFun={textFun}
+                          name={name}
                         />
                       </div>
                     )}
