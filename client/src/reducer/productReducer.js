@@ -248,6 +248,18 @@ export const productReducer = createSlice({
       state.isDone = true;
       state.error = null;
     },
+
+    // multer - put
+    multerPut: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    multerPutSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
   },
 });
 
@@ -293,4 +305,6 @@ export const {
   productAnswerPutSuccess,
   productAnswerDelete,
   productAnswerDeleteSuccess,
+  multerPut,
+  multerPutSuccess,
 } = productReducer.actions;

@@ -241,6 +241,7 @@ export default class ProductService {
         console.error(err);
       });
   }
+
   answerPut(req) {
     axios
       .put(`${axiosInstance}api/product/answer/put`, req.data)
@@ -250,6 +251,22 @@ export default class ProductService {
         }
         if (res.status === 403) {
           if (!alert('로그인이 필요합니다.')) return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  multerPut(req) {
+    axios
+      .put(`${axiosInstance}api/multer/route/put`, {
+        route: req.route,
+        newRoute: req.newRoute,
+      })
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          console.log('수정되었습니다.');
         }
       })
       .catch((err) => {

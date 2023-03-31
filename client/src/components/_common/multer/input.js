@@ -15,6 +15,10 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
         header: { 'content-type': 'multipart/form-data' },
       })
       .then((res) => {
+        if (res.status === 400) {
+          return;
+        }
+
         localStorage.setItem('img', `${res.data.imagePath}`);
         if (!textFun) {
           return fun(`${res.data.fileName}`);

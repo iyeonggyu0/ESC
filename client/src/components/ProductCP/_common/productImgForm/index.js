@@ -13,8 +13,6 @@ const ProductImgForm = ({
   name,
 }) => {
   const deleteFile = (route) => {
-    console.log(route);
-    console.log(productImgs);
     axios
       .post(`${axiosInstance}api/multer/delete/fill`, {
         route: `/img/product/${name}/${route}`,
@@ -39,8 +37,6 @@ const ProductImgForm = ({
   const onChangeMainImg = (route) => {
     textFun(route, setProductMainImg);
   };
-
-  console.log(productImgs);
 
   return (
     <div className="flexHeightCenter">

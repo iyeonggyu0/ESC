@@ -43,6 +43,8 @@ import {
   productAnswerPutSuccess,
   productAnswerDelete,
   productAnswerDeleteSuccess,
+  multerPut,
+  multerPutSuccess,
 } from '@reducer/productReducer';
 import ProductService from '../services/productService';
 
@@ -205,6 +207,16 @@ function* ProductAnswerPutSaga(action) {
   }
 }
 
+//multer
+function* MulterPutSaga(action) {
+  try {
+    yield call(ProductService.prototype.multerPut, action.payload);
+    yield put(multerPutSuccess());
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 // listner
 function* watchCreate() {
   yield takeLatest(productCreate.type, createSaga);
@@ -270,6 +282,10 @@ function* watchProductAnswerPut() {
   yield takeLatest(productAnswerDelete.type, ProductAnswerDeleteSaga);
 }
 
+function* watchMulterPut() {
+  yield takeLatest(multerPut.type, MulterPutSaga);
+}
+
 export default function* productSaga() {
   yield all([
     fork(watchCreate),
@@ -288,5 +304,6 @@ export default function* productSaga() {
     fork(watchProductAnswerPost),
     fork(watchProductAnswerDelete),
     fork(watchProductAnswerPut),
+    fork(watchMulterPut),
   ]);
 }

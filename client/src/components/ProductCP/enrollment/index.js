@@ -6,7 +6,7 @@ import NotAdmin from '../../_common/notAdmin';
 import NotLogin from '../../_common/notLogin';
 import { useInput } from '@hooks/useInput';
 import { axiosInstance } from '@util/axios';
-import { productCreate } from '@reducer/productReducer';
+import { productCreate, multerPut } from '@reducer/productReducer';
 
 import { EnrollmentStyle, TextInputDiv, TextEditorDiv, TagDiv, ImgsDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
@@ -63,19 +63,15 @@ const ProductEnrollmentMain = () => {
     f(text);
   }, []);
 
-  // FIXME: 이미지 업로드후 파일 이름 변경 헨들링
-  const [nameImgMod, setNameImgMod] = useState(true);
-  useEffect(() => {
-    if (productImgs?.length > 0 || productImg?.length > 0) {
-      setNameImgMod(false);
-    } else {
-      setNameImgMod(true);
-    }
-  }, [productImgs, productImg]);
   // 상품 메인 이미지
   // 멀터input에서 수정하는 uploadFile를 감지하여 productImgs에 이어 붙히기
 
   const uploadFile = (uploadFileText) => {
+    const route = localStorage.getItem('route');
+    if (route === 'null') {
+      localStorage.setItem('route', name);
+    }
+
     if (productImgs?.length > 0) {
       setProductImgs((text) => text + ',' + uploadFileText);
     } else if (productImgs?.length === 0 || productImgs === null) {
@@ -89,12 +85,19 @@ const ProductEnrollmentMain = () => {
 
   // 상품 이미지
   const onChangeProductImg = (text) => {
-    console.log(text);
-    console.log(productImg);
+    const route = localStorage.getItem('route');
+    if (route === 'null') {
+      localStorage.setItem('route', name);
+    }
+
     if (productImg?.length > 0) {
       axios
         .post(`${axiosInstance}api/multer/delete/fill`, {
-          route: `/img/product/${name}/${productImg}`,
+          route: `/img/product/${
+            localStorage.getItem('route') === 'null' || localStorage.getItem('route') === null
+              ? name
+              : localStorage.getItem('route')
+          }/${productImg}`,
         })
         .then(() => {
           setProductImg(text);
@@ -109,6 +112,12 @@ const ProductEnrollmentMain = () => {
 
   useEffect(() => {
     const img = localStorage.getItem('img');
+    const route = localStorage.getItem('route');
+
+    if (route !== 'null') {
+      localStorage.setItem('route', null);
+    }
+
     if (img !== null) {
       axios
         .post(`${axiosInstance}api/multer/delete/route`, {
@@ -159,6 +168,11 @@ const ProductEnrollmentMain = () => {
   const onProductCreateHandler = useCallback(
     (e) => {
       e.preventDefault();
+      const route = localStorage.getItem('route');
+
+      if (route !== name) {
+        dispatch(multerPut({ route: `/img/product/${route}`, newRoute: `/img/product/${name}` }));
+      }
 
       const data = {
         name: name,
@@ -199,7 +213,7 @@ const ProductEnrollmentMain = () => {
               <div>
                 <p>Add Product</p>
                 <div>
-                  <TextInputDiv style={{ pointerEvents: nameImgMod ? 'all' : 'none' }}>
+                  <TextInputDiv>
                     <p>NAME</p>
                     <input
                       type="text"
@@ -333,13 +347,19 @@ const ProductEnrollmentMain = () => {
                     <p>IMG</p>
                     <FileUploadInput
                       type={'product'}
-                      name={name}
+                      name={
+                        localStorage.getItem('route') === 'null' ||
+                        localStorage.getItem('route') === null
+                          ? name
+                          : localStorage.getItem('route')
+                      }
                       fun={uploadFile}
                       textFun={textFun}
                     />
                   </TextInputDiv>
                   <ImgsDiv className="flexHeightCenter">
                     <div></div>
+
                     {productImgs?.length > 0 && (
                       <div>
                         {/* productImgs */}
@@ -349,7 +369,12 @@ const ProductEnrollmentMain = () => {
                           productMainImg={productMainImg}
                           setProductMainImg={setProductMainImg}
                           textFun={textFun}
-                          name={name}
+                          name={
+                            localStorage.getItem('route') === 'null' ||
+                            localStorage.getItem('route') === null
+                              ? name
+                              : localStorage.getItem('route')
+                          }
                         />
                       </div>
                     )}
@@ -357,7 +382,16 @@ const ProductEnrollmentMain = () => {
                 </div>
                 <TextEditorDiv style={{ pointerEvents: error ? 'none' : 'all' }}>
                   <p>Product Detailed Description</p>
-                  <FileUploadInput type={'product'} name={name} fun={onChangeProductImg} />
+                  <FileUploadInput
+                    type={'product'}
+                    name={
+                      localStorage.getItem('route') === 'null' ||
+                      localStorage.getItem('route') === null
+                        ? name
+                        : localStorage.getItem('route')
+                    }
+                    fun={onChangeProductImg}
+                  />
                 </TextEditorDiv>
                 <div>
                   <div
