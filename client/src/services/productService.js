@@ -266,7 +266,7 @@ export default class ProductService {
       })
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
-          console.log('수정되었습니다.');
+          console.log('변경 완');
         }
       })
       .catch((err) => {

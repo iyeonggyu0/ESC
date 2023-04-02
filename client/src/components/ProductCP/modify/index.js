@@ -132,15 +132,29 @@ const ProductModifyMain = () => {
       productData?.ProductImgs?.forEach((item) => {
         if (item.type === 'main') {
           setProductMainImg(item.img);
+          setProductMainNewImg(item.img);
         }
         setProductImgs((state) => `${state},${item.img}`);
       });
+
+      axios
+        .post(`${axiosInstance}api/multer/route/copy`, {
+          route: `/img/product/${productData?.imgRoute}`,
+          newRoute: `/img/product/`,
+        })
+        .then(() => {
+          localStorage.setItem('route', `${productData.imgRoute} copy`);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
 
       // 디테일 이미지
       if (productData.detailedImg === '/null' || productData.detailedImg === null) {
         setProductImg('/img/product/notImg.png');
       } else {
-        setProductImg(`"${productData.detailedImg}"`);
+        setProductImg(`${productData.detailedImg}`);
+        setProductNewImg(`${productData.detailedImg}`);
       }
       //쿠폰
       if (productData.ProductDiscount !== null) {
@@ -156,16 +170,6 @@ const ProductModifyMain = () => {
     }
     // eslint-disable-next-line
   }, [productData, discountDate, discountDateCheck]);
-
-  const textFunMainImg = (text, imagePath, fileName) => {
-    setProductMainNewImg(text);
-    localStorage.setItem('setProductMainNewImg', `${imagePath}/${fileName}`);
-  };
-
-  const textFunImg = (text, imagePath, fileName) => {
-    setProductNewImg(text);
-    localStorage.setItem('setProductImg', `${imagePath}/${fileName}`);
-  };
 
   useEffect(() => {
     if (name.length > 0 && type.length > 0) {
@@ -194,14 +198,6 @@ const ProductModifyMain = () => {
         return alert('할인된 값이 마이너스(-)입니다');
       }
 
-      if (tag.length === 0) {
-        return alert('태그를 입력하세요');
-      }
-
-      if (!/#/.test(tag)) {
-        return alert('#가 포함되어야 합니다.');
-      }
-
       // newData에서 이미지의 경로가 null이 아니면 기존 파일 삭제 후 데이터 업데이트
       const productId = productData.id;
 
@@ -209,9 +205,11 @@ const ProductModifyMain = () => {
         name: name,
         type: type,
         price: price,
+        imgArr: productImgs?.replace(/^,/g, ''),
         img: productMainNewImg === null ? null : productMainNewImg,
         detailedImg: productNewImg === null ? null : productNewImg,
         tag: tag
+          .replace(/^,/g, '')
           .replace(/^#/g, '')
           .replace(/ {1,}#/g, ',')
           .replace(/ /g, '_')
@@ -253,6 +251,7 @@ const ProductModifyMain = () => {
       name,
       type,
       price,
+      productImgs,
       productMainNewImg,
       productNewImg,
       discountAmount,
@@ -266,27 +265,15 @@ const ProductModifyMain = () => {
   );
 
   useEffect(() => {
-    const img = localStorage.getItem('setProductImg');
-    const mainImg = localStorage.getItem('setProductMainNewImg');
-    if (img !== null) {
+    const img = localStorage.getItem('route');
+    const regex = new RegExp(`copy`, 'g');
+    if (img !== 'null' && regex.test(img)) {
       axios
-        .post(`${axiosInstance}api/multer/delete/fill`, {
-          route: img,
+        .post(`${axiosInstance}api/multer/delete/route`, {
+          route: `/img/product/${img}`,
         })
         .then(() => {
-          localStorage.removeItem('setProductImg');
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-    if (mainImg !== null) {
-      axios
-        .post(`${axiosInstance}api/multer/delete/fill`, {
-          route: mainImg,
-        })
-        .then(() => {
-          localStorage.removeItem('setProductMainNewImg');
+          localStorage.removeItem('route');
         })
         .catch((err) => {
           console.error(err);
@@ -294,54 +281,81 @@ const ProductModifyMain = () => {
     }
   }, []);
 
-  const productCancelHandler = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      if (productNewImg !== null) {
-        axios
-          .post(`${axiosInstance}api/multer/delete/fill`, {
-            route: `/img/product/${productData.name}/${productNewImg}`,
-          })
-          .then(() => {
-            localStorage.removeItem('img');
-            setProductNewImg(null);
-            window.close();
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      }
-      if (productMainNewImg !== null) {
-        axios
-          .post(`${axiosInstance}api/multer/delete/fill`, {
-            route: `/img/product/${productData.name}/${productMainNewImg}`,
-          })
-          .then(() => {
-            localStorage.removeItem('img');
-            setProductMainNewImg(null);
-            window.close();
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      }
-    },
-    [productData, productMainNewImg, productNewImg],
-  );
+  const productCancelHandler = useCallback((e) => {
+    e.preventDefault();
+    const img = localStorage.getItem('route');
+    const regex = new RegExp(`copy`, 'g');
+    if (img !== 'null' && regex.test(img)) {
+      axios
+        .post(`${axiosInstance}api/multer/delete/route`, {
+          route: `/img/product/${img}`,
+        })
+        .then(() => {
+          localStorage.removeItem('route');
+          window.close();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, []);
 
   const productDeleteHandler = useCallback(
     (e) => {
       e.preventDefault();
       if (window.confirm('삭제하시겠습니까?')) {
         dispatch(productDelete({ productId: productId }));
+        const regex = new RegExp(`copy`, 'g');
+        if (img !== 'null' && regex.test(img)) {
+          axios
+            .post(`${axiosInstance}api/multer/delete/route`, {
+              route: `/img/product/${img}`,
+            })
+            .then(() => {
+              localStorage.removeItem('route');
+              window.close();
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        }
       }
     },
     [dispatch, productId],
   );
 
-  console.log(productMainImg);
-  console.log(productImgs);
+  const uploadFile = (uploadFileText) => {
+    if (productImgs?.length > 0) {
+      setProductImgs((text) => text + ',' + uploadFileText);
+    } else if (productImgs?.length === 0 || productImgs === null) {
+      setProductImgs(uploadFileText);
+      if (!productMainImg) {
+        setProductMainImg(uploadFileText);
+      }
+    }
+  };
+
+  // 상품 이미지
+  const onChangeProductImg = (text) => {
+    if (productImg?.length > 0) {
+      axios
+        .post(`${axiosInstance}api/multer/delete/fill`, {
+          route: `/img/product/${
+            localStorage.getItem('route') === 'null' || localStorage.getItem('route') === null
+              ? name.replace(/[^\w\s]/gi, '')
+              : localStorage.getItem('route')
+          }/${productData.detailedImg}`,
+        })
+        .then(() => {
+          setProductNewImg(text);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      setProductNewImg(text);
+    }
+  };
 
   return (
     <>
@@ -484,9 +498,9 @@ const ProductModifyMain = () => {
                     <p>IMG</p>
                     <FileUploadInput
                       type={'product'}
-                      name={productData.name}
-                      fun={setProductMainNewImg}
-                      textFun={textFunMainImg}
+                      name={`${productData.imgRoute} copy`}
+                      fun={uploadFile}
+                      textFun={textFun}
                     />
                   </TextInputDiv>
                   <ImgDiv className="flexHeightCenter">
@@ -497,10 +511,10 @@ const ProductModifyMain = () => {
                         <ProductImgForm
                           productImgs={productImgs.replace(/^,/g, '')}
                           setProductImgs={setProductImgs}
-                          productMainImg={productMainImg}
+                          productMainImg={productMainNewImg}
                           setProductMainImg={setProductMainNewImg}
                           textFun={textFun}
-                          name={productData?.name || ''}
+                          name={`${productData.imgRoute} copy`}
                         />
                       </div>
                     )}
@@ -510,10 +524,8 @@ const ProductModifyMain = () => {
                   <p>Product Detailed Description</p>
                   <FileUploadInput
                     type={'product'}
-                    name={`${productData.name} modify`}
-                    fun={setProductNewImg}
-                    textFun={textFunImg}
-                    page={'modify'}
+                    name={`${productData.imgRoute} copy`}
+                    fun={onChangeProductImg}
                   />
                 </TextEditorDiv>
                 <DiscountDiv media={media} colorTheme={colorTheme}>

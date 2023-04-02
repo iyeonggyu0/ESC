@@ -11,15 +11,26 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
     const formData = new FormData();
     formData.append(type, event.target.files[0]);
     axios
-      .post(`${axiosInstance}api/multer/upload/${type}/${name}`, formData, {
-        header: { 'content-type': 'multipart/form-data' },
-      })
+      .post(
+        `${axiosInstance}api/multer/upload/${type}/${name.replace(/[^\w\s]/gi, '')}`,
+        formData,
+        {
+          header: { 'content-type': 'multipart/form-data' },
+        },
+      )
       .then((res) => {
         if (res.status === 400) {
           return;
         }
 
-        localStorage.setItem('img', `${res.data.imagePath}`);
+        const regexType = new RegExp(`/img/${type}/`, 'g');
+        const route = res.data.imagePath.replace(regexType, '');
+
+        const routeLoc = localStorage.getItem('route');
+        if (routeLoc === 'null') {
+          localStorage.setItem('route', route);
+        }
+
         if (!textFun) {
           return fun(`${res.data.fileName}`);
         }

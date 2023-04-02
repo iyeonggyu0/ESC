@@ -9,6 +9,7 @@ const multer = require("multer");
 const { v4: uuid } = require("uuid");
 const mime = require("mime-types");
 const fs = require("fs");
+const fsExtra = require("fs-extra");
 
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
@@ -165,8 +166,22 @@ router.post("/delete/fill", async (req, res) => {
 router.put("/route/put", async (req, res) => {
   fs.rename(`../client/public${req.body.route}`, `../client/public${req.body.newRoute}`, (err) => {
     if (err) throw err;
-    res.status(201).send("변경 완료");
+    res.status(201).send(req.body.newRoute);
   });
+});
+
+router.post("/route/copy", async (req, res) => {
+  const sourcePath = `../client/public${req.body.route}`;
+  const targetPath = `../client/public${req.body.newRoute}`;
+
+  const basename = path.basename(sourcePath);
+  const newFolderName = `${basename} copy`;
+  const newFolderPath = path.join(targetPath, newFolderName);
+
+  fsExtra
+    .copy(sourcePath, newFolderPath)
+    .then(() => res.status(201).send("성공"))
+    .catch((err) => console.error(err));
 });
 
 module.exports = router;

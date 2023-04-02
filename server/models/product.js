@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 0,
       },
+      imgRoute: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+        defaultValue: "/img/product/notImg.png",
+      },
       detailedImg: {
         // 상품 상세 이미지
         type: DataTypes.STRING(100),

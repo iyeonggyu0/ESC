@@ -7,6 +7,7 @@ const { sendEmail } = require("../mailer/mail");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
+const fsExtra = require("fs-extra");
 const { Op } = require("sequelize");
 
 const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg } = require("../models");
@@ -19,6 +20,7 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       name: req.body.name,
       type: req.body.type,
       price: req.body.price,
+      imgRoute: req.body.imgRoute,
       detailedImg: req.body.detailedImg,
       inventoryQuantity: req.body.inventoryQuantity,
     });
@@ -145,6 +147,13 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
   }
 
   try {
+    const data = await Product.findOne({
+      where: { id: productId },
+    });
+    if (!data) {
+      return res.status(402).send("productId값과 일치하는 상품이 없습니다.");
+    }
+
     const reviewData = await ProductReview.findAll({ where: { ProductId: productId } });
     let gradeNum;
     if (reviewData) {
@@ -279,6 +288,7 @@ router.put("/put", async (req, res) => {
   if (!data) {
     return res.status(402).send("productId값과 일치하는 상품이 없습니다.");
   }
+
   try {
     if (data.name !== productNewData.name) {
       await Product.update(
@@ -287,38 +297,61 @@ router.put("/put", async (req, res) => {
         },
         { where: { id: productId } }
       );
-      fs.rename(`../client/public/img/product/${data.name}`, `../client/public/img/product/${productNewData.name}`, (err) => {
-        if (err) throw err;
-        console.log("success!");
-      });
     }
 
-    // FIXME: req.body.ChangeMainImg !== null
+    if (data.detailedImg !== productNewData.detailedImg) {
+      await Product.update(
+        {
+          detailedImg: productNewData.detailedImg,
+        },
+        { where: { id: productId } }
+      );
+    }
 
-    // if (productNewData.img !== null) {
-    //   fs.rmdir(`../client/public${data.img}`, { recursive: true }, (err) => {
-    //     console.log("err : ", err);
-    //   });
-    //   await Product.update(
-    //     {
-    //       img: `/img/product/${productNewData.name}/${productNewData.img}`,
-    //     },
-    //     { where: { id: productId } }
-    //   );
-    // }
+    await ProductImg.destroy({ where: { productId: productId } });
 
-    // FIXME: req.body.ChangeDetailedImg !== null
-    // if (productNewData.detailedImg !== null) {
-    //   fs.rmdir(`../client/public${data.detailedImg}`, { recursive: true }, (err) => {
-    //     console.log("err : ", err);
-    //   });
-    //   await Product.update(
-    //     {
-    //       detailedImg: `/img/product/${productNewData.name}/${productNewData.detailedImg}`,
-    //     },
-    //     { where: { id: productId } }
-    //   );
-    // }
+    const imgArr = productNewData.imgArr.split(/,/g);
+
+    for (let i = 0; i < imgArr?.length; i++) {
+      if (req.body.img === null) {
+        await ProductImg.create({
+          productId: data.id,
+          type: "main",
+        });
+      }
+      if (imgArr[i] === req.body.img) {
+        await ProductImg.create({
+          productId: data.id,
+          img: `${imgArr[i]}`,
+          type: "main",
+        });
+      } else {
+        await ProductImg.create({
+          productId: data.id,
+          img: `${imgArr[i]}`,
+          type: "assist",
+        });
+      }
+
+      fsExtra.remove(`../client/public/img/product/${data.imgRoute}`, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+
+      fsExtra.move(`../client/public/img/product/${data.imgRoute} copy`, `../client/public/product/${productNewData.name.replace(/[^\w\s]/gi, "")}`, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+
+      await Product.update(
+        {
+          imgRoute: data.name.replace(/[^\w\s]/gi, ""),
+        },
+        { where: { id: productId } }
+      );
+    }
 
     if (data.type !== productNewData.type) {
       await Product.update(

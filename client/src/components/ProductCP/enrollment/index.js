@@ -67,11 +67,6 @@ const ProductEnrollmentMain = () => {
   // 멀터input에서 수정하는 uploadFile를 감지하여 productImgs에 이어 붙히기
 
   const uploadFile = (uploadFileText) => {
-    const route = localStorage.getItem('route');
-    if (route === 'null') {
-      localStorage.setItem('route', name);
-    }
-
     if (productImgs?.length > 0) {
       setProductImgs((text) => text + ',' + uploadFileText);
     } else if (productImgs?.length === 0 || productImgs === null) {
@@ -85,11 +80,6 @@ const ProductEnrollmentMain = () => {
 
   // 상품 이미지
   const onChangeProductImg = (text) => {
-    const route = localStorage.getItem('route');
-    if (route === 'null') {
-      localStorage.setItem('route', name);
-    }
-
     if (productImg?.length > 0) {
       axios
         .post(`${axiosInstance}api/multer/delete/fill`, {
@@ -149,14 +139,14 @@ const ProductEnrollmentMain = () => {
     e.preventDefault();
     setProductMainImg(null);
     setProductImg(null);
-    const img = localStorage.getItem('img');
+    const img = localStorage.getItem('route');
     if (img !== null) {
       axios
         .post(`${axiosInstance}api/multer/delete/route`, {
-          route: img,
+          route: `/img/product/${img}`,
         })
         .then(() => {
-          localStorage.removeItem('img');
+          localStorage.removeItem('route');
           window.location.replace('');
         })
         .catch((err) => {
@@ -171,13 +161,23 @@ const ProductEnrollmentMain = () => {
       const route = localStorage.getItem('route');
 
       if (route !== name) {
-        dispatch(multerPut({ route: `/img/product/${route}`, newRoute: `/img/product/${name}` }));
+        dispatch(
+          multerPut({
+            route: `/img/product/${route}`,
+            newRoute: `/img/product/${name.replace(/[^\w\s]/gi, '')}`,
+          }),
+        );
+        localStorage.setItem('route', name.replace(/[^\w\s]/gi, ''));
       }
 
       const data = {
         name: name,
         type: type,
         price: price,
+        imgRoute:
+          name === localStorage.getItem('route')
+            ? localStorage.getItem('route')
+            : name.replace(/[^\w\s]/gi, ''),
         imgArr: productImgs?.split(/,/g),
         img: productMainImg === null || productMainImg?.length === 0 ? null : productMainImg,
         detailedImg: productImg === null || productImg?.length === 0 ? null : productImg,
@@ -186,7 +186,7 @@ const ProductEnrollmentMain = () => {
           ?.replace(/^#/g, '')
           .replace(/ {0,}#/g, ',')
           .replace(/ /g, '_')
-          .split(/, /g),
+          .split(/,/g),
       };
       console.log(data);
       dispatch(productCreate({ data: data }));
@@ -350,7 +350,7 @@ const ProductEnrollmentMain = () => {
                       name={
                         localStorage.getItem('route') === 'null' ||
                         localStorage.getItem('route') === null
-                          ? name
+                          ? name.replace(/[^\w\s]/gi, '')
                           : localStorage.getItem('route')
                       }
                       fun={uploadFile}
@@ -359,7 +359,6 @@ const ProductEnrollmentMain = () => {
                   </TextInputDiv>
                   <ImgsDiv className="flexHeightCenter">
                     <div></div>
-
                     {productImgs?.length > 0 && (
                       <div>
                         {/* productImgs */}
@@ -372,7 +371,7 @@ const ProductEnrollmentMain = () => {
                           name={
                             localStorage.getItem('route') === 'null' ||
                             localStorage.getItem('route') === null
-                              ? name
+                              ? name.replace(/[^\w\s]/gi, '')
                               : localStorage.getItem('route')
                           }
                         />
@@ -387,7 +386,7 @@ const ProductEnrollmentMain = () => {
                     name={
                       localStorage.getItem('route') === 'null' ||
                       localStorage.getItem('route') === null
-                        ? name
+                        ? name.replace(/[^\w\s]/gi, '')
                         : localStorage.getItem('route')
                     }
                     fun={onChangeProductImg}
