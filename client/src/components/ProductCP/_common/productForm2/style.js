@@ -68,7 +68,7 @@ export const MainStyle = styled.div`
     width: ${(props) => (props.media.isPc ? '330px' : '90vw')};
     height: ${(props) => (props.media.isPc ? '330px' : '90vw')};
     border-radius: 5px;
-    background: url(${(props) => props.data.img}) no-repeat center center / cover;
-    /* contain */
+    background: url('/img/product/${(props) => props.data.imgRoute}/${(props) => props.data.img}')
+      no-repeat center center / cover;
   }
 `;

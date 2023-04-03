@@ -28,12 +28,11 @@ const ProductBigSizeForm = ({ productData, productModifyMod }) => {
     name: productData.name,
     price: `${productData.price}`,
     grade: productData.grade,
-    img:
-      productData.img === null || productData.img === '/null'
-        ? '/img/product/notImg.png'
-        : `"${productData.img}"`,
+    imgRoute: productData.imgRoute,
+    img: productData?.ProductImgs?.find((obj) => obj.type === 'main').img,
   };
 
+  console.log(data);
   const nav = () => {
     localStorage.setItem('pageModLoc', '상세설명');
     if (productModifyMod) {

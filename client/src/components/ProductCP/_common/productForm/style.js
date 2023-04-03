@@ -43,14 +43,15 @@ export const MainStyle = styled.div`
     width: 100%;
     height: 55%;
     margin-bottom: ${(props) => (props.media.isPc ? '15px' : '5px')};
-    background: url(${(props) => props.data.img}) no-repeat center center / cover;
+    background: url('/img/product/${(props) => props.data.imgRoute}/${(props) => props.data.img}')
+      no-repeat center center / cover;
   }
   & > p:nth-child(3) {
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
     font-weight: 500;
-    font-size: ${(props) => (props.media.isPc ? '1.3rem' : '0.8rem')};
+    font-size: 0.8rem;
     margin-bottom: ${(props) => (props.media.isPc ? '5px' : '3px')};
   }
   & > div:nth-child(4) > p {

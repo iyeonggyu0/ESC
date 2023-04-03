@@ -108,7 +108,7 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
           { model: ProductTag },
           { model: ProductImg, where: { type: "main" } },
         ],
-        attributes: ["grade", "id", "name", "price", "inventoryQuantity", "type"],
+        attributes: ["imgRoute", "grade", "id", "name", "price", "inventoryQuantity", "type"],
       });
       res.status(201).send(data);
     } else {
@@ -116,7 +116,7 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
         where: {
           type: filter,
         },
-        attributes: ["grade", "id", "name", "price", "inventoryQuantity", "type"],
+        attributes: ["imgRoute", "grade", "id", "name", "price", "inventoryQuantity", "type"],
         order: [[order, orderSort]],
         include: [
           { model: ProductDiscount, attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"] },
@@ -339,7 +339,7 @@ router.put("/put", async (req, res) => {
         }
       });
 
-      fsExtra.move(`../client/public/img/product/${data.imgRoute} copy`, `../client/public/product/${productNewData.name.replace(/[^\w\s]/gi, "")}`, (err) => {
+      fsExtra.move(`../client/public/img/product/${data.imgRoute} copy`, `../client/public/img/product/${productNewData.name.replace(/[^\w\s]/gi, "")}`, (err) => {
         if (err) {
           console.error(err);
         }
@@ -347,7 +347,7 @@ router.put("/put", async (req, res) => {
 
       await Product.update(
         {
-          imgRoute: data.name.replace(/[^\w\s]/gi, ""),
+          imgRoute: productNewData.name.replace(/[^\w\s]/gi, ""),
         },
         { where: { id: productId } }
       );

@@ -78,7 +78,7 @@ export const ProductDetaliMain = styled.section`
   }
 
   & > section:nth-child(1) > div:last-child > p:nth-child(1) {
-    font-size: 2.2rem;
+    font-size: 1.5rem;
     font-weight: 900;
   }
 

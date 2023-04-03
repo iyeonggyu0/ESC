@@ -83,6 +83,7 @@ const ProductDetliMain = () => {
       } else {
         setDetailedImg(`${productData.detailedImg}`);
       }
+
       if (productData.ProductDiscount !== null) {
         setDiscountData(productData.ProductDiscount);
         setDiscountDataCheck(productData.ProductDiscount);
@@ -121,7 +122,7 @@ const ProductDetliMain = () => {
                 <p>{productData.name}</p>
                 <div>
                   <div>
-                    {productData.grade === 0 && <p>리뷰 없음</p>}
+                    {productData.grade === 0 && <span>리뷰 없음</span>}
                     {0 < productData.grade && <FontAwesomeIcon icon={solid('star')} />}
                     {2 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
                     {3 <= productData.grade && <FontAwesomeIcon icon={solid('star')} />}
