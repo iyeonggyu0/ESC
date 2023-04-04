@@ -181,7 +181,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
                 }}
               >
                 <h2>{Object.keys(item)[0]}</h2>
-                <div className="flexHeightCenter">
+                <div className="flexHeightCenter" style={{ display: 'flex', flexWrap: 'wrap' }}>
                   {Object.values(item)[0].map((subItem, subIndex) => (
                     <ExTagSpan
                       key={subIndex}
@@ -197,7 +197,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
           {tagCommonArr && !fullView && (
             <ExTagStyle media={media}>
               <h2>COMMON</h2>
-              <div className="flexHeightCenter">
+              <div className="flexHeightCenter" style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {tagCommonArr?.COMMON?.length > 0 &&
                   tagCommonArr.COMMON.map((item, key) => (
                     <ExTagSpan

@@ -743,8 +743,8 @@ router.delete("/tag/delete/:id", isLoggedIn, async (req, res) => {
 });
 
 router.post("/tag/ex/post", isLoggedIn, async (req, res) => {
+  await ProductTag.destroy({ where: { productType: req.body.productType, type: "ex" } });
   try {
-    await ProductTag.destroy({ where: { id: req.body.id } });
     for (let i = 0; i < req.body.tag.length; i++) {
       await ProductTag.create({
         tag: req.body.tag[i],

@@ -27,6 +27,7 @@ import ProductInquiryForm from '../_common/productInquiryForm';
 import ExchangeReturn from '../_common/exchangeReturn';
 import Pagination from 'react-js-pagination';
 import theme from '@style/theme.js';
+import ProductDetaliImgForm from '../_common/productDetaliImgForm';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -39,7 +40,8 @@ const ProductDetliMain = () => {
   const productId = useParams().productId;
   const [productData, setProductData] = useState(null);
 
-  const [img, setImg] = useState(null);
+  const [img, setImg] = useState([{}]);
+  const [imgRoute, setImgRoute] = useState('');
   const [detailedImg, setDetailedImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
@@ -72,16 +74,21 @@ const ProductDetliMain = () => {
 
   useEffect(() => {
     if (productData) {
-      if (productData.img === '/null' || productData.img === null) {
-        setImg('/img/product/notImg.png');
-      } else {
-        setImg(`"${productData.img}"`);
+      // const [img, setImg] = useState(null);
+
+      if (productData.ProductImgs?.length > 0) {
+        const sortedProductImgs = productData.ProductImgs.filter(
+          (item) => item.type === 'main',
+        ).concat(productData.ProductImgs.filter((item) => item.type !== 'main'));
+
+        setImg(sortedProductImgs);
+        setImgRoute(productData.imgRoute);
       }
 
       if (productData.detailedImg === '/null' || productData.detailedImg === null) {
         setDetailedImg('/img/product/notImg.png');
       } else {
-        setDetailedImg(`${productData.detailedImg}`);
+        setDetailedImg(`/img/product/${productData.imgRoute}/${productData.detailedImg}`);
       }
 
       if (productData.ProductDiscount !== null) {
@@ -114,10 +121,15 @@ const ProductDetliMain = () => {
               <p>{productData.name}</p>
             </div>
           </ProductDetaliHeader>
-          <ProductDetaliMain media={media} colorTheme={colorTheme} img={img}>
+          <ProductDetaliMain media={media} colorTheme={colorTheme}>
             {/* mainImg, 가격, 구매버튼 등 */}
             <section>
-              <div></div>
+              <ProductDetaliImgForm
+                imgRoute={imgRoute}
+                media={media}
+                colorTheme={colorTheme}
+                imgs={img}
+              />
               <div>
                 <p>{productData.name}</p>
                 <div>

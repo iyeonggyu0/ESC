@@ -54,15 +54,13 @@ export const ProductDetaliMain = styled.section`
   }
 
   // mainImg
-  & > section:nth-child(1) > div:first-child {
+  /* & > section:nth-child(1) > div:first-child {
     width: ${(props) => (props.media.isPc ? '50vw' : '95vw')};
     height: ${(props) => (props.media.isPc ? 'calc(100vh - 2.3rem - 221px)' : '95vw')};
     margin: ${(props) => (props.media.isPc ? '0' : '10px auto')};
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
-
-    background: url(${(props) => props.img}) no-repeat center center / cover;
-  }
+  } */
 
   // 오른쪽 text div
   & > section:nth-child(1) > div:last-child {

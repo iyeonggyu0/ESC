@@ -125,9 +125,10 @@ export const ProductMainDivStyle = styled.div`
     margin: 0 auto;
     z-index: 1;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     flex-wrap: wrap;
     overflow: initial;
+
     gap: ${(props) =>
       props.media.isPc && props.boxSize === 'small'
         ? '80px calc((100% - 1212px) / 5)'
