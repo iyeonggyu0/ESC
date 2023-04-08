@@ -16,6 +16,7 @@ export const MainWapper = styled.section`
     border-bottom: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
     padding-bottom: 1%;
     color: black;
+    flex-wrap: wrap;
   }
 
   & > div:nth-child(1) > div:nth-child(2) {

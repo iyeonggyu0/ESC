@@ -228,7 +228,7 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
 router.get("/get/best", async (req, res) => {
   try {
     const dataProdut = await Product.findAll({
-      attributes: ["name", "type", "id", "inventoryQuantity"],
+      // attributes: ["name", "type", "id", "inventoryQuantity","imgRoute"],
       order: [["sale", "DESC"]],
       limit: 3,
       where: { type: { [Op.ne]: "KEYBOARD" } },
@@ -236,7 +236,7 @@ router.get("/get/best", async (req, res) => {
     });
 
     const dataKeyboard = await Product.findAll({
-      attributes: ["name", "type", "id", "inventoryQuantity"],
+      // attributes: ["name", "type", "id", "inventoryQuantity","imgRoute"],
       order: [["sale", "DESC"]],
       limit: 3,
       where: { type: "KEYBOARD" },

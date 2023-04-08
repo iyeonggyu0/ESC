@@ -14,7 +14,7 @@ const MainPageProductForm = ({ productData }) => {
     img:
       productData.img === null || productData.img === '/null'
         ? '/img/product/notImg.png'
-        : `"${productData.img}"`,
+        : `/img/product/${productData.imgRoute}/${productData.ProductImgs[0].img}`,
   };
   console.log(productData);
 

@@ -38,7 +38,7 @@ export const ProductDiv = styled.div`
     height: 50%;
     margin: 10px 0px 20px;
 
-    background: url(${(props) => props.img}) no-repeat center center / cover;
+    background: url('${(props) => props.img}') no-repeat center center / cover;
   }
 
   & > div > div:nth-child(3) {
