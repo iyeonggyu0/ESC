@@ -59,7 +59,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
   // 수정
   const onCorrectionHandler = useCallback(() => {
     exTagRelodeHandler();
-
+    console.log(type);
     if (type === null) {
       exAllTag?.common?.COMMON?.length > 0 &&
         setAddTag(
@@ -72,14 +72,16 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
     }
 
     if (type !== null) {
-      exAllTag?.type?.COMMON?.length > 0 &&
-        setAddTag(
-          '#' +
-            exAllTag?.common?.COMMON?.map((item) => item.tag)
-              .join(' #')
-              .replace(/_/g, ' '),
-        );
-      console.log(exAllTag.common.COMMON);
+      if (type === 'CASE') setAddTag('#' + exAllTag.CASE.CASE.map((c) => c.tag).join(' #'));
+      if (type === 'PCB') setAddTag('#' + exAllTag.PCB.PCB.map((c) => c.tag).join(' #'));
+      if (type === 'PLATE') setAddTag('#' + exAllTag.PLATE.PLATE.map((c) => c.tag).join(' #'));
+      if (type === 'SWITCHES')
+        setAddTag('#' + exAllTag.SWITCHES.SWITCHES.map((c) => c.tag).join(' #'));
+      if (type === 'KEYCAPS')
+        setAddTag('#' + exAllTag.KEYCAPS.KEYCAPS.map((c) => c.tag).join(' #'));
+      if (type === 'KEYBOARD')
+        setAddTag('#' + exAllTag.KEYBOARD.KEYBOARD.map((c) => c.tag).join(' #'));
+      if (type === 'ECT') setAddTag('#' + exAllTag.ECT.ECT.map((c) => c.tag).join(' #'));
     }
 
     setAdditional(true);
@@ -154,11 +156,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
       <MainWapper media={media} colorTheme={colorTheme}>
         <div>
           {!type && <span>선택된 TYPE가 없습니다.{tagText}</span>}
-          {type && (
-            <span>
-              {type}와 관련된 태그입니다.{tagText}
-            </span>
-          )}
+          {type && <span>{type}와 관련된 태그입니다.</span>}
 
           {!additional && (
             <div>

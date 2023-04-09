@@ -110,7 +110,7 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
         ],
         attributes: ["imgRoute", "grade", "id", "name", "price", "inventoryQuantity", "type"],
       });
-      res.status(201).send(data);
+      return res.status(201).send(data);
     } else {
       const data = await Product.findAll({
         where: {
@@ -123,7 +123,7 @@ router.get("/get/all/:filter/:sort", async (req, res) => {
           { model: ProductImg, where: { type: "main" } },
         ],
       });
-      res.status(201).send(data);
+      return res.status(201).send(data);
     }
   } catch (err) {
     console.error(err);
