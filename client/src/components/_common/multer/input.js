@@ -8,8 +8,13 @@ import { axiosInstance } from '../../../util/axios';
 const FileUploadInput = ({ type, name, fun, textFun }) => {
   const handleFileOnChange = (event) => {
     // 서버 api에 Post 요청
+    const files = event.target.files;
+
     const formData = new FormData();
-    formData.append(type, event.target.files[0]);
+    for (let i = 0; i < event.target.files.length; i++) {
+      formData.append(type, event.target.files[i]);
+    }
+
     axios
       .post(
         `${axiosInstance}api/multer/upload/${type}/${name.replace(/[^\w\s]/gi, '')}`,
@@ -32,22 +37,14 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
         }
 
         if (!textFun) {
-          return fun(`${res.data.fileName}`);
+          return res.data.files.map((file) => {
+            fun(`${file.fileName}`);
+          });
         }
 
         if (textFun) {
           return textFun(`${res.data.fileName}`, fun);
         }
-
-        // if (page === 'modify') {
-        //   return textFun(`${res.data.fileName}`, res.data.imagePath, res.data.fileName);
-        // }
-        // if (page === 'enrollment_detailed') {
-        //   return textFun(`${res.data.fileName}`, fun);
-        // }
-        // if (page === 'enrollment_main') {
-        //   return textFun(`${res.data.fileName}`);
-        // }
       })
       .catch((err) => {
         console.error(err);
@@ -63,6 +60,7 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
         name={type}
         placeholder="업로드"
         onChange={handleFileOnChange}
+        multiple
       />
     </form>
   );

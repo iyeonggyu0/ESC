@@ -68,10 +68,9 @@ router.post("/upload/:tpye/:name", (req, res) => {
   const type = req.params.tpye;
   const name = req.params.name;
 
-  if (req?.file?.length === 0) {
-    // 파일 선택되지 않은 경우
-    return res.status(400).json({ success: false, message: "파일을 선택해주세요." });
-  }
+  // if (!req.files || Object.keys(req.files).length === 0) {
+  //   return res.status(400).json({ success: false, message: "파일을 선택해주세요." });
+  // }
 
   try {
     fs.readdirSync(`../client/public/img/${type}/${name}`); // 폴더 확인
@@ -99,26 +98,19 @@ router.post("/upload/:tpye/:name", (req, res) => {
     limits: {
       fileSize: 1024 * 1024 * 5,
     },
-  }).single(`${type}`);
+  }).array(`${type}`);
 
   upload(req, res, (err) => {
     if (err) {
       return res.status(400).json({ success: false, err });
     }
-    if (res.req?.file?.path?.length === 0) {
-      return;
-    }
-    const regex = new RegExp(`undefined`, "g");
-    if (regex.test(res.req?.file?.filename)) {
-      return res.status(400).json({ success: false, message: "파일을 선택해주세요." });
-    }
-    return res.json({
-      success: true,
-      image: res.req?.file?.path,
+    const files = req.files.map((file) => ({
+      image: file.path,
       imagePath: `/img/${type}/${name}`,
-      imagePathName: `/img/${type}/${name}/${res.req?.file?.filename}`,
-      fileName: res.req?.file?.filename,
-    });
+      imagePathName: `/img/${type}/${name}/${file.filename}`,
+      fileName: file.filename,
+    }));
+    return res.json({ success: true, files });
   });
   router.use(`../client/public/img/${type}/${name}`, express.static(path.join(__dirname, `../client/public/img/${type}/${name}`)));
 });

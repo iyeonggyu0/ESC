@@ -75,7 +75,7 @@ const ProductEnrollmentMain = () => {
         setProductMainImg(uploadFileText);
       }
     }
-    console.log(productImgs);
+    console.log(uploadFileText);
   };
 
   // 상품 이미지
@@ -104,17 +104,19 @@ const ProductEnrollmentMain = () => {
     const img = localStorage.getItem('img');
     const route = localStorage.getItem('route');
 
-    if (route !== 'null') {
-      localStorage.setItem('route', null);
+    if (route === 'null' || route === null) {
+      return localStorage.setItem('route', null);
     }
 
-    if (img !== null) {
+    if (route !== 'null' || route !== null) {
+      console.log('새로고침', img, route);
       axios
         .post(`${axiosInstance}api/multer/delete/route`, {
-          route: img,
+          route: `img/product/${route}`,
         })
         .then((res) => {
           console.log(res);
+          localStorage.setItem('route', null);
         })
         .catch((err) => {
           console.error(err);
