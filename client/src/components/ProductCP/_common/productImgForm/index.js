@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 import axios from 'axios';
 import { axiosInstance } from '../../../../util/axios';
+import { useEffect } from 'react';
 
 const ProductImgForm = ({
   productImgs,
@@ -39,7 +40,7 @@ const ProductImgForm = ({
   };
 
   return (
-    <div className="flexHeightCenter">
+    <Scroll className="flexHeightCenter">
       {productImgs?.length > 0 &&
         productImgs?.split(/,/g).map((state, key) => (
           <Div key={key}>
@@ -51,15 +52,20 @@ const ProductImgForm = ({
             <img src={`/img/product/${name}/${state}`} alt="img" />
           </Div>
         ))}
-    </div>
+    </Scroll>
   );
 };
 export default ProductImgForm;
 
+export const Scroll = styled.div`
+  height: auto !important;
+  flex-wrap: wrap;
+  gap: 50px;
+`;
+
 export const Div = styled.div`
   width: 130px;
   height: 130px;
-  margin-right: 25px;
   border-radius: 10px;
   background-color: white;
   cursor: pointer;

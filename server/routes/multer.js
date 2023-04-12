@@ -105,12 +105,19 @@ router.post("/upload/:tpye/:name", (req, res) => {
       return res.status(400).json({ success: false, err });
     }
     const files = req.files.map((file) => ({
-      image: file.path,
-      imagePath: `/img/${type}/${name}`,
-      imagePathName: `/img/${type}/${name}/${file.filename}`,
       fileName: file.filename,
     }));
-    return res.json({ success: true, files });
+
+    const imgs = req.files.map((file) => ({
+      fileName: file.filename,
+    }));
+    return res.json({
+      success: true,
+      imgs,
+      image: req.files[0].path,
+      imagePath: `/img/${type}/${name}`,
+      imagePathName: `/img/${type}/${name}/${req.files[0].filename}`,
+    });
   });
   router.use(`../client/public/img/${type}/${name}`, express.static(path.join(__dirname, `../client/public/img/${type}/${name}`)));
 });

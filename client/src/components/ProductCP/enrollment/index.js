@@ -162,6 +162,10 @@ const ProductEnrollmentMain = () => {
       e.preventDefault();
       const route = localStorage.getItem('route');
 
+      if (productMainImg?.length === 0 || productMainImg === null) {
+        return alert('메인 이미지를 선택해 주세요');
+      }
+
       if (route !== name) {
         dispatch(
           multerPut({

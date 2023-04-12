@@ -135,7 +135,6 @@ export const EnrollmentStyle = styled.div`
   }
   & ${ImgsDiv} > div:nth-child(2) {
     width: 100%;
-    height: 130px;
   }
 `;
 

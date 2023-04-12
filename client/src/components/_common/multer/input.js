@@ -8,7 +8,6 @@ import { axiosInstance } from '../../../util/axios';
 const FileUploadInput = ({ type, name, fun, textFun }) => {
   const handleFileOnChange = (event) => {
     // 서버 api에 Post 요청
-    const files = event.target.files;
 
     const formData = new FormData();
     for (let i = 0; i < event.target.files.length; i++) {
@@ -27,7 +26,7 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
         if (res.status === 400) {
           return;
         }
-
+        console.log(res);
         const regexType = new RegExp(`/img/${type}/`, 'g');
         const route = res.data.imagePath.replace(regexType, '');
 
@@ -37,13 +36,12 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
         }
 
         if (!textFun) {
-          return res.data.files.map((file) => {
-            fun(`${file.fileName}`);
-          });
+          fun(`${res.data.imgs.map((img) => img.fileName).join(',')}`);
         }
 
         if (textFun) {
-          return textFun(`${res.data.fileName}`, fun);
+          console.log(res.data.imgs.map((img) => img.fileName).join(','));
+          return textFun(`${res.data.imgs.map((img) => img.fileName).join(',')}`, fun);
         }
       })
       .catch((err) => {

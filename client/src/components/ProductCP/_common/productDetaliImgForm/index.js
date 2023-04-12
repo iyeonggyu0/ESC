@@ -12,7 +12,7 @@ const ProductDetaliImgForm = ({ imgs, media, colorTheme, imgRoute }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
-    <Div media={media} colorTheme={colorTheme}>
+    <Div media={media} colorTheme={colorTheme} imgs={imgs.length}>
       <Swiper
         style={{
           '--swiper-navigation-color': '#fff',
@@ -93,7 +93,7 @@ export const Div = styled.div`
 
   & .swiper-button-prev,
   & .swiper-button-next {
-    display: none;
+    display: ${(props) => (props.imgs < 5 ? 'none' : 'block')};
   }
 
   & .swiper-slide img {
