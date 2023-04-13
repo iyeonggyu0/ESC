@@ -313,13 +313,13 @@ router.put("/put", async (req, res) => {
     const imgArr = productNewData.imgArr.split(/,/g);
 
     for (let i = 0; i < imgArr?.length; i++) {
-      if (req.body.img === null) {
+      if (productNewData.img === null) {
         await ProductImg.create({
           productId: data.id,
           type: "main",
         });
       }
-      if (imgArr[i] === req.body.img) {
+      if (imgArr[i] === productNewData.img) {
         await ProductImg.create({
           productId: data.id,
           img: `${imgArr[i]}`,
@@ -333,15 +333,15 @@ router.put("/put", async (req, res) => {
         });
       }
 
-      fsExtra.remove(`../client/public/img/product/${data.imgRoute}`, (err) => {
+      fsExtra.remove(`../client/public/img/product/${data.imgRoute} copy`, (err) => {
         if (err) {
           console.error(err);
-        }
-      });
-
-      fsExtra.move(`../client/public/img/product/${data.imgRoute} copy`, `../client/public/img/product/${productNewData.name.replace(/[^\w\s]/gi, "")}`, (err) => {
-        if (err) {
-          console.error(err);
+        } else {
+          fsExtra.move(`../client/public/img/product/${data.imgRoute}`, `../client/public/img/product/${productNewData.name.replace(/[^\w\s]/gi, "")}`, (err) => {
+            if (err) {
+              console.error(err);
+            }
+          });
         }
       });
 
@@ -375,11 +375,13 @@ router.put("/put", async (req, res) => {
       where: { productId: productId },
     });
 
-    for (let i = 0; i < productNewData.tag.length; i++) {
-      await ProductTag.create({
-        productId: data.id,
-        tag: productNewData.tag[i],
-      });
+    if (productNewData.tag.length >= 1 && productNewData.tag[0].length >= 1) {
+      for (let i = 0; i < productNewData.tag.length; i++) {
+        await ProductTag.create({
+          productId: data.id,
+          tag: productNewData.tag[i],
+        });
+      }
     }
 
     // 쿠폰

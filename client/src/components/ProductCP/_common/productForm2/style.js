@@ -61,7 +61,7 @@ export const MainStyle = styled.div`
     color: ${(props) =>
       props.productModifyMod ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0)'};
     background-color: ${(props) =>
-      props.productModifyMod ? 'rgba(63, 63, 63, 0.7)' : 'rgba(63, 63, 63, 0)'};
+      props.productModifyMod ? 'rgba(63, 63, 63, 0.3)' : 'rgba(63, 63, 63, 0)'};
   }
 
   & > div:nth-child(2) {

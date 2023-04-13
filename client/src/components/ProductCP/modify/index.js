@@ -288,7 +288,7 @@ const ProductModifyMain = () => {
     if (img !== 'null' && regex.test(img)) {
       axios
         .post(`${axiosInstance}api/multer/delete/route`, {
-          route: `/img/product/${img}`,
+          route: `/img/product/${img} copy`,
         })
         .then(() => {
           localStorage.removeItem('route');
@@ -310,6 +310,17 @@ const ProductModifyMain = () => {
           axios
             .post(`${axiosInstance}api/multer/delete/route`, {
               route: `/img/product/${img}`,
+            })
+            .then(() => {
+              localStorage.removeItem('route');
+              window.close();
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+          axios
+            .post(`${axiosInstance}api/multer/delete/route`, {
+              route: `/img/product/${img} copy`,
             })
             .then(() => {
               localStorage.removeItem('route');

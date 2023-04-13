@@ -44,6 +44,9 @@ const ProductMain = () => {
   };
 
   useEffect(() => {
+    if (localStorage.getItem('boxSize') !== 'big' || localStorage.getItem('boxSize') !== 'small') {
+      localStorage.setItem('boxSize', 'big');
+    }
     if (localStorage.getItem('locSet') === null) {
       localStorage.setItem('locSet', 'set');
       localStorage.setItem('boxSize', 'big');
