@@ -8,11 +8,12 @@ import { useInput } from '@hooks/useInput';
 import { axiosInstance } from '@util/axios';
 import { productCreate, multerPut } from '@reducer/productReducer';
 
-import { EnrollmentStyle, TextInputDiv, TextEditorDiv, TagDiv, ImgsDiv } from './style';
+import { EnrollmentStyle, TextInputDiv, TextEditorDiv, TagDiv, ImgsDiv, OptionDiv } from './style';
 import FileUploadInput from '../../_common/multer/input';
 import axios from 'axios';
 import ExTagForm from '../_common/exTagForm';
 import ProductImgForm from '../_common/productImgForm';
+import ProductOptionView from '../_common/productOption';
 // import ProductImgForm from '../_common/productImgForm';
 
 const ProductEnrollmentMain = () => {
@@ -32,6 +33,8 @@ const ProductEnrollmentMain = () => {
 
   const [productMainImg, setProductMainImg] = useState(null);
   const [productImgs, setProductImgs] = useState(null);
+
+  const [productOption, setProductOption] = useState([]);
 
   const [error, setError] = useState(null);
 
@@ -398,6 +401,24 @@ const ProductEnrollmentMain = () => {
                     fun={onChangeProductImg}
                   />
                 </TextEditorDiv>
+                <OptionDiv>
+                  <p>
+                    Option <span>상품 옵션을 설정합니다.</span>
+                  </p>
+                  <div>
+                    {productOption.length === 0 && (
+                      <p>
+                        설정된 옵션이 없습니다.{' '}
+                        <span>(설정값이 없을때는 수량만 선택 가능합니다)</span>
+                      </p>
+                    )}
+                    <ProductOptionView
+                      productOption={productOption}
+                      textFun={textFun}
+                      setProductOption={setProductOption}
+                    />
+                  </div>
+                </OptionDiv>
                 <div>
                   <div
                     style={{ backgroundColor: '#ff6d6d', border: '0px' }}

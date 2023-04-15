@@ -9,13 +9,17 @@ db.User = require("./user")(sequelize, Sequelize);
 
 //Products
 db.Product = require("./product")(sequelize, Sequelize);
-db.ProductReview = require("./productReview")(sequelize, Sequelize);
 db.UserProductReviewLike = require("./UserProductReviewLike")(sequelize, Sequelize);
+
+db.ProductReview = require("./productReview")(sequelize, Sequelize);
 db.ProductDiscount = require("./productDiscount")(sequelize, Sequelize);
 db.ProductInquiry = require("./productInquiry")(sequelize, Sequelize);
 db.ProductAnswer = require("./productAnswer")(sequelize, Sequelize);
 db.ProductTag = require("./productTag")(sequelize, Sequelize);
 db.ProductImg = require("./productImg")(sequelize, Sequelize);
+
+db.ProductOption = require("./productOptionProperty")(sequelize, Sequelize);
+db.ProductOptionProperty = require("./productOption")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

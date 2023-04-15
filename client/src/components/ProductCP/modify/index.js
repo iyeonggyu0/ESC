@@ -288,7 +288,7 @@ const ProductModifyMain = () => {
     if (img !== 'null' && regex.test(img)) {
       axios
         .post(`${axiosInstance}api/multer/delete/route`, {
-          route: `/img/product/${img} copy`,
+          route: `/img/product/${img}`,
         })
         .then(() => {
           localStorage.removeItem('route');

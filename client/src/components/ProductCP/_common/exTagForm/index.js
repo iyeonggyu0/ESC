@@ -154,7 +154,7 @@ const ExTagForm = ({ tagText, setTagTextHandler, type }) => {
         </InputDivStyle>
       )}
       <MainWapper media={media} colorTheme={colorTheme}>
-        <div>
+        <div className="flexHeightCenter">
           {!type && <span>선택된 TYPE가 없습니다.{tagText}</span>}
           {type && <span>{type}와 관련된 태그입니다.</span>}
 

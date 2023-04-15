@@ -21,6 +21,7 @@ export const MainWapper = styled.section`
 
   & > div:nth-child(1) > div:nth-child(2) {
     cursor: pointer;
+    padding: ${(props) => (props.media.isPc ? 'auto' : '8px')};
   }
 
   & > div:nth-child(1) > div:nth-child(2) > span {
@@ -44,6 +45,7 @@ export const MainWapper = styled.section`
     padding: 5px 0;
     cursor: pointer;
     margin: 0 auto;
+    width: ${(props) => (props.media.isPc ? 'auto' : '30vw')};
   }
 `;
 

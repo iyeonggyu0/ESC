@@ -4,6 +4,8 @@ export const TextInputDiv = styled.div``;
 export const TextEditorDiv = styled.div``;
 export const ImgsDiv = styled.div``;
 
+export const OptionDiv = styled.div``;
+
 export const EnrollmentStyle = styled.div`
   width: 100%;
   /* height: calc(100vh - 71px); */
@@ -98,7 +100,7 @@ export const EnrollmentStyle = styled.div`
   }
   & > div > div:last-child div {
     margin: 0 30px;
-    width: 6vw;
+    width: ${(props) => (props.media.isPc ? '6vw' : '15vw')};
     height: 5vh;
     color: ${(props) =>
       props.colorTheme === 'game'
@@ -135,6 +137,32 @@ export const EnrollmentStyle = styled.div`
   }
   & ${ImgsDiv} > div:nth-child(2) {
     width: 100%;
+  }
+
+  & ${OptionDiv} {
+    width: 100%;
+    border-top: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+    margin: 5vh 0;
+    padding: 5vh 0 0 0;
+
+    font-family: Ubuntu;
+
+    & > p:nth-child(1) {
+      font-size: 2rem;
+      font-weight: 500;
+      padding-bottom: 30px;
+    }
+
+    & > div:nth-child(2) > p:nth-child(1) {
+      margin-bottom: 15px;
+    }
+
+    & > p:nth-child(1) > span,
+    & > div:nth-child(2) > p:nth-child(1) > span {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: gray;
+    }
   }
 `;
 

@@ -8,7 +8,6 @@ export const ImgDiv = styled.div`
 
   & > div:first-child {
     width: 13%;
-    height: 130px;
   }
 
   & > div:nth-child(2) {
