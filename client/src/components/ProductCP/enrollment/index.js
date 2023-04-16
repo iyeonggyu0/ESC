@@ -13,7 +13,7 @@ import FileUploadInput from '../../_common/multer/input';
 import axios from 'axios';
 import ExTagForm from '../_common/exTagForm';
 import ProductImgForm from '../_common/productImgForm';
-import ProductOptionView from '../_common/productOption';
+import ProductOption from '../_common/productOption';
 // import ProductImgForm from '../_common/productImgForm';
 
 const ProductEnrollmentMain = () => {
@@ -412,7 +412,8 @@ const ProductEnrollmentMain = () => {
                         <span>(설정값이 없을때는 수량만 선택 가능합니다)</span>
                       </p>
                     )}
-                    <ProductOptionView
+                    <ProductOption
+                      productName={name}
                       productOption={productOption}
                       textFun={textFun}
                       setProductOption={setProductOption}

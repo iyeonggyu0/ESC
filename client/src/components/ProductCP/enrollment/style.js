@@ -144,17 +144,13 @@ export const EnrollmentStyle = styled.div`
     border-top: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
     margin: 5vh 0;
     padding: 5vh 0 0 0;
-
+    position: relative;
     font-family: Ubuntu;
 
     & > p:nth-child(1) {
       font-size: 2rem;
       font-weight: 500;
-      padding-bottom: 30px;
-    }
-
-    & > div:nth-child(2) > p:nth-child(1) {
-      margin-bottom: 15px;
+      padding-bottom: 13px;
     }
 
     & > p:nth-child(1) > span,

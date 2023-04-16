@@ -1,27 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { ButtonFromDiv, SelectButtonDiv } from './style';
-import { useState } from 'react';
+import { ButtonFromDiv } from './style';
 
 const PlusMinusButtonFrom = ({ val, setVal }) => {
-  const [num, setNum] = useState(val);
-
   const minusHandler = (e) => {
     e.preventDefault();
-    if (num !== 0) {
-      setNum(num - 1);
+    if (val !== 0) {
+      setVal(val - 1);
     }
   };
 
   const plusHandler = (e) => {
     e.preventDefault();
-    setNum(num + 1);
-  };
-
-  const selectHandler = (e) => {
-    e.preventDefault();
-    setVal(num);
+    setVal(val + 1);
   };
 
   return (
@@ -34,15 +26,14 @@ const PlusMinusButtonFrom = ({ val, setVal }) => {
           <input
             type="text"
             autoComplete="off"
-            value={num}
-            onChange={(e) => setNum(e.target.value)}
+            value={val}
+            onChange={(e) => setVal(e.target.value)}
           />
         </div>
         <div onClick={plusHandler}>
           <FontAwesomeIcon icon={solid('plus')} className={'icon'} />
         </div>
       </ButtonFromDiv>
-      <SelectButtonDiv onClick={selectHandler}>선택</SelectButtonDiv>
     </div>
   );
 };
