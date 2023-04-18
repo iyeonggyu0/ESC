@@ -5,7 +5,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { ThemeContext } from '../../../../../App';
 import { useMedia } from '../../../../../hooks/useMedia';
 
-const ProductOptionView = ({ textFun, setProductOption, productOption, data }) => {
+const ProductOptionView = ({ textFun, setProductOption, productOption, data, editMode }) => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
 
@@ -15,12 +15,20 @@ const ProductOptionView = ({ textFun, setProductOption, productOption, data }) =
   const onSelectHandler = (text) => {
     setSelect(text);
   };
+  console.log(data);
 
   // li > div
   return (
     <MainDiv media={media} colorTheme={colorTheme} selectMod={selectMod}>
       <div>
-        <p>{data.optionName}</p>
+        <div className="flexHeightCenter">
+          <p>{data.optionName}</p>
+          <FontAwesomeIcon
+            icon={solid('pen')}
+            className="icon"
+            onClick={() => editMode(data.optionName)}
+          />
+        </div>
         <div onClick={() => setSelectMod(selectMod ? false : true)}>
           <div className="flexHeightCenter">
             <p>{select}</p>
@@ -32,13 +40,14 @@ const ProductOptionView = ({ textFun, setProductOption, productOption, data }) =
           </div>
           {selectMod && (
             <ul>
-              {data.ProductOptionProperty.map((prop) => (
+              {data.ProductOptionProperty.map((prop, key) => (
                 <li
-                  key={prop.id}
+                  key={key}
                   className="flexHeightCenter"
                   onClick={() => onSelectHandler(prop.property)}
                 >
-                  {prop.property}
+                  {/* FIXME: 0원 표시 끄기 */}
+                  {prop.property} {prop.amount > 0 && <span>{`( + ${prop.amount} )`}</span>}
                 </li>
               ))}
             </ul>

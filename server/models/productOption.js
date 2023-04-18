@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      timestamps: true,
+      timestamps: false,
       modelName: "ProductOption",
       tableName: "ProductOptions",
       charset: "utf8",
@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   ProductOption.associate = (db) => {
-    db.ProductOption.hasMany(db.ProductOptionProperty, { foreignKey: "property", sourceKey: "id" });
+    db.ProductOption.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
+    db.ProductOption.hasMany(db.ProductOptionProperty, { foreignKey: "property", targetKey: "id" });
   };
   return ProductOption;
 };

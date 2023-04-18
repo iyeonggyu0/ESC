@@ -52,8 +52,9 @@ export const MainDiv = styled.div`
   }
 
   & > div:last-child.Create > p:first-child {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 15px;
   }
 
   & > div:last-child.Create > div:nth-child(2) > div {
@@ -123,6 +124,10 @@ export const MainDiv = styled.div`
     justify-content: space-between;
     border-bottom: 1px solid lightgray;
     position: relative;
+  }
+
+  & > div:last-child.Create > div:nth-child(3) > div > div > p > span {
+    padding-left: 10px;
   }
 
   & > div:last-child.Create > div:nth-child(3) .icon {

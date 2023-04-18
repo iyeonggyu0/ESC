@@ -10,7 +10,7 @@ const fs = require("fs");
 const fsExtra = require("fs-extra");
 const { Op } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, ProductOptionProperty } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const productReview = require("../models/productReview");
 
@@ -52,6 +52,23 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
         productId: data.id,
         tag: req.body.tag[i],
       });
+    }
+
+    // 상품 옵션 생성
+    if (req.body.productOption?.length > 0) {
+      for (let i = 0; req.body.productOption.length > i; i++) {
+        const ProductOptionData = await ProductOption.create({
+          productId: data.id,
+          optionName: req.body.productOption[i].optionName,
+        });
+        for (let j = 0; j < req.body.productOption[i].ProductOptionProperty?.length; j++) {
+          await ProductOptionProperty.create({
+            ProductOptionId: ProductOptionData.id,
+            property: req.body.productOption[i].ProductOptionProperty[j].optionName,
+            optionProperty: req.body.productOption[i].ProductOptionProperty[j].amount,
+          });
+        }
+      }
     }
 
     res.status(201).send("상품 생성:" + data);

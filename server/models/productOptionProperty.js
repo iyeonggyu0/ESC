@@ -10,10 +10,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
+      amount: {
+        type: DataTypes.INTEGER(50),
+        allowNull: false,
+      },
     },
     {
       sequelize,
-      timestamps: true,
+      timestamps: false,
       modelName: "ProductOptionProperty",
       tableName: "ProductOptionPropertys",
       charset: "utf8",

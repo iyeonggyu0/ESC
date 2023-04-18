@@ -10,12 +10,27 @@ export const MainDiv = styled.div`
     width: 100%;
   }
 
-  & > div > p:first-child {
+  & > div > div:nth-child(1) {
+    justify-content: space-between;
+  }
+
+  & > div > div:nth-child(1) > p:first-child {
     font-size: 1.3rem;
     margin-bottom: 10px;
   }
 
-  & > div > div {
+  & > div > div:nth-child(1) > .icon {
+    margin-bottom: 8px;
+    cursor: pointer;
+    color: gray;
+    transition: all 0.2s;
+  }
+
+  & > div > div:nth-child(1) > .icon:hover {
+    color: black;
+  }
+
+  & > div > div:nth-child(2) {
     border: 1px solid black;
     border-radius: 8px;
   }
@@ -43,6 +58,10 @@ export const MainDiv = styled.div`
     min-height: 50px;
     padding: 0 20px;
     padding-bottom: 3px;
+  }
+
+  & > div > div:nth-child(2) > ul > li > span {
+    padding-left: 10px;
   }
 
   & > div > div:nth-child(2) > ul > li:hover {

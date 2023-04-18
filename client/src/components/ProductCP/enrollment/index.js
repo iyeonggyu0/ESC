@@ -62,9 +62,9 @@ const ProductEnrollmentMain = () => {
     };
   }, []);
 
-  const textFun = useCallback((text, f) => {
+  const textFun = (text, f) => {
     f(text);
-  }, []);
+  };
 
   // 상품 메인 이미지
   // 멀터input에서 수정하는 uploadFile를 감지하여 productImgs에 이어 붙히기
@@ -196,6 +196,7 @@ const ProductEnrollmentMain = () => {
           .replace(/ {0,}#/g, ',')
           .replace(/ /g, '_')
           .split(/,/g),
+        productOption: productOption,
       };
       console.log(data);
       dispatch(productCreate({ data: data }));
@@ -209,6 +210,7 @@ const ProductEnrollmentMain = () => {
       productImg,
       inventoryQuantity,
       tagText,
+      productOption,
       dispatch,
     ],
   );
