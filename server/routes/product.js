@@ -54,19 +54,20 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       });
     }
 
-    // 상품 옵션 생성
-    if (req.body.productOption?.length > 0) {
-      for (let i = 0; req.body.productOption.length > i; i++) {
-        const ProductOptionData = await ProductOption.create({
+    if (req.body.productOption && req.body.productOption.length > 0) {
+      for (let i = 0; i < req.body.productOption.length; i++) {
+        await ProductOption.create({
           productId: data.id,
           optionName: req.body.productOption[i].optionName,
         });
         for (let j = 0; j < req.body.productOption[i].ProductOptionProperty?.length; j++) {
-          await ProductOptionProperty.create({
-            ProductOptionId: ProductOptionData.id,
-            property: req.body.productOption[i].ProductOptionProperty[j].optionName,
-            optionProperty: req.body.productOption[i].ProductOptionProperty[j].amount,
-          });
+          if (req.body.productOption[i].ProductOptionProperty[j].ProductOptionId) {
+            await ProductOptionProperty.create({
+              ProductOptionId: req.body.productOption[i].ProductOptionProperty[j].ProductOptionId,
+              property: req.body.productOption[i].ProductOptionProperty[j].property,
+              optionProperty: req.body.productOption[i].ProductOptionProperty[j].optionProperty,
+            });
+          }
         }
       }
     }
@@ -196,6 +197,14 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
         },
         { model: ProductImg },
         {
+          model: ProductOption,
+          include: [
+            {
+              model: ProductOptionProperty,
+            },
+          ],
+        },
+        {
           model: ProductReview,
           order: [[order, orderSort]],
           include: [
@@ -222,6 +231,14 @@ router.get("/get/one/:productId/:reviewSort", async (req, res) => {
             attributes: ["id", "ProductId", "discountAmount", "periodYear", "periodMonth", "periodDate"],
           },
           { model: ProductImg },
+          {
+            model: ProductOption,
+            include: [
+              {
+                model: ProductOptionProperty,
+              },
+            ],
+          },
           {
             model: ProductReview,
             order: [[order, orderSort]],

@@ -15,7 +15,6 @@ const ProductOptionView = ({ textFun, setProductOption, productOption, data, edi
   const onSelectHandler = (text) => {
     setSelect(text);
   };
-  console.log(data);
 
   // li > div
   return (
@@ -46,8 +45,7 @@ const ProductOptionView = ({ textFun, setProductOption, productOption, data, edi
                   className="flexHeightCenter"
                   onClick={() => onSelectHandler(prop.property)}
                 >
-                  {/* FIXME: 0원 표시 끄기 */}
-                  {prop.property} {prop.amount > 0 && <span>{`( + ${prop.amount} )`}</span>}
+                  {prop.property} {prop.amount > 0 && <span>{`( + ${prop.amount}원 )`}</span>}
                 </li>
               ))}
             </ul>
