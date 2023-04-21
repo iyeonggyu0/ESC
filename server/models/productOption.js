@@ -7,8 +7,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       optionName: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: "Option name is required",
+          },
+          notEmpty: {
+            args: true,
+            msg: "Option name is required",
+          },
+        },
       },
     },
     {
@@ -22,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   ProductOption.associate = (db) => {
     db.ProductOption.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
-    db.ProductOption.hasMany(db.ProductOptionProperty, { foreignKey: "ProductOptionId", targetKey: "id" });
+    db.ProductOption.hasMany(db.ProductOptionProperty, { foreignKey: "ProductOptionId" });
   };
   return ProductOption;
 };

@@ -14,7 +14,8 @@ const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, Pr
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const productReview = require("../models/productReview");
 
-router.post("/create", isLoggedIn, async (req, res, next) => {
+// isLoggedIn
+router.post("/create", async (req, res, next) => {
   try {
     const data = await Product.create({
       name: req.body.name,
@@ -54,23 +55,31 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       });
     }
 
-    if (req.body.productOption && req.body.productOption.length > 0) {
-      for (let i = 0; i < req.body.productOption.length; i++) {
-        await ProductOption.create({
-          productId: data.id,
-          optionName: req.body.productOption[i].optionName,
+    const productOptionArr = req.body.productOption;
+
+    // 상품 옵션 생성
+    for (const optionData of productOptionArr) {
+      const productOptionData = await ProductOption.create({
+        productId: data.id,
+        optionName: optionData.optionName,
+      });
+      console.log("########################");
+      console.log("productOptionData:", productOptionData);
+      console.log("########################");
+
+      // 상품 옵션 속성 생성
+      for (const propertyData of optionData.ProductOptionProperty) {
+        console.log("########################");
+        console.log("propertyData:", propertyData);
+        console.log("########################");
+        await ProductOptionProperty.create({
+          ProductOptionId: productOptionData.id,
+          property: propertyData.property,
+          amount: propertyData.amount,
         });
-        for (let j = 0; j < req.body.productOption[i].ProductOptionProperty?.length; j++) {
-          if (req.body.productOption[i].ProductOptionProperty[j].ProductOptionId) {
-            await ProductOptionProperty.create({
-              ProductOptionId: req.body.productOption[i].ProductOptionProperty[j].ProductOptionId,
-              property: req.body.productOption[i].ProductOptionProperty[j].property,
-              optionProperty: req.body.productOption[i].ProductOptionProperty[j].optionProperty,
-            });
-          }
-        }
       }
     }
+    // FIXME: post 따로 만들어서 빼내기
 
     res.status(201).send("상품 생성:" + data);
   } catch (err) {

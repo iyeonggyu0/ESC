@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "ProductOptionProperty",
     {
       ProductOptionId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(100),
         allowNull: true,
       },
       property: {
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   ProductOptionProperty.associate = (db) => {
-    db.ProductOptionProperty.belongsTo(db.ProductOption, { foreignKey: "ProductOptionId", targetKey: "id" });
+    db.ProductOptionProperty.belongsTo(db.ProductOption, { foreignKey: "ProductOptionId", targetkey: "id" });
   };
   return ProductOptionProperty;
 };

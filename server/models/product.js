@@ -85,7 +85,10 @@ module.exports = (sequelize, DataTypes) => {
       foreingKey: "productId",
       sourceKey: "id",
     });
-    db.Product.hasOne(db.ProductOption, { foreignKey: "productId", sourceKey: "id" });
+    db.Product.hasMany(db.ProductOption, {
+      foreignKey: "productId",
+      sourceKey: "id",
+    });
   };
   return Product;
 };
