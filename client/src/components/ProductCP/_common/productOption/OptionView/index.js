@@ -39,7 +39,7 @@ const ProductOptionView = ({ textFun, setProductOption, productOption, data, edi
           </div>
           {selectMod && (
             <ul>
-              {data.ProductOptionProperty.map((prop, key) => (
+              {data.ProductOptionProperties.map((prop, key) => (
                 <li
                   key={key}
                   className="flexHeightCenter"

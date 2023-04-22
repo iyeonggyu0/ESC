@@ -3,10 +3,7 @@ import styled from 'styled-components';
 
 const ExTagSpan = ({ colorTheme, tagText, tag, setTagTextHandler }) => {
   const [application, setAdditional] = useState(false);
-
   useEffect(() => {
-    // const testStr = '#청축 #테스트';
-    // const regex = new RegExp('청축');
     const regex = new RegExp(tag);
     if (tagText !== null && tagText.leght !== 0) {
       if (regex.test(tagText)) {

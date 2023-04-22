@@ -13,25 +13,6 @@ const fsExtra = require("fs-extra");
 
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
-// 프로필 Multer
-// try {
-//   fs.readdirSync("../client/public/img/profileImg/uploads"); // 폴더 확인
-// } catch (err) {
-//   console.error("uploads 폴더가 없습니다. 폴더를 생성합니다.");
-//   fs.mkdirSync("../client/public/img/profileImg/uploads"); // 폴더 생성
-// }
-
-// const profileMulterStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "../client/public/img/profileImg/uploads/");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, `${Date.now()}_${file.originalname}`);
-//   },
-//   limits: { fileSize: 1 * 1024 * 1024 },
-// });
-// const profileUpload = multer({ storage: profileMulterStorage }).single("profile_img");
-
 router.post("/upload/profile", isLoggedIn, (req, res) => {
   try {
     fs.readdirSync("../client/public/img/profileImg/uploads"); // 폴더 확인
@@ -68,10 +49,6 @@ router.post("/upload/:tpye/:name", (req, res) => {
   const type = req.params.tpye;
   const name = req.params.name;
 
-  // if (!req.files || Object.keys(req.files).length === 0) {
-  //   return res.status(400).json({ success: false, message: "파일을 선택해주세요." });
-  // }
-
   try {
     fs.readdirSync(`../client/public/img/${type}/${name}`); // 폴더 확인
   } catch (err) {
@@ -104,9 +81,6 @@ router.post("/upload/:tpye/:name", (req, res) => {
     if (err) {
       return res.status(400).json({ success: false, err });
     }
-    const files = req.files.map((file) => ({
-      fileName: file.filename,
-    }));
 
     const imgs = req.files.map((file) => ({
       fileName: file.filename,

@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   ProductAnswer.associate = (db) => {
-    db.ProductInquiry.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
+    db.ProductAnswer.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
     db.ProductAnswer.belongsTo(db.ProductInquiry, { foreignKey: "inquiryId", targetKey: "id" });
   };
   return ProductAnswer;

@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   ProductTag.associate = (db) => {
-    db.ProductInquiry.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
+    db.ProductTag.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
   };
   return ProductTag;
 };

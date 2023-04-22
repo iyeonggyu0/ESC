@@ -2,6 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const ProductOptionProperty = sequelize.define(
     "ProductOptionProperty",
     {
+      productId: {
+        type: DataTypes.INTEGER(10),
+        allowNull: false,
+      },
       ProductOptionId: {
         type: DataTypes.INTEGER(100),
         allowNull: true,
@@ -26,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   ProductOptionProperty.associate = (db) => {
-    db.ProductOptionProperty.belongsTo(db.ProductOption, { foreignKey: "ProductOptionId", targetkey: "id" });
+    db.ProductOptionProperty.belongsTo(db.ProductOption, { foreignKey: "ProductOptionId", targetkey: "id", onDelete: "cascade", onUpdate: "cascade" });
+    db.ProductOptionProperty.belongsTo(db.Product, { foreignKey: "productId", targetkey: "id" });
   };
   return ProductOptionProperty;
 };

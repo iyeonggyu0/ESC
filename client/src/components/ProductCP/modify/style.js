@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const TextInputDiv = styled.div``;
 export const TextEditorDiv = styled.div``;
+export const OptionDiv = styled.div``;
+
 export const ImgDiv = styled.div`
   width: 100%;
   position: relative;
@@ -12,7 +14,6 @@ export const ImgDiv = styled.div`
 
   & > div:nth-child(2) {
     width: 100%;
-    height: 130px;
   }
 `;
 
@@ -199,11 +200,6 @@ export const EnrollmentStyle = styled.div`
         : ({ theme }) => theme.palette.basicFont};
   }
 
-  ${TextEditorDiv} {
-    padding-bottom: 5vh;
-    border-bottom: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
-  }
-
   /* 저장 */
   & > div > div:last-child {
     width: 100%;
@@ -241,6 +237,28 @@ export const EnrollmentStyle = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+  }
+
+  & ${OptionDiv} {
+    width: 100%;
+    border-top: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
+    margin: 5vh 0;
+    padding: 5vh 0 0 0;
+    position: relative;
+    font-family: Ubuntu;
+
+    & > p:nth-child(1) {
+      font-size: 2rem;
+      font-weight: 500;
+      padding-bottom: 13px;
+    }
+
+    & > p:nth-child(1) > span,
+    & > div:nth-child(2) > p:nth-child(1) > span {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: gray;
+    }
   }
 `;
 export const TagDiv = styled.div`

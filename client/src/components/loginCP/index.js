@@ -37,10 +37,16 @@ const LoginMain = () => {
   // login dispatch
   const onLoginHandler = useCallback(
     () => {
-      if (!emailExp.current.test(email)) {
-        if (!alert('이메일 형식이 일치하지 않습니다')) {
-          setEmail('');
-          return;
+      if (email === 'admin') {
+        alert('관리자 계정으로 로그인하셨습니다.');
+      } else if (email === 'user') {
+        alert('유저 계정으로 로그인하셨습니다.');
+      } else {
+        if (!emailExp.current.test(email)) {
+          if (!alert('이메일 형식이 일치하지 않습니다')) {
+            setEmail('');
+            return;
+          }
         }
       }
 

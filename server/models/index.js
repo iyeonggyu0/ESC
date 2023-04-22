@@ -18,8 +18,8 @@ db.ProductAnswer = require("./productAnswer")(sequelize, Sequelize);
 db.ProductTag = require("./productTag")(sequelize, Sequelize);
 db.ProductImg = require("./productImg")(sequelize, Sequelize);
 
-db.ProductOption = require("./productOptionProperty")(sequelize, Sequelize);
-db.ProductOptionProperty = require("./productOption")(sequelize, Sequelize);
+db.ProductOptionProperty = require("./productOptionProperty")(sequelize, Sequelize);
+db.ProductOption = require("./productOption")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

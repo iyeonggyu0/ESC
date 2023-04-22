@@ -59,6 +59,7 @@ export default class ProductService {
       .put(`${axiosInstance}api/product/put`, {
         productId: req.productId,
         productNewData: req.productNewData,
+        productOption: req.productOption,
         newProductDiscount: req.newProductDiscount,
       })
       .then(() => {

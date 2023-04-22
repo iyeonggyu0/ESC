@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     db.ProductReview.belongsTo(db.Product, {
       foreignKey: "productId",
     });
-    //   // 작성자
+    // // 작성자
     db.ProductReview.belongsTo(db.User, {
       foreignKey: "reviewerEmail",
       targetKey: "email",

@@ -57,29 +57,21 @@ router.post("/create", async (req, res, next) => {
 
     const productOptionArr = req.body.productOption;
 
-    // 상품 옵션 생성
     for (const optionData of productOptionArr) {
       const productOptionData = await ProductOption.create({
         productId: data.id,
         optionName: optionData.optionName,
       });
-      console.log("########################");
-      console.log("productOptionData:", productOptionData);
-      console.log("########################");
-
-      // 상품 옵션 속성 생성
-      for (const propertyData of optionData.ProductOptionProperty) {
-        console.log("########################");
-        console.log("propertyData:", propertyData);
-        console.log("########################");
+      for (const propertyData of optionData.ProductOptionProperties) {
+        console.log(propertyData);
         await ProductOptionProperty.create({
+          productId: data.id,
           ProductOptionId: productOptionData.id,
           property: propertyData.property,
           amount: propertyData.amount,
         });
       }
     }
-    // FIXME: post 따로 만들어서 빼내기
 
     res.status(201).send("상품 생성:" + data);
   } catch (err) {
@@ -300,6 +292,7 @@ router.delete("/delete/:productId", async (req, res) => {
     });
     if (oneData) {
       fs.rmdirSync(`../client/public/img/product/${oneData.name}`, { recursive: true });
+      fs.rmdirSync(`../client/public/img/product/${oneData.name} copy`, { recursive: true });
     }
   } catch (err) {
     console.error(err);
@@ -310,6 +303,8 @@ router.delete("/delete/:productId", async (req, res) => {
   await ProductAnswer.destroy({ where: { productId: productId } });
   await ProductReview.destroy({ where: { productId: productId } });
   await ProductImg.destroy({ where: { productId: productId } });
+  await ProductOption.destroy({ where: { productId: productId } });
+  await ProductOptionProperty.destroy({ where: { productId: productId } });
 
   const deletedCount = await Product.destroy({ where: { id: productId } });
 
@@ -350,8 +345,6 @@ router.put("/put", async (req, res) => {
         { where: { id: productId } }
       );
     }
-
-    await ProductImg.destroy({ where: { productId: productId } });
 
     const imgArr = productNewData.imgArr.split(/,/g);
 
@@ -423,6 +416,27 @@ router.put("/put", async (req, res) => {
         await ProductTag.create({
           productId: data.id,
           tag: productNewData.tag[i],
+        });
+      }
+    }
+
+    // 옵션
+    await ProductOption.destroy({ where: { productId: productId } });
+    await ProductOptionProperty.destroy({ where: { productId: productId } });
+
+    const productOptionArr = req.body.productOption;
+
+    for (const optionData of productOptionArr) {
+      const productOptionData = await ProductOption.create({
+        productId: productId,
+        optionName: optionData.optionName,
+      });
+      for (const propertyData of optionData.ProductOptionProperties) {
+        await ProductOptionProperty.create({
+          productId: productId,
+          ProductOptionId: productOptionData.id,
+          property: propertyData.property,
+          amount: propertyData.amount,
         });
       }
     }

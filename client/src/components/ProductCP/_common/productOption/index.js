@@ -6,6 +6,7 @@ import ProductOptionView from './optionView';
 import ProductSelectionBox from '../productSelectionBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // productOption 추가하기
 const ProductOption = ({ textFun, setProductOption, productName, productOption }) => {
@@ -67,7 +68,7 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
       setProductOption((prevProductOption) => {
         const updatedOption = { ...prevProductOption[editKey] }; // index가 editKey인 객체 복사
         updatedOption.optionName = optionName; // 값을 수정
-        updatedOption.ProductOptionProperty = attributeArr; // 값을 수정
+        updatedOption.ProductOptionProperties = attributeArr; // 값을 수정
         return [
           ...prevProductOption.slice(0, editKey), // 수정된 객체를 포함하기 전까지의 객체들 복사
           updatedOption, // 수정된 객체 추가
@@ -76,7 +77,7 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
       });
     } else {
       textFun(
-        [...productOption, { optionName: optionName, ProductOptionProperty: attributeArr }],
+        [...productOption, { optionName: optionName, ProductOptionProperties: attributeArr }],
         setProductOption,
       );
     }
@@ -92,7 +93,7 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
   const editMode = (index) => {
     productOption.map((obj, key) => {
       if (obj.optionName === index) {
-        setAttributeArr(obj.ProductOptionProperty);
+        setAttributeArr(obj.ProductOptionProperties);
         setOptionName(obj.optionName.toString());
         setEditKey(key);
       }
@@ -109,6 +110,26 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
     });
     cancelCreationHandler();
   };
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [droppableRef, setDroppableRef] = useRef();
+
+  const handleDragStart = () => {
+    setActiveIndex(droppableRef.current.index);
+  };
+
+  const handleDragEnd = (result) => {
+    if (result.destination) {
+      setActiveIndex(result.destination.index);
+      onDragEnd(result);
+    }
+  };
+
+  const items = [
+    { id: 1, text: 'Item 1' },
+    { id: 2, text: 'Item 2' },
+    { id: 3, text: 'Item 3' },
+  ];
 
   // li > div
   return (

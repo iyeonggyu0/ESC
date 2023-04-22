@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   ProductOption.associate = (db) => {
     db.ProductOption.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
-    db.ProductOption.hasMany(db.ProductOptionProperty, { foreignKey: "ProductOptionId" });
+    db.ProductOption.hasMany(db.ProductOptionProperty, { foreignKey: "ProductOptionId", onDelete: "cascade", onUpdate: "cascade" });
   };
   return ProductOption;
 };

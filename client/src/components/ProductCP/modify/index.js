@@ -8,7 +8,15 @@ import { useInput } from '@hooks/useInput';
 
 import { productGetOneData, productDelete, productModify } from '@reducer/productReducer';
 
-import { EnrollmentStyle, TextInputDiv, TextEditorDiv, DiscountDiv, TagDiv, ImgDiv } from './style';
+import {
+  EnrollmentStyle,
+  TextInputDiv,
+  TextEditorDiv,
+  DiscountDiv,
+  TagDiv,
+  ImgDiv,
+  OptionDiv,
+} from './style';
 import FileUploadInput from '../../_common/multer/input';
 import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
@@ -21,6 +29,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useDiscountDate } from '../../../hooks/useDiscountDate';
 import ExTagForm from '../_common/exTagForm';
 import ProductImgForm from '../_common/productImgForm';
+import ProductOption from '../_common/productOption';
 
 const ProductModifyMain = () => {
   // 새로고침 / 뒤로가기방지
@@ -81,6 +90,9 @@ const ProductModifyMain = () => {
 
   const [discountDate, discountDateCheck] = useDiscountDate();
 
+  // Option
+  const [productOption, setProductOption] = useState([]);
+
   useEffect(() => {
     if (dateData !== null) {
       setYear(dateData.toString().match(/20[0-9]{2}/g));
@@ -121,15 +133,10 @@ const ProductModifyMain = () => {
       setPrice(productData.price);
 
       if (productData?.ProductTags?.length > 0) {
-        setTag(
-          '#' +
-            productData.ProductTags.map((item) => item.tag)
-              .join(' #')
-              .replace(/_/g, ' '),
-        );
+        setTag('#' + productData.ProductTags.map((item) => item.tag).join(' #'));
       }
 
-      productData?.ProductImgs?.forEach((item) => {
+      productData?.ProductImgs?.reverse().forEach((item) => {
         if (item.type === 'main') {
           setProductMainImg(item.img);
           setProductMainNewImg(item.img);
@@ -156,6 +163,11 @@ const ProductModifyMain = () => {
         setProductImg(`${productData.detailedImg}`);
         setProductNewImg(`${productData.detailedImg}`);
       }
+      // 옵션
+      if (productData.ProductOptions !== null) {
+        setProductOption(productData.ProductOptions);
+      }
+
       //쿠폰
       if (productData.ProductDiscount !== null) {
         if (discountDate) {
@@ -242,6 +254,7 @@ const ProductModifyMain = () => {
         productModify({
           productId: productId,
           productNewData: productNewData,
+          productOption: productOption,
           newProductDiscount: newProductDiscount,
         }),
       );
@@ -260,6 +273,7 @@ const ProductModifyMain = () => {
       date,
       discount,
       tag,
+      productOption,
       dispatch,
     ],
   );
@@ -539,6 +553,25 @@ const ProductModifyMain = () => {
                     fun={onChangeProductImg}
                   />
                 </TextEditorDiv>
+                <OptionDiv>
+                  <p>
+                    Option <span>상품 옵션을 설정합니다.</span>
+                  </p>
+                  <div>
+                    {productOption.length === 0 && (
+                      <p>
+                        설정된 옵션이 없습니다.{' '}
+                        <span>(설정값이 없을때는 수량만 선택 가능합니다)</span>
+                      </p>
+                    )}
+                    <ProductOption
+                      productName={name}
+                      productOption={productOption}
+                      textFun={textFun}
+                      setProductOption={setProductOption}
+                    />
+                  </div>
+                </OptionDiv>
                 <DiscountDiv media={media} colorTheme={colorTheme}>
                   <p>
                     DISCOUNT
