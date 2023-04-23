@@ -3,10 +3,9 @@ import { MainDiv } from './style';
 import { useMedia } from '../../../../hooks/useMedia';
 import { ThemeContext } from '../../../../App';
 import ProductOptionView from './optionView';
-import ProductSelectionBox from '../productSelectionBox';
+import ProductSelectionBox from './optionConfirmation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // productOption 추가하기
 const ProductOption = ({ textFun, setProductOption, productName, productOption }) => {
@@ -22,6 +21,13 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
   const [mod, setMod] = useState('Create');
   const [editKey, setEditKey] = useState(null);
   const inputRef = useRef(null);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    if (setIsChecked) {
+      setIsChecked(event.target.checked); // 체크 박스의 체크 상태를 상태 변수에 반영
+    }
+  };
 
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
@@ -60,6 +66,7 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
     setOptionName(null);
     setEditKey(null);
     setCreateMod(false);
+    setIsChecked(true);
   };
 
   const createSaveHandler = () => {
@@ -68,6 +75,7 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
       setProductOption((prevProductOption) => {
         const updatedOption = { ...prevProductOption[editKey] }; // index가 editKey인 객체 복사
         updatedOption.optionName = optionName; // 값을 수정
+        updatedOption.essential = isChecked; //
         updatedOption.ProductOptionProperties = attributeArr; // 값을 수정
         return [
           ...prevProductOption.slice(0, editKey), // 수정된 객체를 포함하기 전까지의 객체들 복사
@@ -77,17 +85,15 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
       });
     } else {
       textFun(
-        [...productOption, { optionName: optionName, ProductOptionProperties: attributeArr }],
+        [
+          ...productOption,
+          { optionName: optionName, essential: isChecked, ProductOptionProperties: attributeArr },
+        ],
         setProductOption,
       );
     }
 
-    setEditKey(null);
-    setAddAttributeText('');
-    setAttributeArr([]);
-    setAdditionalAmount(null);
-    setOptionName(null);
-    setCreateMod(false);
+    cancelCreationHandler();
   };
 
   const editMode = (index) => {
@@ -96,6 +102,7 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
         setAttributeArr(obj.ProductOptionProperties);
         setOptionName(obj.optionName.toString());
         setEditKey(key);
+        setIsChecked(obj.essential);
       }
     });
     setMod('Edit');
@@ -110,26 +117,6 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
     });
     cancelCreationHandler();
   };
-
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [droppableRef, setDroppableRef] = useRef();
-
-  const handleDragStart = () => {
-    setActiveIndex(droppableRef.current.index);
-  };
-
-  const handleDragEnd = (result) => {
-    if (result.destination) {
-      setActiveIndex(result.destination.index);
-      onDragEnd(result);
-    }
-  };
-
-  const items = [
-    { id: 1, text: 'Item 1' },
-    { id: 2, text: 'Item 2' },
-    { id: 3, text: 'Item 3' },
-  ];
 
   // li > div
   return (
@@ -219,6 +206,12 @@ const ProductOption = ({ textFun, setProductOption, productName, productOption }
                 </div>
               )}
             </div>
+          </div>
+          <div className="flexHeightCenter">
+            <label>
+              <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
+              <span>필수 선택 여부</span>
+            </label>
           </div>
           <div className="flexHeightCenter">
             {mod === 'Edit' && <div onClick={() => optionDeleteHandler()}>삭제</div>}

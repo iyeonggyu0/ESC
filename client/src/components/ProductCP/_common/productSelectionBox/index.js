@@ -3,7 +3,7 @@ import PlusMinusButtonFrom from '../../../_common/plusMinusButtonFrom';
 
 // FIXME: 나중에 여러 상품 구매시 여러상품 가격 확인용으로 바꾸기
 
-const ProductSelectionBox = ({ optionName, removeFun }) => {
+const ProductSelectionBox = ({ productName, removeFun }) => {
   const [productQuantity, setProductQuantity] = useState(1);
 
   return (
@@ -18,7 +18,7 @@ const ProductSelectionBox = ({ optionName, removeFun }) => {
       }}
     >
       <p style={{ width: '100%', fontSize: '1.1rem' }}>
-        {optionName ? `${optionName}` : '상품이름'}
+        {productName ? `${productName}` : '상품이름'}
       </p>
       <div style={{ position: 'absolute', bottom: '20px', right: '20px' }}>
         <PlusMinusButtonFrom val={productQuantity} setVal={setProductQuantity} />

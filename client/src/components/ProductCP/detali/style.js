@@ -132,6 +132,8 @@ export const ProductDetaliMain = styled.section`
 
   & > section:nth-child(1) > div:last-child > div:nth-child(4) {
     margin-top: 20px;
+    width: ${(props) => (props.media.isPc ? '60%' : '100%')};
+    max-height: ${(props) => (props.media.isPc ? '300px' : 'auto')};
   }
 
   & > section:nth-child(1) > div:last-child > div:last-child {

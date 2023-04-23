@@ -61,9 +61,9 @@ router.post("/create", async (req, res, next) => {
       const productOptionData = await ProductOption.create({
         productId: data.id,
         optionName: optionData.optionName,
+        essential: optionData.essential,
       });
       for (const propertyData of optionData.ProductOptionProperties) {
-        console.log(propertyData);
         await ProductOptionProperty.create({
           productId: data.id,
           ProductOptionId: productOptionData.id,
@@ -430,6 +430,7 @@ router.put("/put", async (req, res) => {
       const productOptionData = await ProductOption.create({
         productId: productId,
         optionName: optionData.optionName,
+        essential: optionData.essential,
       });
       for (const propertyData of optionData.ProductOptionProperties) {
         await ProductOptionProperty.create({

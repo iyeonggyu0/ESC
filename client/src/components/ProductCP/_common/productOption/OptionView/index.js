@@ -5,9 +5,12 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { ThemeContext } from '../../../../../App';
 import { useMedia } from '../../../../../hooks/useMedia';
 
-const ProductOptionView = ({ textFun, setProductOption, productOption, data, editMode }) => {
+const ProductOptionView = ({ data, editMode }) => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
+  const userData = useContext(ThemeContext).userInfo;
+
+  console.log(userData);
 
   const [select, setSelect] = useState('선택');
   const [selectMod, setSelectMod] = useState(false);
@@ -21,16 +24,21 @@ const ProductOptionView = ({ textFun, setProductOption, productOption, data, edi
     <MainDiv media={media} colorTheme={colorTheme} selectMod={selectMod}>
       <div>
         <div className="flexHeightCenter">
-          <p>{data.optionName}</p>
-          <FontAwesomeIcon
-            icon={solid('pen')}
-            className="icon"
-            onClick={() => editMode(data.optionName)}
-          />
+          <p>
+            {data.optionName}
+            {data.essential && <span style={{ color: 'orange' }}> *</span>}
+          </p>
+          {userData.login && userData.userData?.authority === 'admin' && (
+            <FontAwesomeIcon
+              icon={solid('pen')}
+              className="icon"
+              onClick={() => editMode(data.optionName)}
+            />
+          )}
         </div>
         <div onClick={() => setSelectMod(selectMod ? false : true)}>
           <div className="flexHeightCenter">
-            <p>{select}</p>
+            <p className="flexHeightCenter">{select}</p>
             <FontAwesomeIcon
               icon={solid('angle-down')}
               style={{ color: '#000000' }}

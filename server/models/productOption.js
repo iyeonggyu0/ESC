@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      essential: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       sequelize,

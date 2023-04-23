@@ -28,6 +28,8 @@ import ExchangeReturn from '../_common/exchangeReturn';
 import Pagination from 'react-js-pagination';
 import theme from '@style/theme.js';
 import ProductDetaliImgForm from '../_common/productDetaliImgForm';
+import ProductOptionView from '../_common/productOption/optionView';
+import ProductSelectionBox from '../_common/productSelectionBox';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -60,6 +62,9 @@ const ProductDetliMain = () => {
   // eslint-disable-next-line
   const [items, setItems] = useState(theme.paginationItem.productReview);
 
+  const [productOption, setProductOption] = useState([]);
+  const [productOptionCheck, setProductOptionCheck] = useState([]);
+
   const onActivePageHandler = (page) => {
     setActivePage(page);
   };
@@ -79,7 +84,7 @@ const ProductDetliMain = () => {
       if (productData.ProductImgs?.length > 0) {
         const sortedProductImgs = productData.ProductImgs.filter(
           (item) => item.type === 'main',
-        ).concat(productData.ProductImgs.filter((item) => item.type !== 'main'));
+        ).concat(productData.ProductImgs.reverse().filter((item) => item.type !== 'main'));
 
         setImg(sortedProductImgs);
         setImgRoute(productData.imgRoute);
@@ -95,16 +100,26 @@ const ProductDetliMain = () => {
         setDiscountData(productData.ProductDiscount);
         setDiscountDataCheck(productData.ProductDiscount);
       }
+
       if (productData.ProductReviews) {
         setList(productData.ProductReviews);
       }
+
+      if (productData.ProductOptions) {
+        setProductOption(productData.ProductOptions);
+      }
     }
+
     // eslint-disable-next-line
   }, [productData]);
 
   useEffect(() => {
     localStorage.setItem('pageModLoc', pageMod);
   }, [pageMod]);
+
+  const textFun = (text, f) => {
+    f(text);
+  };
 
   return (
     <>
@@ -170,8 +185,22 @@ const ProductDetliMain = () => {
                   )}
                 </p>
                 <div>
-                  <PlusMinusButtonFrom val={quantity} setVal={setQuantity} />
+                  {productOption.length > 0 &&
+                    productOption.map((opt, key) => (
+                      <ProductOptionView
+                        key={key}
+                        textFun={textFun}
+                        setProductOption={setProductOption}
+                        data={opt}
+                      />
+                    ))}
+                  {(productOption.length === 0 ||
+                    productOption.every((option) => !option.essential) ||
+                    productOptionCheck.length > 0) && (
+                    <ProductSelectionBox productName={productData.name} />
+                  )}
                 </div>
+
                 <div>
                   <div>장바구니</div>
                   <div onClick={() => navigate('')}>구매</div>

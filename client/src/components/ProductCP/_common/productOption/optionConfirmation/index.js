@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import PlusMinusButtonFrom from '../../../_common/plusMinusButtonFrom';
+import PlusMinusButtonFrom from '../../../../_common/plusMinusButtonFrom';
 
 import { MainStyle } from './style';
 

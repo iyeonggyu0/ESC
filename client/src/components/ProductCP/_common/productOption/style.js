@@ -146,12 +146,23 @@ export const MainDiv = styled.div`
   }
 
   & > div:last-child.Create > div:nth-child(4) {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  & > div:last-child.Create > div:nth-child(4) > label > span {
+    margin-left: 10px;
+  }
+
+  & > div:last-child.Create > div:nth-child(5) {
     gap: 0 30px;
     margin-top: 20px;
     justify-content: flex-end;
   }
 
-  & > div:last-child.Create > div:nth-child(4) > div {
+  & > div:last-child.Create > div:nth-child(5) > div {
     cursor: pointer;
     padding: 10px 15px;
     border-radius: 5px;

@@ -46,6 +46,7 @@ export const MainDiv = styled.div`
 
   & > div > div:nth-child(2) > div > p:nth-child(1) {
     max-width: ${(props) => (props.media.isPc ? 'calc(15vw - 70px)' : 'calc(100% - 30px)')};
+    height: 100%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
