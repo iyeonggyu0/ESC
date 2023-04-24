@@ -17,8 +17,8 @@ import {
   InquiryWrapper,
   PaginationBox,
 } from './style';
+
 import CommonLoadingPage from '../../_common/loadingPage';
-import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
 import GradeForm from '../_common/gradeForm';
 import { useDiscountDate } from '../../../hooks/useDiscountDate';
 import ReviewInputForm from '../_common/reviewInputForm.js';
@@ -45,7 +45,6 @@ const ProductDetliMain = () => {
   const [img, setImg] = useState([{}]);
   const [imgRoute, setImgRoute] = useState('');
   const [detailedImg, setDetailedImg] = useState(null);
-  const [quantity, setQuantity] = useState(1);
 
   const pageModLoc = localStorage.getItem('pageModLoc');
   const [pageMod, setPageMod] = useState(`${pageModLoc}`);
@@ -64,9 +63,22 @@ const ProductDetliMain = () => {
 
   const [productOption, setProductOption] = useState([]);
   const [productOptionCheck, setProductOptionCheck] = useState([]);
+  const [productOrderList, setProductOrderList] = useState([]);
 
-  const onActivePageHandler = (page) => {
-    setActivePage(page);
+  const onProductOptionCheck = (optionName, optionValue) => {
+    const updatedProductOptionCheck = [...productOptionCheck];
+
+    const existingOptionIndex = updatedProductOptionCheck.findIndex(
+      (option) => option.optionName === optionName,
+    );
+
+    if (existingOptionIndex !== -1) {
+      updatedProductOptionCheck[existingOptionIndex].optionValue = optionValue;
+    } else {
+      updatedProductOptionCheck.push({ optionName, optionValue });
+    }
+    console.log(optionName, optionValue, updatedProductOptionCheck);
+    setProductOptionCheck(updatedProductOptionCheck);
   };
 
   // dataGet
@@ -185,22 +197,30 @@ const ProductDetliMain = () => {
                   )}
                 </p>
                 <div>
-                  {productOption.length > 0 &&
-                    productOption.map((opt, key) => (
-                      <ProductOptionView
-                        key={key}
-                        textFun={textFun}
-                        setProductOption={setProductOption}
-                        data={opt}
+                  <div>
+                    {productOption.length > 0 &&
+                      productOption.map((opt, key) => (
+                        <ProductOptionView
+                          key={key}
+                          textFun={textFun}
+                          setProductOption={setProductOption}
+                          data={opt}
+                          onProductOptionCheck={onProductOptionCheck}
+                        />
+                      ))}
+                  </div>
+                  <div>
+                    <p>선택한 옵션</p>
+                    {(productOption.length === 0 ||
+                      productOption.every((option) => !option.essential) ||
+                      productOptionCheck.length > 0) && (
+                      <ProductSelectionBox
+                        productName={productData.name}
+                        productOptionCheck={productOptionCheck}
                       />
-                    ))}
-                  {(productOption.length === 0 ||
-                    productOption.every((option) => !option.essential) ||
-                    productOptionCheck.length > 0) && (
-                    <ProductSelectionBox productName={productData.name} />
-                  )}
+                    )}
+                  </div>
                 </div>
-
                 <div>
                   <div>장바구니</div>
                   <div onClick={() => navigate('')}>구매</div>

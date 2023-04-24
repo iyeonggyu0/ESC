@@ -5,19 +5,13 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { ThemeContext } from '../../../../../App';
 import { useMedia } from '../../../../../hooks/useMedia';
 
-const ProductOptionView = ({ data, editMode }) => {
+const ProductOptionView = ({ data, editMode, onProductOptionCheck }) => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo;
 
-  console.log(userData);
-
   const [select, setSelect] = useState('선택');
   const [selectMod, setSelectMod] = useState(false);
-
-  const onSelectHandler = (text) => {
-    setSelect(text);
-  };
 
   // li > div
   return (
@@ -46,7 +40,8 @@ const ProductOptionView = ({ data, editMode }) => {
             />
           </div>
           {selectMod && (
-            <ul>
+            <ul className="optionList">
+              {/* 수정 */}
               {data.ProductOptionProperties.map((prop, key) => (
                 <li
                   key={key}

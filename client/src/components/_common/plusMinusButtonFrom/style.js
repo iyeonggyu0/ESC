@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const ButtonFromDiv = styled.div`
-  width: 126px;
-  height: 40px;
+  width: 80px;
+  height: 25px;
   position: relative;
   display: flex;
   justify-content: center;
   border: 1px solid #9a9a9a;
+  z-index: 1;
 
   -ms-user-select: none;
   -moz-user-select: -moz-none;
@@ -16,6 +17,7 @@ export const ButtonFromDiv = styled.div`
 
   .icon {
     color: #333333;
+    font-size: 0.8rem;
   }
 
   & > div:nth-child(1),
@@ -29,16 +31,17 @@ export const ButtonFromDiv = styled.div`
   & > div:nth-child(1),
   & > div:nth-child(2),
   & > div:nth-child(3) {
-    width: 40px;
-    height: 38px;
+    width: 25px;
+    height: 23px;
     cursor: pointer;
     transition: all 0.2s;
   }
 
   input {
-    width: 45px;
-    height: 30px;
-    padding-left: 50%;
+    width: 25px;
+    height: 23px;
+    text-align: center;
+    z-index: 1;
   }
 
   input:focus {
@@ -58,23 +61,5 @@ export const ButtonFromDiv = styled.div`
   & > div:nth-child(3) {
     position: absolute;
     right: 0;
-  }
-`;
-
-export const SelectButtonDiv = styled.div`
-  width: 65px;
-  height: 39px;
-  color: #333333;
-  font-size: 0.9rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 30px;
-  cursor: pointer;
-  border: 1px solid #9a9a9a;
-  transition: all 0.2s;
-
-  &:hover {
-    background-color: #eee;
   }
 `;
