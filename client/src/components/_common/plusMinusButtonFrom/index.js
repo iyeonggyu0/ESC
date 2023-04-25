@@ -3,7 +3,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import { ButtonFromDiv } from './style';
 
-const PlusMinusButtonFrom = ({ val, setVal }) => {
+const PlusMinusButtonFrom = ({ val, setVal, height }) => {
   const minusHandler = (e) => {
     e.preventDefault();
     if (val !== 0) {
@@ -18,7 +18,7 @@ const PlusMinusButtonFrom = ({ val, setVal }) => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <ButtonFromDiv>
+      <ButtonFromDiv height={height}>
         <div onClick={minusHandler}>
           <FontAwesomeIcon icon={solid('minus')} className={'icon'} />
         </div>

@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 
 export const MainStyle = styled.div`
-  width: 100%;
+  width: 98%;
   border: 1px solid black;
-  padding: 8px;
+  padding: 10px;
   border-radius: 8px;
   position: relative;
+  margin-top: 30px;
 
   & > p:first-child {
     padding-bottom: 10px;
@@ -19,8 +20,8 @@ export const MainStyle = styled.div`
 
   & > div:last-child {
     position: absolute;
-    bottom: 8px;
-    right: 8px;
+    bottom: 10px;
+    right: 10px;
     gap: 0 10px;
   }
 
@@ -35,5 +36,9 @@ export const MainStyle = styled.div`
 
   & > div:last-child > p:hover {
     border: 1px solid black;
+  }
+
+  & span {
+    line-height: 130%;
   }
 `;

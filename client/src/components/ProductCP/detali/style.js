@@ -53,15 +53,6 @@ export const ProductDetaliMain = styled.section`
     align-items: center;
   }
 
-  // mainImg
-  /* & > section:nth-child(1) > div:first-child {
-    width: ${(props) => (props.media.isPc ? '50vw' : '95vw')};
-    height: ${(props) => (props.media.isPc ? 'calc(100vh - 2.3rem - 221px)' : '95vw')};
-    margin: ${(props) => (props.media.isPc ? '0' : '10px auto')};
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
-  } */
-
   // 오른쪽 text div
   & > section:nth-child(1) > div:last-child {
     width: ${(props) => (props.media.isPc ? ' 23vw' : '94vw')};
@@ -135,14 +126,49 @@ export const ProductDetaliMain = styled.section`
     overflow: auto;
   }
 
+  /* 수직 스크롤바 스타일 */
+  & > section:nth-child(1) > div:last-child > div:nth-child(4)::-webkit-scrollbar {
+    width: 8px; /* 스크롤바의 너비 */
+    /* transform: translateX(); */
+  }
+
+  & > section:nth-child(1) > div:last-child > div:nth-child(4)::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.15); /* 스크롤바의 색상 */
+  }
+
   & > section:nth-child(1) > div:last-child > div:nth-child(4) > div:first-child {
     margin-top: 20px;
     width: ${(props) => (props.media.isPc ? '60%' : '100%')};
   }
 
-  & > section:nth-child(1) > div:last-child > div:nth-child(4) > div:nth-child(2) > p {
-    margin-bottom: 10px;
-    font-size: 1.1rem;
+  & > section:nth-child(1) > div:last-child > div:nth-child(4) > div:first-child > div:last-child {
+    justify-content: space-between;
+  }
+
+  &
+    > section:nth-child(1)
+    > div:last-child
+    > div:nth-child(4)
+    > div:first-child
+    > div:last-child
+    > div:last-child {
+    width: 50px;
+    height: 32px;
+    font-size: calc(33px / 2.5);
+    border: 1px solid black;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid #9a9a9a;
+  }
+
+  &
+    > section:nth-child(1)
+    > div:last-child
+    > div:nth-child(4)
+    > div:first-child
+    > div:last-child
+    > div:last-child:hover {
+    border: 1px solid black;
   }
 
   & > section:nth-child(1) > div:last-child > div:last-child {

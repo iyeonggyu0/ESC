@@ -13,6 +13,11 @@ const ProductOptionView = ({ data, editMode, onProductOptionCheck }) => {
   const [select, setSelect] = useState('선택');
   const [selectMod, setSelectMod] = useState(false);
 
+  const onClick = (text, amount) => {
+    setSelect(text);
+    onProductOptionCheck(data.optionName, text, amount);
+  };
+
   // li > div
   return (
     <MainDiv media={media} colorTheme={colorTheme} selectMod={selectMod}>
@@ -41,12 +46,15 @@ const ProductOptionView = ({ data, editMode, onProductOptionCheck }) => {
           </div>
           {selectMod && (
             <ul className="optionList">
+              <li className="flexHeightCenter" onClick={() => onClick('선택')}>
+                선택
+              </li>
               {/* 수정 */}
-              {data.ProductOptionProperties.map((prop, key) => (
+              {data.ProductOptionProperties.reverse().map((prop, key) => (
                 <li
                   key={key}
                   className="flexHeightCenter"
-                  onClick={() => onSelectHandler(prop.property)}
+                  onClick={() => onClick(prop.property, prop.amount)}
                 >
                   {prop.property} {prop.amount > 0 && <span>{`( + ${prop.amount}원 )`}</span>}
                 </li>

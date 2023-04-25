@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const ButtonFromDiv = styled.div`
-  width: 80px;
-  height: 25px;
+  width: calc(${(props) => props.height}px * 3);
+  height: ${(props) => props.height}px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -17,29 +17,25 @@ export const ButtonFromDiv = styled.div`
 
   .icon {
     color: #333333;
-    font-size: 0.8rem;
+    font-size: calc(${(props) => props.height}px / 2.5);
   }
 
   & > div:nth-child(1),
   & > div:nth-child(2),
   & > div:nth-child(3) {
+    width: ${(props) => props.height}px;
+    height: calc(${(props) => props.height}px - 2px);
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  & > div:nth-child(1),
-  & > div:nth-child(2),
-  & > div:nth-child(3) {
-    width: 25px;
-    height: 23px;
+    font-size: calc(${(props) => props.height}px / 2.5);
     cursor: pointer;
     transition: all 0.2s;
   }
 
   input {
-    width: 25px;
-    height: 23px;
+    width: ${(props) => props.height}px;
+    height: calc(${(props) => props.height}px - 2px);
     text-align: center;
     z-index: 1;
   }

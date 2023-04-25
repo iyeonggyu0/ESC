@@ -30,6 +30,7 @@ import theme from '@style/theme.js';
 import ProductDetaliImgForm from '../_common/productDetaliImgForm';
 import ProductOptionView from '../_common/productOption/optionView';
 import ProductSelectionBox from '../_common/productSelectionBox';
+import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -64,9 +65,22 @@ const ProductDetliMain = () => {
   const [productOption, setProductOption] = useState([]);
   const [productOptionCheck, setProductOptionCheck] = useState([]);
   const [productOrderList, setProductOrderList] = useState([]);
+  const [productQuantity, setProductQuantity] = useState(1);
 
-  const onProductOptionCheck = (optionName, optionValue) => {
+  const onProductOptionCheck = (optionName, optionValue, amount) => {
     const updatedProductOptionCheck = [...productOptionCheck];
+
+    if (optionValue === '선택') {
+      const existingOptionIndex = updatedProductOptionCheck.findIndex(
+        (option) => option.optionName === optionName,
+      );
+      if (existingOptionIndex !== -1) {
+        // 배열에서 해당 optionName을 가진 요소를 삭제
+        updatedProductOptionCheck.splice(existingOptionIndex, 1);
+        setProductOptionCheck(updatedProductOptionCheck);
+      }
+      return;
+    }
 
     const existingOptionIndex = updatedProductOptionCheck.findIndex(
       (option) => option.optionName === optionName,
@@ -74,12 +88,56 @@ const ProductDetliMain = () => {
 
     if (existingOptionIndex !== -1) {
       updatedProductOptionCheck[existingOptionIndex].optionValue = optionValue;
+      updatedProductOptionCheck[existingOptionIndex].amount = amount;
     } else {
-      updatedProductOptionCheck.push({ optionName, optionValue });
+      updatedProductOptionCheck.push({ optionName, optionValue, amount });
     }
-    console.log(optionName, optionValue, updatedProductOptionCheck);
     setProductOptionCheck(updatedProductOptionCheck);
   };
+
+  const handleProductQuantity = () => {
+    // productOption에서 essential이 true인 옵션들의 optionName들을 추출하여 배열에 저장
+    const essentialOptionNames = productOption
+      .filter((option) => option.essential)
+      .map((option) => option.optionName);
+    // productOptionCheck에 있는 optionName들을 추출하여 배열에 저장
+    const checkedOptionNames = productOptionCheck.map((option) => option.optionName);
+
+    // essentialOptionNames 배열에 있는 모든 optionName들이 checkedOptionNames 배열에 있는지 확인
+    const isAllEssentialOptionsChecked = essentialOptionNames.every((optionName) =>
+      checkedOptionNames.includes(optionName),
+    );
+
+    if (!isAllEssentialOptionsChecked) {
+      return alert('필수 옵션을 선택하세요');
+    } else {
+      // 새로운 객체를 생성하여 productOptionCheck와 productQuantity를 포함하여 productOrderList 배열의 뒤에 추가
+      const newOrder = { productOptionCheck: productOptionCheck, productQuantity: productQuantity };
+      setProductOrderList([...productOrderList, newOrder]);
+      // productOptionCheck 상태를 초기화
+      setProductOptionCheck([]);
+      setProductQuantity(1);
+    }
+  };
+
+  const productOrderRemove = (optionCheckToRemove) => {
+    setProductOrderList((prevProductOrderList) => {
+      // 이전의 productOrderList 상태를 복사
+      const updatedProductOrderList = [...prevProductOrderList];
+      // 삭제할 optionCheckToRemove와 동일한 값을 가진 데이터를 찾아 인덱스를 구함
+      const indexToRemove = updatedProductOrderList.findIndex(
+        (order) => order.productOptionCheck === optionCheckToRemove,
+      );
+      // 인덱스가 유효하다면 해당 데이터를 삭제
+      if (indexToRemove >= 0) {
+        updatedProductOrderList.splice(indexToRemove, 1);
+      }
+      // 새로운 productOrderList 상태를 반환
+      return updatedProductOrderList;
+    });
+  };
+
+  console.log(productOrderList);
 
   // dataGet
   useEffect(() => {
@@ -91,8 +149,6 @@ const ProductDetliMain = () => {
 
   useEffect(() => {
     if (productData) {
-      // const [img, setImg] = useState(null);
-
       if (productData.ProductImgs?.length > 0) {
         const sortedProductImgs = productData.ProductImgs.filter(
           (item) => item.type === 'main',
@@ -208,17 +264,29 @@ const ProductDetliMain = () => {
                           onProductOptionCheck={onProductOptionCheck}
                         />
                       ))}
+                    <div className="flexHeightCenter">
+                      <PlusMinusButtonFrom
+                        val={productQuantity}
+                        setVal={setProductQuantity}
+                        height={35}
+                      />
+                      <div className="flexCenter" onClick={handleProductQuantity}>
+                        확정
+                      </div>
+                    </div>
                   </div>
                   <div>
-                    <p>선택한 옵션</p>
-                    {(productOption.length === 0 ||
-                      productOption.every((option) => !option.essential) ||
-                      productOptionCheck.length > 0) && (
-                      <ProductSelectionBox
-                        productName={productData.name}
-                        productOptionCheck={productOptionCheck}
-                      />
-                    )}
+                    {productOrderList.length > 0 &&
+                      productOrderList.map((state, key) => {
+                        return (
+                          <ProductSelectionBox
+                            key={key}
+                            productName={productData.name}
+                            data={state}
+                            removeFun={productOrderRemove}
+                          />
+                        );
+                      })}
                   </div>
                 </div>
                 <div>
