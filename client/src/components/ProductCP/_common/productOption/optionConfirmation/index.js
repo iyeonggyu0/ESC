@@ -10,7 +10,7 @@ const ProductSelectionBox = ({ optionName, removeFun }) => {
     <MainStyle>
       <p>{optionName ? `${optionName}` : '상품이름'}</p>
       <div style={{ position: 'absolute', bottom: '20px', right: '20px' }}>
-        <PlusMinusButtonFrom val={productQuantity} setVal={setProductQuantity} />
+        <PlusMinusButtonFrom val={productQuantity} setVal={setProductQuantity} height={35} />
       </div>
     </MainStyle>
   );

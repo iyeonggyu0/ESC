@@ -291,8 +291,8 @@ router.delete("/delete/:productId", async (req, res) => {
       include: [{ model: ProductReview }],
     });
     if (oneData) {
-      fs.rmdirSync(`../client/public/img/product/${oneData.name}`, { recursive: true });
-      fs.rmdirSync(`../client/public/img/product/${oneData.name} copy`, { recursive: true });
+      fs.rmdirSync(`../client/public/img/product/${oneData.name.replace(/[^\w\s]/gi, "")}`, { recursive: true });
+      fs.rmdirSync(`../client/public/img/product/${oneData.name.replace(/[^\w\s]/gi, "")} copy`, { recursive: true });
     }
   } catch (err) {
     console.error(err);
@@ -345,6 +345,8 @@ router.put("/put", async (req, res) => {
         { where: { id: productId } }
       );
     }
+
+    await ProductImg.destroy({ where: { productId: productId } });
 
     const imgArr = productNewData.imgArr.split(/,/g);
 

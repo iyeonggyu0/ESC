@@ -51,6 +51,7 @@ export const ProductDetaliMain = styled.section`
     display: block;
     display: ${(props) => (props.media.isPc ? 'flex' : 'block')};
     align-items: center;
+    justify-content: space-between;
   }
 
   // 오른쪽 text div
@@ -121,8 +122,12 @@ export const ProductDetaliMain = styled.section`
     text-decoration: line-through;
   }
 
+  & > section:nth-child(1) > div:last-child {
+    position: relative;
+  }
+
   & > section:nth-child(1) > div:last-child > div:nth-child(4) {
-    height: ${(props) => (props.media.isPc ? '320px' : 'auto')};
+    height: ${(props) => (props.media.isPc ? '38vh' : 'auto')};
     overflow: auto;
   }
 

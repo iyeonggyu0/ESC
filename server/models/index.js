@@ -21,6 +21,8 @@ db.ProductImg = require("./productImg")(sequelize, Sequelize);
 db.ProductOptionProperty = require("./productOptionProperty")(sequelize, Sequelize);
 db.ProductOption = require("./productOption")(sequelize, Sequelize);
 
+db.ShoppingBag = require("./shoppingBag")(sequelize, Sequelize);
+
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

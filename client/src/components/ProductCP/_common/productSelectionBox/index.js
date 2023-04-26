@@ -3,7 +3,7 @@ import PlusMinusButtonFrom from '../../../_common/plusMinusButtonFrom';
 
 import { MainStyle } from './style';
 
-const ProductSelectionBox = ({ productName, data, removeFun }) => {
+const ProductSelectionBox = ({ productName, data, removeFun, id, changeOrderQuantity }) => {
   const [num, setNum] = useState(data.productQuantity);
 
   const [save, setSave] = useState(false);
@@ -23,8 +23,13 @@ const ProductSelectionBox = ({ productName, data, removeFun }) => {
   }, [num]);
 
   const handleDelete = () => {
-    // 삭제 버튼 클릭 시 해당 데이터를 productOrderList에서 삭제
     removeFun(data.productOptionCheck);
+  };
+
+  const saveHandler = () => {
+    if (!save) return;
+    changeOrderQuantity(id, num);
+    setSave(false);
   };
 
   return (
@@ -41,7 +46,11 @@ const ProductSelectionBox = ({ productName, data, removeFun }) => {
       </div>
       <div className="flexHeightCenter">
         <PlusMinusButtonFrom val={num} setVal={setNum} height={25} />
-        {save && <p className="flexCenter">저장</p>}
+        {save && (
+          <p className="flexCenter" onClick={saveHandler}>
+            저장
+          </p>
+        )}
         <p className="flexCenter" onClick={handleDelete}>
           삭제
         </p>

@@ -137,7 +137,16 @@ const ProductDetliMain = () => {
     });
   };
 
-  console.log(productOrderList);
+  const changeOrderQuantity = (index, quantity) => {
+    setProductOrderList((prevProductOrderList) => {
+      const updatedProductOrderList = [...prevProductOrderList]; // 배열 복사
+      updatedProductOrderList[index] = {
+        ...updatedProductOrderList[index], // 해당 인덱스의 객체 복사
+        productQuantity: quantity, // productQuantity 업데이트
+      };
+      return updatedProductOrderList;
+    });
+  };
 
   // dataGet
   useEffect(() => {
@@ -206,7 +215,7 @@ const ProductDetliMain = () => {
           </ProductDetaliHeader>
           <ProductDetaliMain media={media} colorTheme={colorTheme}>
             {/* mainImg, 가격, 구매버튼 등 */}
-            <section>
+            <section className="flexHeightCenter">
               <ProductDetaliImgForm
                 imgRoute={imgRoute}
                 media={media}
@@ -284,6 +293,8 @@ const ProductDetliMain = () => {
                             productName={productData.name}
                             data={state}
                             removeFun={productOrderRemove}
+                            id={key}
+                            changeOrderQuantity={changeOrderQuantity}
                           />
                         );
                       })}
@@ -291,7 +302,7 @@ const ProductDetliMain = () => {
                 </div>
                 <div>
                   <div>장바구니</div>
-                  <div onClick={() => navigate('')}>구매</div>
+                  <div>구매</div>
                 </div>
               </div>
             </section>

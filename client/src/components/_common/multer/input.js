@@ -26,7 +26,6 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
         if (res.status === 400) {
           return;
         }
-        console.log(res);
         const regexType = new RegExp(`/img/${type}/`, 'g');
         const route = res.data.imagePath.replace(regexType, '');
 
@@ -40,7 +39,6 @@ const FileUploadInput = ({ type, name, fun, textFun }) => {
         }
 
         if (textFun) {
-          console.log(res.data.imgs.map((img) => img.fileName).join(','));
           return textFun(`${res.data.imgs.map((img) => img.fileName).join(',')}`, fun);
         }
       })
