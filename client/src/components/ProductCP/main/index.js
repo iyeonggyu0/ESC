@@ -105,6 +105,11 @@ const ProductMain = () => {
     // eslint-disable-next-line
   }, []);
 
+  const adminProductCreate = () => {
+    localStorage.setItem('route', null);
+    window.open(`/product/enrollment`);
+  };
+
   useEffect(() => {
     dispatch(productGetData({ type: `${filter}/${sort}` }));
   }, [filter, sort, dispatch]);
@@ -166,7 +171,7 @@ const ProductMain = () => {
             </div>
             {adminFocus && (
               <>
-                <div onClick={() => window.open(`/product/enrollment`)}>상품등록</div>
+                <div onClick={adminProductCreate}>상품등록</div>
                 <div onClick={() => productModify(true)}>수정모드</div>
                 <div onClick={() => productModify(false)}>모드 초기화</div>
               </>

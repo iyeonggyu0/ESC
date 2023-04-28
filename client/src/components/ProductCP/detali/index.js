@@ -198,6 +198,11 @@ const ProductDetliMain = () => {
     f(text);
   };
 
+  const productModifyHandler = () => {
+    localStorage.setItem('route', null);
+    window.open(`/product/modify/${productId}`);
+  };
+
   return (
     <>
       {productData === null && <CommonLoadingPage />}
@@ -335,7 +340,7 @@ const ProductDetliMain = () => {
                   교환/반품
                 </p>
                 {userData !== null && userData.authority === 'admin' && (
-                  <p onClick={() => window.open(`/product/modify/${productId}`)}>상품 수정</p>
+                  <p onClick={productModifyHandler}>상품 수정</p>
                 )}
               </div>
             </section>

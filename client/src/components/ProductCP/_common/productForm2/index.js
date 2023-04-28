@@ -37,6 +37,7 @@ const ProductBigSizeForm = ({ productData, productModifyMod }) => {
     localStorage.setItem('pageModLoc', '상세설명');
     if (productModifyMod) {
       window.open(`/product/modify/${data.id}`);
+      localStorage.setItem('route', null);
     }
     if (!productModifyMod) {
       navigate(`/product/${data.id}`);
