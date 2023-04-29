@@ -39,7 +39,7 @@ const ProductSelectionBox = ({ productName, data, removeFun, id, changeOrderQuan
         {data.productOptionCheck.map((state, key) => (
           <span key={key}>
             {state.optionName}: &nbsp;{state.optionValue} &nbsp;{' '}
-            <span>{`( + ${state.amount}원 )`}</span>
+            {state.amount > 0 && <span>{`( + ${state.amount}원 )`}</span>}
             <br />
           </span>
         ))}

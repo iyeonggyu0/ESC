@@ -8,9 +8,9 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const fsExtra = require("fs-extra");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, ProductOptionProperty } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, ProductOptionProperty, ShoppingBag } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const productReview = require("../models/productReview");
 
@@ -832,6 +832,46 @@ router.get("/tag/ex/get", isLoggedIn, async (req, res) => {
     const ETC = await ProductTag.findAll({ where: { type: "ex", productType: "ETC" } });
 
     res.status(200).json({ common: { COMMON }, CASE: { CASE }, PCB: { PCB }, PLATE: { PLATE }, SWITCHES: { SWITCHES }, KEYCAPS: { KEYCAPS }, KEYBOARD: { KEYBOARD }, ETC: { ETC }, data: [{ CASE }, { PCB }, { PLATE }, { SWITCHES }, { KEYCAPS }, { KEYBOARD }, { ETC }, { COMMON }] });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.post("/shoppingbag/create", isLoggedIn, async (req, res) => {
+  const { productId, userEmail, options } = req.body;
+  try {
+    for (i = 0; i < options?.length; i++) {
+      await ShoppingBag.create({
+        productId: productId,
+        userEmail: userEmail,
+        quantity: options[i].productQuantity,
+        options: options[i].productOptionCheck,
+      });
+    }
+    res.status(200).send("success");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.put("/shoppingbag/put", isLoggedIn, async (req, res) => {
+  const { id, userEmail, productQuantity } = req.body;
+  try {
+    const data = await ShoppingBag.update(
+      {
+        userEmail: userEmail,
+        quantity: productQuantity,
+      },
+      {
+        where: { id: id },
+      }
+    );
+
+    if (data) {
+      res.status(200).send("success");
+    } else {
+      res.status(400).send("failure");
+    }
   } catch (err) {
     console.error(err);
   }

@@ -249,6 +249,31 @@ export const productReducer = createSlice({
       state.error = null;
     },
 
+    // 장바구니
+    // - post
+    shoppingBagPost: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    shoppingBagPostSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+
+    // - put
+    shoppingBagPut: (state) => {
+      state.isLoading = true;
+      state.isDone = false;
+      state.error = null;
+    },
+    shoppingBagPutSuccess: (state) => {
+      state.isLoading = false;
+      state.isDone = true;
+      state.error = null;
+    },
+
     // multer - put
     multerPut: (state) => {
       state.isLoading = true;
@@ -305,6 +330,10 @@ export const {
   productAnswerPutSuccess,
   productAnswerDelete,
   productAnswerDeleteSuccess,
+  shoppingBagPost,
+  shoppingBagPostSuccess,
+  shoppingBagPut,
+  shoppingBagPutSuccess,
   multerPut,
   multerPutSuccess,
 } = productReducer.actions;

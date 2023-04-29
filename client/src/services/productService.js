@@ -243,6 +243,41 @@ export default class ProductService {
       });
   }
 
+  shoppingBagPost(req) {
+    axios
+      .post(`${axiosInstance}api/product/shoppingbag/create`, req.data)
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          if (!alert('장바구니에 추가되었습니다.')) return location.reload();
+        }
+        if (res.status === 403) {
+          if (!alert('로그인이 필요합니다.')) return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  shoppingBagPut(req) {
+    axios
+      .post(`${axiosInstance}api/product/shoppingbag/put`, req.data)
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          if (!alert('수정되었습니다.')) return location.reload();
+        }
+        if (res.status === 400) {
+          if (!alert('오류가 생겼습니다.')) return;
+        }
+        if (res.status === 403) {
+          if (!alert('로그인이 필요합니다.')) return;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   answerPut(req) {
     axios
       .put(`${axiosInstance}api/product/answer/put`, req.data)

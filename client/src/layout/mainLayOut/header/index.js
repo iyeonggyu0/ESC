@@ -20,7 +20,7 @@ import {
   MobileMenu,
   MobileMenuDiv,
 } from './style';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 const LayOutHeader = () => {
@@ -133,7 +133,9 @@ const LayOutHeader = () => {
                   <MenuUl>
                     {!userLoginData.login && <li onClick={() => navigate('/signup')}>회원가입</li>}
                     {userLoginData.login && <li onClick={onLogoutHandler}>로그아웃</li>}
-                    {userLoginData.login && <li onClick={() => navigate('/')}>장바구니</li>}
+                    {userLoginData.login && (
+                      <li onClick={() => navigate('/mypage/shopping-bag')}>장바구니</li>
+                    )}
                     {userLoginData.login && <li onClick={() => navigate('/')}>결제내역</li>}
                     {userLoginData.login && userLoginData.userData.authority === 'admin' && (
                       <li onClick={() => navigate('/admin')}>ADMIN</li>
@@ -283,7 +285,7 @@ const LayOutHeader = () => {
                   <div style={{ fontSize: '0.8rem' }}>
                     <p>주문목록 / 배송조회</p>
                     <p>취소 / 반품 / 교환 내역</p>
-                    <p>장바구니</p>
+                    <p onClick={() => navigate('/mypage/shopping-bag')}>장바구니</p>
                     <p>찜</p>
                     <p>문의내역</p>
                     <p>리뷰</p>

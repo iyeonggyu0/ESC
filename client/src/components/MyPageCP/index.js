@@ -13,6 +13,7 @@ import { MyPageMainPageStyle, BG, MobileStyle } from './style';
 import { ModalIsOpen } from '../../pages/myPage';
 import PostCode from '../_common/postCode';
 import CommonLoadingPage from '../_common/loadingPage';
+import ShoppingBagMain from './shoppingBag';
 
 const MyPageMainPage = () => {
   //hook
@@ -25,6 +26,8 @@ const MyPageMainPage = () => {
   const userData = useContext(ThemeContext).userInfo.userData;
   const profileImg = useProfile();
   const modalIsOpen = useContext(ModalIsOpen).modalIsOpen;
+
+  console.log(userData);
 
   const onLogoutHandler = useCallback(
     (e) => {
@@ -61,7 +64,7 @@ const MyPageMainPage = () => {
                   {/* 프로필 이미지 */}
                   <FileUpload profileImg={profileImg} />
                 </div>
-                <p>
+                <p onClick={() => navigate('/mypage/main')}>
                   {/* 닉네임 */}
                   {userData.userName}
                 </p>
@@ -76,8 +79,7 @@ const MyPageMainPage = () => {
                 <ul>
                   <li>주문목록 / 배송조회</li>
                   <li>취소 / 반품 / 교환 내역</li>
-                  <li>장바구니</li>
-                  <li>찜</li>
+                  <li onClick={() => navigate('/mypage/shopping-bag')}>장바구니</li>
                 </ul>
 
                 <p>활동</p>
@@ -85,13 +87,6 @@ const MyPageMainPage = () => {
                   <li>문의내역</li>
                   <li>리뷰</li>
                   <li>상품QnA내역</li>
-                </ul>
-
-                <p>커뮤니티</p>
-                <ul>
-                  <li>작성한 글</li>
-                  <li>작성한 제품추천</li>
-                  <li>작성한 조합추천</li>
                 </ul>
 
                 <p>계정</p>
@@ -105,6 +100,7 @@ const MyPageMainPage = () => {
             <div>
               {/* 메인 세션 */}
               {page === 'main' && <MyPageMain />}
+              {page === 'shopping-bag' && <ShoppingBagMain />}
             </div>
           </div>
           <BG></BG>
@@ -113,13 +109,15 @@ const MyPageMainPage = () => {
 
       {userData !== null && media.isMobile && (
         <MobileStyle colorTheme={colorTheme}>
-          <div>
-            <FileUpload profileImg={profileImg} />
-          </div>
+          {userData !== null && !media.isMobile && (
+            <div>
+              <FileUpload profileImg={profileImg} />
+            </div>
+          )}
           <div>
             {/* 메인 세션 */}
             {page === 'main' && <MyPageMain />}
-            {/* {page === 'main' && <MyPageMain />} */}
+            {page === 'shopping-bag' && <ShoppingBagMain ShoppingBags={userData.ShoppingBags} />}
           </div>
         </MobileStyle>
       )}

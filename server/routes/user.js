@@ -7,7 +7,7 @@ const { sendEmail } = require("../mailer/mail");
 const multer = require("multer");
 const fs = require("fs");
 
-const { User, Post } = require("../models");
+const { User, Post, ShoppingBag } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.get("/loginCheck", isLoggedIn, async (req, res, next) => {
@@ -18,13 +18,31 @@ router.get("/loginCheck", isLoggedIn, async (req, res, next) => {
         attributes: {
           exclude: ["password"],
         },
-        // include: [
-        //   {
-        //     model: Post,
-        //   },
-        // ],
+        include: [
+          {
+            model: ShoppingBag,
+            attributes: ["id", "productId", "userEmail", "options"],
+          },
+        ],
       });
-      const userData = encryptFun(user, process.env.REACT_APP_USER_KEY);
+
+      // group ShoppingBags by productId
+      const shoppingBagsGroupedByProductId = user.ShoppingBags.reduce((acc, shoppingBag) => {
+        const productId = shoppingBag.productId;
+        if (!acc[productId]) {
+          acc[productId] = [];
+        }
+        acc[productId].push(shoppingBag);
+        return acc;
+      }, {});
+
+      // create a new object with the grouped ShoppingBags
+      const userWithGroupedShoppingBags = {
+        ...user.toJSON(),
+        ShoppingBags: shoppingBagsGroupedByProductId,
+      };
+
+      const userData = encryptFun(userWithGroupedShoppingBags, process.env.REACT_APP_USER_KEY);
       res.status(200).json(userData);
     } else {
       res.status(200).json(null);

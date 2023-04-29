@@ -43,6 +43,10 @@ import {
   productAnswerPutSuccess,
   productAnswerDelete,
   productAnswerDeleteSuccess,
+  shoppingBagPost,
+  shoppingBagPostSuccess,
+  shoppingBagPut,
+  shoppingBagPutSuccess,
   multerPut,
   multerPutSuccess,
 } from '@reducer/productReducer';
@@ -207,6 +211,24 @@ function* ProductAnswerPutSaga(action) {
   }
 }
 
+function* ShoppingBagPostSaga(action) {
+  try {
+    yield call(ProductService.prototype.shoppingBagPost, action.payload);
+    yield put(shoppingBagPostSuccess());
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function* ShoppingBagPutSaga(action) {
+  try {
+    yield call(ProductService.prototype.shoppingBagPut, action.payload);
+    yield put(shoppingBagPutSuccess());
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 //multer
 function* MulterPutSaga(action) {
   try {
@@ -282,6 +304,14 @@ function* watchProductAnswerPut() {
   yield takeLatest(productAnswerDelete.type, ProductAnswerDeleteSaga);
 }
 
+function* watchShoppingBagPost() {
+  yield takeLatest(shoppingBagPost.type, ShoppingBagPostSaga);
+}
+
+function* watchShoppingBagPut() {
+  yield takeLatest(shoppingBagPut.type, ShoppingBagPutSaga);
+}
+
 function* watchMulterPut() {
   yield takeLatest(multerPut.type, MulterPutSaga);
 }
@@ -304,6 +334,8 @@ export default function* productSaga() {
     fork(watchProductAnswerPost),
     fork(watchProductAnswerDelete),
     fork(watchProductAnswerPut),
+    fork(watchShoppingBagPost),
+    fork(watchShoppingBagPut),
     fork(watchMulterPut),
   ]);
 }

@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
-import { productGetOneData } from '@reducer/productReducer';
+import { productGetOneData, shoppingBagPost } from '@reducer/productReducer';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
@@ -66,6 +66,22 @@ const ProductDetliMain = () => {
   const [productOptionCheck, setProductOptionCheck] = useState([]);
   const [productOrderList, setProductOrderList] = useState([]);
   const [productQuantity, setProductQuantity] = useState(1);
+
+  const addShoppingBag = useCallback(() => {
+    if (productOrderList?.length === 0) {
+      return alert('옵션을 선택후 확정 버튼을 누르세요');
+    }
+    if (!userData) {
+      return alert('로그인이 필요합니다');
+    }
+
+    const data = {
+      productId: productId,
+      userEmail: userData.email,
+      options: productOrderList,
+    };
+    dispatch(shoppingBagPost({ data: data }));
+  }, [userData, productId, productOrderList, dispatch]);
 
   const onProductOptionCheck = (optionName, optionValue, amount) => {
     const updatedProductOptionCheck = [...productOptionCheck];
@@ -306,7 +322,7 @@ const ProductDetliMain = () => {
                   </div>
                 </div>
                 <div>
-                  <div>장바구니</div>
+                  <div onClick={addShoppingBag}>장바구니</div>
                   <div>구매</div>
                 </div>
               </div>

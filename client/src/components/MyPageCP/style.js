@@ -34,7 +34,7 @@ export const MyPageMainPageStyle = styled.div`
   & > div > div:nth-child(2) {
     width: 100%;
     padding: 0 5%;
-    margin: 3% 0;
+    margin: 5% 0;
   }
 
   // 메뉴
@@ -71,6 +71,7 @@ export const MyPageMainPageStyle = styled.div`
   & > div > div:first-child > div:first-child > p {
     font-size: ${({ theme }) => theme.fontSize.xxLarge};
     width: 10vw;
+    cursor: pointer;
   }
 
   & > div > div:first-child > div:first-child > span {
@@ -93,7 +94,6 @@ export const MyPageMainPageStyle = styled.div`
     user-select: none;
   }
 
-  // 메뉴 Ul, Li
   & > div > div:first-child > div:nth-child(2) p {
     font-weight: 500;
   }
@@ -137,8 +137,8 @@ export const MobileStyle = styled.div`
   width: 100vw;
 
   & > div:first-child {
-    width: 80vw;
-    height: 80vw;
+    width: 90vw;
+    min-height: calc(100vh - 70px);
     margin: 5vh auto 0 auto;
   }
 
