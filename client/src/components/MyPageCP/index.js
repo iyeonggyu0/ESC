@@ -27,8 +27,6 @@ const MyPageMainPage = () => {
   const profileImg = useProfile();
   const modalIsOpen = useContext(ModalIsOpen).modalIsOpen;
 
-  console.log(userData);
-
   const onLogoutHandler = useCallback(
     (e) => {
       e.preventDefault();
@@ -117,7 +115,7 @@ const MyPageMainPage = () => {
           <div>
             {/* 메인 세션 */}
             {page === 'main' && <MyPageMain />}
-            {page === 'shopping-bag' && <ShoppingBagMain ShoppingBags={userData.ShoppingBags} />}
+            {userData && page === 'shopping-bag' && <ShoppingBagMain />}
           </div>
         </MobileStyle>
       )}

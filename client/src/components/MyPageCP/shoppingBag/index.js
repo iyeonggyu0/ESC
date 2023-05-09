@@ -1,18 +1,37 @@
 import { useDispatch } from 'react-redux';
 import { useMedia } from '../../../hooks/useMedia';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../App';
 
 import { MainStyle } from './style';
+import axios from 'axios';
+import { axiosInstance } from '../../../util/axios';
+import { decrypt } from '@util/crypto';
 
-const ShoppingBagMain = ({ ShoppingBags }) => {
+const ShoppingBagMain = () => {
   const media = useMedia();
   const dispatch = useDispatch();
   // eslint-disable-next-line
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
+
+  const [shoppingBagList, setShoppingBagList] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${axiosInstance}api/user/get/shoppingBag/${userData.email}`)
+      .then((res) => {
+        const decryptData = decrypt(res.data, process.env.REACT_APP_USER_KEY);
+        console.log(decryptData);
+        setShoppingBagList(decryptData);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
@@ -27,7 +46,10 @@ const ShoppingBagMain = ({ ShoppingBags }) => {
           <li>상품/옵션 정보</li>
           <li>수량</li>
         </ul>
-        <div>{ShoppingBags.map}</div>
+        <div>
+          {Array.isArray(shoppingBagList) &&
+            shoppingBagList.map((product, index) => <div key={index}></div>)}
+        </div>
       </div>
     </MainStyle>
   );

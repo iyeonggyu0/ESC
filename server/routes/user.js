@@ -7,7 +7,7 @@ const { sendEmail } = require("../mailer/mail");
 const multer = require("multer");
 const fs = require("fs");
 
-const { User, Post, ShoppingBag } = require("../models");
+const { User, Product, ShoppingBag } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.get("/loginCheck", isLoggedIn, async (req, res, next) => {
@@ -18,31 +18,15 @@ router.get("/loginCheck", isLoggedIn, async (req, res, next) => {
         attributes: {
           exclude: ["password"],
         },
-        include: [
-          {
-            model: ShoppingBag,
-            attributes: ["id", "productId", "userEmail", "options"],
-          },
-        ],
+        // include: [
+        //   {
+        //     model: ShoppingBag,
+        //     attributes: ["id", "productId", "userEmail", "options"],
+        //   },
+        // ],
       });
 
-      // group ShoppingBags by productId
-      const shoppingBagsGroupedByProductId = user.ShoppingBags.reduce((acc, shoppingBag) => {
-        const productId = shoppingBag.productId;
-        if (!acc[productId]) {
-          acc[productId] = [];
-        }
-        acc[productId].push(shoppingBag);
-        return acc;
-      }, {});
-
-      // create a new object with the grouped ShoppingBags
-      const userWithGroupedShoppingBags = {
-        ...user.toJSON(),
-        ShoppingBags: shoppingBagsGroupedByProductId,
-      };
-
-      const userData = encryptFun(userWithGroupedShoppingBags, process.env.REACT_APP_USER_KEY);
+      const userData = encryptFun(user, process.env.REACT_APP_USER_KEY);
       res.status(200).json(userData);
     } else {
       res.status(200).json(null);
@@ -303,6 +287,75 @@ router.post("/sendEmail", async (req, res, next) => {
   } catch (err) {
     console.error(err);
     next(err);
+  }
+});
+
+router.get("/get/shoppingBag/:email", isLoggedIn, async (req, res) => {
+  const { email } = req.params;
+  try {
+    // const shoppingBags = await ShoppingBag.findAll({
+    //   where: { userEmail: email },
+    // });
+
+    // // group ShoppingBags by productId
+    // const shoppingBagsGroupedByProductId = shoppingBags.reduce((acc, shoppingBag) => {
+    //   const productId = shoppingBag.productId;
+    //   if (!acc[productId]) {
+    //     acc[productId] = [];
+    //   }
+    //   acc[productId].push(shoppingBag);
+    //   return acc;
+    // }, {});
+
+    // // fetch products with the given productIds
+    // const productIds = Object.keys(shoppingBagsGroupedByProductId);
+    // const products = await Product.findAll({
+    //   where: {
+    //     id: productIds,
+    //   },
+    // });
+
+    // // create a new object with the grouped ShoppingBags and products
+    // const shoppingBagsData = {
+    //   ShoppingBags: shoppingBagsGroupedByProductId,
+    //   Products: products,
+    // };
+
+    const shoppingBags = await ShoppingBag.findAll({
+      where: { userEmail: email },
+    });
+
+    // group ShoppingBags by productId
+    const shoppingBagsGroupedByProductId = shoppingBags.reduce((acc, shoppingBag) => {
+      const productId = shoppingBag.productId;
+      if (!acc[productId]) {
+        acc[productId] = [];
+      }
+      acc[productId].push(shoppingBag);
+      return acc;
+    }, {});
+
+    // fetch products with the given productIds
+    const productIds = Object.keys(shoppingBagsGroupedByProductId);
+    const products = await Product.findAll({
+      where: {
+        id: productIds,
+      },
+    });
+
+    // create a new object with the grouped ShoppingBags and products
+    const shoppingBagsData = Object.values(shoppingBagsGroupedByProductId).map((shoppingBagsForProductId) => {
+      const product = products.find((product) => product.id === shoppingBagsForProductId[0].productId);
+      const options = shoppingBagsForProductId.map((shoppingBag) => shoppingBag.options);
+      return { product, options };
+    });
+
+    const shoppingBagsList = encryptFun(shoppingBagsData, process.env.REACT_APP_USER_KEY);
+
+    res.status(200).json(shoppingBagsList);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
