@@ -33,6 +33,7 @@ export const MyPageMainPageStyle = styled.div`
 
   & > div > div:nth-child(2) {
     width: 100%;
+    position: relative;
     padding: 0 5%;
     margin: 5% 0;
   }

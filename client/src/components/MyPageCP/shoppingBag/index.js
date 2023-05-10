@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../App';
 
-import { MainStyle } from './style';
+import { MainStyle, ProductDiv, ProductOptionDiv } from './style';
 import axios from 'axios';
 import { axiosInstance } from '../../../util/axios';
 import { decrypt } from '@util/crypto';
+import ShoppingBagProductFrom from './productFrom';
 
 const ShoppingBagMain = () => {
   const media = useMedia();
@@ -48,7 +49,9 @@ const ShoppingBagMain = () => {
         </ul>
         <div>
           {Array.isArray(shoppingBagList) &&
-            shoppingBagList.map((product, index) => <div key={index}></div>)}
+            shoppingBagList.map((state, index) => (
+              <ShoppingBagProductFrom key={index} state={state} />
+            ))}
         </div>
       </div>
     </MainStyle>
