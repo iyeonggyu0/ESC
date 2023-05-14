@@ -17,13 +17,15 @@ export const ProductDiv = styled.div`
   }
 
   & > div:nth-child(1) > div:nth-child(1),
-  & > div:nth-child(1) > span:last-child {
-    width: calc((100% - 70%) / 2);
-    min-width: 80px;
+  & > div:nth-child(1) > div:nth-child(3),
+  & > div:nth-child(1) > div:last-child {
+    min-width: ${(props) => (props.media.isPc ? '80px' : '60px')};
+    width: ${(props) => (props.media.isPc ? 'calc((100% - 70%) / 2)' : '20%')};
   }
 
   & > div:nth-child(1) > div:nth-child(2) {
-    width: 60%;
+    padding-left: 10px;
+    width: 70%;
     gap: 0 30px;
   }
 
@@ -34,8 +36,16 @@ export const ProductDiv = styled.div`
   }
 
   & > div:nth-child(1) > div:nth-child(2) > span {
-    white-space: nowrap;
+    cursor: pointer;
+    line-height: 115%;
     overflow: hidden;
+    text-align: start;
+    /* white-space: nowrap; */
     text-overflow: ellipsis;
+  }
+
+  & .principal {
+    font-size: 0.7rem;
+    color: gray;
   }
 `;

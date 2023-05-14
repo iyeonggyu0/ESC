@@ -322,6 +322,7 @@ router.get("/get/shoppingBag/:email", isLoggedIn, async (req, res) => {
       const options = shoppingBagsForProductId.map((shoppingBag) => ({
         quantity: shoppingBag.quantity,
         option: shoppingBag.options,
+        shoppingBagId: shoppingBag.id,
       }));
       return { product, options };
     });

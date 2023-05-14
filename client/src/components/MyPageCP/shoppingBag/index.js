@@ -19,6 +19,8 @@ const ShoppingBagMain = () => {
   const userData = useContext(ThemeContext).userInfo.userData;
 
   const [shoppingBagList, setShoppingBagList] = useState([]);
+  const [checkList, setCheckList] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
 
   useEffect(() => {
     axios
@@ -45,6 +47,7 @@ const ShoppingBagMain = () => {
         <ul className="flexHeightCenter">
           <li>선택</li>
           <li>상품/옵션 정보</li>
+          <li>가격</li>
           <li>수량</li>
         </ul>
         <div>

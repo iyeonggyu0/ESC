@@ -186,7 +186,7 @@ const LayOutHeader = () => {
               </MobileMenuDiv>
 
               <MobileMenuDiv>
-                <span onClick={navigate('/estimate/1')}>견적내기</span>
+                <span onClick={() => navigate('/estimate/1')}>견적내기</span>
                 {mobileMenu1 === 'none' && (
                   <FontAwesomeIcon
                     icon={solid('caret-down')}
@@ -203,7 +203,7 @@ const LayOutHeader = () => {
                 )}
                 {mobileMenu1 === 'block' && (
                   <div>
-                    <p onClick={navigate('/preference/1')}>취향찾기</p>
+                    <p onClick={() => navigate('/preference/1')}>취향찾기</p>
                   </div>
                 )}
               </MobileMenuDiv>
