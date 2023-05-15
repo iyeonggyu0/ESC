@@ -36,11 +36,35 @@ const ShoppingBagMain = () => {
     // eslint-disable-next-line
   }, []);
 
+  const selectAllHandler = () => {
+    if (!allChecked) {
+      const data = shoppingBagList.flatMap((item) => {
+        return item.options.map((option) => {
+          return {
+            productId: item.product.id,
+            userEmail: userData.email,
+            quantity: option.quantity,
+            options: option.option,
+            shoppingBagId: option.shoppingBagId,
+          };
+        });
+      });
+      setCheckList(data);
+      setAllChecked(true);
+    } else {
+      setCheckList([]);
+      setAllChecked(false);
+    }
+  };
+
+  console.log('list');
+  console.log(checkList);
+
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
       <p>장바구니</p>
       <div>
-        <span>전체 선택</span>
+        <span onClick={selectAllHandler}>{allChecked ? '선택 해제' : '전체 선택'}</span>
         <span>삭제</span>
       </div>
       <div>

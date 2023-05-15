@@ -1,7 +1,7 @@
 import { useMedia } from '../../../../hooks/useMedia';
 import { ProductOptionDiv } from './style';
 
-const ShoppingBagProductOptionsFrom = ({ option, state }) => {
+const ShoppingBagProductOptionsFrom = ({ option, state, discountDataCheck }) => {
   const media = useMedia();
   return (
     <ProductOptionDiv media={media}>
@@ -25,23 +25,42 @@ const ShoppingBagProductOptionsFrom = ({ option, state }) => {
         </div>
         <div>
           <p>
-            {String(
-              (state.product.price +
-                option.option?.reduce((total, item) => {
-                  return total + item.amount;
-                }, 0)) *
-                option.quantity,
-            ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            {!discountDataCheck &&
+              String(
+                (state.product.price +
+                  option.option?.reduce((total, item) => {
+                    return total + item.amount;
+                  }, 0)) *
+                  option.quantity,
+              ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            {discountDataCheck &&
+              String(
+                (state.product.price +
+                  option.option?.reduce((total, item) => {
+                    return total + item.amount;
+                  }, 0) -
+                  state.product?.ProductDiscount?.discountAmount) *
+                  option.quantity,
+              ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           </p>
           {option.quantity !== 1 && (
             <p>
               (
-              {String(
-                state.product.price +
-                  option.option?.reduce((total, item) => {
-                    return total + item.amount;
-                  }, 0),
-              ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              {discountDataCheck &&
+                String(
+                  state.product.price +
+                    option.option?.reduce((total, item) => {
+                      return total + item.amount;
+                    }, 0) -
+                    state.product?.ProductDiscount?.discountAmount,
+                ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              {!discountDataCheck &&
+                String(
+                  state.product.price +
+                    option.option?.reduce((total, item) => {
+                      return total + item.amount;
+                    }, 0),
+                ).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               )
             </p>
           )}

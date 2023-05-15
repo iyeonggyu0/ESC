@@ -7,7 +7,7 @@ const { sendEmail } = require("../mailer/mail");
 const multer = require("multer");
 const fs = require("fs");
 
-const { User, Product, ShoppingBag, ProductImg } = require("../models");
+const { User, Product, ShoppingBag, ProductImg, ProductDiscount } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.get("/loginCheck", isLoggedIn, async (req, res, next) => {
@@ -313,7 +313,7 @@ router.get("/get/shoppingBag/:email", isLoggedIn, async (req, res) => {
       where: {
         id: productIds,
       },
-      include: [{ model: ProductImg, where: { type: "main" } }],
+      include: [{ model: ProductImg, where: { type: "main" } }, { model: ProductDiscount }],
     });
 
     // create a new object with the grouped ShoppingBags and products

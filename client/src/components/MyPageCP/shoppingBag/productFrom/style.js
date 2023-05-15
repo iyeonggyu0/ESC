@@ -48,4 +48,15 @@ export const ProductDiv = styled.div`
     font-size: 0.7rem;
     color: gray;
   }
+
+  & .icon {
+    padding-right: 5px;
+    font-size: 0.8rem;
+  }
+
+  & .spanInSpan {
+    padding-left: 5px;
+    font-size: 0.8rem;
+    color: gray;
+  }
 `;

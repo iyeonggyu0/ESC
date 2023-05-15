@@ -450,13 +450,13 @@ router.put("/put", async (req, res) => {
     });
 
     if (newProductDiscount.discount === false) {
-      await ProductDiscount.destroy({ where: { ProductId: productId } });
+      await ProductDiscount.destroy({ where: { productId: productId } });
     }
 
     if (newProductDiscount.discount) {
       if (!discountData) {
         await ProductDiscount.create({
-          ProductId: productId,
+          productId: productId,
           discountAmount: newProductDiscount.discountAmount,
           periodYear: newProductDiscount.year,
           periodMonth: newProductDiscount.month,
@@ -470,11 +470,10 @@ router.put("/put", async (req, res) => {
             periodMonth: newProductDiscount.month,
             periodDate: newProductDiscount.date,
           },
-          { where: { ProductId: productId } }
+          { where: { productId: productId } }
         );
       }
     }
-
     res.status(201).send("수정 완료:");
   } catch (err) {
     console.error(err);
