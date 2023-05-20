@@ -20,7 +20,6 @@ const ShoppingBagMain = () => {
 
   const [shoppingBagList, setShoppingBagList] = useState([]);
   const [checkList, setCheckList] = useState([]);
-  const [allChecked, setAllChecked] = useState(false);
 
   useEffect(() => {
     axios
@@ -36,35 +35,30 @@ const ShoppingBagMain = () => {
     // eslint-disable-next-line
   }, []);
 
-  const selectAllHandler = () => {
-    if (!allChecked) {
-      const data = shoppingBagList.flatMap((item) => {
-        return item.options.map((option) => {
-          return {
-            productId: item.product.id,
-            userEmail: userData.email,
-            quantity: option.quantity,
-            options: option.option,
-            shoppingBagId: option.shoppingBagId,
-          };
-        });
-      });
-      setCheckList(data);
-      setAllChecked(true);
-    } else {
-      setCheckList([]);
-      setAllChecked(false);
-    }
+  const deleteProductHandler = (productId) => {
+    const updatedCheckList = checkList.filter((item) => item.productId !== productId);
+    setCheckList(updatedCheckList);
   };
 
-  console.log('list');
+  const deleteOptionHandler = (shoppingBagId) => {
+    const updatedCheckList = checkList.filter((item) => item.shoppingBagId !== shoppingBagId);
+    setCheckList(updatedCheckList);
+  };
+
+  const postProductHandler = (data) => {
+    setCheckList((state) => [...state, ...data]);
+  };
+
+  console.log('checkList');
   console.log(checkList);
+
+  console.log('shoppingBagList');
+  console.log(shoppingBagList);
 
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
       <p>장바구니</p>
       <div>
-        <span onClick={selectAllHandler}>{allChecked ? '선택 해제' : '전체 선택'}</span>
         <span>삭제</span>
       </div>
       <div>
@@ -77,7 +71,14 @@ const ShoppingBagMain = () => {
         <div>
           {Array.isArray(shoppingBagList) &&
             shoppingBagList.map((state, index) => (
-              <ShoppingBagProductFrom key={index} state={state} />
+              <ShoppingBagProductFrom
+                key={index}
+                state={state}
+                checkList={checkList}
+                deleteProductHandler={deleteProductHandler}
+                postProductHandler={postProductHandler}
+                deleteOptionHandler={deleteOptionHandler}
+              />
             ))}
         </div>
       </div>

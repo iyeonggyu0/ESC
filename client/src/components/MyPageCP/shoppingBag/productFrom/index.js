@@ -7,13 +7,23 @@ import { useDiscountDate } from '../../../../hooks/useDiscountDate';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../../App';
 
-const ShoppingBagProductFrom = ({ state }) => {
+const ShoppingBagProductFrom = ({
+  state,
+  checkList,
+  deleteProductHandler,
+  postProductHandler,
+  deleteOptionHandler,
+}) => {
   const navigate = useNavigate();
   const media = useMedia();
+  const userData = useContext(ThemeContext).userInfo.userData;
 
   const [discountData, setDiscountData] = useState(0);
   const [discountDataCheck, setDiscountDataCheck] = useDiscountDate(false);
+  const [checkBox, setCheckBox] = useState(true);
 
   const discountDataCheckFun = useCallback(() => {
     if (state.product.ProductDiscount !== null) {
@@ -26,7 +36,42 @@ const ShoppingBagProductFrom = ({ state }) => {
     discountDataCheckFun();
   }, [state, discountDataCheckFun]);
 
-  console.log(discountDataCheck);
+  const checkShoppingBagIds = useCallback(() => {
+    if (checkList) {
+      const shoppingBagIds = state.options.map((option) => option.shoppingBagId);
+      setCheckBox(
+        shoppingBagIds.every((id) => checkList.some((item) => item.shoppingBagId === id)),
+      );
+    } else {
+      setCheckBox(false);
+    }
+  }, [state, setCheckBox, checkList]);
+
+  useEffect(() => {
+    checkShoppingBagIds();
+  }, [checkList, checkShoppingBagIds]);
+
+  const handleCheckboxChange = () => {
+    setCheckBox(checkBox ? false : true);
+
+    if (checkBox) {
+      deleteProductHandler(state.product.id);
+      console.log('체크 해제');
+    } else {
+      postProductHandler(
+        state.options.flatMap((option) => {
+          return {
+            productId: state.product.id,
+            userEmail: userData.email,
+            quantity: option.quantity,
+            options: option.option,
+            shoppingBagId: option.shoppingBagId,
+          };
+        }),
+      );
+      console.log('체크');
+    }
+  };
 
   return (
     <ProductDiv
@@ -35,7 +80,7 @@ const ShoppingBagProductFrom = ({ state }) => {
     >
       <div className="flexHeightCenter">
         <div>
-          <input type="checkbox" />
+          <input type="checkbox" id={state.product.id} onChange={handleCheckboxChange} />
         </div>
         <div className="flexHeightCenter">
           {media.isPc && <div>{/* 이미지 */}</div>}
@@ -81,6 +126,9 @@ const ShoppingBagProductFrom = ({ state }) => {
             key={index}
             state={state}
             discountDataCheck={discountDataCheck}
+            checkList={checkList}
+            deleteOptionHandler={deleteOptionHandler}
+            postProductHandler={postProductHandler}
           />
         ))}
     </ProductDiv>

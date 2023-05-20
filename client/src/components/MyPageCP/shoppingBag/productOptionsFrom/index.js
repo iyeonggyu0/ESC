@@ -1,13 +1,62 @@
+import { useEffect } from 'react';
 import { useMedia } from '../../../../hooks/useMedia';
 import { ProductOptionDiv } from './style';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../../App';
+import { useState } from 'react';
+import { useCallback } from 'react';
 
-const ShoppingBagProductOptionsFrom = ({ option, state, discountDataCheck }) => {
+const ShoppingBagProductOptionsFrom = ({
+  option,
+  state,
+  discountDataCheck,
+  checkList,
+  deleteOptionHandler,
+  postProductHandler,
+}) => {
   const media = useMedia();
+  const userData = useContext(ThemeContext).userInfo.userData;
+  const [checkBox, setCheckBox] = useState(true);
+
+  const checkOption = useCallback(() => {
+    if (checkList) {
+      const foundItem = checkList.find((item) => item.shoppingBagId === option.shoppingBagId);
+      const isChecked = !!foundItem;
+      setCheckBox(isChecked);
+      const checkbox = document.getElementById(`${option.shoppingBagId}`);
+      checkbox.checked = isChecked;
+    } else {
+      setCheckBox(false);
+    }
+  }, [option, setCheckBox, checkList]);
+
+  useEffect(() => {
+    checkOption();
+  }, [checkList, checkOption]);
+
+  const handleCheckboxChange = () => {
+    setCheckBox(checkBox ? false : true);
+
+    if (checkBox) {
+      deleteOptionHandler(option.shoppingBagId);
+      console.log('체크 해제');
+    } else {
+      postProductHandler({
+        productId: state.product.id,
+        userEmail: userData.email,
+        quantity: option.quantity,
+        options: option.option,
+        shoppingBagId: option.shoppingBagId,
+      });
+      console.log('체크');
+    }
+  };
+  console.log(option.option);
   return (
     <ProductOptionDiv media={media}>
       <div className="flexHeightCenter">
         <div>
-          <input type="checkbox" />
+          <input type="checkbox" id={option.shoppingBagId} onChange={handleCheckboxChange} />
         </div>
         <div className="flexHeightCenter">
           <span>
