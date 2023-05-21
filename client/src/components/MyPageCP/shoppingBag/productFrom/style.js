@@ -19,7 +19,6 @@ export const ProductDiv = styled.div`
   & > div:nth-child(1) > div:nth-child(1),
   & > div:nth-child(1) > div:nth-child(3),
   & > div:nth-child(1) > div:last-child {
-    min-width: ${(props) => (props.media.isPc ? '80px' : '60px')};
     width: ${(props) => (props.media.isPc ? 'calc((100% - 70%) / 2)' : '20%')};
   }
 

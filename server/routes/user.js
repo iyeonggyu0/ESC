@@ -336,4 +336,17 @@ router.get("/get/shoppingBag/:email", isLoggedIn, async (req, res) => {
   }
 });
 
+router.delete("/delete/shoppingBag/:idx/:productId", isLoggedIn, async (req, res) => {
+  const { idx, productId } = req.params;
+  try {
+    await ShoppingBag.destroy({
+      where: { id: idx, productId: productId },
+    });
+    res.status(200).send("success");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

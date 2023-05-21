@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const MainStyle = styled.section`
   width: 100%;
+  position: relative;
 
   /* 타이틀 */
   & > p:first-child {
@@ -36,6 +37,7 @@ export const MainStyle = styled.section`
 
   & > div:nth-child(3) > ul {
     list-style: none;
+    width: 100%;
     height: 30px;
     background-color: lightgray;
     font-size: 0.9rem;
@@ -48,13 +50,11 @@ export const MainStyle = styled.section`
   & > div:nth-child(3) > ul > li:nth-child(1),
   & > div:nth-child(3) > ul > li:nth-child(3),
   & > div:nth-child(3) > ul > li:nth-child(4) {
-    min-width: ${(props) => (props.media.isPc ? '80px' : '60px')};
     width: ${(props) => (props.media.isPc ? 'calc((100% - 70%) / 2)' : '20%')};
   }
 
   & > div:nth-child(3) > ul > li:nth-child(2) {
     width: 70%;
-    min-width: ${(props) => (props.media.isPc ? '360px' : 'auto')};
   }
 
   & > div:nth-child(3) > div {
@@ -76,5 +76,56 @@ export const MainStyle = styled.section`
   /* 스크롤바의 썸네일(막대) 스타일링 */
   & > div:nth-child(3) > div::-webkit-scrollbar-thumb {
     background-color: lightgray;
+  }
+
+  /* 구매 */
+  & > div:last-child {
+    width: 100%;
+    padding: 5vh 0;
+    position: relative;
+  }
+
+  & > div:last-child > p:nth-child(1) {
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+
+  & > div:last-child > p:nth-child(1) > span {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: darkgray;
+    padding-left: 5px;
+  }
+
+  & > div:last-child > div:nth-child(2) {
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 600;
+    height: 10vh;
+  }
+
+  & > div:last-child > div:nth-child(2) > p.specialSymbol {
+    padding: 0 2%;
+    font-size: 1.3rem;
+  }
+
+  & > div:last-child > div:nth-child(2) > p > .deliveryFee {
+    font-size: 0.8rem;
+    color: darkgray;
+  }
+
+  & > div:last-child > div:nth-child(2) > div.flexWidthCenter {
+    flex-wrap: wrap;
+  }
+
+  & > div:last-child > div.2 {
+    width: 20%;
+    height: 50px;
+    background-color: black;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
   }
 `;

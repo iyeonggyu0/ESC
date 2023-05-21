@@ -36,27 +36,24 @@ const ShoppingBagProductFrom = ({
     discountDataCheckFun();
   }, [state, discountDataCheckFun]);
 
-  const checkShoppingBagIds = useCallback(() => {
+  useEffect(() => {
     if (checkList) {
       const shoppingBagIds = state.options.map((option) => option.shoppingBagId);
-      setCheckBox(
-        shoppingBagIds.every((id) => checkList.some((item) => item.shoppingBagId === id)),
+      const checkBoxTf = shoppingBagIds.every((id) =>
+        checkList.some((item) => item.shoppingBagId === id),
       );
+      setCheckBox(checkBoxTf);
     } else {
       setCheckBox(false);
     }
-  }, [state, setCheckBox, checkList]);
-
-  useEffect(() => {
-    checkShoppingBagIds();
-  }, [checkList, checkShoppingBagIds]);
+    // eslint-disable-next-line
+  }, [checkList]);
 
   const handleCheckboxChange = () => {
     setCheckBox(checkBox ? false : true);
 
     if (checkBox) {
       deleteProductHandler(state.product.id);
-      console.log('체크 해제');
     } else {
       postProductHandler(
         state.options.flatMap((option) => {
@@ -64,12 +61,14 @@ const ShoppingBagProductFrom = ({
             productId: state.product.id,
             userEmail: userData.email,
             quantity: option.quantity,
+            price: state.product.price,
+            amount: option.option.reduce((acc, obj) => acc + obj.amount, 0),
+            discount: discountData,
             options: option.option,
             shoppingBagId: option.shoppingBagId,
           };
         }),
       );
-      console.log('체크');
     }
   };
 
@@ -80,7 +79,12 @@ const ShoppingBagProductFrom = ({
     >
       <div className="flexHeightCenter">
         <div>
-          <input type="checkbox" id={state.product.id} onChange={handleCheckboxChange} />
+          <input
+            type="checkbox"
+            id={state.product.id}
+            onChange={handleCheckboxChange}
+            checked={checkBox}
+          />
         </div>
         <div className="flexHeightCenter">
           {media.isPc && <div>{/* 이미지 */}</div>}
@@ -129,6 +133,7 @@ const ShoppingBagProductFrom = ({
             checkList={checkList}
             deleteOptionHandler={deleteOptionHandler}
             postProductHandler={postProductHandler}
+            discountData={discountData}
           />
         ))}
     </ProductDiv>

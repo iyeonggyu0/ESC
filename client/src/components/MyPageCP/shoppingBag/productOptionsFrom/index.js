@@ -13,6 +13,7 @@ const ShoppingBagProductOptionsFrom = ({
   checkList,
   deleteOptionHandler,
   postProductHandler,
+  discountData,
 }) => {
   const media = useMedia();
   const userData = useContext(ThemeContext).userInfo.userData;
@@ -41,17 +42,21 @@ const ShoppingBagProductOptionsFrom = ({
       deleteOptionHandler(option.shoppingBagId);
       console.log('체크 해제');
     } else {
-      postProductHandler({
-        productId: state.product.id,
-        userEmail: userData.email,
-        quantity: option.quantity,
-        options: option.option,
-        shoppingBagId: option.shoppingBagId,
-      });
+      postProductHandler([
+        {
+          productId: state.product.id,
+          userEmail: userData.email,
+          quantity: option.quantity,
+          price: state.product.price,
+          amount: option.option.reduce((acc, amount) => acc + amount.amount, 0),
+          discount: discountData,
+          options: option.option,
+          shoppingBagId: option.shoppingBagId,
+        },
+      ]);
       console.log('체크');
     }
   };
-  console.log(option.option);
   return (
     <ProductOptionDiv media={media}>
       <div className="flexHeightCenter">

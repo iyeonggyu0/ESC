@@ -4,14 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../App';
 
-import { MainStyle, ProductDiv, ProductOptionDiv } from './style';
+import { MainStyle } from './style';
 import axios from 'axios';
 import { axiosInstance } from '../../../util/axios';
 import { decrypt } from '@util/crypto';
 import ShoppingBagProductFrom from './productFrom';
+import CommonLoading from '../../_common/loading';
 
 const ShoppingBagMain = () => {
   const media = useMedia();
+  // eslint-disable-next-line
   const dispatch = useDispatch();
   // eslint-disable-next-line
   const navigate = useNavigate();
@@ -49,17 +51,76 @@ const ShoppingBagMain = () => {
     setCheckList((state) => [...state, ...data]);
   };
 
+  // 삭제
+  const deleteShoppingBagHandler = () => {
+    console.log('실행');
+    const checkListIdx = checkList.length;
+    let deleteDataIdx = 0;
+
+    checkList.forEach((state) => {
+      axios
+        .delete(
+          `${axiosInstance}api/user/delete/shoppingBag/${state.shoppingBagId}/${state.productId}`,
+        )
+        .then((res) => {
+          // FIXME:
+          if (res.status === 200) {
+            deleteDataIdx += 1;
+            const filteredList = shoppingBagList.filter((item) => {
+              if (item.options.length > 1) {
+                return item.options.some((option) => option.shoppingBagId !== state.shoppingBagId);
+              } else if (item.options.length === 1) {
+                return item.options[0].shoppingBagId !== state.shoppingBagId;
+              }
+              return true;
+            });
+
+            setCheckList(filteredList);
+            console.log(`${state.shoppingBagId}삭제성공`);
+
+            if (deleteDataIdx === checkListIdx) {
+              setCheckList([]);
+            }
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+  };
+
   console.log('checkList');
   console.log(checkList);
 
   console.log('shoppingBagList');
   console.log(shoppingBagList);
 
+  // 구매하기 버튼
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalDiscount, setTotalDiscount] = useState(0);
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
+
+  useEffect(() => {
+    const totalPrice = checkList.reduce(
+      (acc, obj) => acc + (obj.price + obj.amount) * obj.quantity,
+      0,
+    );
+    const totalDiscount = checkList.reduce((acc, obj) => acc + obj.discount * obj.quantity, 0);
+    const deliveryFee = totalPrice - totalDiscount < 100000 ? 3000 : 0;
+    const finalPrice = totalPrice - totalDiscount + deliveryFee;
+
+    setTotalPrice(totalPrice);
+    setTotalDiscount(totalDiscount);
+    setDeliveryFee(deliveryFee);
+    setFinalPrice(finalPrice);
+  }, [checkList]);
+
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
       <p>장바구니</p>
       <div>
-        <span>삭제</span>
+        <span onClick={deleteShoppingBagHandler}>삭제</span>
       </div>
       <div>
         <ul className="flexHeightCenter">
@@ -69,7 +130,8 @@ const ShoppingBagMain = () => {
           <li>수량</li>
         </ul>
         <div>
-          {Array.isArray(shoppingBagList) &&
+          {shoppingBagList.length === 0 && <CommonLoading />}
+          {shoppingBagList.length > 0 &&
             shoppingBagList.map((state, index) => (
               <ShoppingBagProductFrom
                 key={index}
@@ -82,6 +144,30 @@ const ShoppingBagMain = () => {
             ))}
         </div>
       </div>
+      {shoppingBagList.length > 0 && (
+        <div>
+          <p>
+            구매
+            <span>10만 원 이상 구매 시 무료 배송</span>
+          </p>
+          {checkList.length === 0 && <div className="flexCenter">상품을 선택하세요</div>}
+          {checkList.length > 0 && (
+            <div className="flexCenter">
+              <p>{totalPrice.toLocaleString()}</p>
+              {totalDiscount > 0 && <p className="specialSymbol">-</p>}
+              {totalDiscount > 0 && <p>{totalDiscount.toLocaleString()}</p>}
+              <p className="specialSymbol">+</p>
+              <p>
+                {deliveryFee === 3000 ? '3,000' : '무료'}
+                <span className="deliveryFee">(배송비)</span>
+              </p>
+              <p className="specialSymbol"> = </p>
+              <p>{finalPrice.toLocaleString()}</p>
+            </div>
+          )}
+          {checkList.length > 0 && <div className="flexCenter 2">결제하기</div>}
+        </div>
+      )}
     </MainStyle>
   );
 };
