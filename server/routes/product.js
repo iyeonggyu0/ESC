@@ -10,7 +10,7 @@ const fs = require("fs");
 const fsExtra = require("fs-extra");
 const { Op, where } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, ProductOptionProperty, ShoppingBag } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, ProductOptionProperty, ShoppingBag, Payment } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const productReview = require("../models/productReview");
 
@@ -870,6 +870,25 @@ router.put("/shoppingbag/put", isLoggedIn, async (req, res) => {
       res.status(200).send("success");
     } else {
       res.status(400).send("failure");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.post("/post/payment", isLoggedIn, async (req, res) => {
+  const { data } = req.body;
+  try {
+    const createData = await Payment.create({
+      userEmail: data.userEmail,
+      amountOfPayment: data.amountOfPayment,
+      productPrice: data.productPrice,
+      discount: data.discount,
+      deliveryFee: data.deliveryFee,
+      purchaseProductInformation: data.purchaseProductInformation,
+    });
+    if (createData) {
+      res.status(200).send("저장성공");
     }
   } catch (err) {
     console.error(err);

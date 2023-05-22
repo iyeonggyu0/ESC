@@ -117,15 +117,4 @@ export const MainStyle = styled.section`
   & > div:last-child > div:nth-child(2) > div.flexWidthCenter {
     flex-wrap: wrap;
   }
-
-  & > div:last-child > div.2 {
-    width: 20%;
-    height: 50px;
-    background-color: black;
-    color: white;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    cursor: pointer;
-  }
 `;

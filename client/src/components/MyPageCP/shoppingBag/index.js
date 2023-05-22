@@ -13,15 +13,21 @@ import CommonLoading from '../../_common/loading';
 
 const ShoppingBagMain = () => {
   const media = useMedia();
-  // eslint-disable-next-line
-  const dispatch = useDispatch();
-  // eslint-disable-next-line
-  const navigate = useNavigate();
+  // // eslint-disable-next-line
+  // const dispatch = useDispatch();
+  // // eslint-disable-next-line
+  // const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
 
   const [shoppingBagList, setShoppingBagList] = useState([]);
   const [checkList, setCheckList] = useState([]);
+
+  // 구매하기 버튼
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalDiscount, setTotalDiscount] = useState(0);
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
 
   useEffect(() => {
     axios
@@ -53,40 +59,20 @@ const ShoppingBagMain = () => {
 
   // 삭제
   const deleteShoppingBagHandler = () => {
-    console.log('실행');
-    const checkListIdx = checkList.length;
-    let deleteDataIdx = 0;
+    const deleteRequests = checkList.map((state) =>
+      axios.delete(
+        `${axiosInstance}api/user/delete/shoppingBag/${state.shoppingBagId}/${state.productId}`,
+      ),
+    );
 
-    checkList.forEach((state) => {
-      axios
-        .delete(
-          `${axiosInstance}api/user/delete/shoppingBag/${state.shoppingBagId}/${state.productId}`,
-        )
-        .then((res) => {
-          // FIXME:
-          if (res.status === 200) {
-            deleteDataIdx += 1;
-            const filteredList = shoppingBagList.filter((item) => {
-              if (item.options.length > 1) {
-                return item.options.some((option) => option.shoppingBagId !== state.shoppingBagId);
-              } else if (item.options.length === 1) {
-                return item.options[0].shoppingBagId !== state.shoppingBagId;
-              }
-              return true;
-            });
-
-            setCheckList(filteredList);
-            console.log(`${state.shoppingBagId}삭제성공`);
-
-            if (deleteDataIdx === checkListIdx) {
-              setCheckList([]);
-            }
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    });
+    Promise.all(deleteRequests)
+      .then(() => {
+        // 모든 삭제 요청이 완료된 후에 실행되는 코드
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   console.log('checkList');
@@ -94,12 +80,6 @@ const ShoppingBagMain = () => {
 
   console.log('shoppingBagList');
   console.log(shoppingBagList);
-
-  // 구매하기 버튼
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [totalDiscount, setTotalDiscount] = useState(0);
-  const [deliveryFee, setDeliveryFee] = useState(0);
-  const [finalPrice, setFinalPrice] = useState(0);
 
   useEffect(() => {
     const totalPrice = checkList.reduce(
@@ -115,6 +95,33 @@ const ShoppingBagMain = () => {
     setDeliveryFee(deliveryFee);
     setFinalPrice(finalPrice);
   }, [checkList]);
+
+  const buyButton = () => {
+    if (checkList) {
+      const data = {
+        userEmail: userData.email,
+        amountOfPayment: finalPrice,
+        productPrice: totalPrice,
+        discount: totalDiscount,
+        deliveryFee: deliveryFee,
+        purchaseProductInformation: checkList,
+      };
+      axios
+        .post(`${axiosInstance}api/product/post/payment`, data)
+        .then((res) => {
+          if (res.status === 200) {
+            if (!alert('구매되었습니다.')) {
+              window.location.reload();
+            }
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      alert('상품을 선택해주세요');
+    }
+  };
 
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
@@ -145,7 +152,7 @@ const ShoppingBagMain = () => {
         </div>
       </div>
       {shoppingBagList.length > 0 && (
-        <div>
+        <div style={{ position: 'relative' }}>
           <p>
             구매
             <span>10만 원 이상 구매 시 무료 배송</span>
@@ -165,7 +172,24 @@ const ShoppingBagMain = () => {
               <p>{finalPrice.toLocaleString()}</p>
             </div>
           )}
-          {checkList.length > 0 && <div className="flexCenter 2">결제하기</div>}
+          {checkList.length > 0 && (
+            <div
+              className="flexCenter"
+              style={{
+                width: '20%',
+                height: '50px',
+                backgroundColor: 'black',
+                color: 'white',
+                position: 'absolute',
+                bottom: '0',
+                right: '0',
+                cursor: 'pointer',
+              }}
+              onClick={buyButton}
+            >
+              결제하기
+            </div>
+          )}
         </div>
       )}
     </MainStyle>
