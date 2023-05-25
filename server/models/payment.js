@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Payment.associate = (db) => {
-    db.Payment.belongsTo(db.User, { foreignKey: "userEmail", targetKey: "email", onDelete: "CASCADE" });
+    db.Payment.belongsTo(db.User, { foreignKey: "userEmail", targetKey: "email" });
   };
   return Payment;
 };

@@ -876,8 +876,9 @@ router.put("/shoppingbag/put", isLoggedIn, async (req, res) => {
   }
 });
 
-router.post("/post/payment", isLoggedIn, async (req, res) => {
-  const { data } = req.body;
+// isLoggedIn
+router.post("/payment/post", isLoggedIn, async (req, res) => {
+  const data = req.body;
   try {
     const createData = await Payment.create({
       userEmail: data.userEmail,
@@ -888,7 +889,26 @@ router.post("/post/payment", isLoggedIn, async (req, res) => {
       purchaseProductInformation: data.purchaseProductInformation,
     });
     if (createData) {
+      data.shoppingBagId.map((id) => {
+        ShoppingBag.destroy({ where: { id: id } });
+      });
       res.status(200).send("저장성공");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.get("/payment/get/:email", isLoggedIn, async (req, res) => {
+  const { email } = req.params;
+  try {
+    const userPaymentData = await Payment.findAll({
+      where: { userEmail: email },
+    });
+    if (userPaymentData) {
+      res.status(200).json(encryptFun(userPaymentData, process.env.REACT_APP_USER_KEY));
+    } else {
+      res.status(403).send("구매기록이 존재하지 않습니다.");
     }
   } catch (err) {
     console.error(err);

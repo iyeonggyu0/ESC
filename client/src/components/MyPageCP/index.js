@@ -14,6 +14,7 @@ import { ModalIsOpen } from '../../pages/myPage';
 import PostCode from '../_common/postCode';
 import CommonLoadingPage from '../_common/loadingPage';
 import ShoppingBagMain from './shoppingBag';
+import OrderList from './orderList';
 
 const MyPageMainPage = () => {
   //hook
@@ -75,18 +76,10 @@ const MyPageMainPage = () => {
                 {/* 메뉴 */}
                 <p>쇼핑</p>
                 <ul>
-                  <li>주문목록 / 배송조회</li>
+                  <li onClick={() => navigate('/mypage/orderList')}>주문목록 / 배송조회</li>
                   <li>취소 / 반품 / 교환 내역</li>
                   <li onClick={() => navigate('/mypage/shopping-bag')}>장바구니</li>
                 </ul>
-
-                <p>활동</p>
-                <ul>
-                  <li>문의내역</li>
-                  <li>리뷰</li>
-                  <li>상품QnA내역</li>
-                </ul>
-
                 <p>계정</p>
                 <ul>
                   <li onClick={onLogoutHandler}>로그아웃</li>
@@ -99,6 +92,7 @@ const MyPageMainPage = () => {
               {/* 메인 세션 */}
               {page === 'main' && <MyPageMain />}
               {page === 'shopping-bag' && <ShoppingBagMain />}
+              {page === 'orderList' && <OrderList />}
             </div>
           </div>
           <BG></BG>
@@ -115,7 +109,8 @@ const MyPageMainPage = () => {
           <div>
             {/* 메인 세션 */}
             {page === 'main' && <MyPageMain />}
-            {userData && page === 'shopping-bag' && <ShoppingBagMain />}
+            {page === 'shopping-bag' && <ShoppingBagMain />}
+            {page === 'orderList' && <OrderList />}
           </div>
         </MobileStyle>
       )}

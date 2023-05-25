@@ -1,6 +1,4 @@
-import { useDispatch } from 'react-redux';
 import { useMedia } from '../../../hooks/useMedia';
-import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../App';
 
@@ -13,15 +11,12 @@ import CommonLoading from '../../_common/loading';
 
 const ShoppingBagMain = () => {
   const media = useMedia();
-  // // eslint-disable-next-line
-  // const dispatch = useDispatch();
-  // // eslint-disable-next-line
-  // const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
 
   const [shoppingBagList, setShoppingBagList] = useState([]);
   const [checkList, setCheckList] = useState([]);
+  const [shoppingBagListRoad, setCheckListRoad] = useState(true);
 
   // 구매하기 버튼
   const [totalPrice, setTotalPrice] = useState(0);
@@ -36,6 +31,7 @@ const ShoppingBagMain = () => {
         const decryptData = decrypt(res.data, process.env.REACT_APP_USER_KEY);
         console.log(decryptData);
         setShoppingBagList(decryptData);
+        setCheckListRoad(true);
       })
       .catch((err) => {
         console.error(err);
@@ -82,6 +78,15 @@ const ShoppingBagMain = () => {
   console.log(shoppingBagList);
 
   useEffect(() => {
+    setTimeout(() => {
+      if (checkList.length === 0) {
+        setCheckListRoad(false);
+      }
+    }, 3000);
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     const totalPrice = checkList.reduce(
       (acc, obj) => acc + (obj.price + obj.amount) * obj.quantity,
       0,
@@ -105,9 +110,10 @@ const ShoppingBagMain = () => {
         discount: totalDiscount,
         deliveryFee: deliveryFee,
         purchaseProductInformation: checkList,
+        shoppingBagId: checkList.map((state) => state.shoppingBagId),
       };
       axios
-        .post(`${axiosInstance}api/product/post/payment`, data)
+        .post(`${axiosInstance}api/product/payment/post`, data)
         .then((res) => {
           if (res.status === 200) {
             if (!alert('구매되었습니다.')) {
@@ -123,6 +129,8 @@ const ShoppingBagMain = () => {
     }
   };
 
+  console.log(shoppingBagListRoad);
+
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
       <p>장바구니</p>
@@ -137,7 +145,19 @@ const ShoppingBagMain = () => {
           <li>수량</li>
         </ul>
         <div>
-          {shoppingBagList.length === 0 && <CommonLoading />}
+          {shoppingBagListRoad && shoppingBagList.length === 0 && <CommonLoading />}
+          {!shoppingBagListRoad && (
+            <p
+              style={{
+                textAlign: 'center',
+                padding: '30px 0',
+                fontSize: '1rem',
+                fontWeight: '300',
+              }}
+            >
+              장바구니가 비었습니다.
+            </p>
+          )}
           {shoppingBagList.length > 0 &&
             shoppingBagList.map((state, index) => (
               <ShoppingBagProductFrom
@@ -152,7 +172,12 @@ const ShoppingBagMain = () => {
         </div>
       </div>
       {shoppingBagList.length > 0 && (
-        <div style={{ position: 'relative' }}>
+        <div
+          style={{
+            position: 'relative',
+            padding: shoppingBagList.length > 0 && shoppingBagListRoad ? '5vh 0 ' : '0',
+          }}
+        >
           <p>
             구매
             <span>10만 원 이상 구매 시 무료 배송</span>
