@@ -22,6 +22,24 @@ export const MainDiv = styled.div`
   & > div:nth-child(2) {
     width: 65%;
     gap: 0 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  & > div:nth-child(2) > p:nth-child(1) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+    padding-bottom: 3px;
+  }
+
+  & > div:nth-child(2) > p:nth-child(1) > span {
+    color: darkgray;
+  }
+
+  & > div:nth-child(2) > p:nth-child(2) {
+    color: darkgray;
   }
 
   & > div:nth-child(4) {

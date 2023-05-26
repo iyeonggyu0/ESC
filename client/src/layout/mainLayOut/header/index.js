@@ -136,7 +136,9 @@ const LayOutHeader = () => {
                     {userLoginData.login && (
                       <li onClick={() => navigate('/mypage/shopping-bag')}>장바구니</li>
                     )}
-                    {userLoginData.login && <li onClick={() => navigate('/')}>결제내역</li>}
+                    {userLoginData.login && (
+                      <li onClick={() => navigate('/mypage/orderList')}>결제내역</li>
+                    )}
                     {userLoginData.login && userLoginData.userData.authority === 'admin' && (
                       <li onClick={() => navigate('/admin')}>ADMIN</li>
                     )}
@@ -283,7 +285,7 @@ const LayOutHeader = () => {
                 )}
                 {mobileMenu4 === 'block' && (
                   <div style={{ fontSize: '0.8rem' }}>
-                    <p>주문목록 / 배송조회</p>
+                    <p onClick={() => navigate('/mypage/orderList')}>주문목록 / 배송조회</p>
                     <p>취소 / 반품 / 교환 내역</p>
                     <p onClick={() => navigate('/mypage/shopping-bag')}>장바구니</p>
                     <p>찜</p>

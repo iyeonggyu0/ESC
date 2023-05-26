@@ -81,7 +81,7 @@ export const MainStyle = styled.section`
   /* 구매 */
   & > div:last-child {
     width: 100%;
-    /* padding: 5vh 0; */
+    padding: 5vh 0;
     position: relative;
   }
 

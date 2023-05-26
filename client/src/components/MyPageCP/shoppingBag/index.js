@@ -146,7 +146,7 @@ const ShoppingBagMain = () => {
         </ul>
         <div>
           {shoppingBagListRoad && shoppingBagList.length === 0 && <CommonLoading />}
-          {!shoppingBagListRoad && (
+          {!shoppingBagListRoad && shoppingBagList.length === 0 && (
             <p
               style={{
                 textAlign: 'center',
@@ -172,12 +172,7 @@ const ShoppingBagMain = () => {
         </div>
       </div>
       {shoppingBagList.length > 0 && (
-        <div
-          style={{
-            position: 'relative',
-            padding: shoppingBagList.length > 0 && shoppingBagListRoad ? '5vh 0 ' : '0',
-          }}
-        >
+        <div>
           <p>
             구매
             <span>10만 원 이상 구매 시 무료 배송</span>

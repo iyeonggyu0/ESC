@@ -15,6 +15,7 @@ const OrderList = () => {
   const userData = useContext(ThemeContext).userInfo.userData;
 
   const [orderList, setOrderList] = useState([]);
+  const [productData, setProductData] = useState([]);
   const [orderListRoad, setOrderListRoad] = useState(true);
 
   useEffect(() => {
@@ -24,7 +25,8 @@ const OrderList = () => {
         if (res.status === 200) {
           const decryptData = decrypt(res.data, process.env.REACT_APP_USER_KEY);
           console.log(decryptData);
-          setOrderList(decryptData);
+          setOrderList(decryptData.userPaymentData);
+          setProductData(decryptData.promises);
           setOrderListRoad(true);
         } else {
           setOrderList(res.data);
@@ -42,6 +44,8 @@ const OrderList = () => {
     }, 3000);
     // eslint-disable-next-line
   }, []);
+  console.log(productData);
+
   return (
     <MainDiv media={media} colorTheme={colorTheme}>
       <p>주문목록 / 배송조회</p>
@@ -68,7 +72,9 @@ const OrderList = () => {
             </p>
           )}
           {orderList.length > 0 &&
-            orderList.map((state, index) => <OrderProductFrom key={index} state={state} />)}
+            orderList.map((state, index) => (
+              <OrderProductFrom key={index} state={state} product={productData[index]} />
+            ))}
         </div>
       </div>
     </MainDiv>

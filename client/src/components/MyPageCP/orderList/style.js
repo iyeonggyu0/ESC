@@ -8,7 +8,7 @@ export const MainDiv = styled.section`
     font-size: 2.3rem;
     font-family: Noto Sans Kr;
     font-weight: 500;
-    margin-bottom: 5vh;
+    margin-bottom: 2vh;
   }
 
   /* 상품 표시 */
@@ -38,6 +38,22 @@ export const MainDiv = styled.section`
 
   & > div:nth-child(2) > ul > li:nth-child(2) {
     width: 65%;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) {
+    overflow-y: auto;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2)::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2)::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2)::-webkit-scrollbar-thumb {
+    background-color: lightgray;
   }
 
   & > div:nth-child(2) > div {

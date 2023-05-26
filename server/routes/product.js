@@ -903,10 +903,19 @@ router.get("/payment/get/:email", isLoggedIn, async (req, res) => {
   const { email } = req.params;
   try {
     const userPaymentData = await Payment.findAll({
-      where: { userEmail: email },
+      where: { userEmail: email, [Op.ne]: { deliveryStatus: "취소" } },
     });
+
     if (userPaymentData) {
-      res.status(200).json(encryptFun(userPaymentData, process.env.REACT_APP_USER_KEY));
+      const promises = await Promise.all(
+        userPaymentData.map(async (obj) => {
+          const productId = obj.purchaseProductInformation[0].productId;
+          const productData = await Product.findOne({ where: { id: productId } });
+          return productData;
+        })
+      );
+
+      res.status(200).json(encryptFun({ userPaymentData, promises }, process.env.REACT_APP_USER_KEY));
     } else {
       res.status(403).send("구매기록이 존재하지 않습니다.");
     }

@@ -184,6 +184,8 @@ export const ProductDetaliMain = styled.section`
     left: 0;
     display: flex;
     justify-content: end;
+    background-color: white;
+    padding-top: 10px;
   }
 
   & > section:nth-child(1) > div:last-child > div:last-child > div {
