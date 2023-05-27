@@ -33,11 +33,15 @@ export const MainDiv = styled.section`
   & > div:nth-child(2) > ul > li:nth-child(3),
   & > div:nth-child(2) > ul > li:nth-child(4),
   & > div:nth-child(2) > ul > li:nth-child(5) {
-    width: ${(props) => (props.media.isPc ? 'calc((100% - 70%) / 2)' : '20%')};
+    width: ${(props) => (props.media.isPc ? 'calc((100% - 55%) / 2)' : '20%')};
   }
 
   & > div:nth-child(2) > ul > li:nth-child(2) {
-    width: 65%;
+    width: 55%;
+  }
+
+  & > div:nth-child(2) > ul > li:nth-child(6) {
+    width: 15%;
   }
 
   & > div:nth-child(2) > div:nth-child(2) {

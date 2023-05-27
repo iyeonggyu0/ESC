@@ -10,7 +10,7 @@ const fs = require("fs");
 const fsExtra = require("fs-extra");
 const { Op, where } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, ProductOptionProperty, ShoppingBag, Payment } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, ProductOptionProperty, ShoppingBag, Payment, CancelPayment } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const productReview = require("../models/productReview");
 
@@ -903,7 +903,7 @@ router.get("/payment/get/:email", isLoggedIn, async (req, res) => {
   const { email } = req.params;
   try {
     const userPaymentData = await Payment.findAll({
-      where: { userEmail: email, [Op.ne]: { deliveryStatus: "취소" } },
+      where: { userEmail: email },
     });
 
     if (userPaymentData) {
@@ -918,6 +918,58 @@ router.get("/payment/get/:email", isLoggedIn, async (req, res) => {
       res.status(200).json(encryptFun({ userPaymentData, promises }, process.env.REACT_APP_USER_KEY));
     } else {
       res.status(403).send("구매기록이 존재하지 않습니다.");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// 주문취소
+router.post("/payment/cancel", isLoggedIn, async (req, res) => {
+  const { id, email, type } = req.body;
+  try {
+    const deletedPayment = await Payment.findOne({ where: { id: id, userEmail: email } });
+    console.log(deletedPayment);
+    if (deletedPayment) {
+      await Payment.destroy({ where: { id: id, userEmail: email } });
+      const create = await CancelPayment.create({
+        userEmail: email,
+        paymentData: deletedPayment.dataValues,
+        paymentId: deletedPayment.dataValues.id === id ? id : deletedPayment.id,
+        paymentDate: `${deletedPayment.dataValues.createdAt}`,
+        cancelType: type,
+        processStep: `${type} 접수됨`,
+      });
+      if (create) res.status(200).send(`${type} 접수됨`);
+      else res.status(402).send(`접수 실패`);
+    } else {
+      return res.status(403).send(`id: ${id}, email: ${email}값과 일치하는 데이터가 존재하지 않습니다. `);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// 주문 취소 조회
+router.get("/cancelPayment/get/:email", isLoggedIn, async (req, res) => {
+  const { email } = req.params;
+  try {
+    const userCancelPaymentData = await CancelPayment.findAll({
+      where: { userEmail: email },
+    });
+
+    if (userCancelPaymentData) {
+      const promises = await Promise.all(
+        userCancelPaymentData.map(async (obj) => {
+          const productId = obj.paymentData.purchaseProductInformation[0].productId;
+          const productData = await Product.findOne({ where: { id: productId } });
+          return productData;
+        })
+      );
+
+      res.status(200).json(encryptFun({ userCancelPaymentData, promises }, process.env.REACT_APP_USER_KEY));
+    } else {
+      res.status(403).send("취소 내역이 존재하지 않습니다.");
     }
   } catch (err) {
     console.error(err);

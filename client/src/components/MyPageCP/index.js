@@ -15,6 +15,7 @@ import PostCode from '../_common/postCode';
 import CommonLoadingPage from '../_common/loadingPage';
 import ShoppingBagMain from './shoppingBag';
 import OrderList from './orderList';
+import CancelOrderList from './cancelOrderList';
 
 const MyPageMainPage = () => {
   //hook
@@ -77,7 +78,7 @@ const MyPageMainPage = () => {
                 <p>쇼핑</p>
                 <ul>
                   <li onClick={() => navigate('/mypage/orderList')}>주문목록 / 배송조회</li>
-                  <li>취소 / 반품 / 교환 내역</li>
+                  <li onClick={() => navigate('/mypage/cancellationList')}>취소 / 반품 내역</li>
                   <li onClick={() => navigate('/mypage/shopping-bag')}>장바구니</li>
                 </ul>
                 <p>계정</p>
@@ -93,6 +94,7 @@ const MyPageMainPage = () => {
               {page === 'main' && <MyPageMain />}
               {page === 'shopping-bag' && <ShoppingBagMain />}
               {page === 'orderList' && <OrderList />}
+              {page === 'cancellationList' && <CancelOrderList />}
             </div>
           </div>
           <BG></BG>
@@ -111,6 +113,7 @@ const MyPageMainPage = () => {
             {page === 'main' && <MyPageMain />}
             {page === 'shopping-bag' && <ShoppingBagMain />}
             {page === 'orderList' && <OrderList />}
+            {page === 'cancellationList' && <CancelOrderList />}
           </div>
         </MobileStyle>
       )}
