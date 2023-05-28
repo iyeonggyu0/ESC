@@ -15,7 +15,7 @@ const CancelOrderProductFrom = ({ state, product, index }) => {
         <p>{product.name}</p>
         <p>
           <span>(외 {state?.paymentData?.purchaseProductInformation.length}개) </span>
-          {dateText}
+          취소일: {dateText}
         </p>
       </div>
       <div>{state.paymentData?.amountOfPayment.toLocaleString()}원</div>

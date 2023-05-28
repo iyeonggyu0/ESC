@@ -31,6 +31,8 @@ import ProductDetaliImgForm from '../_common/productDetaliImgForm';
 import ProductOptionView from '../_common/productOption/optionView';
 import ProductSelectionBox from '../_common/productSelectionBox';
 import PlusMinusButtonFrom from '../../_common/plusMinusButtonFrom';
+import { axiosInstance } from '../../../util/axios';
+import axios from 'axios';
 
 const ProductDetliMain = () => {
   const media = useMedia();
@@ -66,6 +68,69 @@ const ProductDetliMain = () => {
   const [productOptionCheck, setProductOptionCheck] = useState([]);
   const [productOrderList, setProductOrderList] = useState([]);
   const [productQuantity, setProductQuantity] = useState(1);
+
+  const buyButton = () => {
+    console.log(productData);
+    console.log(productOrderList);
+    if (!productOrderList) {
+      alert('상품을 선택해주세요');
+      return;
+    }
+
+    // 총 할인
+    const discount = productData?.ProductDiscount?.discountAmount || 0;
+
+    const checkList = productOrderList?.map((obj) => {
+      const options = obj.productOptionCheck;
+      const quantity = obj.productQuantity;
+      const objAmount = obj.productOptionCheck.reduce((acc, item) => {
+        return acc + item.amount;
+      }, 0);
+      return {
+        amount: objAmount,
+        discount,
+        options,
+        quantity,
+        price: productData.price,
+        productId: productData.id,
+        userEmail: userData.email,
+      };
+    });
+    console.log(checkList);
+
+    const amountOfPayment = checkList.reduce((acc, item) => {
+      const num = (item.price + item.amount - item.discount) * item.quantity;
+      return acc + num;
+    }, 0);
+
+    const data = {
+      userEmail: userData.email,
+      // 결제금액
+      amountOfPayment: amountOfPayment < 100000 ? amountOfPayment + 3000 : amountOfPayment,
+      productPrice: productData.price,
+      discount: checkList.reduce((acc, item) => {
+        return acc + item.discount;
+      }, 0),
+      deliveryFee: amountOfPayment < 100000 ? 3000 : 0,
+      purchaseProductInformation: checkList,
+    };
+    if (data) {
+      axios
+        .post(`${axiosInstance}api/product/payment/post`, data)
+        .then((res) => {
+          if (res.status === 200) {
+            if (window.confirm(`구매되었습니다. (구매내역 보러 가기)`)) {
+              return navigate('/mypage/orderList');
+            } else {
+              window.location.reload();
+            }
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
 
   const addShoppingBag = useCallback(() => {
     if (productOrderList?.length === 0) {
@@ -323,7 +388,7 @@ const ProductDetliMain = () => {
                 </div>
                 <div>
                   <div onClick={addShoppingBag}>장바구니</div>
-                  <div>구매</div>
+                  <div onClick={buyButton}>구매</div>
                 </div>
               </div>
             </section>

@@ -879,6 +879,7 @@ router.put("/shoppingbag/put", isLoggedIn, async (req, res) => {
 // isLoggedIn
 router.post("/payment/post", isLoggedIn, async (req, res) => {
   const data = req.body;
+  console.log(data);
   try {
     const createData = await Payment.create({
       userEmail: data.userEmail,
@@ -888,12 +889,12 @@ router.post("/payment/post", isLoggedIn, async (req, res) => {
       deliveryFee: data.deliveryFee,
       purchaseProductInformation: data.purchaseProductInformation,
     });
-    if (createData) {
+    if (createData && data?.shoppingBagId) {
       data.shoppingBagId.map((id) => {
         ShoppingBag.destroy({ where: { id: id } });
       });
-      res.status(200).send("저장성공");
     }
+    res.status(200).send("저장성공");
   } catch (err) {
     console.error(err);
   }
@@ -970,6 +971,61 @@ router.get("/cancelPayment/get/:email", isLoggedIn, async (req, res) => {
       res.status(200).json(encryptFun({ userCancelPaymentData, promises }, process.env.REACT_APP_USER_KEY));
     } else {
       res.status(403).send("취소 내역이 존재하지 않습니다.");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+//어드민 페이지 주문목록 조회
+router.get("/admin/payment/get/:sort", isLoggedIn, async (req, res) => {
+  const { sort } = req.params;
+
+  try {
+    if (sort === "기본") {
+      const payments = await Payment.findAll({
+        where: {
+          deliveryStatus: ["주문접수", "상품 준비 중"],
+        },
+        order: [["createdAt", "DESC"]],
+        defaultScope: {
+          order: [["createdAt", "DESC"]],
+        },
+      });
+
+      if (payments) res.status(200).json(encryptFun(payments, process.env.REACT_APP_USER_KEY));
+      else res.status(203).json({ message: "주문접수, 상품 준비중 상태의 주문이 없습니다." });
+    } else if (sort === "오늘 주문 건") {
+      const now = new Date();
+      const start = new Date();
+      const end = new Date();
+
+      start.setDate(now.getDate() - 1); // 전날로 설정
+      start.setHours(16, 0, 0, 0); // 전날 오후 4시로 설정
+
+      end.setHours(16, 0, 0, 0); // 오늘 오후 4시로 설정
+
+      const payments = await Payment.findAll({
+        where: {
+          deliveryStatus: ["주문접수", "상품 준비 중"],
+          createdAt: {
+            [Op.between]: [start, end], // 범위 설정
+          },
+        },
+        order: [["createdAt", "DESC"]],
+        // 기본 정렬 옵션을 설정합니다.
+        defaultScope: {
+          order: [["createdAt", "DESC"]],
+        },
+      });
+      if (payments) res.status(200).json(encryptFun(payments, process.env.REACT_APP_USER_KEY));
+      else res.status(203).json({ message: `${start} ~ ${end} 까지의 주문이 없습니다.` });
+    } else if (sort === "전체 주문") {
+      const payments = await Payment.findAll({
+        order: [["createdAt", "DESC"]],
+      });
+      if (payments) res.status(200).json(encryptFun(payments, process.env.REACT_APP_USER_KEY));
+      else res.status(203).json({ message: "주문이 없습니다." });
     }
   } catch (err) {
     console.error(err);

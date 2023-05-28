@@ -159,16 +159,18 @@ const ShoppingBagMain = () => {
             </p>
           )}
           {shoppingBagList.length > 0 &&
-            shoppingBagList.map((state, index) => (
-              <ShoppingBagProductFrom
-                key={index}
-                state={state}
-                checkList={checkList}
-                deleteProductHandler={deleteProductHandler}
-                postProductHandler={postProductHandler}
-                deleteOptionHandler={deleteOptionHandler}
-              />
-            ))}
+            shoppingBagList
+              .reverse()
+              .map((state, index) => (
+                <ShoppingBagProductFrom
+                  key={index}
+                  state={state}
+                  checkList={checkList}
+                  deleteProductHandler={deleteProductHandler}
+                  postProductHandler={postProductHandler}
+                  deleteOptionHandler={deleteOptionHandler}
+                />
+              ))}
         </div>
       </div>
       {shoppingBagList.length > 0 && (

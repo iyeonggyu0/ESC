@@ -3,10 +3,10 @@ import styled from 'styled-components';
 export const MainDiv = styled.div`
   width: 100%;
   position: relative;
-  height: 100px;
+  height: 81px;
   border-bottom: 1px solid lightgray;
   background-color: white;
-  font-size: 0.8rem;
+  font-size: ${(props) => (props.media.isPc ? '0.8rem' : '0.6rem')};
   color: black;
   justify-content: space-between;
   text-align: center;
@@ -36,6 +36,9 @@ export const MainDiv = styled.div`
 
   & > div:nth-child(2) > p:nth-child(1) > span {
     color: darkgray;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   & > div:nth-child(2) > p:nth-child(2) {
@@ -49,7 +52,7 @@ export const MainDiv = styled.div`
   }
 
   & > div:nth-child(4) > span:nth-child(2) {
-    font-size: 0.7rem;
+    font-size: ${(props) => (props.media.isPc ? '0.7rem' : '0.5rem')};
     color: gray;
   }
 
@@ -61,7 +64,7 @@ export const MainDiv = styled.div`
 
   & > div:nth-child(5) > span {
     width: 60%;
-    font-size: 0.7rem;
+    font-size: ${(props) => (props.media.isPc ? '0.7rem' : '0.5rem')};
     padding: 5px;
     border-radius: 3px;
     border: 1px solid darkgray;

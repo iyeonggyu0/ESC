@@ -9,6 +9,7 @@ import {} from '@reducer/productReducer';
 
 import { MainStyle, MenuMainStyle } from './style';
 import InventoryQuantity from './_common/inventoryQuantity';
+import OrderListAdmin from './_common/orderList';
 
 const AdminMain = () => {
   const media = useMedia();
@@ -35,12 +36,6 @@ const AdminMain = () => {
             대시보드
           </li>
           <li
-            style={{ fontWeight: pageMod === 'statistics' ? '400' : '300' }}
-            onClick={() => setPageMod('statistics')}
-          >
-            주문통계
-          </li>
-          <li
             style={{ fontWeight: pageMod === 'order' ? '400' : '300' }}
             onClick={() => setPageMod('order')}
           >
@@ -50,7 +45,7 @@ const AdminMain = () => {
             style={{ fontWeight: pageMod === 'exchange' ? '400' : '300' }}
             onClick={() => setPageMod('exchange')}
           >
-            교환/반품
+            취소/반품
           </li>
         </ul>
 
@@ -88,8 +83,8 @@ const AdminMain = () => {
       </MenuMainStyle>
       <section>
         {/* 재고관리 */}
-        {}
         {pageMod === 'inventoryQuantity' && <InventoryQuantity />}
+        {pageMod === 'order' && <OrderListAdmin />}
       </section>
     </MainStyle>
   );

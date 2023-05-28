@@ -13,7 +13,7 @@ const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
       <div>{state.id}</div>
       <div>
         <p>
-          {product.name} <span>(외 {state?.purchaseProductInformation.length}개)</span>
+          {product.name} <span>(외 {state?.purchaseProductInformation.length - 1}개)</span>
         </p>
         <p>{dateText}</p>
       </div>

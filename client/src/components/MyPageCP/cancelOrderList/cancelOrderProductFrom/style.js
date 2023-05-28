@@ -6,7 +6,7 @@ export const MainDiv = styled.div`
   height: 100px;
   border-bottom: 1px solid lightgray;
   background-color: white;
-  font-size: 0.8rem;
+  font-size: ${(props) => (props.media.isPc ? '0.8rem' : '0.6rem')};
   color: black;
   justify-content: space-between;
   text-align: center;
@@ -54,7 +54,7 @@ export const MainDiv = styled.div`
   }
 
   & > div:nth-child(5) > span:nth-child(2) {
-    font-size: 0.7rem;
+    font-size: ${(props) => (props.media.isPc ? '0.7rem' : '0.5rem')};
     color: gray;
   }
 
@@ -66,7 +66,7 @@ export const MainDiv = styled.div`
 
   & > div:nth-child(6) > span {
     width: 60%;
-    font-size: 0.7rem;
+    font-size: ${(props) => (props.media.isPc ? '0.7rem' : '0.5rem')};
     padding: 5px;
     border-radius: 3px;
     border: 1px solid darkgray;

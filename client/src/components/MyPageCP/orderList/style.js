@@ -22,7 +22,7 @@ export const MainDiv = styled.section`
     width: 100%;
     height: 30px;
     background-color: lightgray;
-    font-size: 0.9rem;
+    font-size: ${(props) => (props.media.isPc ? '0.9rem' : '0.7rem')};
     color: black;
     justify-content: space-between;
     text-align: center;

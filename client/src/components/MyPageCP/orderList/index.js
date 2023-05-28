@@ -110,15 +110,17 @@ const OrderList = () => {
             </p>
           )}
           {orderList.length > 0 &&
-            orderList.map((state, index) => (
-              <OrderProductFrom
-                key={index}
-                state={state}
-                product={productData[index]}
-                index={index}
-                orderCancelUpdate={orderCancelUpdate}
-              />
-            ))}
+            orderList
+              .reverse()
+              .map((state, index) => (
+                <OrderProductFrom
+                  key={index}
+                  state={state}
+                  product={productData[index]}
+                  index={index}
+                  orderCancelUpdate={orderCancelUpdate}
+                />
+              ))}
         </div>
       </div>
     </MainDiv>

@@ -9,7 +9,7 @@ export const MainStyle = styled.section`
 
   & > section:nth-child(2) {
     width: calc(100% - 13vw);
-    height: 1000px;
+    min-height: calc(100vh - 71px);
     margin-left: 13vw;
     z-index: 2;
     position: relative;
