@@ -111,16 +111,17 @@ export const MainStyle = styled.section`
     right: 0;
     gap: 0 ${(props) => (props.media.isPc ? '10px' : '5px')};
     font-size: ${(props) => (props.media.isPc ? '0.9rem' : '0.7rem')};
-    color: darkgray;
   }
 
   & > div:nth-child(2) > div:nth-child(3) > p {
     cursor: pointer;
+    color: black;
   }
 
   & > div:nth-child(2) > div:nth-child(3) > p:nth-child(1) {
     font-size: ${(props) => (props.media.isPc ? '0.7rem' : '0rem')};
     cursor: text;
+    color: darkgray;
   }
 
   ${ProductFormDiv} {
@@ -139,7 +140,7 @@ export const MainStyle = styled.section`
     width: 100%;
     height: 30px;
     background-color: lightgray;
-    font-size: ${(props) => (props.media.isPc ? '0.9rem' : '0.7rem')};
+    font-size: ${(props) => (props.media.isPc ? '0.9rem' : '0.5rem')};
     color: black;
     justify-content: space-between;
     text-align: center;
@@ -151,10 +152,10 @@ export const MainStyle = styled.section`
   & ul.ProductFormDivMenu > li:nth-child(4),
   & ul.ProductFormDivMenu > li:nth-child(5),
   & ul.ProductFormDivMenu > li:nth-child(6) {
-    width: ${(props) => (props.media.isPc ? 'calc((100% - 70%) / 2)' : '20%')};
+    width: ${(props) => (props.media.isPc ? 'calc((100% - 60%) / 2)' : '20%')};
   }
 
   & ul.ProductFormDivMenu > li:nth-child(2) {
-    width: 70%;
+    width: 60%;
   }
 `;

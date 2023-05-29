@@ -1032,4 +1032,26 @@ router.get("/admin/payment/get/:sort", isLoggedIn, async (req, res) => {
   }
 });
 
+// FIXME:
+//어드민 페이지 상태변경
+router.put("/admin/payment/put", isLoggedIn, async (req, res) => {
+  const { paymentId, status } = req.body;
+  console.log(paymentId, status);
+  try {
+    if (status === "주문접수" || status === "상품 준비 중" || status === "배송중" || status === "재고부족")
+      if (paymentId && status) {
+        const num = await Payment.update(
+          {
+            deliveryStatus: status,
+          },
+          { where: { id: paymentId } }
+        );
+
+        res.status(200).json({ message: "변경되었습니다." });
+      }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 module.exports = router;

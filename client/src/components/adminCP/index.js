@@ -1,7 +1,7 @@
 import {} from 'react';
 import { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../App';
 import { useMedia } from '../../hooks/useMedia';
 
@@ -21,70 +21,73 @@ const AdminMain = () => {
   // eslint-disable-next-line
   const userData = useContext(ThemeContext).userInfo.userData;
 
-  const [pageMod, setPageMod] = useState('main');
+  const page = useParams().page;
 
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
       {/* 메뉴 */}
-      <MenuMainStyle media={media} colorTheme={colorTheme}>
-        <p>주문</p>
-        <ul>
-          <li
-            style={{ fontWeight: pageMod === 'main' ? '400' : '300' }}
-            onClick={() => setPageMod('main')}
-          >
-            대시보드
-          </li>
-          <li
-            style={{ fontWeight: pageMod === 'order' ? '400' : '300' }}
-            onClick={() => setPageMod('order')}
-          >
-            주문목록
-          </li>
-          <li
-            style={{ fontWeight: pageMod === 'exchange' ? '400' : '300' }}
-            onClick={() => setPageMod('exchange')}
-          >
-            취소/반품
-          </li>
-        </ul>
+      {media.isPc && (
+        <MenuMainStyle media={media} colorTheme={colorTheme}>
+          <p>주문</p>
+          <ul>
+            <li
+              style={{ fontWeight: page === 'dashboard' ? '500' : '300' }}
+              onClick={() => navigate('/admin/dashboard')}
+            >
+              대시보드
+            </li>
+            <li
+              style={{ fontWeight: page === 'orderList' ? '500' : '300' }}
+              onClick={() => navigate('/admin/orderList')}
+            >
+              주문목록
+            </li>
+            <li
+              style={{ fontWeight: page === 'exchange' ? '500' : '300' }}
+              onClick={() => navigate('/admin/exchange')}
+            >
+              취소/반품
+            </li>
+          </ul>
 
-        <p>상품</p>
-        <ul>
-          <li
-            style={{ fontWeight: pageMod === 'inventoryQuantity' ? '400' : '300' }}
-            onClick={() => setPageMod('inventoryQuantity')}
-          >
-            재고관리
-          </li>
-          <li
-            style={{ fontWeight: pageMod === 'inquiry' ? '400' : '300' }}
-            onClick={() => setPageMod('inquiry')}
-          >
-            상품문의
-          </li>
-        </ul>
+          <p>상품</p>
+          <ul>
+            <li
+              style={{ fontWeight: page === 'inventoryQuantity' ? '500' : '300' }}
+              onClick={() => navigate('/admin/inventoryQuantity')}
+            >
+              재고관리
+            </li>
+            <li
+              style={{ fontWeight: page === 'inquiry' ? '500' : '300' }}
+              onClick={() => navigate('/admin/inquiry')}
+            >
+              상품문의
+            </li>
+          </ul>
 
-        <p>시스템</p>
-        <ul>
-          <li
-            style={{ fontWeight: pageMod === 'message' ? '400' : '300' }}
-            onClick={() => setPageMod('message')}
-          >
-            메시지
-          </li>
-          <li
-            style={{ fontWeight: pageMod === 'serviceCenter' ? '400' : '300' }}
-            onClick={() => setPageMod('serviceCenter')}
-          >
-            고객센터 질문
-          </li>
-        </ul>
-      </MenuMainStyle>
+          <p>시스템</p>
+          <ul>
+            <li
+              style={{ fontWeight: page === 'message' ? '500' : '300' }}
+              onClick={() => navigate('/admin/message')}
+            >
+              메시지
+            </li>
+            <li
+              style={{ fontWeight: page === 'serviceCenter' ? '500' : '300' }}
+              onClick={() => navigate('/admin/serviceCenter')}
+            >
+              고객센터 질문
+            </li>
+          </ul>
+        </MenuMainStyle>
+      )}
       <section>
+        {/* 오더리스트 */}
+        {page === 'orderList' && <OrderListAdmin />}
         {/* 재고관리 */}
-        {pageMod === 'inventoryQuantity' && <InventoryQuantity />}
-        {pageMod === 'order' && <OrderListAdmin />}
+        {page === 'inventoryQuantity' && <InventoryQuantity />}
       </section>
     </MainStyle>
   );

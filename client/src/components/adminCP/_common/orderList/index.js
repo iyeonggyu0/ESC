@@ -26,15 +26,49 @@ const OrderListAdmin = () => {
 
   const [sortFocus, setSortFocus] = useState(false);
   const [sort, setSort] = useState('기본');
-  const [activePage, setActivePage] = useState(1);
-  // eslint-disable-next-line
-  const [items, setItems] = useState(theme.paginationItem.adminInventoryQuantity);
 
   const [orderList, setOrderList] = useState([]);
   const [orderListRoad, setOrderListRoad] = useState('');
 
-  const onActivePageHandler = (page) => {
-    setActivePage(page);
+  const [checkList, setCheckList] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    console.log('체크리스트');
+    console.log(checkList);
+  }, [checkList]);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+    if (!isChecked) {
+      setCheckList(orderList.map((item) => item.id));
+    } else {
+      setCheckList([]);
+    }
+  };
+
+  const handleCheckboxClick = (id) => {
+    const data = [...checkList, id];
+    setCheckList(data);
+    handleCheckAll(data.length);
+  };
+
+  const removeItemByIndex = (idx) => {
+    const updatedList = [...checkList];
+    const index = updatedList.indexOf(idx);
+    if (index !== -1) {
+      updatedList.splice(index, 1);
+    }
+    setCheckList(updatedList);
+    handleCheckAll(updatedList.length);
+  };
+
+  const handleCheckAll = (lengths) => {
+    if (lengths === orderList.length) {
+      setIsChecked(true);
+    } else {
+      setIsChecked(false);
+    }
   };
 
   useEffect(() => {
@@ -57,7 +91,22 @@ const OrderListAdmin = () => {
     // eslint-disable-next-line
   }, []);
 
-  const reLodeProduct = useCallback(() => {
+  const axiosFun = (data) => {
+    console.log(data);
+    axios
+      .put(`${axiosInstance}api/product/admin/payment/put`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          alert(`${res.data.message}`);
+          reLodeProduct();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const reLodeProduct = () => {
     setOrderListRoad('');
     axios
       .get(`${axiosInstance}api/product/admin/payment/get/${sort}`)
@@ -74,10 +123,24 @@ const OrderListAdmin = () => {
       .catch((err) => {
         console.error(err);
       });
-
-    setActivePage(1);
     // eslint-disable-next-line
-  }, [sort]);
+  };
+
+  const editChecklistStatus = (mode) => {
+    if (checkList.length === 0) {
+      return alert('체크된 항목이 없습니다.');
+    }
+
+    if (!window.confirm(`${checkList}번 상품 총 ${checkList.length}개를 수정합니다.`)) {
+      return;
+    }
+
+    const data = {
+      status: `${mode}`,
+      paymentId: checkList,
+    };
+    axiosFun(data);
+  };
 
   return (
     <MainStyle colorTheme={colorTheme} media={media}>
@@ -109,9 +172,9 @@ const OrderListAdmin = () => {
         </div>
         <div className="flexHeightCenter">
           <p>체크된 항목 상태 변경:</p>
-          <p>접수</p>
-          <p>준비</p>
-          <p>배송중</p>
+          <p onClick={() => editChecklistStatus('상품 준비 중')}>준비</p>
+          <p onClick={() => editChecklistStatus('배송중')}>배송중</p>
+          <p onClick={() => editChecklistStatus('재고부족')}>재고부족</p>
         </div>
       </div>
 
@@ -122,7 +185,7 @@ const OrderListAdmin = () => {
           <>
             <ul className="ProductFormDivMenu flexHeightCenter">
               <li>
-                <input type="checkbox" />
+                <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
               </li>
               <li>주문 상품</li>
               <li>주문 일자</li>
@@ -137,9 +200,19 @@ const OrderListAdmin = () => {
             )}
             {orderList?.length > 0 && orderListRoad?.length === 0 && (
               <div>
-                {orderList.map((state, key) => (
-                  <OrderAdminFrom key={key} state={state} />
-                ))}
+                {orderList
+                  .slice()
+                  .reverse()
+                  .map((state, key) => (
+                    <OrderAdminFrom
+                      key={key}
+                      state={state}
+                      checkList={checkList}
+                      addCheckboxId={handleCheckboxClick}
+                      removeCheckboxId={removeItemByIndex}
+                      axiosFun={axiosFun}
+                    />
+                  ))}
               </div>
             )}
           </>
