@@ -10,9 +10,8 @@ const fs = require("fs");
 const fsExtra = require("fs-extra");
 const { Op, where } = require("sequelize");
 
-const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, ProductOptionProperty, ShoppingBag, Payment, CancelPayment } = require("../models");
+const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, productReview, ProductOptionProperty, ShoppingBag, Payment, CancelPayment } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
-const productReview = require("../models/productReview");
 
 // isLoggedIn
 router.post("/create", async (req, res, next) => {
@@ -1038,7 +1037,7 @@ router.put("/admin/payment/put", isLoggedIn, async (req, res) => {
   const { paymentId, status } = req.body;
   console.log(paymentId, status);
   try {
-    if (status === "주문접수" || status === "상품 준비 중" || status === "배송중" || status === "재고부족")
+    if (status === "주문접수" || status === "상품 준비 중" || status === "배송중" || status === "재고부족") {
       if (paymentId && status) {
         const num = await Payment.update(
           {
@@ -1049,6 +1048,62 @@ router.put("/admin/payment/put", isLoggedIn, async (req, res) => {
 
         res.status(200).json({ message: "변경되었습니다." });
       }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// 취소 내역 조회
+router.get("/admin/cancelPayment/get/:sort", isLoggedIn, async (req, res) => {
+  const { sort } = req.params;
+
+  try {
+    if (sort === "기본") {
+      const payments = await CancelPayment.findAll({
+        where: {
+          deliveryStatus: ["취소 접수됨", "상품 회수 중"],
+        },
+        order: [["createdAt", "DESC"]],
+        defaultScope: {
+          order: [["createdAt", "DESC"]],
+        },
+      });
+
+      if (payments) res.status(200).json(encryptFun(payments, process.env.REACT_APP_USER_KEY));
+      else res.status(203).json({ message: "주문접수, 상품 준비중 상태의 주문이 없습니다." });
+    } else if (sort === "오늘 접수 건") {
+      const now = new Date();
+      const start = new Date();
+      const end = new Date();
+
+      start.setDate(now.getDate() - 1); // 전날로 설정
+      start.setHours(16, 0, 0, 0); // 전날 오후 4시로 설정
+
+      end.setHours(16, 0, 0, 0); // 오늘 오후 4시로 설정
+
+      const payments = await CancelPayment.findAll({
+        where: {
+          deliveryStatus: ["취소 접수됨", "상품 회수 중"],
+          createdAt: {
+            [Op.between]: [start, end], // 범위 설정
+          },
+        },
+        order: [["createdAt", "DESC"]],
+        // 기본 정렬 옵션을 설정합니다.
+        defaultScope: {
+          order: [["createdAt", "DESC"]],
+        },
+      });
+      if (payments) res.status(200).json(encryptFun(payments, process.env.REACT_APP_USER_KEY));
+      else res.status(203).json({ message: `${start} ~ ${end} 사이의 취소/반품 내역이 없습니다.` });
+    } else if (sort === "전체 내역") {
+      const payments = await CancelPayment.findAll({
+        order: [["createdAt", "DESC"]],
+      });
+      if (payments) res.status(200).json(encryptFun(payments, process.env.REACT_APP_USER_KEY));
+      else res.status(203).json({ message: "취소/반품 내역이 없습니다." });
+    }
   } catch (err) {
     console.error(err);
   }

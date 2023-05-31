@@ -13,14 +13,18 @@ const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
       <div>{state.id}</div>
       <div>
         <p>
-          {product.name} <span>(외 {state?.purchaseProductInformation.length - 1}개)</span>
+          {product.name}{' '}
+          {state?.purchaseProductInformation.length - 1 > 0 && (
+            <span>(외 {state?.purchaseProductInformation.length - 1}개)</span>
+          )}
         </p>
         <p>{dateText}</p>
       </div>
       <div>{state.amountOfPayment.toLocaleString()}원</div>
       <div className="flexWidthCenter">
         <p>{state.deliveryStatus}</p>
-        {state.deliveryStatus !== '주문접수' && <span>{state.invoiceNumber}</span>}
+        {state.deliveryStatus !== '주문접수' ||
+          (state.deliveryStatus !== '상품 준비 중' && <span>{state.invoiceNumber}</span>)}
       </div>
       <div className="flexWidthCenter">
         {state.deliveryStatus === '배송중' && <span>배송조회</span>}

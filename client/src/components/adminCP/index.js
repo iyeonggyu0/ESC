@@ -10,6 +10,7 @@ import {} from '@reducer/productReducer';
 import { MainStyle, MenuMainStyle } from './style';
 import InventoryQuantity from './_common/inventoryQuantity';
 import OrderListAdmin from './_common/orderList';
+import CancelOrderListAdmin from './_common/cancelOrderList';
 
 const AdminMain = () => {
   const media = useMedia();
@@ -88,6 +89,7 @@ const AdminMain = () => {
         {page === 'orderList' && <OrderListAdmin />}
         {/* 재고관리 */}
         {page === 'inventoryQuantity' && <InventoryQuantity />}
+        {page === 'exchange' && <CancelOrderListAdmin />}
       </section>
     </MainStyle>
   );
