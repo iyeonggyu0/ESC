@@ -49,11 +49,11 @@ const OrderList = () => {
   const orderCancelUpdate = (index, type) => {
     console.log('실행');
     console.log(orderList[index].deliveryStatus);
-    // if (
-    //   orderList[index].deliveryStatus !== '주문접수' ||
-    //   orderList[index].deliveryStatus !== '상품 준비 중'
-    // )
-    //   return;
+    if (
+      orderList[index].deliveryStatus !== '주문접수' ||
+      orderList[index].deliveryStatus !== '상품 준비 중'
+    )
+      return;
 
     if (window.confirm('주문을 취소하시겠습니까?')) {
       axios
@@ -110,17 +110,15 @@ const OrderList = () => {
             </p>
           )}
           {orderList.length > 0 &&
-            orderList
-              .reverse()
-              .map((state, index) => (
-                <OrderProductFrom
-                  key={index}
-                  state={state}
-                  product={productData[index]}
-                  index={index}
-                  orderCancelUpdate={orderCancelUpdate}
-                />
-              ))}
+            orderList.map((state, index) => (
+              <OrderProductFrom
+                key={index}
+                state={state}
+                product={productData[index]}
+                index={index}
+                orderCancelUpdate={orderCancelUpdate}
+              />
+            ))}
         </div>
       </div>
     </MainDiv>

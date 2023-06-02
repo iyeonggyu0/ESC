@@ -26,6 +26,7 @@ import ScrollToTop from './components/_common/scrollToTop';
 import AdminPage from './pages/adminPage';
 import EstimatePage from './pages/estimatePage';
 import PreferencePage from './pages/preferencePage';
+import { useMedia } from './hooks/useMedia';
 
 export const ThemeContext = createContext(null);
 
@@ -33,6 +34,7 @@ function App() {
   const [colorTheme, setColorTheme] = useState(localStorage.getItem('theme'));
   const [userLoginData, setUserLoginData] = useState('none');
   const dispatch = useDispatch();
+  const media = useMedia();
 
   const toggleTheme = () => {
     if (colorTheme === 'game') {
@@ -89,7 +91,7 @@ function App() {
             {/* 마이페이지 */}
             <Route path="/mypage/:page" element={<MyPage />} />
             {/* 어드민 */}
-            <Route path="/admin/:page" element={<AdminPage />} />
+            {media.isPc && <Route path="/admin/:page" element={<AdminPage />} />}
           </Route>
 
           {/* 404 */}

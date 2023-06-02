@@ -327,7 +327,7 @@ router.get("/get/shoppingBag/:email", isLoggedIn, async (req, res) => {
       return { product, options };
     });
 
-    const shoppingBagsList = encryptFun(shoppingBagsData, process.env.REACT_APP_USER_KEY);
+    const shoppingBagsList = encryptFun(shoppingBagsData.reverse(), process.env.REACT_APP_USER_KEY);
 
     res.status(200).json(shoppingBagsList);
   } catch (err) {

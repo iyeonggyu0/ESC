@@ -159,22 +159,20 @@ const ShoppingBagMain = () => {
             </p>
           )}
           {shoppingBagList.length > 0 &&
-            shoppingBagList
-              .reverse()
-              .map((state, index) => (
-                <ShoppingBagProductFrom
-                  key={index}
-                  state={state}
-                  checkList={checkList}
-                  deleteProductHandler={deleteProductHandler}
-                  postProductHandler={postProductHandler}
-                  deleteOptionHandler={deleteOptionHandler}
-                />
-              ))}
+            shoppingBagList.map((state, index) => (
+              <ShoppingBagProductFrom
+                key={index}
+                state={state}
+                checkList={checkList}
+                deleteProductHandler={deleteProductHandler}
+                postProductHandler={postProductHandler}
+                deleteOptionHandler={deleteOptionHandler}
+              />
+            ))}
         </div>
       </div>
       {shoppingBagList.length > 0 && (
-        <div>
+        <div style={{ marginTop: '10vh' }}>
           <p>
             구매
             <span>10만 원 이상 구매 시 무료 배송</span>

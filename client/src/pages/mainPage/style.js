@@ -130,41 +130,41 @@ export const MainPageDiv = styled.div`
   z-index: 1;
   /* Slide 이미지 */
   .gameSlide1 {
-    background-image: url('/img/slider/game/sliderImg_1.jpg');
+    background-image: url('/img/slider/game/sliderImg_1.webp');
   }
   .gameSlide2 {
-    background-image: url('/img/slider/game/sliderImg_2.jpg');
+    background-image: url('/img/slider/game/sliderImg_2.webp');
   }
   .gameSlide3 {
-    background-image: url('/img/slider/game/sliderImg_3.jpg');
+    background-image: url('/img/slider/game/sliderImg_3.webp');
   }
   .gameSlide4 {
-    background-image: url('/img/slider/game/sliderImg_4.jpg');
+    background-image: url('/img/slider/game/sliderImg_4.webp');
   }
   .gameSlide5 {
-    background-image: url('/img/slider/game/sliderImg_5.jpg');
+    background-image: url('/img/slider/game/sliderImg_5.webp');
   }
   .basicSlide1 {
-    background-image: url('/img/slider/basic/sliderImg_1.jpg');
+    background-image: url('/img/slider/basic/sliderImg_1.webp');
   }
   .basicSlide2 {
-    background-image: url('/img/slider/basic/sliderImg_2.jpg');
+    background-image: url('/img/slider/basic/sliderImg_2.webp');
   }
   .basicSlide3 {
-    background-image: url('/img/slider/basic/sliderImg_3.jpg');
+    background-image: url('/img/slider/basic/sliderImg_3.webp');
   }
   .basicSlide4 {
-    background-image: url('/img/slider/basic/sliderImg_4.jpg');
+    background-image: url('/img/slider/basic/sliderImg_4.webp');
   }
   .basicSlide5 {
-    background-image: url('/img/slider/basic/sliderImg_5.jpg');
+    background-image: url('/img/slider/basic/sliderImg_5.webp');
   }
   .FixedImgGame {
-    background-image: url('/img/fixed/game_fixedImg.jpg');
+    background-image: url('/img/fixed/game_fixedImg.webp');
     background-position-y: ${(props) => (props.media.isPc ? '-55vh' : '')};
   }
   .FixedImgBasic {
-    background-image: url('/img/fixed/basic_fixedImg.jpg');
+    background-image: url('/img/fixed/basic_fixedImg.webp');
     background-position-y: ${(props) => (props.media.isPc ? '-165vh' : '-10vh')};
   }
   /* Swiper css */

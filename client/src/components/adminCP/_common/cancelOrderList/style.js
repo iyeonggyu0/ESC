@@ -147,15 +147,7 @@ export const MainStyle = styled.section`
     position: relative;
   }
 
-  & ul.ProductFormDivMenu > li:nth-child(1),
-  & ul.ProductFormDivMenu > li:nth-child(3),
-  & ul.ProductFormDivMenu > li:nth-child(4),
-  & ul.ProductFormDivMenu > li:nth-child(5),
-  & ul.ProductFormDivMenu > li:nth-child(6) {
-    width: ${(props) => (props.media.isPc ? 'calc((100% - 60%) / 2)' : '20%')};
-  }
-
-  & ul.ProductFormDivMenu > li:nth-child(2) {
-    width: 60%;
+  & ul.ProductFormDivMenu > li {
+    width: ${(props) => (props.media.isPc ? 'calc(100% / 2)' : '20%')};
   }
 `;

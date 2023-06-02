@@ -25,10 +25,10 @@ const ReviewTextForm = ({ reviewData, userData, colorTheme, media }) => {
 
   useEffect(() => {
     if (
-      reviewData.User.profileImg === '/img/profileImg/basicProfileImg.png' &&
+      reviewData.User.profileImg === '/img/profileImg/basicProfileImg.webp' &&
       colorTheme === 'game'
     ) {
-      setProfileImg('/img/profileImg/gameProfileImg.png');
+      setProfileImg('/img/profileImg/gameProfileImg.webp');
     } else setProfileImg(`"/img/profileImg/uploads/${reviewData.User.profileImg}"`);
     // eslint-disable-next-line
   }, [reviewData, colorTheme]);

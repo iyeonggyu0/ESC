@@ -902,23 +902,44 @@ router.post("/payment/post", isLoggedIn, async (req, res) => {
 router.get("/payment/get/:email", isLoggedIn, async (req, res) => {
   const { email } = req.params;
   try {
-    const userPaymentData = await Payment.findAll({
+    const userPaymentData2 = await Payment.findAll({
       where: { userEmail: email },
     });
 
-    if (userPaymentData) {
-      const promises = await Promise.all(
-        userPaymentData.map(async (obj) => {
+    if (userPaymentData2) {
+      const promises2 = await Promise.all(
+        userPaymentData2.map(async (obj) => {
           const productId = obj.purchaseProductInformation[0].productId;
           const productData = await Product.findOne({ where: { id: productId } });
           return productData;
         })
       );
 
+      const userPaymentData = userPaymentData2.slice().reverse();
+      const promises = promises2.slice().reverse();
+
       res.status(200).json(encryptFun({ userPaymentData, promises }, process.env.REACT_APP_USER_KEY));
     } else {
       res.status(403).send("구매기록이 존재하지 않습니다.");
     }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+//배송완료
+router.put("/payment/deliveryCompleted", isLoggedIn, async (req, res) => {
+  const { paymentId } = req.body;
+
+  try {
+    const updata = await Payment.update(
+      {
+        deliveryStatus: "배송완료",
+      },
+      { where: { id: paymentId } }
+    );
+
+    if (updata) res.status(200).json({ message: "배송이 완료되었습니다." });
   } catch (err) {
     console.error(err);
   }
@@ -954,18 +975,21 @@ router.post("/payment/cancel", isLoggedIn, async (req, res) => {
 router.get("/cancelPayment/get/:email", isLoggedIn, async (req, res) => {
   const { email } = req.params;
   try {
-    const userCancelPaymentData = await CancelPayment.findAll({
+    const userCancelPaymentData2 = await CancelPayment.findAll({
       where: { userEmail: email },
     });
 
-    if (userCancelPaymentData) {
-      const promises = await Promise.all(
-        userCancelPaymentData.map(async (obj) => {
+    if (userCancelPaymentData2) {
+      const promises2 = await Promise.all(
+        userCancelPaymentData2.map(async (obj) => {
           const productId = obj.paymentData.purchaseProductInformation[0].productId;
           const productData = await Product.findOne({ where: { id: productId } });
           return productData;
         })
       );
+
+      const userCancelPaymentData = userPaymentData2.slice().reverse();
+      const promises = promises2.slice().reverse();
 
       res.status(200).json(encryptFun({ userCancelPaymentData, promises }, process.env.REACT_APP_USER_KEY));
     } else {
@@ -1031,7 +1055,6 @@ router.get("/admin/payment/get/:sort", isLoggedIn, async (req, res) => {
   }
 });
 
-// FIXME:
 //어드민 페이지 상태변경
 router.put("/admin/payment/put", isLoggedIn, async (req, res) => {
   const { paymentId, status } = req.body;
@@ -1062,7 +1085,7 @@ router.get("/admin/cancelPayment/get/:sort", isLoggedIn, async (req, res) => {
     if (sort === "기본") {
       const payments = await CancelPayment.findAll({
         where: {
-          deliveryStatus: ["취소 접수됨", "상품 회수 중"],
+          processStep: ["취소 접수됨", "상품 회수 중"],
         },
         order: [["createdAt", "DESC"]],
         defaultScope: {
@@ -1084,7 +1107,7 @@ router.get("/admin/cancelPayment/get/:sort", isLoggedIn, async (req, res) => {
 
       const payments = await CancelPayment.findAll({
         where: {
-          deliveryStatus: ["취소 접수됨", "상품 회수 중"],
+          processStep: ["취소 접수됨", "상품 회수 중"],
           createdAt: {
             [Op.between]: [start, end], // 범위 설정
           },
@@ -1103,6 +1126,40 @@ router.get("/admin/cancelPayment/get/:sort", isLoggedIn, async (req, res) => {
       });
       if (payments) res.status(200).json(encryptFun(payments, process.env.REACT_APP_USER_KEY));
       else res.status(203).json({ message: "취소/반품 내역이 없습니다." });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+//어드민 페이지 상태변경
+router.put("/admin/cancelPayment/put", isLoggedIn, async (req, res) => {
+  const { paymentId, status } = req.body;
+  console.log(paymentId, status);
+  try {
+    if (status === "상품 회수 중") {
+      if (paymentId && status) {
+        await CancelPayment.update(
+          {
+            processStep: status,
+            clearStep: false,
+          },
+          { where: { id: paymentId } }
+        );
+
+        return res.status(200).json({ message: "변경되었습니다." });
+      }
+    } else if (status === "환불 완료") {
+      if (paymentId && status) {
+        await CancelPayment.update(
+          {
+            processStep: status,
+            clearStep: true,
+          },
+          { where: { id: paymentId } }
+        );
+      }
+      return res.status(200).json({ message: "환불되었습니다." });
     }
   } catch (err) {
     console.error(err);
