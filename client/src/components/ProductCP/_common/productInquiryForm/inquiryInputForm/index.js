@@ -79,7 +79,7 @@ const InquiryInputForm = ({ productId, userData, colorTheme, media }) => {
             <option value="product">상품</option>
             <option value="shipping">배송</option>
             <option value="exchange">교환</option>
-            <option value="refund">반품/취소/환불</option>
+            <option value="refund">반품/취소</option>
             <option value="etc">기타</option>
           </select>
         </div>

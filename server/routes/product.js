@@ -12,6 +12,7 @@ const { Op, where } = require("sequelize");
 
 const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, productReview, ProductOptionProperty, ShoppingBag, Payment, CancelPayment } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
+const payment = require("../models/payment");
 
 // isLoggedIn
 router.post("/create", async (req, res, next) => {
@@ -878,7 +879,6 @@ router.put("/shoppingbag/put", isLoggedIn, async (req, res) => {
 // isLoggedIn
 router.post("/payment/post", isLoggedIn, async (req, res) => {
   const data = req.body;
-  console.log(data);
   try {
     const createData = await Payment.create({
       userEmail: data.userEmail,
@@ -950,7 +950,6 @@ router.post("/payment/cancel", isLoggedIn, async (req, res) => {
   const { id, email, type } = req.body;
   try {
     const deletedPayment = await Payment.findOne({ where: { id: id, userEmail: email } });
-    console.log(deletedPayment);
     if (deletedPayment) {
       await Payment.destroy({ where: { id: id, userEmail: email } });
       const create = await CancelPayment.create({
@@ -988,7 +987,7 @@ router.get("/cancelPayment/get/:email", isLoggedIn, async (req, res) => {
         })
       );
 
-      const userCancelPaymentData = userPaymentData2.slice().reverse();
+      const userCancelPaymentData = userCancelPaymentData2.slice().reverse();
       const promises = promises2.slice().reverse();
 
       res.status(200).json(encryptFun({ userCancelPaymentData, promises }, process.env.REACT_APP_USER_KEY));
@@ -1058,7 +1057,6 @@ router.get("/admin/payment/get/:sort", isLoggedIn, async (req, res) => {
 //어드민 페이지 상태변경
 router.put("/admin/payment/put", isLoggedIn, async (req, res) => {
   const { paymentId, status } = req.body;
-  console.log(paymentId, status);
   try {
     if (status === "주문접수" || status === "상품 준비 중" || status === "배송중" || status === "재고부족") {
       if (paymentId && status) {
@@ -1160,6 +1158,33 @@ router.put("/admin/cancelPayment/put", isLoggedIn, async (req, res) => {
         );
       }
       return res.status(200).json({ message: "환불되었습니다." });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.put("/paymane/confirmed", isLoggedIn, async (req, res) => {
+  const { paymentId, userEmail } = req.body;
+  try {
+    const paymentData = Payment.findOne({
+      where: { id: paymentId, userEmail: userEmail },
+    });
+
+    if (paymentData) {
+      if (paymentData.deliveryStatus !== "배송완료" || paymentData.deliveryStatus === "구매확정") {
+        res.status(200).json({ message: "배송완료 상태가 아니거나 이미 구매확정 되었습니다." });
+      } else if (payment.deliveryStatus === "배송완료") {
+        const dataModify = Payment.updata(
+          {
+            deliveryStatus: "구매확정",
+          },
+          { where: { id: payment, userEmail: userEmail } }
+        );
+        if (dataModify) {
+          res.status(201).json({ message: "구매확정 하셨습니다." });
+        }
+      }
     }
   } catch (err) {
     console.error(err);

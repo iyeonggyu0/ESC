@@ -19,12 +19,19 @@ const CancelOrderProductFrom = ({ state, product, index }) => {
         </p>
       </div>
       <div>{state.paymentData?.amountOfPayment.toLocaleString()}원</div>
-      <div>{(state.paymentData?.amountOfPayment - 6000).toLocaleString()}원</div>
+      <div>
+        {(
+          state.paymentData?.amountOfPayment -
+          state.paymentData?.deliveryFee -
+          (state.cancelType === '반품' ? 3000 : 0)
+        ).toLocaleString()}
+        원
+      </div>
       <div className="flexWidthCenter">
         <p>{state.processStep}</p>
       </div>
       <div className="flexWidthCenter">
-        <span>철회</span>
+        {!state.clearStep && state.processStep !== '상품 회수 중' && <span>철회</span>}
       </div>
     </MainDiv>
   );

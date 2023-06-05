@@ -181,13 +181,13 @@ const InquiryViewForm = ({ productId, inquiryData, userData, colorTheme, media }
                   {inquiryData.inquiryType === 'shipping' && <option value="shipping">배송</option>}
                   {inquiryData.inquiryType === 'exchange' && <option value="exchange">교환</option>}
                   {inquiryData.inquiryType === 'refund' && (
-                    <option value="refund">반품/취소/환불</option>
+                    <option value="refund">반품/취소</option>
                   )}
                   {inquiryData.inquiryType === 'etc' && <option value="etc">기타</option>}
                   <option value="product">상품</option>
                   <option value="shipping">배송</option>
                   <option value="exchange">교환</option>
-                  <option value="refund">반품/취소/환불</option>
+                  <option value="refund">반품/취소</option>
                   <option value="etc">기타</option>
                 </select>
               </div>

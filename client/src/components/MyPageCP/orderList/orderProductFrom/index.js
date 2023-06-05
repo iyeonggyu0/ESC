@@ -28,6 +28,7 @@ const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
         deliveryStatusUpdata();
       }
     }
+    // eslint-disable-next-line
   }, [state, userData]);
 
   const deliveryStatusUpdata = () => {
@@ -62,7 +63,9 @@ const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
         <p>{deliveryCompleted}</p>
       </div>
       <div className="flexWidthCenter">
-        {deliveryCompleted === '배송중' && <span>배송조회</span>}
+        {deliveryCompleted === '배송중' && (
+          <span onClick={() => paymentConfirmedHandler(index)}>배송조회</span>
+        )}
         {(deliveryCompleted === '주문접수' || deliveryCompleted === '상품 준비 중') && (
           <span onClick={() => orderCancelUpdate(index, '취소')}>주문취소</span>
         )}
@@ -70,7 +73,9 @@ const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
           <span onClick={deliveryStatusUpdata}>배송완료</span>
         )}
         {deliveryCompleted === '배송완료' && <span>구매확정</span>}
-        {deliveryCompleted === '배송완료' && <span>반품</span>}
+        {deliveryCompleted === '배송완료' && (
+          <span onClick={() => orderCancelUpdate(index, '반품')}>반품</span>
+        )}
       </div>
     </MainDiv>
   );
