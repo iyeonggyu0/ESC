@@ -46,48 +46,56 @@ const OrderList = () => {
     // eslint-disable-next-line
   }, []);
 
-  const paymentConfirmedHandler = useCallback(
-    (index) => {
-      if (window.confirm(`상품 구매를 확정합니다.`)) {
-        axios
-          .post(`${axiosInstance}api/product/payment/confirmed`, {
-            paymentId: orderList[index].id,
-            userEmail: userData.email,
-          })
-          .then((res) => {
-            if (res.status === 200 || res.status === 201) {
-              alert(res.data.message);
-              if (res.status === 201) {
-                setOrderList((prevArray) => {
-                  const newArray = [...prevArray]; // 이전 배열을 새로운 배열로 복사
-                  newArray[index].deliveryStatus = '구매확정'; // 특정 인덱스의 요소 수정
-                  return newArray; // 새로운 배열 반환
-                });
-              }
-            } else if (res.status === 402) {
-              return alert(`${type} 접수 실패`);
-            } else if (res.status === 403) {
-              return alert(`${type} 접수 실패`);
-            }
-          })
-          .catch((err) => console.error(err));
+  const reloadData = () => {
+    setOrderListRoad(false);
+    axios
+      .get(`${axiosInstance}api/product/payment/get/${userData.email}`)
+      .then((res) => {
+        if (res.status === 200) {
+          const decryptData = decrypt(res.data, process.env.REACT_APP_USER_KEY);
+          setOrderList(decryptData.userPaymentData);
+          setProductData(decryptData.promises);
+          setOrderListRoad(true);
+        } else {
+          setOrderList(res.data);
+          setOrderListRoad(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    setTimeout(() => {
+      if (orderList.length === 0) {
+        setOrderListRoad(false);
       }
-    },
-    // eslint-disable-next-line
-    [index],
-  );
+    }, 3000);
+  };
+
+  const paymentConfirmedHandler = (index) => {
+    if (window.confirm(`상품 구매를 확정합니다.`)) {
+      axios
+        .put(`${axiosInstance}api/product/payment/confirmed`, {
+          paymentId: orderList[index].id,
+          userEmail: userData.email,
+        })
+        .then((res) => {
+          if (res.status === 200 || res.status === 201) {
+            alert(res.data.message);
+            if (res.status === 201) {
+              reloadData();
+            }
+          } else if (res.status === 402) {
+            return alert(`${type} 접수 실패`);
+          } else if (res.status === 403) {
+            return alert(`${type} 접수 실패`);
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+  };
 
   const orderCancelUpdate = (index, type) => {
-    console.log(type);
-    // console.log('실행');
-    // console.log(orderList[index].deliveryStatus);
-    // if (
-    //   orderList[index].deliveryStatus !== '주문접수' ||
-    //   orderList[index].deliveryStatus !== '상품 준비 중'
-    // ) {
-    //   return;
-    // }
-
     if (window.confirm(`${type}하시겠습니까?`)) {
       axios
         .post(`${axiosInstance}api/product/payment/cancel`, {

@@ -69,6 +69,13 @@ const ProductDetliMain = () => {
   const [productOrderList, setProductOrderList] = useState([]);
   const [productQuantity, setProductQuantity] = useState(1);
 
+  // 리뷰 남기기
+  const [reviewWritingMode, setReviewWritingMode] = useState(false);
+
+  const onActivePageHandler = (page) => {
+    setActivePage(page);
+  };
+
   const buyButton = () => {
     console.log(productData);
     console.log(productOrderList);
@@ -284,6 +291,25 @@ const ProductDetliMain = () => {
     window.open(`/product/modify/${productId}`);
   };
 
+  const reviewWritingModButton = () => {
+    // setReviewWritingMode
+    if (userData) {
+      axios
+        .get(`${axiosInstance}api/product/checkReviews/${userData.email}/${productData.id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            return setReviewWritingMode(true);
+          }
+          if (res.status === 201) {
+            alert(res.data.message);
+            return setReviewWritingMode(false);
+          }
+        });
+    } else {
+      return alert('로그인이 필요합니다.');
+    }
+  };
+
   return (
     <>
       {productData === null && <CommonLoadingPage />}
@@ -444,14 +470,20 @@ const ProductDetliMain = () => {
             {pageMod === '구매후기' && (
               <ReviewDiv media={media} colorTheme={colorTheme}>
                 <GradeForm productData={productData} colorTheme={colorTheme} />
-                <ReviewInputForm
-                  productData={productData}
-                  userData={userData}
-                  colorTheme={colorTheme}
-                />
+                {reviewWritingMode && (
+                  <ReviewInputForm
+                    productData={productData}
+                    userData={userData}
+                    colorTheme={colorTheme}
+                  />
+                )}
                 <ReviewFormWrapper colorTheme={colorTheme}>
                   {/* sort div */}
                   <div>
+                    {!reviewWritingMode && <div onClick={reviewWritingModButton}>리뷰 남기기</div>}
+                    {reviewWritingMode && (
+                      <div onClick={() => setReviewWritingMode(false)}>작성 취소</div>
+                    )}
                     <div
                       onClick={() => setSort('인기순')}
                       style={{ fontWeight: sort === '인기순' ? '600' : '400' }}

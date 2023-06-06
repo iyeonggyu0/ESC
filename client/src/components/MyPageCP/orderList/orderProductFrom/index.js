@@ -4,8 +4,15 @@ import { MainDiv } from './style';
 import { ThemeContext } from '../../../../App';
 import axios from 'axios';
 import { axiosInstance } from '../../../../util/axios';
+import { useNavigate } from 'react-router-dom';
 
-const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
+const OrderProductFrom = ({
+  state,
+  product,
+  index,
+  orderCancelUpdate,
+  paymentConfirmedHandler,
+}) => {
   const userData = useContext(ThemeContext).userInfo.userData;
   const dateObject = new Date(state.createdAt);
   const dateText = `${dateObject.getFullYear()}년 ${
@@ -13,6 +20,7 @@ const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
   }월 ${dateObject.getDate()}일`;
   console.log(state);
   const media = useMedia();
+  const navigate = useNavigate();
 
   const [deliveryCompleted, setDeliveryCompleted] = useState(state.deliveryStatus);
 
@@ -46,6 +54,11 @@ const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
       });
   };
 
+  const leaveReview = () => {
+    localStorage.setItem('pageModLoc', '구매후기');
+    navigate(`/product/${state.id}`);
+  };
+
   return (
     <MainDiv media={media} className="flexHeightCenter">
       <div>{state.id}</div>
@@ -63,19 +76,20 @@ const OrderProductFrom = ({ state, product, index, orderCancelUpdate }) => {
         <p>{deliveryCompleted}</p>
       </div>
       <div className="flexWidthCenter">
-        {deliveryCompleted === '배송중' && (
-          <span onClick={() => paymentConfirmedHandler(index)}>배송조회</span>
-        )}
+        {deliveryCompleted === '배송중' && <span>배송조회</span>}
         {(deliveryCompleted === '주문접수' || deliveryCompleted === '상품 준비 중') && (
           <span onClick={() => orderCancelUpdate(index, '취소')}>주문취소</span>
         )}
         {userData.authority === 'admin' && deliveryCompleted === '배송중' && (
           <span onClick={deliveryStatusUpdata}>배송완료</span>
         )}
-        {deliveryCompleted === '배송완료' && <span>구매확정</span>}
+        {deliveryCompleted === '배송완료' && (
+          <span onClick={() => paymentConfirmedHandler(index)}>구매확정</span>
+        )}
         {deliveryCompleted === '배송완료' && (
           <span onClick={() => orderCancelUpdate(index, '반품')}>반품</span>
         )}
+        {deliveryCompleted === '구매확정' && <span onClick={leaveReview}>리뷰 남기기</span>}
       </div>
     </MainDiv>
   );

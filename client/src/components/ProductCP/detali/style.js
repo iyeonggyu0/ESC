@@ -295,10 +295,10 @@ export const DetaliImgSection = styled.section`
 
 export const ReviewDiv = styled.div`
   width: ${(props) => (props.media.isPc ? '75vw' : '90vw')};
-  margin: 0 auto;
+  margin: 5vh auto;
 
   & > div {
-    margin: 1vh auto;
+    margin: 2vh auto;
   }
 `;
 
@@ -315,6 +315,18 @@ export const ReviewFormWrapper = styled.div`
     justify-content: end;
     align-items: center;
   }
+
+  & > div:nth-child(1) > div:nth-child(1) {
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    color: white;
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.black
+        : ({ theme }) => theme.palette.basicStroke};
+  }
+
   & > div:nth-child(1) div {
     margin-left: 10px;
     font-size: 0.8rem;

@@ -1164,30 +1164,65 @@ router.put("/admin/cancelPayment/put", isLoggedIn, async (req, res) => {
   }
 });
 
-router.put("/paymane/confirmed", isLoggedIn, async (req, res) => {
+router.put("/payment/confirmed", isLoggedIn, async (req, res) => {
   const { paymentId, userEmail } = req.body;
   try {
-    const paymentData = Payment.findOne({
+    const paymentData = await Payment.findOne({
       where: { id: paymentId, userEmail: userEmail },
     });
 
     if (paymentData) {
-      if (paymentData.deliveryStatus !== "배송완료" || paymentData.deliveryStatus === "구매확정") {
-        res.status(200).json({ message: "배송완료 상태가 아니거나 이미 구매확정 되었습니다." });
-      } else if (payment.deliveryStatus === "배송완료") {
-        const dataModify = Payment.updata(
+      if (paymentData.deliveryStatus === "배송완료") {
+        const dataModify = await Payment.update(
           {
             deliveryStatus: "구매확정",
           },
-          { where: { id: payment, userEmail: userEmail } }
+          { where: { id: paymentId, userEmail: userEmail } }
         );
         if (dataModify) {
-          res.status(201).json({ message: "구매확정 하셨습니다." });
+          return res.status(201).json({ message: "구매확정 하셨습니다." });
         }
+      }
+
+      if (paymentData.deliveryStatus !== "배송완료" && paymentData.deliveryStatus === "구매확정") {
+        return res.status(200).json({ message: "배송완료 상태가 아니거나 이미 구매확정 되었습니다." });
       }
     }
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: "서버 오류" });
+  }
+});
+
+router.get("/checkReviews/:email/:productId", isLoggedIn, async (req, res) => {
+  const { email, productId } = req.params;
+  try {
+    const currentDate = new Date(); // 현재 날짜 객체 생성
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1); // 한 달 전 날짜 객체 생성
+    const purchaseHistory = await Payment.findAll({
+      where: {
+        userEmail: email,
+        createdAt: {
+          [Op.between]: [oneMonthAgo, currentDate],
+        },
+        deliveryStatus: "구매확정",
+      },
+    });
+
+    const hasMatchingProductId = purchaseHistory.some((payment) => {
+      const purchaseProductInformation = payment.purchaseProductInformation;
+      return purchaseProductInformation.some((productInfo) => productInfo.productId === productId);
+    });
+
+    if (hasMatchingProductId) {
+      res.status(200).json({ message: "리뷰 작성 가능" });
+    } else {
+      res.status(201).json({ message: "한 달 내 구매 이력이 없습니다." });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "서버 오류" });
   }
 });
 

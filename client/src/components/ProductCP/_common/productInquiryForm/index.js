@@ -79,7 +79,7 @@ const ProductInquiryForm = ({ productData, userData, colorTheme, media }) => {
         </div>
       </section>
       <section>
-        {/* 리뷰 작성  FIXME: 조건에 userData 추가하기 */}
+        {/* 리뷰 작성 */}
         {questionMod && userData && (
           <InquiryInputForm
             productId={productData.id}
