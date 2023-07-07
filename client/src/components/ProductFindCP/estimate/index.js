@@ -12,17 +12,15 @@ const EstimateMain = () => {
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   return (
-    <>
-      <ProductFindHeader Page={'EstimateMain'} />
-      <MainStyle colorTheme={colorTheme} media={media}>
-        {/* 헤더 */}
-        <div>
-          <div></div>
-          <div></div>
-        </div>
+    <MainStyle colorTheme={colorTheme} media={media}>
+      <ProductFindHeader Page={'estimate'} />
+      {/* 헤더 */}
+      <div>
         <div></div>
-      </MainStyle>
-    </>
+        <div></div>
+      </div>
+      <div></div>
+    </MainStyle>
   );
 };
 export default EstimateMain;
