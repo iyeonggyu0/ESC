@@ -64,6 +64,10 @@ export const HeaderWapper = styled.header`
     gap: 0 2vw;
   }
 
+  & > section > ul > li > span {
+    cursor: pointer;
+  }
+
   & li > .icon {
     margin-left: 2vw;
   }

@@ -31,6 +31,16 @@ const ProductFindHeader = ({ Page }) => {
     }
   }, [Page, pageChangeMode, navigate]);
 
+  const nextStage = useCallback(
+    (num) => {
+      if (pageNum === num) {
+        return;
+      }
+      navigate(`/estimate/${num}`);
+    },
+    [pageNum, navigate],
+  );
+
   return (
     <HeaderWapper pageChangeMode={pageChangeMode} media={media} colorTheme={colorTheme}>
       <section onClick={() => setPageChangeMode(pageChangeMode ? false : true)}>
@@ -83,7 +93,7 @@ const ProductFindHeader = ({ Page }) => {
                     : theme.palette.basicSubFont,
               }}
             >
-              CASE
+              <span onClick={() => nextStage(1)}>CASE</span>
               <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
             </li>
             <li
@@ -98,7 +108,7 @@ const ProductFindHeader = ({ Page }) => {
                     : theme.palette.basicSubFont,
               }}
             >
-              PCB
+              <span onClick={() => nextStage(2)}>PCB</span>
               <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
             </li>
             <li
@@ -113,7 +123,7 @@ const ProductFindHeader = ({ Page }) => {
                     : theme.palette.basicSubFont,
               }}
             >
-              PLATE
+              <span onClick={() => nextStage(3)}>PLATE</span>
               <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
             </li>
             <li
@@ -128,7 +138,7 @@ const ProductFindHeader = ({ Page }) => {
                     : theme.palette.basicSubFont,
               }}
             >
-              SWITCH
+              <span onClick={() => nextStage(4)}>SWITCH</span>
               <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
             </li>
             <li
@@ -143,7 +153,7 @@ const ProductFindHeader = ({ Page }) => {
                     : theme.palette.basicSubFont,
               }}
             >
-              KEYCAPS
+              <span onClick={() => nextStage(5)}>KEYCAPS</span>
             </li>
           </ul>
         </section>

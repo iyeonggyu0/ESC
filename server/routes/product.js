@@ -1226,4 +1226,34 @@ router.get("/checkReviews/:email/:productId", isLoggedIn, async (req, res) => {
   }
 });
 
+router.get("/estimate/get", async (req, res) => {
+  try {
+    const data = await Product.findAll({
+      attributes: ["id", "name", "type", "price", "imgRoute"],
+      where: {
+        inventoryQuantity: {
+          [Op.gt]: 0,
+        },
+        type: {
+          [Op.ne]: "ETC", // "ETC"이 아닌 것을 조회
+        },
+      },
+      include: [
+        {
+          model: ProductImg,
+          attributes: ["id", "productId", "img", "type"],
+        },
+        {
+          model: ProductTag,
+          attributes: ["id", "productId", "tag"],
+        },
+      ],
+    });
+
+    res.status(200).json({ data });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 module.exports = router;
