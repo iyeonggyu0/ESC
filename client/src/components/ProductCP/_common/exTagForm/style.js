@@ -63,7 +63,7 @@ export const InputDivStyle = styled.div`
     border: 1px solid ${(props) => (props.colorTheme === 'game' ? '#D0D7DE' : '#DBD2D1')};
     cursor: pointer;
 
-    transition: 0.3s all;
+    transition: all 0.3s;
   }
 
   & div:hover {

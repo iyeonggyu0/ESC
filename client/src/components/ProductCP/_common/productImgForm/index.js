@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 import axios from 'axios';
 import { axiosInstance } from '../../../../util/axios';
-import { useEffect } from 'react';
 
 const ProductImgForm = ({
   productImgs,
@@ -78,7 +77,7 @@ export const Div = styled.div`
     gap: 0 10px;
     transform: translate(-50%, -50%);
     opacity: 0;
-    transition: 0.3s all;
+    transition: all 0.3s;
   }
 
   &:hover > div:nth-child(1) {
