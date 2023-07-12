@@ -71,12 +71,16 @@ export const MainStyle = styled.section`
     margin-bottom: 5vh;
   }
 
+  & > div:nth-child(2) > div:nth-child(2) > div > p {
+    font-size: 1.1rem;
+  }
+
   & > div:nth-child(2) > div:nth-child(2) > div > p:nth-child(1) {
     text-align: start;
     width: 100%;
     font-size: 1.6rem;
     font-weight: 600;
-    padding-bottom: 18px;
+    padding-bottom: 16px;
   }
 
   & > div:nth-child(2) > div:nth-child(2) > div ul {
@@ -84,10 +88,17 @@ export const MainStyle = styled.section`
   }
 
   & > div:nth-child(2) > div:nth-child(2) > div:last-child {
-     {
-      /* FIXME: */
-    }
-    width: ;
+    position: absolute;
+    margin-bottom: 3vh;
+    bottom: 0px;
+    width: calc(100% - (45px * 2));
+    height: 30%;
+    padding-top: 3vh;
+    border-top: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.gameStroke
+          : ({ theme }) => theme.palette.basicStroke};
   }
 
   /* 윗쪽 > 오른쪽 div */

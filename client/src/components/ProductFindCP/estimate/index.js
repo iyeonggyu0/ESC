@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
@@ -24,7 +24,27 @@ const EstimateMain = ({ productData }) => {
 
   useEffect(() => {
     setSelectId(0);
+    if (pageNum === 1) {
+      localStorage.setItem('totalPrice', 0);
+      localStorage.setItem('selection', [0, 0, 0, 0, 0]);
+    }
   }, [pageNum]);
+
+  const nextStap = () => {
+    let totalPrice = parseInt(localStorage.getItem('totalPrice'));
+    let selection = localStorage.getItem('selection');
+    if (selection === null) {
+      selection = [0, 0, 0, 0, 0];
+    } else {
+      selection = selection.split(',').map(Number);
+    }
+
+    totalPrice += productData[pageNum - 1][selectId].price;
+    selection[pageNum - 1] = productData[pageNum - 1][selectId].id;
+
+    localStorage.setItem('totalPrice', totalPrice);
+    localStorage.setItem('selection', selection);
+  };
 
   return (
     <MainStyle colorTheme={colorTheme} media={media}>
@@ -77,8 +97,17 @@ const EstimateMain = ({ productData }) => {
               </ul>
             )}
           </div>
-          {/* FIXME: */}
-          <div>다음</div>
+          <div>
+            <p>현재 가격</p>
+            <p>
+              {parseInt(localStorage.getItem('totalPrice')).toLocaleString()}
+              <span>원</span>
+            </p>
+            <div>
+              <div>이전</div>
+              <div onClick={nextStap}>다음</div>
+            </div>
+          </div>
         </div>
       </div>
       {/* 하단 */}
