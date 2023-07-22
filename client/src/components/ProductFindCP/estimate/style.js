@@ -31,7 +31,7 @@ export const MainStyle = styled.section`
       ${(props) =>
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameStroke
-          : ({ theme }) => theme.palette.basicStroke};
+          : ({ theme }) => theme.palette.basicBg};
     overflow: hidden;
   }
 
@@ -83,17 +83,70 @@ export const MainStyle = styled.section`
     padding-bottom: 16px;
   }
 
-  & > div:nth-child(2) > div:nth-child(2) > div ul {
-    line-height: 160%;
+  & > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > p:nth-child(2) {
+    line-height: 140%;
+    font-weight: 500;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) {
+    height: 29%;
+    overflow-y: auto;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:nth-child(3)::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:nth-child(3)::-webkit-scrollbar-track {
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameBg
+        : ({ theme }) => theme.palette.basicBg};
+  }
+  & > div:nth-child(2) > div:nth-child(2) > div:nth-child(3)::-webkit-scrollbar-thumb {
+    background: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameLightStroke
+        : ({ theme }) => theme.palette.basicLightStroke};
+    border-radius: 5px; /* 스크롤바 썸네일의 둥근 모서리를 지정할 수 있습니다. */
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > p:first-child {
+    position: fixed;
+    width: calc(1.6rem * 6);
+    padding-bottom: 0.4rem;
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameBg
+        : ({ theme }) => theme.palette.basicBg};
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div {
+    padding-top: 2.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 1rem;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div > p {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 12px;
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameStroke
+        : ({ theme }) => theme.palette.basicBg};
+    border: ${(props) => (props.colorTheme === 'game' ? '0px' : '1px')} solid
+      ${({ theme }) => theme.palette.gameStroke};
   }
 
   & > div:nth-child(2) > div:nth-child(2) > div:last-child {
     position: absolute;
-    margin-bottom: 3vh;
+    margin-bottom: 2.5vh;
     bottom: 0px;
     width: calc(100% - (45px * 2));
-    height: 30%;
-    padding-top: 3vh;
+    height: 20%;
+    padding-top: 2.5vh;
     border-top: 1px solid
       ${(props) =>
         props.colorTheme === 'game'
@@ -101,7 +154,74 @@ export const MainStyle = styled.section`
           : ({ theme }) => theme.palette.basicStroke};
   }
 
-  /* 윗쪽 > 오른쪽 div */
+  & > div:nth-child(2) > div:nth-child(2) > div:last-child > p:nth-child(1) {
+    font-size: 1rem;
+    padding-bottom: 0rem;
+    font-weight: 600;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:last-child > p:nth-child(2) {
+    font-size: 1.4rem;
+    font-weight: 600;
+    width: 100%;
+    text-align: end;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:last-child > p:nth-child(2) > span:first-child {
+    font-size: 1rem;
+    padding-right: 0.5rem;
+    font-weight: 500;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:last-child > p:nth-child(2) > span:last-child {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:last-child > div:last-child {
+    width: 100%;
+    height: 50%;
+    margin-top: 12px;
+    position: relative;
+    justify-content: space-between;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:last-child > div:last-child > div:first-child {
+    font-size: 0.9rem;
+    font-weight: 300;
+    width: 48%;
+    height: 100%;
+    border: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.white
+          : ({ theme }) => theme.palette.basicStroke};
+    cursor: pointer;
+  }
+
+  & > div:nth-child(2) > div:nth-child(2) > div:last-child > div:last-child > div:last-child {
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.black
+        : ({ theme }) => theme.palette.basicBg};
+    font-size: 0.9rem;
+    font-weight: 300;
+    width: 48%;
+    height: 100%;
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.white
+        : ({ theme }) => theme.palette.basicStroke};
+    border: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.white
+          : ({ theme }) => theme.palette.basicStroke};
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  /* 아랫쪽 div */
   & > div:nth-child(3) {
     width: 100%;
     height: calc(30vh - 68px);

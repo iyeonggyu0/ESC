@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
@@ -11,6 +11,7 @@ import 'swiper/css/pagination';
 import { Pagination } from 'swiper';
 
 import { MainStyle } from './style';
+import { useEffect } from 'react';
 
 const EstimateMain = ({ productData }) => {
   const media = useMedia();
@@ -20,31 +21,66 @@ const EstimateMain = ({ productData }) => {
   const pageNum = useParams('').pageNum;
 
   const [selectId, setSelectId] = useState(0);
-  console.log(selectId);
 
-  useEffect(() => {
-    setSelectId(0);
-    if (pageNum === 1) {
-      localStorage.setItem('totalPrice', 0);
-      localStorage.setItem('selection', [0, 0, 0, 0, 0]);
-    }
-  }, [pageNum]);
+  const [totalPrice, setTotalPrice] = useState([0, 0, 0, 0, 0]);
+  const [selection, setSelection] = useState([0, 0, 0, 0, 0]);
 
   const nextStap = () => {
-    let totalPrice = parseInt(localStorage.getItem('totalPrice'));
-    let selection = localStorage.getItem('selection');
-    if (selection === null) {
-      selection = [0, 0, 0, 0, 0];
-    } else {
-      selection = selection.split(',').map(Number);
+    let updatedTotalPrice = [...totalPrice];
+    updatedTotalPrice[pageNum - 1] = productData[pageNum - 1][selectId].price;
+
+    let updatedSelection = [...selection];
+    updatedSelection[pageNum - 1] = productData[pageNum - 1][selectId].id;
+
+    try {
+      setTotalPrice(updatedTotalPrice);
+      setSelection(updatedSelection);
+
+      navigate(`/estimate/${parseInt(pageNum) + 1}`);
+    } catch (error) {
+      alert('다시 시도해 주세요');
+    }
+  };
+
+  const prevStap = () => {
+    if (pageNum <= 1) {
+      return alert('이전 단계가 없습니다.');
     }
 
-    totalPrice += productData[pageNum - 1][selectId].price;
-    selection[pageNum - 1] = productData[pageNum - 1][selectId].id;
+    // 숫자 타입의 pageNum에서 1을 뺀 인덱스부터 이후의 값을 0으로 초기화
+    let updatedTotalPrice = [...totalPrice];
+    let updatedSelection = [...selection];
 
-    localStorage.setItem('totalPrice', totalPrice);
-    localStorage.setItem('selection', selection);
+    for (let i = pageNum - 2; i < updatedTotalPrice.length; i++) {
+      updatedTotalPrice[i] = 0;
+      updatedSelection[i] = 0;
+    }
+
+    // 상태 업데이트
+    setTotalPrice(updatedTotalPrice);
+    setSelection(updatedSelection);
+
+    // 이전 페이지로 이동
+    navigate(`/estimate/${parseInt(pageNum) - 1}`);
   };
+
+  console.log(totalPrice);
+  console.log(selection);
+
+  useEffect(() => {
+    let updatedTotalPrice = [...totalPrice];
+    let updatedSelection = [...selection];
+
+    for (let i = pageNum - 1; i < updatedTotalPrice.length; i++) {
+      updatedTotalPrice[i] = 0;
+      updatedSelection[i] = 0;
+    }
+
+    // 상태 업데이트
+    setTotalPrice(updatedTotalPrice);
+    setSelection(updatedSelection);
+    // eslint-disable-next-line
+  }, [pageNum]);
 
   return (
     <MainStyle colorTheme={colorTheme} media={media}>
@@ -58,7 +94,7 @@ const EstimateMain = ({ productData }) => {
             modules={[Pagination]}
             loop={true}
             pagination={{ clickable: true }}
-            className="mySwiper"
+            className="mainImgSwiper"
           >
             {productData[pageNum - 1] &&
               productData[pageNum - 1][selectId].ProductImgs.reverse().map((state, idx) => (
@@ -89,23 +125,38 @@ const EstimateMain = ({ productData }) => {
 
           <div>
             <p>상품 태그</p>
-            {productData[pageNum - 1] && (
-              <ul>
-                {productData[pageNum - 1][selectId].ProductTags.map((tag) => (
-                  <li key={tag.id}>{tag.tag}</li>
+            <div>
+              {productData[pageNum - 1] &&
+                productData[pageNum - 1][selectId].ProductTags.map((tag) => (
+                  <p key={tag.id}>{tag.tag}</p>
                 ))}
-              </ul>
-            )}
+            </div>
           </div>
           <div>
             <p>현재 가격</p>
             <p>
-              {parseInt(localStorage.getItem('totalPrice')).toLocaleString()}
+              <span>
+                ({' '}
+                {totalPrice
+                  .reduce((total, currentValue) => total + currentValue, 0)
+                  .toLocaleString()}{' '}
+                )
+              </span>
+              {productData && productData[pageNum - 1]?.[selectId]?.price !== undefined
+                ? (
+                    totalPrice.reduce((total, currentValue) => total + currentValue, 0) +
+                    productData[pageNum - 1][selectId].price
+                  ).toLocaleString()
+                : ''}
               <span>원</span>
             </p>
-            <div>
-              <div>이전</div>
-              <div onClick={nextStap}>다음</div>
+            <div className="flexHeightCenter">
+              <div className="flexCenter" onClick={prevStap}>
+                이전
+              </div>
+              <div className="flexCenter" onClick={nextStap}>
+                다음
+              </div>
             </div>
           </div>
         </div>
