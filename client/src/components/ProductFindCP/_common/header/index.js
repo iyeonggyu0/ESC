@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useMedia } from '../../../../hooks/useMedia';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback, useContext, useState } from 'react';
 import { ThemeContext } from '../../../../App';
 import theme from '../../../../style/theme';
@@ -10,12 +10,10 @@ import { HeaderWapper } from './style';
 
 const ProductFindHeader = ({ Page }) => {
   const media = useMedia();
-  // eslint-disable-next-line
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const pageNum = useParams('').pageNum;
   const [pageChangeMode, setPageChangeMode] = useState(false);
-  const location = useLocation().pathname;
 
   const onClickChangePage = useCallback(() => {
     if (!pageChangeMode) {
@@ -44,23 +42,26 @@ const ProductFindHeader = ({ Page }) => {
   return (
     <HeaderWapper pageChangeMode={pageChangeMode} media={media} colorTheme={colorTheme}>
       <section onClick={() => setPageChangeMode(pageChangeMode ? false : true)}>
-        <div className={'flexHeightCenter'}>
-          {Page === 'preference' && (
-            <div>
-              <p>KEYBOARD</p>
-              <p>TYPE CHECK</p>
-            </div>
-          )}
-          {Page === 'estimate' && (
-            <div>
-              <p>CUSTOM</p>
-              <p>KEYBOARD</p>
-            </div>
-          )}
+        {(Page === 'estimate' || Page === 'preference') && (
+          <div className={'flexHeightCenter'}>
+            {Page === 'preference' && (
+              <div>
+                <p>KEYBOARD</p>
+                <p>TYPE CHECK</p>
+              </div>
+            )}
+            {Page === 'estimate' && (
+              <div>
+                <p>CUSTOM</p>
+                <p>KEYBOARD</p>
+              </div>
+            )}
 
-          {!pageChangeMode && <FontAwesomeIcon icon={solid('angle-down')} />}
-          {pageChangeMode && <FontAwesomeIcon icon={solid('angle-up')} />}
-        </div>
+            {!pageChangeMode && <FontAwesomeIcon icon={solid('angle-down')} />}
+            {pageChangeMode && <FontAwesomeIcon icon={solid('angle-up')} />}
+          </div>
+        )}
+        {Page === 'result' && <div className={'flexHeightCenter'}>결과</div>}
         {pageChangeMode && (
           <div className={'flexHeightCenter'} onClick={onClickChangePage}>
             {Page === 'preference' && (

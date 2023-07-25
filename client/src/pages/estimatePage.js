@@ -3,9 +3,15 @@ import axios from 'axios';
 import { axiosInstance } from '../util/axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import NotFountPage from '../components/_common/error/404';
+import EstimateResult from '../components/ProductFindCP/estimate/result';
 
 const EstimatePage = () => {
   const [productData, setProductData] = useState([]);
+  const [selectionList, setSelectionList] = useState([]);
+  const param = useParams().pageNum;
+
   useEffect(() => {
     axios
       .get(`${axiosInstance}api/product/estimate/get`)
@@ -22,6 +28,20 @@ const EstimatePage = () => {
       });
   }, []);
 
-  return <EstimateMain productData={productData} />;
+  const saveSelectionList = (data) => {
+    setSelectionList(data);
+  };
+
+  return (
+    <div>
+      {param == 6 && selectionList.length != 0 && (
+        <EstimateResult productData={productData} selectionList={selectionList} />
+      )}
+      {(param == 0 || param > 6 || (param == 6 && selectionList.length == 0)) && <NotFountPage />}
+      {param <= 5 && (
+        <EstimateMain productData={productData} saveSelectionList={saveSelectionList} />
+      )}
+    </div>
+  );
 };
 export default EstimatePage;

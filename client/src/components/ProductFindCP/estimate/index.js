@@ -13,7 +13,7 @@ import { Pagination } from 'swiper';
 import { MainStyle } from './style';
 import { useEffect } from 'react';
 
-const EstimateMain = ({ productData }) => {
+const EstimateMain = ({ productData, saveSelectionList }) => {
   const media = useMedia();
   // eslint-disable-next-line
   const navigate = useNavigate();
@@ -33,6 +33,10 @@ const EstimateMain = ({ productData }) => {
     updatedSelection[pageNum - 1] = productData[pageNum - 1][selectId].id;
 
     try {
+      if (pageNum == 5) {
+        saveSelectionList(updatedSelection);
+      }
+
       setTotalPrice(updatedTotalPrice);
       setSelection(updatedSelection);
 
@@ -63,9 +67,6 @@ const EstimateMain = ({ productData }) => {
     // 이전 페이지로 이동
     navigate(`/estimate/${parseInt(pageNum) - 1}`);
   };
-
-  console.log(totalPrice);
-  console.log(selection);
 
   useEffect(() => {
     let updatedTotalPrice = [...totalPrice];
