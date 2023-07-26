@@ -8,7 +8,7 @@ import theme from '../../../../style/theme';
 
 import { HeaderWapper } from './style';
 
-const ProductFindHeader = ({ Page }) => {
+const ProductFindHeader = ({ Page, selectionList }) => {
   const media = useMedia();
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
@@ -34,14 +34,29 @@ const ProductFindHeader = ({ Page }) => {
       if (pageNum === num) {
         return;
       }
-      navigate(`/estimate/${num}`);
+
+      if (pageNum >= num) {
+        if (window.confirm('선택하신 단계 이후의 선택이 초기화 됩니다.')) {
+          navigate(`/estimate/${num}`);
+        } else {
+          return;
+        }
+      } else {
+        navigate(`/estimate/${num}`);
+      }
     },
     [pageNum, navigate],
   );
 
   return (
     <HeaderWapper pageChangeMode={pageChangeMode} media={media} colorTheme={colorTheme}>
-      <section onClick={() => setPageChangeMode(pageChangeMode ? false : true)}>
+      <section
+        onClick={() =>
+          Page !== 'result'
+            ? setPageChangeMode(pageChangeMode ? false : true)
+            : setPageChangeMode(false)
+        }
+      >
         {(Page === 'estimate' || Page === 'preference') && (
           <div className={'flexHeightCenter'}>
             {Page === 'preference' && (
@@ -61,8 +76,8 @@ const ProductFindHeader = ({ Page }) => {
             {pageChangeMode && <FontAwesomeIcon icon={solid('angle-up')} />}
           </div>
         )}
-        {Page === 'result' && <div className={'flexHeightCenter'}>결과</div>}
-        {pageChangeMode && (
+        {Page === 'result' && <div className={'flexHeightCenter result'}>Selection List</div>}
+        {pageChangeMode && Page !== 'result' && (
           <div className={'flexHeightCenter'} onClick={onClickChangePage}>
             {Page === 'preference' && (
               <div onClick={onClickChangePage}>
@@ -150,6 +165,86 @@ const ProductFindHeader = ({ Page }) => {
                     : pageNum === '5'
                     ? theme.palette.basicFont
                     : pageNum !== '5' && colorTheme === 'game'
+                    ? '#ADADAD'
+                    : theme.palette.basicSubFont,
+              }}
+            >
+              <span onClick={() => nextStage(5)}>KEYCAPS</span>
+            </li>
+          </ul>
+        </section>
+      )}
+      {media.isPc && Page === 'result' && (
+        <section className={'flexHeightCenter'}>
+          <ul className={'flexHeightCenter'}>
+            <li
+              style={{
+                color:
+                  selectionList[0] != 0 && colorTheme === 'game'
+                    ? theme.palette.white
+                    : selectionList[0] != 0
+                    ? theme.palette.basicFont
+                    : selectionList[0] == 0 && colorTheme === 'game'
+                    ? '#ADADAD'
+                    : theme.palette.basicSubFont,
+              }}
+            >
+              <span onClick={() => nextStage(1)}>CASE</span>
+              <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
+            </li>
+            <li
+              style={{
+                color:
+                  selectionList[1] != 0 && colorTheme === 'game'
+                    ? theme.palette.white
+                    : selectionList[1] != 0
+                    ? theme.palette.basicFont
+                    : selectionList[1] == 0 && colorTheme === 'game'
+                    ? '#ADADAD'
+                    : theme.palette.basicSubFont,
+              }}
+            >
+              <span onClick={() => nextStage(2)}>PCB</span>
+              <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
+            </li>
+            <li
+              style={{
+                color:
+                  selectionList[2] != 0 && colorTheme === 'game'
+                    ? theme.palette.white
+                    : selectionList[2] != 0
+                    ? theme.palette.basicFont
+                    : selectionList[2] == 0 && colorTheme === 'game'
+                    ? '#ADADAD'
+                    : theme.palette.basicSubFont,
+              }}
+            >
+              <span onClick={() => nextStage(3)}>PLATE</span>
+              <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
+            </li>
+            <li
+              style={{
+                color:
+                  selectionList[3] != 0 && colorTheme === 'game'
+                    ? theme.palette.white
+                    : selectionList[3] != 0
+                    ? theme.palette.basicFont
+                    : selectionList[3] == 0 && colorTheme === 'game'
+                    ? '#ADADAD'
+                    : theme.palette.basicSubFont,
+              }}
+            >
+              <span onClick={() => nextStage(4)}>SWITCH</span>
+              <FontAwesomeIcon icon={solid('angle-right')} className={'icon'} />
+            </li>
+            <li
+              style={{
+                color:
+                  selectionList[4] != 0 && colorTheme === 'game'
+                    ? theme.palette.white
+                    : selectionList[4] != 0
+                    ? theme.palette.basicFont
+                    : selectionList[4] == 0 && colorTheme === 'game'
                     ? '#ADADAD'
                     : theme.palette.basicSubFont,
               }}

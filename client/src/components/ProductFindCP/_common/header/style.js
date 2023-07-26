@@ -5,13 +5,22 @@ export const HeaderWapper = styled.header`
   height: 70px;
   font-family: Ubuntu;
   display: flex;
-  position: relative;
+  position: fixed;
+  z-index: 999;
+
+  & * {
+    -webkit-user-select: none; /* Safari/Chrome/Opera */
+    -khtml-user-select: none; /* KHTML browsers */
+    -moz-user-select: none; /* Firefox */
+    -o-user-select: none; /* Old versions of Opera */
+    user-select: none; /* Generic */
+  }
 
   background-color: ${(props) =>
     props.colorTheme === 'game'
       ? ({ theme }) => theme.palette.gameBg
       : ({ theme }) => theme.palette.basicBg};
-  border-bottom: ${(props) => (props.media.isPc ? '2px' : '1px')} solid
+  border-bottom: 1px solid
     ${(props) =>
       props.colorTheme === 'game'
         ? ({ theme }) => theme.palette.gameStroke
@@ -25,7 +34,7 @@ export const HeaderWapper = styled.header`
     width: ${(props) => (props.media.isPc ? '15vw' : 'calc(100vw - 70px)')};
     height: ${(props) => (props.pageChangeMode ? '200%' : '100%')};
 
-    border-right: ${(props) => (props.media.isPc ? '2px' : '1px')} solid
+    border-right: 1px solid
       ${(props) =>
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameStroke
@@ -44,7 +53,7 @@ export const HeaderWapper = styled.header`
     justify-content: space-between;
     padding: ${(props) => (props.media.isPc ? '0 2vw' : '0 5vw')};
     cursor: pointer;
-    border-bottom: ${(props) => (props.media.isPc ? '2px' : '1px')} solid
+    border-bottom: ${(props) => (props.media.isPc ? '1px' : '1px')} solid
       ${(props) =>
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameStroke
@@ -78,5 +87,12 @@ export const HeaderWapper = styled.header`
     position: absolute;
     right: 0;
     cursor: pointer;
+  }
+
+  & .result {
+    font-size: 1.3rem;
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
   }
 `;

@@ -83,6 +83,8 @@ const EstimateMain = ({ productData, saveSelectionList }) => {
     // eslint-disable-next-line
   }, [pageNum]);
 
+  console.log(selection);
+
   return (
     <MainStyle colorTheme={colorTheme} media={media}>
       {/* 헤더 */}

@@ -20,6 +20,7 @@ export const MainStyle = styled.section`
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameStroke
           : ({ theme }) => theme.palette.basicStroke};
+    margin-top: 70px;
   }
 
   /* 윗쪽 > 왼쪽 div */

@@ -3,7 +3,7 @@ const palette = {
   gameStroke: '#222222',
   gameLightStroke: '#5F5F5F',
   gameFont: '#FFFFFF',
-  gameLightFont: '#CDCDCD',
+  gameLightFont: '#cecece',
   gameSubFont: '#000000',
 
   basicBg: '#F0EDE9',
