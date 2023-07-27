@@ -13,6 +13,8 @@ const EstimateResult = ({ productData, selectionList }) => {
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;
 
+  const typeList = ['CASE', 'PCB', 'PLATE', 'SWITCH', 'KEYCAPS'];
+
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
       <ProductFindHeader Page={'result'} selectionList={selectionList} />
@@ -22,11 +24,7 @@ const EstimateResult = ({ productData, selectionList }) => {
           <div>
             {selectionList.map((state, idx) => (
               <div key={idx}>
-                {idx === 0 && <p>CASE</p>}
-                {idx === 1 && <p>PCB</p>}
-                {idx === 2 && <p>PLATE</p>}
-                {idx === 3 && <p>SWITCH</p>}
-                {idx === 4 && <p>KEYCAPS</p>}
+                <p>{typeList[idx]}</p>
                 {state !== 0 && (
                   <EstimateResultInBox
                     productData={productData[idx].find((product) => product.id === state)}

@@ -13,6 +13,7 @@ const { Op, where } = require("sequelize");
 const { Product, ProductReview, User, UserProductReviewLike, ProductDiscount, ProductInquiry, ProductAnswer, ProductTag, ProductImg, ProductOption, productReview, ProductOptionProperty, ShoppingBag, Payment, CancelPayment } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const payment = require("../models/payment");
+const productOptionProperty = require("../models/productOptionProperty");
 
 // isLoggedIn
 router.post("/create", async (req, res, next) => {
@@ -1229,7 +1230,7 @@ router.get("/checkReviews/:email/:productId", isLoggedIn, async (req, res) => {
 router.get("/estimate/get", async (req, res) => {
   try {
     const data = await Product.findAll({
-      attributes: ["id", "name", "type", "price", "imgRoute"],
+      attributes: ["id", "name", "type", "price", "imgRoute", "grade", "like"],
       where: {
         inventoryQuantity: {
           [Op.gt]: 0,
@@ -1239,6 +1240,7 @@ router.get("/estimate/get", async (req, res) => {
         },
       },
       include: [
+        { model: ProductReview },
         {
           model: ProductImg,
           attributes: ["id", "productId", "img", "type"],
@@ -1246,6 +1248,13 @@ router.get("/estimate/get", async (req, res) => {
         {
           model: ProductTag,
           attributes: ["id", "productId", "tag"],
+        },
+        {
+          model: ProductDiscount,
+        },
+        {
+          model: ProductOption,
+          include: [{ model: ProductOptionProperty }],
         },
       ],
     });

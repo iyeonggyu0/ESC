@@ -4,6 +4,9 @@ import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
 import ProductFindHeader from '../_common/header';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
@@ -12,6 +15,7 @@ import { Pagination } from 'swiper';
 
 import { MainStyle } from './style';
 import { useEffect } from 'react';
+import { useDiscountDate } from '../../../hooks/useDiscountDate';
 
 const EstimateMain = ({ productData, saveSelectionList }) => {
   const media = useMedia();
@@ -83,7 +87,7 @@ const EstimateMain = ({ productData, saveSelectionList }) => {
     // eslint-disable-next-line
   }, [pageNum]);
 
-  console.log(selection);
+  console.log(productData[pageNum - 1][selectId]);
 
   return (
     <MainStyle colorTheme={colorTheme} media={media}>
@@ -121,7 +125,35 @@ const EstimateMain = ({ productData, saveSelectionList }) => {
             <p>가격</p>
             <p>
               {productData[pageNum - 1] &&
-                productData[pageNum - 1][selectId].price.toLocaleString()}
+                productData[pageNum - 1][selectId] &&
+                productData[pageNum - 1][selectId].ProductDiscount === null && (
+                  <span>{productData[pageNum - 1][selectId].price.toLocaleString()}</span>
+                )}
+              {productData[pageNum - 1] &&
+                productData[pageNum - 1][selectId] &&
+                productData[pageNum - 1][selectId].ProductDiscount !== null && (
+                  <span
+                    className="text"
+                    style={{
+                      color: 'gray',
+                      fontSize: media.isPc ? '0.9rem' : '0.8rem',
+                      paddingRight: media.isPc ? '0.9rem' : '0.8rem',
+                    }}
+                  >
+                    <FontAwesomeIcon icon={solid('tags')} className={'icon'} />
+                    {productData[pageNum - 1][selectId].price.toLocaleString()}원
+                  </span>
+                )}
+              {productData[pageNum - 1] &&
+                productData[pageNum - 1][selectId] &&
+                productData[pageNum - 1][selectId].ProductDiscount !== null && (
+                  <span>
+                    {(
+                      parseInt(productData[pageNum - 1][selectId].price) -
+                      parseInt(productData[pageNum - 1][selectId].ProductDiscount?.discountAmount)
+                    ).toLocaleString()}
+                  </span>
+                )}
               원
             </p>
           </div>

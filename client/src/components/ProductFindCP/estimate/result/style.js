@@ -6,15 +6,7 @@ export const MainStyle = styled.div`
   position: relative;
   overflow: hidden;
 
-  background-color: ${(props) =>
-    props.colorTheme === 'game'
-      ? ({ theme }) => theme.palette.gameBg
-      : ({ theme }) => theme.palette.basicBg};
-
-  color: ${(props) =>
-    props.colorTheme === 'game'
-      ? ({ theme }) => theme.palette.white
-      : ({ theme }) => theme.palette.basicStroke};
+  background-color: white;
 
   /* main section */
   & > div:nth-child(2) {
@@ -48,14 +40,7 @@ export const MainStyle = styled.div`
     height: 80px;
     border-radius: 15px;
     font-size: 0.9rem;
-    color: ${(props) =>
-      props.colorTheme === 'game'
-        ? ({ theme }) => theme.palette.gameLightFont
-        : ({ theme }) => theme.palette.basicBg};
 
-    background-color: ${(props) =>
-      props.colorTheme === 'game'
-        ? ({ theme }) => theme.palette.gameStroke
-        : ({ theme }) => theme.palette.basicLightStroke};
+    box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.25);
   }
 `;

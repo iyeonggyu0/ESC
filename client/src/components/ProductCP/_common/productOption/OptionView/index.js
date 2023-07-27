@@ -50,7 +50,7 @@ const ProductOptionView = ({ data, editMode, onProductOptionCheck }) => {
                 선택
               </li>
               {/* 수정 */}
-              {data.ProductOptionProperties.reverse().map((prop, key) => (
+              {data.ProductOptionProperties.map((prop, key) => (
                 <li
                   key={key}
                   className="flexHeightCenter"
