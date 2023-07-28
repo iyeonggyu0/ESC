@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDiscountDate } from '../../../../hooks/useDiscountDate';
 
-const EstimateResultInBox = ({ productData }) => {
+const EstimateResultInBox = ({ productData, productOrderList, saveOrder }) => {
   const media = useMedia();
   // eslint-disable-next-line
   const navigate = useNavigate();
@@ -19,21 +19,12 @@ const EstimateResultInBox = ({ productData }) => {
 
   const [productOption, setProductOption] = useState([]);
   const [productOptionCheck, setProductOptionCheck] = useState([]);
-  const [productOrderList, setProductOrderList] = useState([]);
   const [productQuantity, setProductQuantity] = useState(1);
 
   const [discountData, setDiscountData] = useState();
   const [discountDataCheck, setDiscountDataCheck] = useDiscountDate(productData);
 
-  console.log(productOption, productOptionCheck, productOrderList, productQuantity);
-
-  useEffect(() => {
-    if (productData.ProductDiscount !== null) {
-      setDiscountData(productData.ProductDiscount);
-      setDiscountDataCheck(productData.ProductDiscount);
-    }
-    // eslint-disable-next-line
-  }, []);
+  // console.log(productOption, productOptionCheck, productOrderList, productQuantity);
 
   useEffect(() => {
     if (productData.ProductOptions) {
@@ -51,12 +42,14 @@ const EstimateResultInBox = ({ productData }) => {
   };
 
   const onProductOptionCheck = (optionName, optionValue, amount) => {
+    // 상태 배열을 직접 수정할 수 있도록 복사
     const updatedProductOptionCheck = [...productOptionCheck];
 
     if (optionValue === '선택') {
       const existingOptionIndex = updatedProductOptionCheck.findIndex(
         (option) => option.optionName === optionName,
       );
+
       if (existingOptionIndex !== -1) {
         // 배열에서 해당 optionName을 가진 요소를 삭제
         updatedProductOptionCheck.splice(existingOptionIndex, 1);
@@ -70,13 +63,79 @@ const EstimateResultInBox = ({ productData }) => {
     );
 
     if (existingOptionIndex !== -1) {
+      // 기존 객체를 수정하여 업데이트
       updatedProductOptionCheck[existingOptionIndex].optionValue = optionValue;
       updatedProductOptionCheck[existingOptionIndex].amount = amount;
     } else {
       updatedProductOptionCheck.push({ optionName, optionValue, amount });
     }
+
+    // 변경된 배열로 상태를 업데이트
     setProductOptionCheck(updatedProductOptionCheck);
   };
+
+  const handleProductQuantity = () => {
+    // productOption에서 essential이 true인 옵션들의 optionName들을 추출하여 배열에 저장
+    const essentialOptionNames = productOption
+      .filter((option) => option.essential)
+      .map((option) => option.optionName);
+
+    // productOptionCheck에 있는 optionName들을 추출하여 배열에 저장
+    const checkedOptionNames = productOptionCheck.map((option) => option.optionName);
+
+    // essentialOptionNames 배열에 있는 모든 optionName들이 checkedOptionNames 배열에 있는지 확인
+    const isAllEssentialOptionsChecked = essentialOptionNames.every((optionName) =>
+      checkedOptionNames.includes(optionName),
+    );
+
+    if (!isAllEssentialOptionsChecked) {
+      return alert('필수 옵션을 선택하세요');
+    } else {
+      // 이미 추가된 productOptionCheck를 찾아 업데이트 또는 새로운 객체를 생성하여 productOrderList에 추가
+      const existingOrderIndex = productOrderList.findIndex(
+        (order) => JSON.stringify(order.productOptionCheck) === JSON.stringify(productOptionCheck),
+      );
+
+      if (existingOrderIndex !== -1) {
+        // 이미 추가된 속성이 있으면 해당 속성을 업데이트
+        const updatedOrder = {
+          ...productOrderList[existingOrderIndex],
+          productQuantity: productQuantity,
+        };
+        const updatedOrderList = [...productOrderList];
+        updatedOrderList[existingOrderIndex] = updatedOrder;
+        saveOrder(updatedOrderList);
+      } else {
+        // 새로운 객체를 생성하여 productOrderList에 추가
+        const newOrder = {
+          productOptionCheck: productOptionCheck,
+          productQuantity: productQuantity,
+        };
+
+        // 이전에 추가된 객체가 없으면 배열 끝에 추가
+        if (productOrderList.length === 0) {
+          saveOrder([newOrder]);
+        } else {
+          saveOrder([...productOrderList, newOrder]);
+        }
+      }
+
+      // productOptionCheck 상태를 초기화
+      setProductOptionCheck([]);
+      setProductQuantity(1);
+    }
+  };
+
+  useEffect(() => {
+    if (productData.ProductDiscount !== null) {
+      setDiscountData(productData.ProductDiscount);
+      setDiscountDataCheck(productData.ProductDiscount);
+    }
+
+    if (productData.ProductOptions?.length === 0) handleProductQuantity();
+
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
@@ -112,8 +171,24 @@ const EstimateResultInBox = ({ productData }) => {
               />
             ))}
         </div>
+        {productOption.length > 0 && (
+          <div className="flexCenter" onClick={() => handleProductQuantity()}>
+            옵션저장
+          </div>
+        )}
         <p>
-          + {!discountDataCheck && <span>{productData.price.toLocaleString()}원</span>}
+          +{' '}
+          {!discountDataCheck && (
+            <span>
+              {(
+                productData.price +
+                productOptionCheck?.reduce((accumulator, innerArray) => {
+                  return accumulator + innerArray.amount;
+                }, 0)
+              ).toLocaleString()}
+              원
+            </span>
+          )}
           {discountDataCheck && (
             <span
               className="text"
@@ -124,11 +199,26 @@ const EstimateResultInBox = ({ productData }) => {
               }}
             >
               <FontAwesomeIcon icon={solid('tags')} className={'icon'} />
-              {productData.price.toLocaleString()}원
+              {productOptionCheck?.length === 0
+                ? productData.price.toLocaleString()
+                : productData.price +
+                  productOptionCheck?.reduce((accumulator, innerArray) => {
+                    return accumulator + innerArray.amount;
+                  }, 0)}
+              원
             </span>
           )}
           {discountDataCheck && (
-            <span>{(productData.price - discountData.discountAmount).toLocaleString()}원</span>
+            <span>
+              {(
+                productData.price +
+                productOptionCheck?.reduce((accumulator, innerArray) => {
+                  return accumulator + innerArray.amount;
+                }, 0) -
+                discountData.discountAmount
+              ).toLocaleString()}
+              원
+            </span>
           )}
         </p>
       </div>

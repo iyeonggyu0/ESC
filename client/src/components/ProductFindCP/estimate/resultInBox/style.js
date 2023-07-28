@@ -50,14 +50,24 @@ export const MainStyle = styled.div`
     padding-top: 20px;
   }
 
-  & > div:nth-child(2) > p:nth-child(3) {
+  & > div:nth-child(2) > div:nth-child(3) {
+    width: 99%;
+    height: 35px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin-bottom: 25px;
+  }
+
+  & > div:nth-child(2) > p:last-child {
     width: 100%;
     text-align: end;
     font-size: ${(props) => (props.media.isPc ? '1.6rem' : '1.2rem')};
     position: relative;
   }
 
-  & > div:nth-child(2) > p:nth-child(3) .icon {
+  & > div:nth-child(2) > p:last-child .icon {
     font-size: ${(props) => (props.media.isPc ? '1rem' : '0.9rem')};
   }
 `;

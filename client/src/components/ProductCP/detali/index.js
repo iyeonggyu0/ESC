@@ -76,6 +76,8 @@ const ProductDetliMain = () => {
     setActivePage(page);
   };
 
+  console.log(productOrderList);
+
   const buyButton = () => {
     console.log(productData);
     console.log(productOrderList);
@@ -121,22 +123,24 @@ const ProductDetliMain = () => {
       deliveryFee: amountOfPayment < 100000 ? 3000 : 0,
       purchaseProductInformation: checkList,
     };
-    if (data) {
-      axios
-        .post(`${axiosInstance}api/product/payment/post`, data)
-        .then((res) => {
-          if (res.status === 200) {
-            if (window.confirm(`구매되었습니다. (구매내역 보러 가기)`)) {
-              return navigate('/mypage/orderList');
-            } else {
-              window.location.reload();
-            }
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
+
+    console.log(data);
+    // if (data) {
+    //   axios
+    //     .post(`${axiosInstance}api/product/payment/post`, data)
+    //     .then((res) => {
+    //       if (res.status === 200) {
+    //         if (window.confirm(`구매되었습니다. (구매내역 보러 가기)`)) {
+    //           return navigate('/mypage/orderList');
+    //         } else {
+    //           window.location.reload();
+    //         }
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // }
   };
 
   const addShoppingBag = useCallback(() => {

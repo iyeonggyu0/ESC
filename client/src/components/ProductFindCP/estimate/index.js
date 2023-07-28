@@ -15,7 +15,6 @@ import { Pagination } from 'swiper';
 
 import { MainStyle } from './style';
 import { useEffect } from 'react';
-import { useDiscountDate } from '../../../hooks/useDiscountDate';
 
 const EstimateMain = ({ productData, saveSelectionList }) => {
   const media = useMedia();
@@ -31,7 +30,18 @@ const EstimateMain = ({ productData, saveSelectionList }) => {
 
   const nextStap = () => {
     let updatedTotalPrice = [...totalPrice];
-    updatedTotalPrice[pageNum - 1] = productData[pageNum - 1][selectId].price;
+
+    if (
+      productData[pageNum - 1] &&
+      productData[pageNum - 1][selectId] &&
+      productData[pageNum - 1][selectId].ProductDiscount !== null
+    ) {
+      updatedTotalPrice[pageNum - 1] =
+        productData[pageNum - 1][selectId].price -
+        productData[pageNum - 1][selectId].ProductDiscount.discountAmount;
+    } else {
+      updatedTotalPrice[pageNum - 1] = productData[pageNum - 1][selectId].price;
+    }
 
     let updatedSelection = [...selection];
     updatedSelection[pageNum - 1] = productData[pageNum - 1][selectId].id;
@@ -86,8 +96,6 @@ const EstimateMain = ({ productData, saveSelectionList }) => {
     setSelection(updatedSelection);
     // eslint-disable-next-line
   }, [pageNum]);
-
-  console.log(productData[pageNum - 1][selectId]);
 
   return (
     <MainStyle colorTheme={colorTheme} media={media}>
@@ -177,12 +185,25 @@ const EstimateMain = ({ productData, saveSelectionList }) => {
                   .toLocaleString()}{' '}
                 )
               </span>
-              {productData && productData[pageNum - 1]?.[selectId]?.price !== undefined
+              {productData &&
+              productData[pageNum - 1] &&
+              productData[pageNum - 1][selectId].ProductDiscount === null &&
+              productData[pageNum - 1]?.[selectId]?.price !== undefined
                 ? (
                     totalPrice.reduce((total, currentValue) => total + currentValue, 0) +
                     productData[pageNum - 1][selectId].price
                   ).toLocaleString()
                 : ''}
+              {productData[pageNum - 1] &&
+                productData[pageNum - 1][selectId] &&
+                productData[pageNum - 1][selectId].ProductDiscount !== null && (
+                  <span>
+                    {(
+                      parseInt(productData[pageNum - 1][selectId].price) -
+                      parseInt(productData[pageNum - 1][selectId].ProductDiscount?.discountAmount)
+                    ).toLocaleString()}
+                  </span>
+                )}
               <span>원</span>
             </p>
             <div className="flexHeightCenter">
