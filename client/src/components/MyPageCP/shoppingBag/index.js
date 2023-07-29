@@ -112,6 +112,8 @@ const ShoppingBagMain = () => {
         purchaseProductInformation: checkList,
         shoppingBagId: checkList.map((state) => state.shoppingBagId),
       };
+
+      console.log(data);
       axios
         .post(`${axiosInstance}api/product/payment/post`, data)
         .then((res) => {

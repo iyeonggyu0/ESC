@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDiscountDate } from '../../../../hooks/useDiscountDate';
 
-const EstimateResultInBox = ({ productData, productOrderList, saveOrder }) => {
+const EstimateResultInBox = ({ productData, saveOrder, idx }) => {
   const media = useMedia();
   // eslint-disable-next-line
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ const EstimateResultInBox = ({ productData, productOrderList, saveOrder }) => {
 
   const [productOption, setProductOption] = useState([]);
   const [productOptionCheck, setProductOptionCheck] = useState([]);
-  const [productQuantity, setProductQuantity] = useState(1);
 
   const [discountData, setDiscountData] = useState();
   const [discountDataCheck, setDiscountDataCheck] = useDiscountDate(productData);
@@ -74,12 +73,13 @@ const EstimateResultInBox = ({ productData, productOrderList, saveOrder }) => {
     setProductOptionCheck(updatedProductOptionCheck);
   };
 
+  // console.log(idx);
+
   const handleProductQuantity = () => {
     // productOption에서 essential이 true인 옵션들의 optionName들을 추출하여 배열에 저장
     const essentialOptionNames = productOption
       .filter((option) => option.essential)
       .map((option) => option.optionName);
-
     // productOptionCheck에 있는 optionName들을 추출하여 배열에 저장
     const checkedOptionNames = productOptionCheck.map((option) => option.optionName);
 
@@ -91,38 +91,9 @@ const EstimateResultInBox = ({ productData, productOrderList, saveOrder }) => {
     if (!isAllEssentialOptionsChecked) {
       return alert('필수 옵션을 선택하세요');
     } else {
-      // 이미 추가된 productOptionCheck를 찾아 업데이트 또는 새로운 객체를 생성하여 productOrderList에 추가
-      const existingOrderIndex = productOrderList.findIndex(
-        (order) => JSON.stringify(order.productOptionCheck) === JSON.stringify(productOptionCheck),
-      );
-
-      if (existingOrderIndex !== -1) {
-        // 이미 추가된 속성이 있으면 해당 속성을 업데이트
-        const updatedOrder = {
-          ...productOrderList[existingOrderIndex],
-          productQuantity: productQuantity,
-        };
-        const updatedOrderList = [...productOrderList];
-        updatedOrderList[existingOrderIndex] = updatedOrder;
-        saveOrder(updatedOrderList);
-      } else {
-        // 새로운 객체를 생성하여 productOrderList에 추가
-        const newOrder = {
-          productOptionCheck: productOptionCheck,
-          productQuantity: productQuantity,
-        };
-
-        // 이전에 추가된 객체가 없으면 배열 끝에 추가
-        if (productOrderList.length === 0) {
-          saveOrder([newOrder]);
-        } else {
-          saveOrder([...productOrderList, newOrder]);
-        }
-      }
-
-      // productOptionCheck 상태를 초기화
-      setProductOptionCheck([]);
-      setProductQuantity(1);
+      // 새로운 객체를 생성하여 productOptionCheck와 productQuantity를 포함하여 productOrderList 배열의 뒤에 추가
+      const newOrder = { productOptionCheck, productQuantity: 1 };
+      saveOrder(newOrder, idx);
     }
   };
 
@@ -131,9 +102,6 @@ const EstimateResultInBox = ({ productData, productOrderList, saveOrder }) => {
       setDiscountData(productData.ProductDiscount);
       setDiscountDataCheck(productData.ProductDiscount);
     }
-
-    if (productData.ProductOptions?.length === 0) handleProductQuantity();
-
     // eslint-disable-next-line
   }, []);
 

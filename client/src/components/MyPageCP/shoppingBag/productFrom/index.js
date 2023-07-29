@@ -49,6 +49,8 @@ const ShoppingBagProductFrom = ({
     // eslint-disable-next-line
   }, [checkList]);
 
+  console.log(state);
+
   const handleCheckboxChange = () => {
     setCheckBox(checkBox ? false : true);
 
