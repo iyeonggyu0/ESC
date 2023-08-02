@@ -126,7 +126,6 @@ const LayOutHeader = () => {
                   <MenuUl>
                     <li onClick={() => navigate('/')}>커스텀 과정</li>
                     <li onClick={() => navigate('/')}>FAQ</li>
-                    <li onClick={() => navigate('/')}>채팅 상담</li>
                   </MenuUl>
                 </div>
                 <div>
@@ -260,7 +259,6 @@ const LayOutHeader = () => {
                   <div>
                     <p>커스텀 과정</p>
                     <p>FAQ</p>
-                    <p>채팅 상담</p>
                     {userLoginData.login && userLoginData.userInfo.authority === 'admin' && (
                       <p onClick={() => navigate('/admin/dashboard')}>ADMIN</p>
                     )}

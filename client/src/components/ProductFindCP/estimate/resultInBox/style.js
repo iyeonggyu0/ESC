@@ -21,7 +21,7 @@ export const MainStyle = styled.div`
 
   & > div:nth-child(2) {
     /* height: 200px; */
-    width: ${(props) => (props.media.isPc ? 'calc(100% - 290px)' : 'calc(100% - 250px)')};
+    width: ${(props) => (props.media.isPc ? 'calc(100% - 290px)' : '100%')};
     margin-left: ${(props) => (props.media.isPc ? '40px' : '0px')};
     margin-top: ${(props) => (props.media.isPc ? '0px' : '40px')};
     position: relative;

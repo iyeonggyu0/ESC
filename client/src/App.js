@@ -27,6 +27,7 @@ import AdminPage from './pages/adminPage';
 import EstimatePage from './pages/estimatePage';
 import PreferencePage from './pages/preferencePage';
 import { useMedia } from './hooks/useMedia';
+import ServiceMainPage from './pages/serviceMainPage';
 
 export const ThemeContext = createContext(null);
 
@@ -85,6 +86,9 @@ function App() {
           {/* 견적내기 */}
           <Route path="/estimate/:pageNum" element={<EstimatePage />} />
           <Route path="/preference/:pageNum" element={<PreferencePage />} />
+
+          {/* 고객센터 */}
+          <Route path="/service" element={<ServiceMainPage />} />
 
           {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>

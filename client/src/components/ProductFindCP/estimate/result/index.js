@@ -225,17 +225,33 @@ const EstimateResult = ({ productData, selectionList }) => {
               <span className="deliveryFee">배송비: </span>
               {totalPrice - totalDiscount < 100000 ? '3,000' : '무료'}
             </p>
-            <p className="specialSymbol"> = </p>
-            <p>
-              {(
-                totalPrice -
-                totalDiscount +
-                totalAmount +
-                (totalPrice - totalDiscount < 100000 ? 3000 : 0)
-              ).toLocaleString()}
-              원
-            </p>
+            {media.isPc && <p className="specialSymbol"> = </p>}
+            {media.isPc && (
+              <p>
+                {(
+                  totalPrice -
+                  totalDiscount +
+                  totalAmount +
+                  (totalPrice - totalDiscount < 100000 ? 3000 : 0)
+                ).toLocaleString()}
+                원
+              </p>
+            )}
           </div>
+          {media.isMobile && (
+            <div className="flexHeightCenter mobileTotalPrice">
+              <p className="specialSymbol"> = </p>
+              <p>
+                {(
+                  totalPrice -
+                  totalDiscount +
+                  totalAmount +
+                  (totalPrice - totalDiscount < 100000 ? 3000 : 0)
+                ).toLocaleString()}
+                원
+              </p>
+            </div>
+          )}
           <div>
             <div className="flexCenter" onClick={addShoppingBag}>
               장바구니

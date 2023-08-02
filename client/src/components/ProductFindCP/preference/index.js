@@ -1,10 +1,11 @@
-import ProductFindHeader from '../_common/header';
+import PreparingPage from '../../_common/error/preparing';
+// import ProductFindHeader from '../_common/header';
 
 const PreferenceMain = () => {
   return (
     <>
-      <ProductFindHeader Page={'preference'} />
-      <></>
+      <PreparingPage />
+      {/* <ProductFindHeader Page={'preference'} /> */}
     </>
   );
 };
