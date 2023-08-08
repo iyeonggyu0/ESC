@@ -59,8 +59,43 @@ const ServiceMain = () => {
           </a>
         </div>
         <div>
-          <p></p>
-          <ul></ul>
+          <p>잦은 질문</p>
+          <ul>
+            <li className="flexHeightCenter">
+              <p>전체질문 보기</p>
+              <div>바로가기</div>
+            </li>
+            <li className="flexHeightCenter">
+              <p>반품 정책 및 보증</p>
+              <div className="flexHeightCenter">
+                {media.isPc && <p>2022</p>}
+                {media.isPc && <p>PDF</p>}
+                <a href="/servicePDF/guidePDF.pdf" download={'lubrication_guidePDF.pdf'}>
+                  다운로드
+                </a>
+              </div>
+            </li>
+            <li className="flexHeightCenter">
+              <p>배송</p>
+              <div className="flexHeightCenter">
+                {media.isPc && <p>2023</p>}
+                {media.isPc && <p>PDF</p>}
+                <a href="/servicePDF/guidePDF.pdf" download={'lubrication_guidePDF.pdf'}>
+                  다운로드
+                </a>
+              </div>
+            </li>
+            <li className="flexHeightCenter">
+              <p>안전성과 인증</p>
+              <div className="flexHeightCenter">
+                {media.isPc && <p>2023</p>}
+                {media.isPc && <p>PDF</p>}
+                <a href="/servicePDF/guidePDF.pdf" download={'lubrication_guidePDF.pdf'}>
+                  다운로드
+                </a>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </MainStyle>

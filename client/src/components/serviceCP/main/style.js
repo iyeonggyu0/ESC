@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const MainStyle = styled.div`
   width: ${(props) => (props.media.isPc ? '75vw' : '85%')};
   min-height: calc(100vh - 70px);
-  margin: 10vh auto;
+  margin: 0 auto;
+  margin-top: 10vh;
   position: relative;
 
   /* 커스텀 과정 / 메뉴얼 */
@@ -14,7 +15,7 @@ export const MainStyle = styled.div`
   }
 
   & > div:nth-child(1) > p:first-child {
-    font-size: ${(props) => (props.media.isPc ? '2rem' : '1.4rem')};
+    font-size: ${(props) => (props.media.isPc ? '2rem' : '1.6rem')};
   }
 
   & > div:nth-child(1) > div:nth-child(2) {
@@ -71,5 +72,41 @@ export const MainStyle = styled.div`
 
   & > div:nth-child(1) > div:nth-child(2) > a > div:nth-child(2) > .downIcon {
     display: none;
+  }
+
+  /* 잦은 질문 */
+  & > div:nth-child(1) > div:nth-child(3) {
+    width: 100%;
+    margin-top: ${(props) => (props.media.isPc ? '7vh' : '5vh')};
+  }
+
+  & > div:nth-child(1) > div:nth-child(3) > p:nth-child(1) {
+    font-size: ${(props) => (props.media.isPc ? '1.6rem' : '1.4rem')};
+    margin-bottom: 32px;
+  }
+
+  & > div:nth-child(1) > div:nth-child(3) > ul {
+    border-top: 1px solid #dfdfdf;
+  }
+
+  & > div:nth-child(1) > div:nth-child(3) > ul > li {
+    width: 100%;
+    min-height: 95px;
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0 ${(props) => (props.media.isPc ? '30px' : '15px')};
+    justify-content: space-between;
+  }
+
+  & > div:nth-child(1) > div:nth-child(3) > ul > li > p {
+    font-size: ${(props) => (props.media.isPc ? '1.15rem' : '1.2rem')};
+  }
+
+  & > div:nth-child(1) > div:nth-child(3) > ul > li > div {
+    justify-content: space-between;
+    width: ${(props) => (props.media.isPc ? '20%' : 'auto')};
+  }
+
+  & > div:nth-child(1) > div:nth-child(3) > ul > li > div:last-child {
+    text-align: end;
   }
 `;
