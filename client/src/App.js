@@ -28,6 +28,8 @@ import EstimatePage from './pages/estimatePage';
 import PreferencePage from './pages/preferencePage';
 import { useMedia } from './hooks/useMedia';
 import ServiceMainPage from './pages/serviceMainPage';
+import ServiceQnAPage from './pages/serviceQnAPage';
+import ServiceQnACreatePage from './pages/serviceQnACreatePage';
 
 export const ThemeContext = createContext(null);
 
@@ -89,6 +91,8 @@ function App() {
 
           {/* 고객센터 */}
           <Route path="/service" element={<ServiceMainPage />} />
+          <Route path="/service/qna" element={<ServiceQnAPage />} />
+          <Route path="/service/qna/create" element={<ServiceQnACreatePage />} />
 
           {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>

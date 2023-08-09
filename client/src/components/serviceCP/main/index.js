@@ -5,10 +5,12 @@ import { MainStyle } from './style';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { useNavigate } from 'react-router-dom';
 
 const ServiceMain = () => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
+  const navigate = useNavigate();
 
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
@@ -63,7 +65,7 @@ const ServiceMain = () => {
           <ul>
             <li className="flexHeightCenter">
               <p>전체질문 보기</p>
-              <div>바로가기</div>
+              <div onClick={() => navigate('/service/qna')}>바로가기</div>
             </li>
             <li className="flexHeightCenter">
               <p>반품 정책 및 보증</p>

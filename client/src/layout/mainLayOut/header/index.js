@@ -58,10 +58,10 @@ const LayOutHeader = () => {
     [dispatch, navigate],
   );
 
-  // document.getElementsByTagName('li').onclick = function () {
-  //   console.log('클릭');
-  //   setMenu('none');
-  // };
+  const toPage = (url) => {
+    navigate(url);
+    setMenu('none');
+  };
 
   return (
     <>
@@ -70,22 +70,20 @@ const LayOutHeader = () => {
           <Header colorTheme={colorTheme} media={media}>
             {/* 메뉴 */}
             <HeaderSection>
-              <Logo className={`${colorTheme}`} onClick={() => navigate('/')}></Logo>
+              <Logo className={`${colorTheme}`} onClick={() => toPage('/')}></Logo>
               <Ul>
-                <li onClick={() => navigate('/estimate/1')}>견적내기</li>
-                <li onClick={() => navigate('/product/list/ALL')}>전체상품</li>
-                <li onClick={() => navigate('/community')}>커뮤니티</li>
-                <li onClick={() => navigate('/service')}>고객센터</li>
+                <li onClick={() => toPage('/estimate/1')}>견적내기</li>
+                <li onClick={() => toPage('/product/list/ALL')}>전체상품</li>
+                <li onClick={() => toPage('/community')}>커뮤니티</li>
+                <li onClick={() => toPage('/service')}>고객센터</li>
               </Ul>
               <SectionUl>
                 <div onClick={() => toggleTheme.toggleTheme()}>
                   {colorTheme === 'game' && <span>BASIC</span>}
                   {colorTheme === 'basic' && <span>GAME</span>}
                 </div>
-                {!userLoginData.login && <span onClick={() => navigate('/login')}>LOGIN</span>}
-                {userLoginData.login && (
-                  <span onClick={() => navigate('/mypage/main')}>MYPAGE</span>
-                )}
+                {!userLoginData.login && <span onClick={() => toPage('/login')}>LOGIN</span>}
+                {userLoginData.login && <span onClick={() => toPage('/mypage/main')}>MYPAGE</span>}
                 <div>
                   {menu === 'none' && (
                     <FontAwesomeIcon
@@ -111,35 +109,36 @@ const LayOutHeader = () => {
               <MenuDiv colorTheme={colorTheme}>
                 <div>
                   <MenuUl>
-                    <li onClick={() => navigate('/preference/1')}>취향찾기</li>
+                    <li onClick={() => toPage('/preference/1')}>취향찾기</li>
                   </MenuUl>
                   <MenuUl>
-                    <li onClick={() => navigate('/product/list/CASE')}>CASE</li>
-                    <li onClick={() => navigate('/product/list/PCB')}>PCB</li>
-                    <li onClick={() => navigate('/product/list/PLATE')}>PLATE</li>
-                    <li onClick={() => navigate('/product/list/SWITCHES')}>SWITCHES</li>
-                    <li onClick={() => navigate('/product/list/KEYCAPS')}>KEYCAPS</li>
+                    <li onClick={() => toPage('/product/list/CASE')}>CASE</li>
+                    <li onClick={() => toPage('/product/list/PCB')}>PCB</li>
+                    <li onClick={() => toPage('/product/list/PLATE')}>PLATE</li>
+                    <li onClick={() => toPage('/product/list/SWITCHES')}>SWITCHES</li>
+                    <li onClick={() => toPage('/product/list/KEYCAPS')}>KEYCAPS</li>
                   </MenuUl>
                   <MenuUl>
-                    <li onClick={() => navigate('/')}>글쓰기</li>
+                    <li onClick={() => toPage('/')}>글쓰기</li>
                   </MenuUl>
                   <MenuUl>
-                    <li onClick={() => navigate('/')}>커스텀 과정</li>
-                    <li onClick={() => navigate('/')}>FAQ</li>
+                    <li onClick={() => toPage('/service')}>커스텀 과정</li>
+                    <li onClick={() => toPage('/service')}>FAQ</li>
+                    <li onClick={() => toPage('/service/qna')}>Q&A</li>
                   </MenuUl>
                 </div>
                 <div>
                   <MenuUl>
-                    {!userLoginData.login && <li onClick={() => navigate('/signup')}>회원가입</li>}
+                    {!userLoginData.login && <li onClick={() => toPage('/signup')}>회원가입</li>}
                     {userLoginData.login && <li onClick={onLogoutHandler}>로그아웃</li>}
                     {userLoginData.login && (
-                      <li onClick={() => navigate('/mypage/shopping-bag')}>장바구니</li>
+                      <li onClick={() => toPage('/mypage/shopping-bag')}>장바구니</li>
                     )}
                     {userLoginData.login && (
-                      <li onClick={() => navigate('/mypage/orderList')}>결제내역</li>
+                      <li onClick={() => toPage('/mypage/orderList')}>결제내역</li>
                     )}
                     {userLoginData.login && userLoginData.userData.authority === 'admin' && (
-                      <li onClick={() => navigate('/admin/dashboard')}>ADMIN</li>
+                      <li onClick={() => toPage('/admin/dashboard')}>ADMIN</li>
                     )}
                   </MenuUl>
                 </div>
@@ -153,12 +152,10 @@ const LayOutHeader = () => {
         <div>
           <Header colorTheme={colorTheme} media={media}>
             <HeaderSection colorTheme={colorTheme}>
-              <Logo className={`${colorTheme}`} onClick={() => navigate('/')}></Logo>
+              <Logo className={`${colorTheme}`} onClick={() => toPage('/')}></Logo>
               <MobileHeader>
-                {!userLoginData.login && <span onClick={() => navigate('/login')}>LOGIN</span>}
-                {userLoginData.login && (
-                  <span onClick={() => navigate('/mypage/main')}>MYPAGE</span>
-                )}
+                {!userLoginData.login && <span onClick={() => toPage('/login')}>LOGIN</span>}
+                {userLoginData.login && <span onClick={() => toPage('/mypage/main')}>MYPAGE</span>}
                 <div>
                   {menu === 'none' && (
                     <FontAwesomeIcon
@@ -187,7 +184,7 @@ const LayOutHeader = () => {
               </MobileMenuDiv>
 
               <MobileMenuDiv>
-                <span onClick={() => navigate('/estimate/1')}>견적내기</span>
+                <span onClick={() => toPage('/estimate/1')}>견적내기</span>
                 {mobileMenu1 === 'none' && (
                   <FontAwesomeIcon
                     icon={solid('caret-down')}
@@ -204,7 +201,7 @@ const LayOutHeader = () => {
                 )}
                 {mobileMenu1 === 'block' && (
                   <div>
-                    <p onClick={() => navigate('/preference/1')}>취향찾기</p>
+                    <p onClick={() => toPage('/preference/1')}>취향찾기</p>
                   </div>
                 )}
               </MobileMenuDiv>
@@ -227,12 +224,12 @@ const LayOutHeader = () => {
                 )}
                 {mobileMenu2 === 'block' && (
                   <div>
-                    <p onClick={() => navigate('/product/list/ALL')}>전체상품</p>
-                    <p onClick={() => navigate('/product/list/CASE')}>CASE</p>
-                    <p onClick={() => navigate('/product/list/PCB')}>PCB</p>
-                    <p onClick={() => navigate('/product/list/PLATE')}>PLATE</p>
-                    <p onClick={() => navigate('/product/list/SWITCHES')}>SWITCHES</p>
-                    <p onClick={() => navigate('/product/list/KEYCAPS')}>KEYCAPS</p>
+                    <p onClick={() => toPage('/product/list/ALL')}>전체상품</p>
+                    <p onClick={() => toPage('/product/list/CASE')}>CASE</p>
+                    <p onClick={() => toPage('/product/list/PCB')}>PCB</p>
+                    <p onClick={() => toPage('/product/list/PLATE')}>PLATE</p>
+                    <p onClick={() => toPage('/product/list/SWITCHES')}>SWITCHES</p>
+                    <p onClick={() => toPage('/product/list/KEYCAPS')}>KEYCAPS</p>
                   </div>
                 )}
               </MobileMenuDiv>
@@ -257,10 +254,11 @@ const LayOutHeader = () => {
                 )}
                 {mobileMenu3 === 'block' && (
                   <div>
-                    <p>커스텀 과정</p>
-                    <p>FAQ</p>
+                    <p onClick={() => toPage('/service')}>커스텀 과정</p>
+                    <p onClick={() => toPage('/service')}>FAQ</p>
+                    <p onClick={() => toPage('/service/qna')}>FAQ</p>
                     {userLoginData.login && userLoginData.userInfo.authority === 'admin' && (
-                      <p onClick={() => navigate('/admin/dashboard')}>ADMIN</p>
+                      <p onClick={() => toPage('/admin/dashboard')}>ADMIN</p>
                     )}
                   </div>
                 )}
@@ -283,9 +281,9 @@ const LayOutHeader = () => {
                 )}
                 {mobileMenu4 === 'block' && (
                   <div style={{ fontSize: '0.8rem' }}>
-                    <p onClick={() => navigate('/mypage/orderList')}>주문목록 / 배송조회</p>
+                    <p onClick={() => toPage('/mypage/orderList')}>주문목록 / 배송조회</p>
                     <p>취소 / 반품 / 교환 내역</p>
-                    <p onClick={() => navigate('/mypage/shopping-bag')}>장바구니</p>
+                    <p onClick={() => toPage('/mypage/shopping-bag')}>장바구니</p>
                     <p>찜</p>
                     <p>문의내역</p>
                     <p>리뷰</p>

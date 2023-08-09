@@ -106,7 +106,9 @@ export const MainStyle = styled.div`
     width: ${(props) => (props.media.isPc ? '20%' : 'auto')};
   }
 
-  & > div:nth-child(1) > div:nth-child(3) > ul > li > div:last-child {
+  & > div:nth-child(1) > div:nth-child(3) > ul > li:first-child > div:last-child {
+    width: auto;
     text-align: end;
+    cursor: pointer;
   }
 `;

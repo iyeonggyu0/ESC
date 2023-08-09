@@ -13,7 +13,7 @@ import axios from 'axios';
 // 형식으로 사용하기
 
 // eslint-disable-next-line
-const TextEditor = ({ textData, textDataFun }) => {
+const TextEditorInCommunity = ({ textData, textDataFun }) => {
   const parma = window.location.href;
   const [flag, setFlag] = useState(false);
   console.log(parma);
@@ -62,23 +62,12 @@ const TextEditor = ({ textData, textDataFun }) => {
       config={{
         extraPlugins: [uploadPlugin],
       }}
-      // onReady={(editor) => {
-      //   console.log('Editor is ready to use!', editor);
-      // }}
       onChange={(event, editor) => {
         const data = editor.getData();
         textDataFun(data);
-      }}
-      // eslint-disable-next-line
-      onBlur={(event, editor) => {
-        console.log('unFocus');
-      }}
-      // eslint-disable-next-line
-      onFocus={(event, editor) => {
-        console.log('Focus');
       }}
     />
   );
 };
 
-export default TextEditor;
+export default TextEditorInCommunity;
