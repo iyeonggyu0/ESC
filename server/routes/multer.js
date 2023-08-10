@@ -157,4 +157,72 @@ router.post("/route/copy", async (req, res) => {
     .catch((err) => console.error(err));
 });
 
+router.post("/community/upload/:imageNum", async (req, res) => {
+  function createCommunityFolder() {
+    const randomNumber = Math.floor(Math.random() * 999999) + 1; // 1 이상 999999 이하의 랜덤 숫자 생성
+    const randomSixDigitNumber = randomNumber.toString().padStart(6, "0"); // 0으로 채워 6자리로 만듦
+    const folderPath = `../client/public/img/community/${randomSixDigitNumber}`;
+    try {
+      fsExtra.ensureDirSync(folderPath); // 하위 폴더 생성
+      console.log(`폴더 생성 완료: ${folderPath}`);
+    } catch (err) {
+      console.error(`폴더 생성 실패: ${folderPath}`);
+      createCommunityFolder(); // 폴더 생성 실패 시 재시도
+    }
+
+    return randomSixDigitNumber;
+  }
+
+  let randomSixDigitNumber = 0;
+  const { imageNum } = req.params;
+  console.log(imageNum);
+
+  if (imageNum !== "none") {
+    randomSixDigitNumber = imageNum;
+  } else if (imageNum === "none") {
+    randomSixDigitNumber = createCommunityFolder();
+  }
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, `../client/public/img/community/${randomSixDigitNumber}`);
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${uuid()}.${mime.extension(file.mimetype)}`);
+    },
+  });
+
+  const upload = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+      if (["image/jpeg", "image/jpg", "image/png"].includes(file.mimetype)) cb(null, true);
+      else cb(new Error("해당 파일의 형식을 지원하지 않습니다."), false);
+    },
+    limits: {
+      fileSize: 1024 * 1024 * 5,
+    },
+  }).array("file");
+
+  upload(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ success: false, error: err.message });
+    }
+
+    const imgs = req.files.map((file) => ({
+      fileName: file.filename,
+    }));
+
+    return res.json({
+      success: true,
+      imgs,
+      image: req.files[0].path,
+      imagePath: `/img/community/${randomSixDigitNumber}`,
+      imagePathName: `/img/community/${randomSixDigitNumber}/${req.files[0].filename}`,
+      randomSixDigitNumber: randomSixDigitNumber,
+    });
+  });
+
+  router.use(`/img/community/${randomSixDigitNumber}`, express.static(path.join(__dirname, `../client/public/img/community/${randomSixDigitNumber}`)));
+});
+
 module.exports = router;

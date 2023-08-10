@@ -4,7 +4,7 @@ import { useMedia } from '../../../hooks/useMedia';
 import { MainStyle } from './style';
 import { useState } from 'react';
 import Select from 'react-select';
-import TextEditor from '../../_common/textEditor';
+import TextEditorInCommunity from '../../_common/textEditorCommunity';
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
@@ -57,7 +57,7 @@ const ServiceQnACreateMain = () => {
       </div>
       <div>
         <p>문의 내용</p>
-        <TextEditor textDataFun={contentsInput} />
+        <TextEditorInCommunity textDataFun={contentsInput} />
       </div>
     </MainStyle>
   );

@@ -30,7 +30,7 @@ const TextEditor = ({ textData, textDataFun }) => {
           if (parma === process.env.LINK + '/product/enrollment') {
             data.append('file', loader.target.files[0]);
             axios
-              .post(`${axiosInstance}/multer/upload/productEnrollment`, data, {
+              .post(`${axiosInstance}api/multer/upload/productEnrollment`, data, {
                 headers: { 'content-type': 'multipart/form-data' },
               })
               .then((res) => {
