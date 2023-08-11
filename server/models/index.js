@@ -26,6 +26,8 @@ db.ShoppingBag = require("./shoppingBag")(sequelize, Sequelize);
 db.Payment = require("./payment")(sequelize, Sequelize);
 db.CancelPayment = require("./cancelPayment")(sequelize, Sequelize);
 
+db.Servicenquiry = require("./serviceInquiry")(sequelize, Sequelize);
+
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
