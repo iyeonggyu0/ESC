@@ -52,7 +52,7 @@ export const MainStyle = styled.div`
     font-size: 0.9rem;
     position: absolute;
     right: 2%;
-    top: 20px;
+    top: 38%;
   }
 
   & > div:nth-child(2) > p > .isMobile {

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Servicenquiry = sequelize.define(
-    "Servicenquiry",
+  const ServiceInquiry = sequelize.define(
+    "ServiceInquiry",
     {
       email: {
         type: DataTypes.STRING(50),
@@ -30,16 +30,15 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       timestamps: true,
-      modelName: "Servicenquiry",
-      tableName: "Servicenquirys",
+      modelName: "ServiceInquiry",
+      tableName: "ServiceInquirys",
       charset: "utf8",
       collate: "utf8_general_ci",
     }
   );
-  Servicenquiry.associate = (db) => {
-    // db.ProductInquiry.belongsTo(db.Product, { foreignKey: "productId", targetKey: "id" });
-    // db.ProductInquiry.belongsTo(db.User, { foreignKey: "email", targetKey: "email" });
-    // db.ProductInquiry.hasOne(db.ProductAnswer, { foreignKey: "inquiryId", sourceKey: "id" });
+  ServiceInquiry.associate = (db) => {
+    db.ServiceInquiry.belongsTo(db.User, { foreignKey: "email", targetKey: "email" });
+    db.ServiceInquiry.hasOne(db.ServiceAnswer, { foreignKey: "inquiryId", sourceKey: "id" });
   };
-  return Servicenquiry;
+  return ServiceInquiry;
 };

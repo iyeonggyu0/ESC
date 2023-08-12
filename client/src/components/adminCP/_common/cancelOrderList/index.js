@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
+// import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { MainStyle, ProductFormDiv, PaginationBox } from './style';
+import { MainStyle, ProductFormDiv } from './style';
 import { ThemeContext } from '../../../../App.js';
 import CommonLoading from '../../../_common/loading';
 import { decrypt } from '@util/crypto';
@@ -16,7 +16,7 @@ import CancelOrderAdminFrom from './cancelOrderFrom';
 
 const CancelOrderListAdmin = () => {
   const media = useMedia();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // eslint-disable-next-line
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;

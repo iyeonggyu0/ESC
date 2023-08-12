@@ -1,17 +1,13 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { productGetData } from '@reducer/productReducer';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { MainStyle, ProductFormDiv, PaginationBox } from './style';
+import { MainStyle, ProductFormDiv } from './style';
 import { ThemeContext } from '../../../../App.js';
 import CommonLoading from '../../../_common/loading';
 import { decrypt } from '@util/crypto';
-import Pagination from 'react-js-pagination';
-import theme from '@style/theme.js';
 import { useMedia } from '../../../../hooks/useMedia';
 import axios from 'axios';
 import { axiosInstance } from '../../../../util/axios';
@@ -19,7 +15,6 @@ import OrderAdminFrom from './orderFrom';
 
 const OrderListAdmin = () => {
   const media = useMedia();
-  const dispatch = useDispatch();
   // eslint-disable-next-line
   const navigate = useNavigate();
   const colorTheme = useContext(ThemeContext).colorTheme;

@@ -2,9 +2,8 @@ import styled from 'styled-components';
 
 export const MainStyle = styled.div`
   width: ${(props) => (props.media.isPc ? '75vw' : '85%')};
-  min-height: calc(100vh - 70px);
-  margin: 0 auto;
-  margin-top: 10vh;
+  min-height: calc(80vh - 70px);
+  margin: 10vh auto;
   position: relative;
 
   & > p:nth-child(1) {
@@ -17,13 +16,9 @@ export const MainStyle = styled.div`
   & > p:nth-child(2) {
     width: 100%;
     text-align: end;
-    padding-bottom: 1vh;
+    padding-bottom: 2vh;
     color: ${({ theme }) => theme.palette.gameLightStroke};
-    border-bottom: 1px solid
-      ${(props) =>
-        props.colorTheme === 'game'
-          ? ({ theme }) => theme.palette.gameLightFont
-          : ({ theme }) => theme.palette.basicFont};
+    border-bottom: 1px solid ${({ theme }) => theme.palette.gameLightFont};
     transition: all 0.3s;
   }
 

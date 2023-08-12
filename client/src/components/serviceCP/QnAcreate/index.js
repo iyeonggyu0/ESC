@@ -12,6 +12,7 @@ import axios from 'axios';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useNavigate } from 'react-router-dom';
+import { encrypt } from '@util/crypto';
 
 const ServiceQnACreateMain = () => {
   const media = useMedia();
@@ -44,6 +45,10 @@ const ServiceQnACreateMain = () => {
 
   const qnaSaveHandler = useCallback(
     (secret) => {
+      if (!userData) {
+        return alert('재로그인이 필요합니다');
+      }
+
       if (title.replace(/ /g, '').length === 0) {
         return alert('제목을 입력하세요');
       }
@@ -56,11 +61,16 @@ const ServiceQnACreateMain = () => {
         return alert('내용은 15글자 이상이어야 합니다');
       }
 
+      let encryptContents = contents;
+      if (secret) {
+        encryptContents = encrypt(contents, process.env.REACT_APP_USER_KEY);
+      }
+
       const data = {
         email: userData.email,
         title: title,
         inquiryType: typeOption,
-        contents: contents,
+        contents: encryptContents,
         secret: secret,
       };
 
@@ -68,12 +78,20 @@ const ServiceQnACreateMain = () => {
         .post(`${axiosInstance}api/service/inquiry/post`, data)
         .then((res) => {
           console.log(res);
+          if (res.status === 403) {
+            return alert('재로그인이 필요합니다.');
+          }
+
+          if (res.status === 201) {
+            alert('질문이 작성되었습니다.');
+            return navigate('/service/qna');
+          }
         })
         .catch((err) => console.error(err));
 
       console.log(data);
     },
-    [title, typeOption, contents, userData],
+    [title, typeOption, contents, userData, navigate],
   );
 
   return (

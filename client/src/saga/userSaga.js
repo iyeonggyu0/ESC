@@ -67,8 +67,7 @@ function* userSign(action) {
 function* logOut(action) {
   try {
     yield call(UserService.prototype.logout, action.payload);
-    window.location.href = '/';
-    window.location.replace('/');
+    window.location.replace();
     yield put(logOutUserSuccess());
   } catch (err) {
     console.log(err);

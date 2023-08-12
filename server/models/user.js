@@ -66,6 +66,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "email",
       sourceKey: "email",
     });
+    db.User.hasMany(db.ServiceInquiry, {
+      foreignKey: "email",
+      sourceKey: "email",
+    });
     db.User.hasMany(db.ShoppingBag, { foreignKey: "userEmail", sourceKey: "email", onDelete: "CASCADE" });
     db.User.hasMany(db.Payment, { foreignKey: "userEmail", sourceKey: "email" });
     db.User.hasMany(db.CancelPayment, { foreignKey: "userEmail", sourceKey: "email" });
