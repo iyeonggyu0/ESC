@@ -17,7 +17,7 @@ export default class UserService {
       })
       .then((res) => {
         console.log('로그인 성공');
-        req.navigate('/');
+        history.back();
         const decryptData = decrypt(res.data, process.env.REACT_APP_USER_KEY);
         return { userData: decryptData, login: true };
       })
@@ -25,7 +25,7 @@ export default class UserService {
         console.log(err);
         if (err.response.status === 403) {
           if (!alert('이미 로그인되어있습니다.')) {
-            req.navigate('/');
+            history.back();
             return { login: true };
           }
         } else if (err.response.status === 401) {

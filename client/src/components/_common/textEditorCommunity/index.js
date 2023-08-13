@@ -11,7 +11,7 @@ import styled from 'styled-components';
 //   setState(`${text}`);
 // };
 
-// <TextEditor textDataFun={textDataFun} />
+// <TextEditorInCommunity textDataFun={textDataFun} />
 // 형식으로 사용하기
 
 const MainStyle = styled.div`
@@ -63,7 +63,7 @@ const MainStyle = styled.div`
 `;
 
 // eslint-disable-next-line
-const TextEditorInCommunity = ({ textData, textDataFun }) => {
+const TextEditorInCommunity = ({ basicData, textDataFun }) => {
   const customUploadAdapter = (loader) => {
     return alert('이미지 등록이 불가능합니다.');
     //   return {
@@ -103,6 +103,7 @@ const TextEditorInCommunity = ({ textData, textDataFun }) => {
         config={{
           extraPlugins: [uploadPlugin],
         }}
+        data={basicData || ''}
         onChange={(event, editor) => {
           const data = editor.getData();
           textDataFun(data);

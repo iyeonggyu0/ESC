@@ -48,4 +48,53 @@ router.get("/get", async (req, res) => {
   }
 });
 
+router.delete("/delete/inquiry/:inquiryId", isLoggedIn, async (req, res) => {
+  const { inquiryId } = req.params;
+
+  try {
+    await ServiceInquiry.destroy({
+      where: { id: inquiryId },
+    });
+
+    const data = await ServiceAnswer.findOne({ where: { inquiryId: inquiryId } });
+    if (data) {
+      await ServiceAnswer.destroy({
+        where: { inquiryId: inquiryId },
+      });
+    }
+
+    res.status(201).send("성공");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.post("/answer/post", isLoggedIn, async (req, res) => {
+  const { email, contents, inquiryId } = req.body;
+  try {
+    const data = await ServiceAnswer.create({
+      inquiryId: inquiryId,
+      email: email,
+      content: contents,
+    });
+    res.status(201).json(data);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.delete("/delete/answer/:inquiryId", isLoggedIn, async (req, res) => {
+  const { inquiryId } = req.params;
+
+  try {
+    await ServiceAnswer.destroy({
+      where: { inquiryId: inquiryId },
+    });
+
+    res.status(201).send("성공");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 module.exports = router;

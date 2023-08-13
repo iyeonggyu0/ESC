@@ -31,10 +31,28 @@ const ServiceQnAMain = () => {
     axios
       .get(`${axiosInstance}api/service/get`)
       .then((res) => {
-        setQnaData(res.data);
+        setQnaData(res.data.reverse());
       })
-      .catch((err) => reject(err));
+      .catch((err) => console.error()(err));
   }, []);
+
+  const reLoadingData = () => {
+    if (userData && userData.authority !== 'admin') {
+      return alert('권한이 없습니다.');
+    }
+
+    axios
+      .get(`${axiosInstance}api/service/get`)
+      .then((res) => {
+        setQnaData(res.data.reverse());
+      })
+      .catch((err) => console.error()(err));
+  };
+
+  const removeItemById = (id) => {
+    const updatedQnaData = qnaData.filter((item) => item.id !== id);
+    setQnaData(updatedQnaData);
+  };
 
   return (
     <MainStyle media={media} colorTheme={colorTheme}>
@@ -53,7 +71,12 @@ const ServiceQnAMain = () => {
       {qnaData !== null && qnaData.length > 0 && (
         <div>
           {qnaData.map((state, idx) => (
-            <QnAViewer key={idx} QnaData={state} />
+            <QnAViewer
+              key={idx}
+              QnaData={state}
+              removeItemById={removeItemById}
+              reLoadingData={reLoadingData}
+            />
           ))}
         </div>
       )}
