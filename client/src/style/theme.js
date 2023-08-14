@@ -57,6 +57,8 @@ const paginationItem = {
   // 어드민 페이지
   //   - 재고관리
   adminInventoryQuantity: 10,
+
+  ServiceQnA: 7,
 };
 
 const theme = {

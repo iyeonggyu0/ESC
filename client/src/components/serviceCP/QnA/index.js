@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { ThemeContext } from '../../../App';
 import { useMedia } from '../../../hooks/useMedia';
-import { MainStyle } from './style';
+import { MainStyle, PaginationBox } from './style';
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { axiosInstance } from '../../../util/axios';
 import axios from 'axios';
 import QnAViewer from '../_common/QnAViewer';
+import theme from '../../../style/theme';
+import Pagination from 'react-js-pagination';
 
 const ServiceQnAMain = () => {
   const media = useMedia();
@@ -19,6 +21,14 @@ const ServiceQnAMain = () => {
   const userData = useContext(ThemeContext).userInfo.userData;
 
   const [qnaData, setQnaData] = useState(null);
+
+  // 페이지네이션
+  const [activePage, setActivePage] = useState(1);
+  const [items, setItems] = useState(theme.paginationItem.ServiceQnA);
+
+  const onActivePageHandler = (page) => {
+    setActivePage(page);
+  };
 
   const onMoveCreateHandler = () => {
     if (!userData) {
@@ -33,7 +43,7 @@ const ServiceQnAMain = () => {
       .then((res) => {
         setQnaData(res.data.reverse());
       })
-      .catch((err) => console.error()(err));
+      .catch((err) => console.error(err));
   }, []);
 
   const reLoadingData = () => {
@@ -46,7 +56,7 @@ const ServiceQnAMain = () => {
       .then((res) => {
         setQnaData(res.data.reverse());
       })
-      .catch((err) => console.error()(err));
+      .catch((err) => console.error(err));
   };
 
   const removeItemById = (id) => {
@@ -70,15 +80,29 @@ const ServiceQnAMain = () => {
       )}
       {qnaData !== null && qnaData.length > 0 && (
         <div>
-          {qnaData.map((state, idx) => (
-            <QnAViewer
-              key={idx}
-              QnaData={state}
-              removeItemById={removeItemById}
-              reLoadingData={reLoadingData}
-            />
-          ))}
+          {qnaData
+            .slice(items * (activePage - 1), items * (activePage - 1) + items)
+            .map((state, idx) => (
+              <QnAViewer
+                key={idx}
+                QnaData={state}
+                removeItemById={removeItemById}
+                reLoadingData={reLoadingData}
+              />
+            ))}
         </div>
+      )}
+      {qnaData !== null && qnaData.length > 0 && (
+        <PaginationBox colorTheme={colorTheme}>
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={items}
+            totalItemsCount={parseInt(qnaData.length / 1) + 1}
+            prevPageText={'‹'}
+            nextPageText={'›'}
+            onChange={onActivePageHandler}
+          />
+        </PaginationBox>
       )}
     </MainStyle>
   );

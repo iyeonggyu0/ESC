@@ -17,7 +17,6 @@ const QnAViewer = ({ QnaData, removeItemById, reLoadingData }) => {
   const media = useMedia();
   const userData = useContext(ThemeContext).userInfo.userData;
   const date = useDate(QnaData.createdAt);
-  console.log(date);
 
   const atIndex = QnaData.email.indexOf('@'); // '@'의 인덱스 찾기
   const username = QnaData.email.slice(0, atIndex); // '@' 앞의 문자열 추출

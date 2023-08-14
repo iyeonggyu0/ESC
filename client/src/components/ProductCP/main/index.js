@@ -75,9 +75,9 @@ const ProductMain = () => {
     setFilter(`${text}`);
 
     if (text === 'big') {
-      setItems(8);
+      setItems(theme.paginationItem.productMainBig);
     } else {
-      setItems(18);
+      setItems(theme.paginationItem.productMainSmall);
     }
     // eslint-disable-next-line
   }, []);

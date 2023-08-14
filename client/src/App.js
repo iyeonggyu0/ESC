@@ -30,6 +30,7 @@ import { useMedia } from './hooks/useMedia';
 import ServiceMainPage from './pages/serviceMainPage';
 import ServiceQnAPage from './pages/serviceQnAPage';
 import ServiceQnACreatePage from './pages/serviceQnACreatePage';
+import CommunityMainPage from './pages/communityMainPage';
 
 export const ThemeContext = createContext(null);
 
@@ -92,7 +93,9 @@ function App() {
           {/* 고객센터 */}
           <Route path="/service" element={<ServiceMainPage />} />
           <Route path="/service/qna" element={<ServiceQnAPage />} />
-          <Route path="/service/qna/create" element={<ServiceQnACreatePage />} />
+
+          {/* 커뮤니티 */}
+          <Route path="/community" element={<CommunityMainPage />} />
 
           {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>
@@ -100,6 +103,12 @@ function App() {
             <Route path="/mypage/:page" element={<MyPage />} />
             {/* 어드민 */}
             {media.isPc && <Route path="/admin/:page" element={<AdminPage />} />}
+
+            {/* 고객센터 - 질문 페이지 */}
+            <Route path="/service/qna/create" element={<ServiceQnACreatePage />} />
+
+            {/* 커뮤니티 - 글 작성 페이지 */}
+            <Route path="/community/create" element={<ServiceQnACreatePage />} />
           </Route>
 
           {/* 404 */}
