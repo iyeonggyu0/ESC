@@ -30,7 +30,8 @@ import { useMedia } from './hooks/useMedia';
 import ServiceMainPage from './pages/serviceMainPage';
 import ServiceQnAPage from './pages/serviceQnAPage';
 import ServiceQnACreatePage from './pages/serviceQnACreatePage';
-import CommunityMainPage from './pages/communityMainPage';
+import CommunityMainPage from './pages/communityCreatePage';
+import CommunityCreatePage from './pages/communityCreatePage';
 
 export const ThemeContext = createContext(null);
 
@@ -108,7 +109,7 @@ function App() {
             <Route path="/service/qna/create" element={<ServiceQnACreatePage />} />
 
             {/* 커뮤니티 - 글 작성 페이지 */}
-            <Route path="/community/create" element={<ServiceQnACreatePage />} />
+            <Route path="/community/create" element={<CommunityCreatePage />} />
           </Route>
 
           {/* 404 */}
