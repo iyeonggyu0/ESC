@@ -1,79 +1,115 @@
-// const express = require("express");
-// const router = express.Router();
-// const { Post, User, Comment, Reply } = require("../models");
+const express = require("express");
+const passport = require("passport");
+const bcrypt = require("bcrypt");
+const router = express.Router();
+const { decryptFun, encryptFun } = require("../util/crypto");
+const path = require("path");
+const multer = require("multer");
+const fs = require("fs");
+const fsExtra = require("fs-extra");
+const { Op, where } = require("sequelize");
 
-// router.get("/", async (req, res, next) => {
-//   try {
-//     const where = {};
-//     const posts = await Post.findAll({
-//       where,
-//       limit: 10,
-//       order: [
-//         ["createdAt", "DESC"],
-//         [Comment, "createdAt", "DESC"],
-//       ],
-//       include: [
-//         {
-//           model: User,
-//           attributes: ["id", "name"],
-//         },
-//         {
-//           model: Comment,
-//           include: [
-//             {
-//               model: User,
-//               attributes: ["id", "name"],
-//             },
-//             {
-//               model: Reply,
-//               include: [
-//                 {
-//                   model: User,
-//                   attributes: ["id", "name"],
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       ],
-//     });
-//     res.status(200).json(posts);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+const { CommunityPost, User, CommunityComment, CommunityPostLike } = require("../models");
+const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
+const payment = require("../models/payment");
 
-// router.post("/", async (req, res, next) => {
-//   try {
-//     const post = await Post.create({
-//       content: req.body.content,
-//       UserId: req.user.id,
-//     });
-//     const fullPost = await Post.findOne({
-//       where: { id: post.id },
-//       include: [
-//         {
-//           model: User,
-//           attributes: ["id", "name"],
-//         },
-//         {
-//           model: Comment,
-//           include: [
-//             {
-//               model: User,
-//               attributes: ["id", "name"],
-//             },
-//           ],
-//         },
-//       ],
-//     });
-//     res.status(201).json(fullPost);
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// });
+router.get("/all/:sort", async (req, res) => {
+  const { sort } = req.params;
+  if (sort === "최신순") {
+    order = "createdAt";
+    orderSort = "DESC";
+  }
+  if (sort === "가격 높은 순") {
+    order = "price";
+    orderSort = "DESC";
+  }
+  if (sort === "가격 낮은 순") {
+    order = "price";
+    orderSort = "ASC";
+  }
+  if (sort === "추천") {
+    order = "like";
+    orderSort = "DESC";
+  }
+  if (sort === "별점") {
+    order = "grade";
+    orderSort = "DESC";
+  }
+  if (sort === "재고 순") {
+    order = "inventoryQuantity";
+    orderSort = "DESC";
+  }
+  if (sort === "재고 적은 순") {
+    order = "inventoryQuantity";
+    orderSort = "ASC";
+  }
+
+  // try {
+  //   const posts = await Post.findAll({
+  //     where,
+  //     limit: 10,
+  //     order: [[order, orderSort]],
+  //     include: [
+  //       {
+  //         model: User,
+  //         attributes: ["id", "name"],
+  //       },
+  //       {
+  //         model: Comment,
+  //         include: [
+  //           {
+  //             model: User,
+  //             attributes: ["id", "name"],
+  //           },
+  //           {
+  //             model: Reply,
+  //             include: [
+  //               {
+  //                 model: User,
+  //                 attributes: ["id", "name"],
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   });
+  //   res.status(200).json(posts);
+  // } catch (err) {
+  //   console.error(err);
+  // }
+});
+
+router.post("/post", isLoggedIn, async (req, res) => {
+  const { email, title, contents } = req.body;
+  try {
+    const post = await CommunityPost.create({
+      email: email,
+      title: title,
+      content: contents,
+    });
+
+    const postData = await CommunityPost.findOne({
+      where: { id: post.id },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "email"],
+        },
+        {
+          model: CommunityPostLike,
+        },
+        {
+          model: CommunityComment,
+          include: [{ model: CommunityCommentLike }],
+        },
+      ],
+    });
+    res.status(201).json(postData);
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 // router.patch("/:postId", async (req, res, next) => {
 //   try {
@@ -210,4 +246,4 @@
 //   }
 // });
 
-// module.exports = router;
+module.exports = router;

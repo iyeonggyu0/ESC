@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "email",
       targetKey: "email",
     });
-    db.CommunityPost.belongsToMany(db.User, { through: "CommunityPostLike", foreignKey: "PostId" });
+
     db.CommunityPost.hasMany(db.CommunityComment, {
       foreignKey: "postId",
       sourceKey: "id",

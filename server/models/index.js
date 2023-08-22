@@ -29,8 +29,8 @@ db.CancelPayment = require("./cancelPayment")(sequelize, Sequelize);
 db.ServiceInquiry = require("./serviceInquiry")(sequelize, Sequelize);
 db.ServiceAnswer = require("./serviceAnswer")(sequelize, Sequelize);
 
+db.CommunityPost = require("./communityPost")(sequelize, Sequelize);
 db.CommunityPostLike = require("./communityPostLike")(sequelize, Sequelize);
-db.CommunityPost = require("./CommunityPost")(sequelize, Sequelize);
 
 db.CommunityComment = require("./communityComment")(sequelize, Sequelize);
 db.CommunityCommentLike = require("./communityCommentLike")(sequelize, Sequelize);

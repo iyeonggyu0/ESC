@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(30),
         allowNull: false,
         unique: true,
+        primaryKey: true,
       },
       userName: {
         type: DataTypes.STRING(20),
@@ -79,16 +80,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "email",
       sourceKey: "email",
     });
-    // 커뮤니티 글 좋아요
-    db.User.belongsToMany(db.CommunityPost, { through: "CommunityPostLike", foreignKey: "UserEmail" });
-
     // 커뮤니티 댓글 작성
     db.User.hasMany(db.CommunityComment, {
       foreignKey: "email",
       sourceKey: "email",
     });
-    // 커뮤니티 댓글 좋아요
-    db.User.belongsToMany(db.CommunityComment, { through: "CommunityCommentLike", foreignKey: "UserEmail" });
   };
   return User;
 };

@@ -1,11 +1,11 @@
-import CommunityCreate from '../components/communityCP/communityCreate';
+import CommunityPost from '../components/communityCP/communityPost';
 import Layout from '../layout/mainLayOut';
 
-const CommunityCreatePage = () => {
+const CommunityPostPage = () => {
   return (
     <Layout>
-      <CommunityCreate />
+      <CommunityPost />
     </Layout>
   );
 };
-export default CommunityCreatePage;
+export default CommunityPostPage;

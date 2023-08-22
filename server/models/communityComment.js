@@ -11,11 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
-      // 제목
-      title: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-      },
       // 내용
       content: {
         type: DataTypes.TEXT,
@@ -31,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       collate: "utf8_general_ci",
     }
   );
-  // 상품
   CommunityComment.associate = (db) => {
+    // 포스트
     db.CommunityComment.belongsTo(db.CommunityPost, {
       foreignKey: "postId",
       targetKey: "id",
@@ -42,7 +37,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "email",
       targetKey: "email",
     });
-    db.CommunityComment.belongsToMany(db.User, { through: "CommunityCommentLike", foreignKey: "CommentId" });
+    // 좋아요
+    db.CommunityComment.hasMany(db.CommunityCommentLike, {
+      foreignKey: "CommentId",
+      sourceKey: "id",
+    });
   };
   return CommunityComment;
 };

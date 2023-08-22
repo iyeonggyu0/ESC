@@ -2,8 +2,8 @@ module.exports = (sequelize, DataTypes) => {
   const CommunityCommentLike = sequelize.define(
     "CommunityCommentLike",
     {
-      UserEmail: {
-        type: DataTypes.STRING(30),
+      UserId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         targetKey: "email",
@@ -25,10 +25,6 @@ module.exports = (sequelize, DataTypes) => {
   );
   // 상품
   CommunityCommentLike.associate = (db) => {
-    db.CommunityCommentLike.belongsTo(db.User, {
-      foreignKey: "UserEmail",
-      targetKey: "email",
-    });
     db.CommunityCommentLike.belongsTo(db.CommunityComment, {
       foreignKey: "CommentId",
       targetKey: "id",

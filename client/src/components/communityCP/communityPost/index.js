@@ -12,7 +12,7 @@ import axios from 'axios';
 // import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useNavigate } from 'react-router-dom';
 
-const CommunityCreate = () => {
+const CommunityPost = () => {
   const media = useMedia();
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
@@ -32,7 +32,7 @@ const CommunityCreate = () => {
     setContents(`${text}`);
   };
 
-  const SaveHandler = useCallback(() => {
+  const saveHandler = useCallback(() => {
     if (!userData) {
       return alert('재로그인이 필요합니다');
     }
@@ -41,8 +41,8 @@ const CommunityCreate = () => {
       return alert('제목을 입력하세요');
     }
 
-    if (contents.replace(/ /g, '').length < 15) {
-      return alert('내용은 15글자 이상이어야 합니다');
+    if (contents.replace(/ /g, '').length < 100) {
+      return alert('내용은 100글자 이상이어야 합니다');
     }
 
     const data = {
@@ -52,7 +52,7 @@ const CommunityCreate = () => {
     };
 
     axios
-      .post(`${axiosInstance}api/service/inquiry/post`, data)
+      .post(`${axiosInstance}api/community/post`, data)
       .then((res) => {
         console.log(res);
         if (res.status === 403) {
@@ -60,7 +60,7 @@ const CommunityCreate = () => {
         }
 
         if (res.status === 201) {
-          alert('질문이 작성되었습니다.');
+          alert('글이 작성되었습니다.');
           return navigate('/community');
         }
       })
@@ -80,13 +80,13 @@ const CommunityCreate = () => {
         </div>
       </div>
       <div>
-        <p>문의 내용</p>
+        <p>본문 내용</p>
         <TextEditorInCommunity textDataFun={contentsInput} />
       </div>
-      <div onClick={SaveHandler} className="flexCenter">
+      <div onClick={saveHandler} className="flexCenter">
         저장
       </div>
     </MainStyle>
   );
 };
-export default CommunityCreate;
+export default CommunityPost;

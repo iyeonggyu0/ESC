@@ -25,7 +25,7 @@ const CommunityMain = () => {
       return alert('로그인이 필요합니다.');
     }
 
-    navigate('/community/create');
+    navigate('/community/post');
   };
 
   const [sortOption, setSortOption] = useState(sortOptions[0]);
