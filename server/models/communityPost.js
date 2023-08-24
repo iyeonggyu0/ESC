@@ -29,13 +29,17 @@ module.exports = (sequelize, DataTypes) => {
   );
   // 상품
   CommunityPost.associate = (db) => {
-    //작성자
+    // //작성자
     db.CommunityPost.belongsTo(db.User, {
       foreignKey: "email",
       targetKey: "email",
     });
-
     db.CommunityPost.hasMany(db.CommunityComment, {
+      foreignKey: "postId",
+      sourceKey: "id",
+    });
+    // 글 좋아요
+    db.CommunityPost.hasMany(db.CommunityPostLike, {
       foreignKey: "postId",
       sourceKey: "id",
     });

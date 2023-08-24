@@ -21,7 +21,6 @@ export const MainStyle = styled.div`
         props.colorTheme === 'game'
           ? ({ theme }) => theme.palette.gameLightFont
           : ({ theme }) => theme.palette.basicFont};
-    margin-bottom: 5vh;
     padding-bottom: 2vh;
   }
 
@@ -76,5 +75,45 @@ export const MainStyle = styled.div`
     height: 38px;
     border-radius: 4px;
     cursor: pointer;
+  }
+
+  /* 글 목록 */
+  & > div:nth-child(3) {
+    width: 100%;
+    min-height: 50vh;
+    position: relative;
+  }
+
+  & > div:nth-child(3) .notPost {
+    width: 100%;
+    height: 70px;
+    margin-top: 1vh;
+  }
+
+  & > div:nth-child(3) > ul > li:first-child {
+    height: 50px;
+  }
+
+  & > div:nth-child(3) > ul > li > span {
+    width: 12%;
+    text-align: center;
+  }
+
+  & > div:nth-child(3) > ul > li > span:nth-child(2) {
+    width: 62%;
+    text-align: start;
+  }
+
+  & > div:nth-child(3) > ul > li {
+    width: 100%;
+    height: 80px;
+    font-size: ${(props) => (props.media.isPc ? '0.9rem' : '0.8rem')};
+    border-bottom: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.gameLightFont
+          : ({ theme }) => theme.palette.basicFont};
+    padding-bottom: 2px;
+    justify-content: space-between;
   }
 `;

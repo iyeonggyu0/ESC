@@ -5,13 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       UserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true,
-        targetKey: "email",
       },
       CommentId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true,
       },
     },
     {

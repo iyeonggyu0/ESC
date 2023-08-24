@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(30),
         allowNull: false,
         unique: true,
-        primaryKey: true,
       },
       userName: {
         type: DataTypes.STRING(20),
@@ -71,10 +70,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "email",
       sourceKey: "email",
     });
+    db.User.hasMany(db.ServiceAnswer, { foreignKey: "email", sourceKey: "email", onDelete: "CASCADE" });
+
     db.User.hasMany(db.ShoppingBag, { foreignKey: "userEmail", sourceKey: "email", onDelete: "CASCADE" });
     db.User.hasMany(db.Payment, { foreignKey: "userEmail", sourceKey: "email" });
     db.User.hasMany(db.CancelPayment, { foreignKey: "userEmail", sourceKey: "email" });
-
     // 커뮤니티 글 작성
     db.User.hasMany(db.CommunityPost, {
       foreignKey: "email",

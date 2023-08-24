@@ -9,9 +9,8 @@ const fs = require("fs");
 const fsExtra = require("fs-extra");
 const { Op, where } = require("sequelize");
 
-const { CommunityPost, User, CommunityComment, CommunityPostLike } = require("../models");
+const { CommunityPost, User, CommunityComment, CommunityPostLike, CommunityCommentLike } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
-const payment = require("../models/payment");
 
 router.get("/all/:sort", async (req, res) => {
   const { sort } = req.params;
@@ -44,40 +43,27 @@ router.get("/all/:sort", async (req, res) => {
     orderSort = "ASC";
   }
 
-  // try {
-  //   const posts = await Post.findAll({
-  //     where,
-  //     limit: 10,
-  //     order: [[order, orderSort]],
-  //     include: [
-  //       {
-  //         model: User,
-  //         attributes: ["id", "name"],
-  //       },
-  //       {
-  //         model: Comment,
-  //         include: [
-  //           {
-  //             model: User,
-  //             attributes: ["id", "name"],
-  //           },
-  //           {
-  //             model: Reply,
-  //             include: [
-  //               {
-  //                 model: User,
-  //                 attributes: ["id", "name"],
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   });
-  //   res.status(200).json(posts);
-  // } catch (err) {
-  //   console.error(err);
-  // }
+  try {
+    const posts = await CommunityPost.findAll({
+      order: [[order, orderSort]],
+      attributes: ["id", "title", "createdAt"],
+      include: [
+        { model: User, attributes: ["nickName"] },
+        {
+          model: CommunityPostLike,
+          attributes: ["id", "UserId"],
+        },
+        {
+          model: CommunityComment,
+          include: [{ model: CommunityCommentLike, attributes: ["id", "UserId"] }],
+        },
+      ],
+    });
+
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 router.post("/post", isLoggedIn, async (req, res) => {
@@ -92,16 +78,14 @@ router.post("/post", isLoggedIn, async (req, res) => {
     const postData = await CommunityPost.findOne({
       where: { id: post.id },
       include: [
-        {
-          model: User,
-          attributes: ["id", "email"],
-        },
+        { model: User, attributes: ["nickName"] },
         {
           model: CommunityPostLike,
+          attributes: ["id", "UserId"],
         },
         {
           model: CommunityComment,
-          include: [{ model: CommunityCommentLike }],
+          include: [{ model: CommunityCommentLike, attributes: ["id", "UserId"] }],
         },
       ],
     });

@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   ServiceAnswer.associate = (db) => {
     db.ServiceAnswer.belongsTo(db.ServiceInquiry, { foreignKey: "inquiryId", targetKey: "id" });
+    db.ServiceAnswer.belongsTo(db.User, { foreignKey: "email", targetKey: "email" });
   };
   return ServiceAnswer;
 };
