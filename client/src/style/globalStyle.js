@@ -83,6 +83,62 @@ const GlobalStyle = createGlobalStyle`
     justify-content: center;
     align-items: center;
   }
+
+  .paginationStyle{
+    width: 100%;
+    position: absolute;
+    bottom: calc(-35px - 1vh);
+  }
+
+  .paginationStyle .pagination {
+    display: flex;
+    justify-content: center;
+    font-family: Gothic A1;
+  }
+  .paginationStyle ul {
+    list-style: none;
+    padding: 0;
+  }
+  .paginationStyle ul.pagination li {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .paginationStyle ul.pagination li:first-child,
+  .paginationStyle ul.pagination li:last-child {
+    width: 10px;
+  }
+
+  .paginationStyle ul.pagination li a {
+    text-decoration: none;
+    color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameStroke
+        : ({ theme }) => theme.palette.basicStroke};
+    font-size: 0.8rem;
+    padding-top: 3px;
+  }
+
+  .paginationStyle ul.pagination li.active a {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .paginationStyle ul.pagination li.active {
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameStroke
+        : ({ theme }) => theme.palette.basicStroke};
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+  }
 `;
 
 export default GlobalStyle;

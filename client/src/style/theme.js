@@ -59,6 +59,9 @@ const paginationItem = {
   adminInventoryQuantity: 10,
 
   ServiceQnA: 7,
+
+  // 커뮤니티 main
+  communityMain: 20,
 };
 
 const theme = {

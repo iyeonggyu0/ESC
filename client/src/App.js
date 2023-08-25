@@ -32,6 +32,7 @@ import ServiceQnAPage from './pages/serviceQnAPage';
 import ServiceQnACreatePage from './pages/serviceQnACreatePage';
 import CommunityMainPage from './pages/communityMainPage';
 import CommunityPostPage from './pages/communityCreatePage';
+import CommunityPostViewPage from './pages/communityPostViewPage';
 
 export const ThemeContext = createContext(null);
 
@@ -97,6 +98,7 @@ function App() {
 
           {/* 커뮤니티 */}
           <Route path="/community" element={<CommunityMainPage />} />
+          <Route path="/community/:postId" element={<CommunityPostViewPage />} />
 
           {/* 로그인 필수 페이지 */}
           <Route element={<PrivateRoute auth={userInfo} />}>

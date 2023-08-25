@@ -6,6 +6,8 @@ import { ThemeContext } from '../../../App';
 import Select from 'react-select';
 import axios from 'axios';
 import { axiosInstance } from '../../../util/axios';
+import Pagination from 'react-js-pagination';
+import theme from '../../../style/theme';
 
 const CommunityMain = () => {
   const media = useMedia();
@@ -14,11 +16,13 @@ const CommunityMain = () => {
   const colorTheme = useContext(ThemeContext).colorTheme;
   const userData = useContext(ThemeContext).userInfo.userData;
 
+  const [activePage, setActivePage] = useState(1);
+  const [items, setItems] = useState(theme.paginationItem.communityMain);
+
   // 정렬 type
   const sortOptions = [
     { value: '최신순', label: '최신순' },
     { value: '추천순', label: '추천순' },
-    { value: '조회순', label: '조회순' },
   ];
 
   // 글쓰기
@@ -38,7 +42,7 @@ const CommunityMain = () => {
       .get(`${axiosInstance}api/community/all/${sortOption.value}`)
       .then((res) => {
         if (res.status == 200) {
-          setPostData(res.data.reverse());
+          setPostData(res.data);
         } else {
           alert('Error');
         }
@@ -48,17 +52,22 @@ const CommunityMain = () => {
       });
   };
 
-  // useEffect(() => {
-  //   reloadPostData();
-  //   console.log(postData);
-  //   // eslint-disable-next-line
-  // }, []);
+  useEffect(() => {
+    const communitySort = localStorage.getItem('communitySort');
+    if (communitySort == '최신순') setSortOption(sortOptions[0]);
+    else setSortOption(sortOptions[1]);
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
+    localStorage.setItem('communitySort', sortOption.value);
     reloadPostData();
-    console.log(postData);
     // eslint-disable-next-line
   }, [sortOption]);
+
+  const onActivePageHandler = (page) => {
+    setActivePage(page);
+  };
 
   return (
     <MainStyle colorTheme={colorTheme} media={media}>
@@ -80,18 +89,48 @@ const CommunityMain = () => {
             <li className="flexHeightCenter">
               <span>ID</span>
               <span>TITLE</span>
+              <span>LIKE</span>
               <span>NICK</span>
-              <span>DATE</span>
+              {media.isPc && <span>DATE</span>}
             </li>
-            {postData.map((state, idx) => (
-              <li className="flexHeightCenter" key={idx}>
-                <span>{state.id}</span>
-                <span>{state.title}</span>
-                <span>{state.User.nickName}</span>
-                <span>{state.createdAt.replace(/-/g, '/').split('T')[0]}</span>
-              </li>
-            ))}
+            {postData
+              .slice(items * (activePage - 1), items * (activePage - 1) + items)
+              .map((state, idx) => (
+                <li className="flexHeightCenter" key={idx}>
+                  <span>{state.id}</span>
+                  <span onClick={() => navigate(`/community/${state.id}`)}>
+                    {state.title}
+                    {state.CommunityComments.length > 0 && (
+                      <span style={{ color: '#FEAA7B', paddingLeft: '1rem' }}>
+                        {state.CommunityComments.length}
+                      </span>
+                    )}
+                  </span>
+                  <span>{state.CommunityPostLikes.length}</span>
+                  <span
+                    style={{
+                      fontWeight:
+                        userData && userData.nickName === state.User.nickName ? '900' : '400',
+                    }}
+                  >
+                    {state.User.nickName}
+                  </span>
+                  {media.isPc && <span>{state.createdAt.replace(/-/g, '/').split('T')[0]}</span>}
+                </li>
+              ))}
           </ul>
+        )}
+        {postData !== null && postData.length > 0 && (
+          <div className="paginationStyle" colorTheme={colorTheme}>
+            <Pagination
+              activePage={activePage}
+              itemsCountPerPage={items}
+              totalItemsCount={parseInt(postData.length / 1) + 1}
+              prevPageText={'‹'}
+              nextPageText={'›'}
+              onChange={onActivePageHandler}
+            />
+          </div>
         )}
       </div>
     </MainStyle>

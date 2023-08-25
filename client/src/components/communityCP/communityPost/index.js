@@ -41,8 +41,8 @@ const CommunityPost = () => {
       return alert('제목을 입력하세요');
     }
 
-    if (contents.replace(/ /g, '').length < 100) {
-      return alert('내용은 100글자 이상이어야 합니다');
+    if (contents.replace(/ /g, '').length < 30) {
+      return alert('내용은 30글자 이상이어야 합니다');
     }
 
     const data = {

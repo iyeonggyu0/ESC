@@ -92,16 +92,34 @@ export const MainStyle = styled.div`
 
   & > div:nth-child(3) > ul > li:first-child {
     height: 50px;
+    cursor: auto;
+  }
+
+  & > div:nth-child(3) > ul > li:first-child > span {
+    cursor: text !important;
   }
 
   & > div:nth-child(3) > ul > li > span {
-    width: 12%;
+    width: ${(props) => (props.media.isPc ? '10%' : '17%')};
     text-align: center;
+    white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+    overflow: hidden; /* 넘치는 텍스트는 숨김 */
+    text-overflow: ellipsis; /* 잘린 텍스트 부분을 "..."으로 표시 */
+  }
+
+  & > div:nth-child(3) > ul > li > span:nth-child(1) {
+    width: ${(props) => (props.media.isPc ? '10%' : '15%')};
   }
 
   & > div:nth-child(3) > ul > li > span:nth-child(2) {
-    width: 62%;
+    width: 55%;
+    padding: 1% 0;
     text-align: start;
+    cursor: pointer;
+  }
+
+  & > div:nth-child(3) > ul > li > span:nth-child(3) {
+    width: ${(props) => (props.media.isPc ? '6%' : '12%')};
   }
 
   & > div:nth-child(3) > ul > li {

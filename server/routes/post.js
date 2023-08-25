@@ -7,60 +7,54 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const fsExtra = require("fs-extra");
-const { Op, where } = require("sequelize");
+const { Op, where, Sequelize } = require("sequelize");
 
 const { CommunityPost, User, CommunityComment, CommunityPostLike, CommunityCommentLike } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 router.get("/all/:sort", async (req, res) => {
   const { sort } = req.params;
-  if (sort === "최신순") {
-    order = "createdAt";
-    orderSort = "DESC";
-  }
-  if (sort === "가격 높은 순") {
-    order = "price";
-    orderSort = "DESC";
-  }
-  if (sort === "가격 낮은 순") {
-    order = "price";
-    orderSort = "ASC";
-  }
-  if (sort === "추천") {
-    order = "like";
-    orderSort = "DESC";
-  }
-  if (sort === "별점") {
-    order = "grade";
-    orderSort = "DESC";
-  }
-  if (sort === "재고 순") {
-    order = "inventoryQuantity";
-    orderSort = "DESC";
-  }
-  if (sort === "재고 적은 순") {
-    order = "inventoryQuantity";
-    orderSort = "ASC";
-  }
 
   try {
-    const posts = await CommunityPost.findAll({
-      order: [[order, orderSort]],
-      attributes: ["id", "title", "createdAt"],
-      include: [
-        { model: User, attributes: ["nickName"] },
-        {
-          model: CommunityPostLike,
-          attributes: ["id", "UserId"],
-        },
-        {
-          model: CommunityComment,
-          include: [{ model: CommunityCommentLike, attributes: ["id", "UserId"] }],
-        },
-      ],
-    });
-
-    res.status(200).json(posts);
+    if (sort === "최신순") {
+      const posts = await CommunityPost.findAll({
+        order: [["createdAt", "DESC"]],
+        attributes: ["id", "title", "createdAt"],
+        include: [
+          { model: User, attributes: ["nickName"] },
+          {
+            model: CommunityPostLike,
+            attributes: ["id", "UserId"],
+          },
+          {
+            model: CommunityComment,
+            include: [{ model: CommunityCommentLike, attributes: ["id", "UserId"] }],
+          },
+        ],
+      });
+      res.status(200).json(posts);
+    } else {
+      const posts = await CommunityPost.findAll({
+        attributes: ["id", "title", "createdAt", [Sequelize.fn("COUNT", Sequelize.col("CommunityPostLikes.id")), "likeCount"]],
+        include: [
+          { model: User, attributes: ["nickName"] },
+          {
+            model: CommunityPostLike,
+            attributes: ["id", "UserId"],
+          },
+          {
+            model: CommunityComment,
+            include: [{ model: CommunityCommentLike, attributes: ["id", "UserId"] }],
+          },
+        ],
+        group: ["CommunityPost.id"],
+        order: [
+          ["likeCount", "DESC"],
+          ["createdAt", "DESC"],
+        ],
+      });
+      res.status(200).json(posts);
+    }
   } catch (err) {
     console.error(err);
   }
