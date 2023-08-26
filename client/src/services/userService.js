@@ -77,6 +77,7 @@ export default class UserService {
         console.log(err);
         window.location.reload();
       });
+    window.location.reload();
   }
 
   getUser() {

@@ -33,6 +33,7 @@ import ServiceQnACreatePage from './pages/serviceQnACreatePage';
 import CommunityMainPage from './pages/communityMainPage';
 import CommunityPostPage from './pages/communityCreatePage';
 import CommunityPostViewPage from './pages/communityPostViewPage';
+import CommunityModifyPage from './pages/communityModifyPage';
 
 export const ThemeContext = createContext(null);
 
@@ -112,6 +113,8 @@ function App() {
 
             {/* 커뮤니티 - 글 작성 페이지 */}
             <Route path="/community/post" element={<CommunityPostPage />} />
+            {/* 커뮤니티 - 글 수정 페이지 */}
+            <Route path="/community/modify/:postId" element={<CommunityModifyPage />} />
           </Route>
 
           {/* 404 */}

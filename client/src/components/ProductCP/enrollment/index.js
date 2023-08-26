@@ -160,12 +160,19 @@ const ProductEnrollmentMain = () => {
     }
   }, []);
 
+  console.log(productMainImg);
+  console.log(productMainImg?.split('.').length - 1);
+
   const onProductCreateHandler = useCallback(
     (e) => {
       e.preventDefault();
       const route = localStorage.getItem('route');
 
       if (productMainImg?.length === 0 || productMainImg === null) {
+        return alert('메인 이미지를 선택해 주세요');
+      }
+
+      if (productMainImg !== null && productMainImg?.split('.').length - 1 >= 2) {
         return alert('메인 이미지를 선택해 주세요');
       }
 

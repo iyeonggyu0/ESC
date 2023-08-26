@@ -31,7 +31,6 @@ const ProductMain = () => {
   const [filter, setFilter] = useState(localStorage.getItem('filter'));
   const [sort, setSort] = useState(localStorage.getItem('sort'));
   const [boxSize, setBoxSize] = useState(localStorage.getItem('boxSize'));
-
   const [admin, setAdmin] = useState('ADMIN');
   const [adminFocus, setAdminFocus] = useState(false);
   const [productModifyMod, setProductModifyMod] = useState(false);

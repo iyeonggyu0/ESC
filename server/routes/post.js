@@ -60,19 +60,14 @@ router.get("/all/:sort", async (req, res) => {
   }
 });
 
-router.post("/post", isLoggedIn, async (req, res) => {
-  const { email, title, contents } = req.body;
+router.get("/one/:postId", async (req, res) => {
+  const { postId } = req.params;
   try {
-    const post = await CommunityPost.create({
-      email: email,
-      title: title,
-      content: contents,
-    });
-
     const postData = await CommunityPost.findOne({
-      where: { id: post.id },
+      where: { id: postId },
+      attributes: ["id", "title", "content", "createdAt", "updatedAt"],
       include: [
-        { model: User, attributes: ["nickName"] },
+        { model: User, attributes: ["nickName", "id", "profileImg"] },
         {
           model: CommunityPostLike,
           attributes: ["id", "UserId"],
@@ -83,7 +78,111 @@ router.post("/post", isLoggedIn, async (req, res) => {
         },
       ],
     });
-    res.status(201).json(postData);
+    res.status(200).json(postData);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.post("/post", isLoggedIn, async (req, res) => {
+  const { email, title, contents } = req.body;
+  try {
+    await CommunityPost.create({
+      email: email,
+      title: title,
+      content: contents,
+    });
+
+    res.status(201).send("성공");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// 글 삭제
+router.delete("/delete/:postId", isLoggedIn, async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const deleteData = await CommunityPost.destroy({ where: { id: postId } });
+
+    if (deleteData) {
+      return res.status(201).send("삭제 완료");
+    } else {
+      return res.status(202).send("Post데이터가 없습니다.");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// 글 수정
+router.get("/modify/get/:postId/:userEmail", isLoggedIn, async (req, res) => {
+  const { postId, userEmail } = req.params;
+  try {
+    const postData = await CommunityPost.findOne({
+      where: { id: postId, email: userEmail },
+      attributes: ["id", "title", "content", "email"],
+    });
+    res.status(200).json(postData);
+  } catch (err) {
+    console.error(err);
+  }
+});
+router.patch("/modify/save", isLoggedIn, async (req, res) => {
+  const { postId, email, title, contents } = req.body;
+  try {
+    const testData = await CommunityPost.findOne({ where: { id: postId } });
+    if (!testData) {
+      return res.status(202).send("실패");
+    }
+
+    await CommunityPost.update(
+      {
+        title: title,
+        content: contents,
+      },
+      { where: { id: postId, email: email } }
+    );
+    res.status(201).send("성공");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// 좋아요
+router.post("/post/like", isLoggedIn, async (req, res) => {
+  const { postId, userId } = req.body;
+
+  try {
+    const test = await CommunityPostLike.findOne({ where: { UserId: userId, PostId: postId } });
+
+    if (test) {
+      return res.status(202).send("이미 눌려져 있는 좋아요");
+    } else {
+      const createData = await CommunityPostLike.create({
+        UserId: userId,
+        PostId: postId,
+      });
+
+      const findData = await CommunityPostLike.findOne({ where: { id: createData.id }, attributes: ["id", "UserId"] });
+      res.status(201).json(findData);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.delete("/delete/like/:likeId", isLoggedIn, async (req, res) => {
+  const { likeId } = req.params;
+
+  try {
+    const deleteData = await CommunityPostLike.destroy({ where: { id: likeId } });
+
+    if (deleteData) {
+      return res.status(201).send("삭제 완료");
+    } else {
+      return res.status(202).send("눌러진 좋아요가 없습니다.");
+    }
   } catch (err) {
     console.error(err);
   }
