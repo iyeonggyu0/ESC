@@ -78,16 +78,102 @@ export const MainPostViewrStyle = styled.div`
     margin-bottom: 2vh;
   }
 
+  /* 좋아요 */
   & > div:nth-child(3) {
     width: ${(props) => (props.media.isPc ? '3.5vw' : '60px')};
     height: ${(props) => (props.media.isPc ? '3.5vw' : '60px')};
     border-radius: 50%;
     box-shadow: 0px 0px 18px -8px rgba(0, 0, 0, 0.4);
     margin: 0 auto;
+    margin-bottom: ${(props) => (props.media.isPc ? '5vh' : '3vh')};
     cursor: pointer;
   }
 
   & > div:nth-child(3) .likeIcon {
     padding-right: 5px;
+  }
+
+  /* 댓글 */
+  & > div:nth-child(4) > div:nth-child(1) {
+    font-size: ${(props) => (props.media.isPc ? '1.2rem' : '1rem')};
+    padding: 12px 0;
+    margin-bottom: 2vh;
+    border-bottom: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.gameLightFont
+          : ({ theme }) => theme.palette.basicFont};
+    justify-content: space-between;
+  }
+
+  & > div:nth-child(4) > div:nth-child(1) .icon,
+  & .commentInput .icon {
+    padding-right: 0.3rem;
+  }
+
+  & > div:nth-child(4) > div:nth-child(1) > p:nth-child(1) > span {
+    padding-right: 0.7rem;
+    color: #feaa7b;
+  }
+
+  & > div:nth-child(4) > div:nth-child(1) > p:nth-child(2) > span {
+    font-size: 0.8rem;
+    padding-left: 12px;
+    cursor: pointer;
+  }
+
+  /* 댓X */
+  & > div:nth-child(4) > .noComment {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 5vh;
+    background-color: white;
+    box-shadow: 0px 0px 18px -8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* 댓글 작성 */
+  & .commentInput {
+    margin-bottom: 10vh;
+    position: relative;
+  }
+
+  & .commentInput > p:nth-child(1) {
+    padding-bottom: 12px;
+  }
+
+  & .commentInput > div > textarea {
+    width: 100%;
+    font-family: Roboto;
+    background-color: #f7f7f9;
+    resize: none;
+    border-radius: 5px;
+    border: 1px solid
+      ${(props) =>
+        props.colorTheme === 'game'
+          ? ({ theme }) => theme.palette.gameLightStroke
+          : ({ theme }) => theme.palette.basicFont};
+    padding: 12px;
+  }
+
+  & .commentInput > div > textarea:focus {
+    outline: none;
+  }
+
+  & .commentInput > div:last-child {
+    width: 100%;
+    justify-content: end;
+    margin-top: 12px;
+  }
+
+  & > div:nth-child(4) > div:nth-child(3) > div:last-child > p {
+    width: ${(props) => (props.media.isPc ? '15%' : '100%')};
+    padding: 12px 0;
+    text-align: center;
+    color: white;
+    background-color: ${(props) =>
+      props.colorTheme === 'game'
+        ? ({ theme }) => theme.palette.gameStroke
+        : ({ theme }) => theme.palette.basicFont};
+    cursor: pointer;
   }
 `;

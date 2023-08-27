@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import TextEditorViewer from '../../_common/textEditorViewer';
 import { ThemeContext } from '../../../App';
+import TextareaAutosize from 'react-textarea-autosize';
+import { useInput } from '@hooks/useInput';
+import CommentViewr from '../_common/commentViewr';
 
 const PostViewr = () => {
   const media = useMedia();
@@ -19,7 +22,6 @@ const PostViewr = () => {
 
   const postId = useParams().postId;
   const [postData, setPostData] = useState({
-    CommunityComments: [],
     CommunityPostLikes: [],
     User: { nickName: '', id: 0 },
     id: postId,
@@ -32,7 +34,25 @@ const PostViewr = () => {
   const [likePush, setLikePush] = useState(false);
   const [profileImage, setProfileImage] = useState('');
 
+  const [newCommentContent, onChangeNewCommonetContent, setNewCommonetContent] = useInput('');
+  const [commentSort, setCommentSort] = useState(0);
+  const [CommunityComments, setCommunityComments] = useState([]);
+
+  const rerloadComment = () => {
+    setCommunityComments([]);
+    axios.get(`${axiosInstance}api/community/get/comment/${postId}/${commentSort}`).then((res) => {
+      if (res.status === 200) {
+        setCommunityComments(res.data);
+      }
+    });
+  };
+
   useEffect(() => {
+    rerloadComment();
+  }, [commentSort]);
+
+  useEffect(() => {
+    rerloadComment();
     axios
       .get(`${axiosInstance}api/community/one/${postId}`)
       .then((res) => {
@@ -87,10 +107,6 @@ const PostViewr = () => {
           }`,
         )
         .then((res) => {
-          console.log(res);
-          if (res.status === 403) {
-            return alert('재 로그인이 필요합니다');
-          }
           if (res.status === 201) {
             const updatedLikes = postData.CommunityPostLikes.filter(
               (like) => like.UserId !== userData.id,
@@ -107,7 +123,14 @@ const PostViewr = () => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
+          if (err.response && err.response.status === 403) {
+            alert('재로그인이 필요합니다.');
+            return window.location.reload();
+          } else {
+            // 기타 에러 처리 (예: 사용자에게 에러 메시지 표시)
+            alert('오류가 발생했습니다. 다시 시도해주세요.');
+          }
         });
     } else {
       // 좋아요 누르기
@@ -204,6 +227,51 @@ const PostViewr = () => {
     return navigate(`/community/modify/${postData.id}`);
   };
 
+  const createComment = () => {
+    if (!userData) {
+      return alert('로그인이 필요합니다.');
+    }
+
+    if (newCommentContent.length < 5) {
+      return alert('다섯글자 이상 작성해 주세요');
+    }
+
+    const data = {
+      postId: postData.id,
+      email: userData.email,
+      content: newCommentContent,
+      sort: commentSort,
+    };
+
+    axios
+      .post(`${axiosInstance}api/community/post/comment`, data)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          rerloadComment();
+          // setCommunityComments(res.data);
+          setNewCommonetContent('');
+          return setPostData(updatedPostData);
+        }
+        if (res.status === 402) {
+          alert('에러');
+          console.error(res);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.response && err.response.status === 403) {
+          alert('재로그인이 필요합니다.');
+          return window.location.reload();
+        } else if (err.response.status === 402) {
+          alert('에러');
+        } else {
+          // 기타 에러 처리 (예: 사용자에게 에러 메시지 표시)
+          alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
+      });
+  };
+
   return (
     <MainPostViewrStyle colorTheme={colorTheme} media={media} profileImage={profileImage}>
       <div>
@@ -220,7 +288,7 @@ const PostViewr = () => {
             </span>
             <span>
               <FontAwesomeIcon icon={solid('comment')} className="icon" />
-              {postData.CommunityComments?.length}
+              {CommunityComments?.length}
             </span>
             <span>
               <FontAwesomeIcon icon={solid('thumbs-up')} className="icon" />
@@ -260,7 +328,62 @@ const PostViewr = () => {
       </div>
 
       {/* 댓글 */}
-      <div></div>
+      <div>
+        <div className="flexHeightCenter">
+          <p>
+            <FontAwesomeIcon icon={solid('comment')} className="icon" />
+            <span>{CommunityComments?.length}</span>Comments
+          </p>
+          <p>
+            <span
+              style={{ color: commentSort === 0 ? 'black' : 'darkgray' }}
+              onClick={() => setCommentSort(0)}
+            >
+              최신순
+            </span>
+            <span
+              style={{ color: commentSort === 1 ? 'black' : 'darkgray' }}
+              onClick={() => setCommentSort(1)}
+            >
+              추천순
+            </span>
+          </p>
+        </div>
+        {CommunityComments?.length > 0 && (
+          <div>
+            {CommunityComments.map((state, idx) => (
+              <CommentViewr
+                key={idx}
+                state={state}
+                colorTheme={colorTheme}
+                media={media}
+                userData={userData}
+              />
+            ))}
+          </div>
+        )}
+        {CommunityComments?.length === 0 && (
+          <div className="flexCenter noComment">남겨진 댓글이 없습니다.</div>
+        )}
+        <div className="commentInput">
+          <p>
+            <FontAwesomeIcon icon={solid('pen')} className="icon" />
+            Post Comment
+          </p>
+          <div>
+            <TextareaAutosize
+              value={newCommentContent}
+              onChange={onChangeNewCommonetContent}
+              minRows={6}
+              spellCheck="false"
+              placeholder="욕설이 섞이거나 부적절한 댓글은 삭제될 수 있습니다."
+            />
+          </div>
+          <div className="flexHeightCenter" onClick={createComment}>
+            <p>저장</p>
+          </div>
+        </div>
+      </div>
     </MainPostViewrStyle>
   );
 };

@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "postId",
       sourceKey: "id",
     });
+    db.CommunityPost.hasMany(db.CommunityCommentLike, {
+      foreignKey: "postId",
+      sourceKey: "id",
+    });
     // 글 좋아요
     db.CommunityPost.hasMany(db.CommunityPostLike, {
       foreignKey: "postId",

@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      postId: {
+        type: DataTypes.INTEGER(50),
+        allowNull: false,
+      },
     },
     {
       sequelize,
@@ -24,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
   CommunityCommentLike.associate = (db) => {
     db.CommunityCommentLike.belongsTo(db.CommunityComment, {
       foreignKey: "CommentId",
+      targetKey: "id",
+    });
+    db.CommunityCommentLike.belongsTo(db.CommunityPost, {
+      foreignKey: "postId",
       targetKey: "id",
     });
   };

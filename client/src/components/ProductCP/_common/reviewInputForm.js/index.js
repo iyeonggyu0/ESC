@@ -48,7 +48,6 @@ const ReviewInputForm = ({ colorTheme, productData, userData }) => {
 
   return (
     <>
-      {/* FIXME: 최근 한달 사이 구매이력 확인하기, 동일상품 리뷰 불가(주문내역과 관계설정) */}
       {userData !== null && (
         <>
           <InputForm media={media} colorTheme={colorTheme}>
