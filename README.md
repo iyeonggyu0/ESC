@@ -17,10 +17,12 @@ Everything Styles' Custom Keyboard \ project
 
   <br><br>
 
-## PPT
+## PDF
 
-![img]()
-[[PPT 파일 바로가기]]()
+![전체버전_pages-to-jpg-0001](https://github.com/iyeonggyu0/ESC/assets/105581475/9c02f4b2-002a-4272-8286-98c6cafccf27)
+<br>
+[[PDF(Full_ver)]](https://drive.google.com/file/d/1Jg3i88HqhID13HELJd2bIA-LsK5gfmri/view?usp=drive_link)<br>
+[[PDF(simplified_ver)]](https://drive.google.com/file/d/1-t3DLC7f23jIWCrkIvETQS60-3k7eZJ9/view?usp=sharing)
 
 ###### 다운로드: 좌측 상단의 파일 > 다운로드
 
@@ -68,7 +70,8 @@ Everything Styles' Custom Keyboard \ project
 
 ### 흐름도
 
-![img]()
+![간소화-버전_page-0006](https://github.com/iyeonggyu0/ESC/assets/105581475/49e1f95e-deec-4d54-8468-69cd840444eb)
+
 
 ### DB
 
@@ -78,19 +81,18 @@ Everything Styles' Custom Keyboard \ project
 
 메인 색상:
 
-  <!-- bgColor: #ffffff<br>
-  
-  frMainColor: #B6ABAB<br>
-  cpMainColor: #997976<br>
+  gameBg: '#111111',
+  gameStroke: '#222222',
+  gameLightStroke: '#5F5F5F',
+  gameFont: '#FFFFFF',
+  gameLightFont: '#cecece',
+  gameSubFont: '#000000',
 
-  frSubColor1: #A9C5B9<br>
-  frSubColor2: #C5DCD5<br>
-
-  cpSubColor1: #F3C2BD<br>
-  cpSubColor2: #ECD6D9<br>
-
-  fontColor: #FFFFFF<br>
-  fontSubColor: #736B6B<br> -->
+  basicBg: '#F0EDE9',
+  basicStroke: '#796763',
+  basicLightStroke: '#98918F',
+  basicFont: '#796763',
+  basicSubFont: '#AD8388',
 
 <br>
 글꼴:
@@ -104,9 +106,12 @@ Everything Styles' Custom Keyboard \ project
 - UI / UX Tool : Figma
 
 Img
-![]()  
-![]()
-![]()
+![간소화-버전_page-0009](https://github.com/iyeonggyu0/ESC/assets/105581475/72b5c6eb-7303-4e08-85bc-7cf864f8edb5)
+![간소화-버전_page-0012](https://github.com/iyeonggyu0/ESC/assets/105581475/48ef1886-6de5-4f51-bae9-894a878c8d68)
+![간소화-버전_page-0013](https://github.com/iyeonggyu0/ESC/assets/105581475/51b48247-ba35-4402-b94b-25dde5c04838)
+[[ PDF(Full_ver) ]](#pdf) 참고
+
+
 
 <br><br>
 
@@ -130,6 +135,7 @@ Img
 ![Font-Awesome](https://img.shields.io/badge/Font_Awesome-528DD7?style=for-the-badge&logo=Font-Awesome&logoColor=white)
 ![Redux](https://img.shields.io/badge/Redux-764abc?style=for-the-badge&logo=Redux&logoColor=white)
 ![Axios](https://img.shields.io/badge/Axios-5a29e4?style=for-the-badge&logo=Axios&logoColor=white)
+...
 
 ### API testing
 
@@ -137,13 +143,10 @@ Img
 
 ## 배포
 
-<!-- 둘중에 하나 지우기 -->
-
-![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=Netlify&logoColor=white)
 ![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=Heroku&logoColor=white)
 
-테스트 기간: 0000년 00월 00일 ~ 0000년 00월 00일
+테스트 기간: 2023년 08월 09일 ~ 2023년 08월 30일
 
-테스트 인원: 주변 지인 외 학교의 불특정 다수
+테스트 인원: 재학중인 고등학교 학생들, 학교 선생님 외 여러명 (42명)
 
-배포 기간: 0000년 00월 00일 ~ 0000년 00월 00일
+배포 기간: 실제 사용 X
